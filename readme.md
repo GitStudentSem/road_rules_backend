@@ -17,13 +17,11 @@
 ### Ответ
 
 - В случае успеха:
-  `{
-	"email": string,
-	"_id": string,
-	"token": string
-}`
+
+  `email: string,_id: string,token: string}`
+
 - В случае провала:
-  `{"message": string}`
+  `{message: string}`
 
 ## Логин - http://localhost:3333/auth/login
 
@@ -35,15 +33,12 @@
 ### Ответ
 
 - В случае успеха:
-  `{
-	"email": string,
-	"_id": string,
-	"token": string
-}`
+
+  `{email: string,_id: string,token: string}`
+
 - В случае провала:
-  `{
-	"message": string
-}`
+
+  `{message: string}`
 
 ## Отправить билет - http://localhost:3333/check/ticket/:ticketNumber
 
@@ -55,30 +50,27 @@
 ### Ответ
 
 - В случае успеха:
-  `{
-	result: boolean,
-	correctAnswers: number[]
-}`
+
+  `{result: boolean, correctAnswers: number[]}`
+
 - В случае провала:
-  `{
-	"message": string
-}`
+
+  `{message: string}`
 
 ## Отправить экзамен - http://localhost:3333/check/exam
 
 ### Запрос
 
-- `body: { ticket: number, question: number, answer: number }[]`
-- `headers: {Authorization: Bearer ${token}, "Content-Type": "application/json"}`
+`body: { ticket: number, question: number, answer: number }[]`
+
+`headers: {Authorization: Bearer ${token}, "Content-Type": "application/json"}`
 
 ### Ответ
 
 - В случае успеха:
-  `{
-	result: boolean,
-	correctAnswers: number[]
-}`
+
+  `{result: boolean,correctAnswers: number[]}`
+
 - В случае провала:
-  `{
-	"message": string
-}`
+
+  `"message: string}`
