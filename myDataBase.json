@@ -1,0 +1,44 @@
+{
+    "users": {
+        "purnemtzev.semen": {
+            "email": "purnemtzev.semen@yandex.ru",
+            "passwordHash": "$2b$10$1lXv09NUkaqAXJelPtzzJ.2mvKlLEIsshbz47OUcXsWbEbdAn04BC",
+            "_id": "5c9e8add-b057-402d-be23-2dc488353a90",
+            "results": {
+                "1": [
+                    3,
+                    3,
+                    3,
+                    3
+                ],
+                "exam": [
+                    {
+                        "ticket": 1,
+                        "question": 1,
+                        "answer": 1
+                    },
+                    {
+                        "ticket": 2,
+                        "question": 2,
+                        "answer": 2
+                    },
+                    {
+                        "ticket": 3,
+                        "question": 3,
+                        "answer": 1
+                    },
+                    {
+                        "ticket": 4,
+                        "question": 4,
+                        "answer": 1
+                    }
+                ]
+            }
+        },
+        "purnemtzev.semenу": {
+            "email": "purnemtzev.semenу@yande3x.ru",
+            "passwordHash": "$2b$10$vGohU/6ugdyksR9cBGS8iemP.VuoDZR5iwGGpSu1klddLndmtW9Ty",
+            "_id": "669620b8-7cc9-4b0a-ab14-2ad24a6d4f9d"
+        }
+    }
+}
