@@ -23,11 +23,17 @@ fetch("http://localhost:3333/auth/register", {
 
 - В случае успеха:
 
-  `{ email: string, _id: string,token: string }`
+  ```typescript
+  { email: string, _id: string,token: string }
+  ```
 
 - В случае провала:
 
-  `{ message: string }` - Сообщение об ошибке
+  ```typescript
+  {
+    message: string;
+  }
+  ```
 
 ## Логин - http://localhost:3333/auth/login
 
@@ -45,11 +51,17 @@ fetch("http://localhost:3333/auth/login", {
 
 - В случае успеха:
 
-  `{ email: string,_id: string,token: string }`
+  ```typescript
+  { email: string,_id: string,token: string }
+  ```
 
 - В случае провала:
 
-  `{ message: string }` - Сообщение об ошибке
+  ```typescript
+  {
+    message: string;
+  }
+  ```
 
 ## Отправить билет - http://localhost:3333/check/ticket/:ticketNumber
 
@@ -72,12 +84,19 @@ fetch("http://localhost:3333/check/ticket/2", {
 
 - В случае успеха:
 
-  `{ result: boolean, correctAnswers: number[] }`
+  ```typescript
+  { result: boolean, correctAnswers: number[] }
+  ```
+
   `correctAnswers` - Массив правильных ответов
 
 - В случае провала:
 
-  `{ message: string }` - Сообщение об ошибке
+  ```typescript
+  {
+    message: string;
+  }
+  ```
 
 ## Отправить экзамен - http://localhost:3333/check/exam
 
@@ -104,9 +123,16 @@ fetch("http://localhost:3333/check/exam", {
 
 - В случае успеха:
 
-  `{ result: boolean,correctAnswers: number[] }`
+  ```typescript
+  { result: boolean,correctAnswers: number[] }
+  ```
+
   `correctAnswers` - Массив правильных ответов
 
 - В случае провала:
 
-  `{ message: string }` - Сообщение об ошибке
+  ```typescript
+  {
+    message: string;
+  }
+  ```
