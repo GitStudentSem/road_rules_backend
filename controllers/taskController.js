@@ -15,7 +15,7 @@ export const sendTicket = async (req, res) => {
 
 		const filePath = getUserFilePath(user.email);
 
-		const ticketNumber = req.params.ticket - 1;
+		const ticketNumber = req.params.ticket;
 		const userAnswers = req.body;
 		await db.push(`${filePath}/results/${ticketNumber}`, userAnswers);
 

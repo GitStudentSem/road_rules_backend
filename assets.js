@@ -46,7 +46,7 @@ export const checkTicketAnswers = (ticket, userAnswers) => {
 	let errorsCount = 0;
 	for (let i = 0; i < userAnswers.length; i++) {
 		const userAnswer = userAnswers[i];
-		const correctAnswer = answersData[ticket][i];
+		const correctAnswer = answersData[ticket - 1][i];
 
 		if (userAnswer !== correctAnswer) errorsCount++;
 	}
