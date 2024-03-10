@@ -1,5 +1,11 @@
-import { getUserFilePath, isUserExist, sendError } from "../assets.js";
-import { checkExam, checkTicketAnswers } from "../checkAnswers/checkAnswers.js";
+import {
+	getUserFilePath,
+	isUserExist,
+	sendError,
+	checkExam,
+	checkTicketAnswers,
+} from "../assets.js";
+
 import { db } from "../index.js";
 
 export const sendTicket = async (req, res) => {
