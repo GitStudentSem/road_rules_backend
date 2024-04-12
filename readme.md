@@ -28,7 +28,7 @@ fetch("http://localhost:3333/auth/register", {
 - В случае успеха:
 
   ```typescript
-  { firstName: string, secondName: string, _id: string,token: string }
+  { firstName: string, secondName: string, _id: string }
   ```
 
 - В случае провала:
