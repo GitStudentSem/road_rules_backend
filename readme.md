@@ -15,7 +15,7 @@
 fetch("http://localhost:3333/auth/register", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
-  body: { email: "<your_email@mail.com>", password: "<your_password>" },
+  body: JSON.stringify({ email: "<your_email@mail.com>", password: "<your_password>" }),
 });
 ```
 
@@ -43,7 +43,7 @@ fetch("http://localhost:3333/auth/register", {
 fetch("http://localhost:3333/auth/login", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
-  body: { email: "<your_email@mail.com>", password: "<your_password>" },
+  body: JSON.stringify({ email: "<your_email@mail.com>", password: "<your_password>" }),
 });
 ```
 
@@ -76,7 +76,7 @@ fetch("http://localhost:3333/check/ticket/2", {
     Authorization: `Bearer ${token}`, // token - полученный после логина
     "Content-Type": "application/json",
   },
-  body: [1, 2, 4, 3 /*...*/], // Ваши ответы
+  body: JSON.stringify([1, 2, 4, 3 /*...*/]), // Ваши ответы
 });
 ```
 
@@ -109,13 +109,13 @@ fetch("http://localhost:3333/check/exam", {
     Authorization: `Bearer ${token}`, // token - полученный после логина
     "Content-Type": "application/json",
   },
-  body: [
+  body: JSON.stringify([
     { ticket: 1, question: 1, answer: 1 },
     { ticket: 2, question: 4, answer: 2 },
     { ticket: 3, question: 13, answer: 4 },
     { ticket: 2, question: 10, answer: 1 },
     /*...*/
-  ], // Ваши ответы
+  ]), // Ваши ответы
 });
 ```
 
