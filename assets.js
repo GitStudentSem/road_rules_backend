@@ -1,8 +1,8 @@
 import { db } from "./index.js";
 
-export const getUserFilePath = (email) => {
-	const fileName = email.split("@")[0];
-	const filePath = `./users/${fileName}`;
+export const getUserFilePath = (firstName, secondName) => {
+	const userName = `${firstName}_${secondName}`;
+	const filePath = `./users/${userName}`;
 	return filePath;
 };
 

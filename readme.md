@@ -15,7 +15,11 @@
 fetch("http://localhost:3333/auth/register", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ email: "<your_email@mail.com>", password: "<your_password>" }),
+  body: JSON.stringify({
+	  firstName: "<your_firstname>",
+	  secondName: "<your_secondname>",
+	  password: "<your_password>",
+  });
 });
 ```
 
@@ -24,7 +28,7 @@ fetch("http://localhost:3333/auth/register", {
 - В случае успеха:
 
   ```typescript
-  { email: string, _id: string,token: string }
+  { firstName: string, secondName: string, _id: string,token: string }
   ```
 
 - В случае провала:
@@ -43,7 +47,11 @@ fetch("http://localhost:3333/auth/register", {
 fetch("http://localhost:3333/auth/login", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ email: "<your_email@mail.com>", password: "<your_password>" }),
+  body: JSON.stringify({
+	  firstName: "<your_firstname>",
+	  secondName: "<your_secondname>",
+	  password: "<your_password>",
+  });
 });
 ```
 
@@ -52,7 +60,7 @@ fetch("http://localhost:3333/auth/login", {
 - В случае успеха:
 
   ```typescript
-  { email: string,_id: string,token: string }
+  { firstName: string, secondName: string, _id: string,token: string }
   ```
 
 - В случае провала:

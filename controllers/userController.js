@@ -6,14 +6,14 @@ import { db } from "../index.js";
 
 export const register = async (req, res) => {
 	try {
-		const { email, password } = req.body;
+		const { firstName, secondName, password } = req.body;
 		const salt = await bcrypt.genSalt(10);
 		const hash = await bcrypt.hash(password, salt);
 
 		const _id = uuidv4();
 
 		//Проверка наличия документа
-		const filePath = getUserFilePath(email);
+		const filePath = getUserFilePath(firstName, secondName);
 
 		const isExistUser = await db.exists(filePath);
 
@@ -22,17 +22,17 @@ export const register = async (req, res) => {
 			return;
 		}
 
-		await db.push(filePath, { email, passwordHash: hash, _id });
+		await db.push(filePath, { firstName, secondName, passwordHash: hash, _id });
 
 		const user = await db.getData(filePath);
 		const userCopy = { ...user };
 		userCopy.passwordHash = undefined;
 
-		const token = jwt.sign({ _id: userCopy._id }, "somthingStrangeString", {
+		jwt.sign({ _id: userCopy._id }, "somthingStrangeString", {
 			expiresIn: "30d",
 		});
 
-		res.json({ ...userCopy, token });
+		res.json({ ...userCopy });
 	} catch (error) {
 		sendError({ message: "Не удалось зарегистрироваться", error, res });
 	}
@@ -40,8 +40,9 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
 	try {
-		const { email, password } = req.body;
-		const filePath = getUserFilePath(email);
+		const { firstName, secondName, password } = req.body;
+
+		const filePath = getUserFilePath(firstName, secondName);
 
 		const isExistUser = await db.exists(filePath);
 
@@ -64,7 +65,7 @@ export const login = async (req, res) => {
 			expiresIn: "30d",
 		});
 
-		res.json({ email, token, _id });
+		res.json({ firstName, secondName, token, _id });
 	} catch (error) {
 		sendError({ message: "Не удалось авторизоваться", error, res });
 	}

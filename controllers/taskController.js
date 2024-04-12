@@ -13,7 +13,7 @@ export const sendTicket = async (req, res) => {
 		const user = await isUserExist(req, res);
 		if (!user) return;
 
-		const filePath = getUserFilePath(user.email);
+		const filePath = getUserFilePath(user.firstName, user.secondName);
 
 		const ticketNumber = req.params.ticket;
 		const userAnswers = req.body;
@@ -31,7 +31,7 @@ export const sendExam = async (req, res) => {
 		const user = await isUserExist(req, res);
 		if (!user) return;
 
-		const filePath = getUserFilePath(user.email);
+		const filePath = getUserFilePath(user.firstName, user.secondName);
 
 		const userAnswers = req.body;
 		await db.push(`${filePath}/results/exam`, userAnswers);
@@ -48,7 +48,7 @@ export const getOne = async (req, res) => {
 		const user = await isUserExist(req, res);
 		if (!user) return;
 
-		const filePath = getUserFilePath(user.email);
+		const filePath = getUserFilePath(user.firstName, user.secondName);
 
 		const ticketNumber = req.params.ticket;
 		const isExistTasks = await db.exists(`${filePath}/tasks/${ticketNumber}`);
@@ -67,7 +67,7 @@ export const getAll = async (req, res) => {
 		const user = await isUserExist(req, res);
 		if (!user) return;
 
-		const filePath = getUserFilePath(user.email);
+		const filePath = getUserFilePath(user.firstName, user.secondName);
 
 		const isExistTasks = await db.exists(`${filePath}/tasks`);
 		if (!isExistTasks)
@@ -85,7 +85,7 @@ export const removeOne = async (req, res) => {
 		const user = await isUserExist(req, res);
 		if (!user) return;
 
-		const filePath = getUserFilePath(user.email);
+		const filePath = getUserFilePath(user.firstName, user.secondName);
 
 		const ticketNumber = req.params.ticket;
 
@@ -105,7 +105,7 @@ export const remove = async (req, res) => {
 		const user = await isUserExist(req, res);
 		if (!user) return;
 
-		const filePath = getUserFilePath(user.email);
+		const filePath = getUserFilePath(user.firstName, user.secondName);
 		await db.delete(`${filePath}/tasks`);
 
 		res.status(200).json({ message: "Все билеты удалены" });
