@@ -26,7 +26,7 @@ export const register = async (req, res) => {
 
 		const user = await db.getData(filePath);
 		const userCopy = { ...user };
-		delete userCopy.passwordHash;
+		userCopy.passwordHash = undefined;
 
 		const token = jwt.sign({ _id: userCopy._id }, "somthingStrangeString", {
 			expiresIn: "30d",
@@ -76,7 +76,7 @@ export const getMe = async (req, res) => {
 		if (!user) return;
 
 		const userCopy = { ...user };
-		delete userCopy.passwordHash;
+		userCopy.passwordHash = undefined;
 
 		res.json({ ...userCopy });
 	} catch (error) {
