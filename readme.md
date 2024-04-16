@@ -16,9 +16,10 @@ fetch("http://localhost:3333/auth/register", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
-	  firstName: "<your_firstname>",
-	  secondName: "<your_secondname>",
-	  password: "<your_password>",
+    email: 'your_email@yandex.ru',
+	  firstName: "your_firstname",
+	  secondName: "your_secondname",
+	  password: "your_password",
   });
 });
 ```
@@ -28,7 +29,7 @@ fetch("http://localhost:3333/auth/register", {
 - В случае успеха:
 
   ```typescript
-  { firstName: string, secondName: string, _id: string }
+  {email: string, firstName: string, secondName: string, _id: string }
   ```
 
 - В случае провала:
@@ -48,9 +49,8 @@ fetch("http://localhost:3333/auth/login", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
-	  firstName: "<your_firstname>",
-	  secondName: "<your_secondname>",
-	  password: "<your_password>",
+	  email: 'your_email@yandex.ru' ,
+	  password: "your_password",
   });
 });
 ```
@@ -60,7 +60,7 @@ fetch("http://localhost:3333/auth/login", {
 - В случае успеха:
 
   ```typescript
-  { firstName: string, secondName: string, _id: string,token: string }
+  { email: string, _id: string,token: string }
   ```
 
 - В случае провала:
