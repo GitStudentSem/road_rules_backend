@@ -6,14 +6,14 @@ import { db } from "../index.js";
 
 export const register = async (req, res) => {
 	try {
-		const { firstName, secondName, password } = req.body;
+		const { email, firstName, secondName, password } = req.body;
 		const salt = await bcrypt.genSalt(10);
 		const hash = await bcrypt.hash(password, salt);
 
 		const _id = uuidv4();
 
 		//Проверка наличия документа
-		const filePath = getUserFilePath(firstName, secondName);
+		const filePath = getUserFilePath(email);
 
 		const isExistUser = await db.exists(filePath);
 
@@ -40,9 +40,9 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
 	try {
-		const { firstName, secondName, password } = req.body;
+		const { email, password } = req.body;
 
-		const filePath = getUserFilePath(firstName, secondName);
+		const filePath = getUserFilePath(email);
 
 		const isExistUser = await db.exists(filePath);
 
