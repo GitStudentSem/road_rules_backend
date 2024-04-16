@@ -22,7 +22,13 @@ export const register = async (req, res) => {
 			return;
 		}
 
-		await db.push(filePath, { firstName, secondName, passwordHash: hash, _id });
+		await db.push(filePath, {
+			email,
+			firstName,
+			secondName,
+			passwordHash: hash,
+			_id,
+		});
 
 		const user = await db.getData(filePath);
 		const userCopy = { ...user };
@@ -65,7 +71,7 @@ export const login = async (req, res) => {
 			expiresIn: "30d",
 		});
 
-		res.json({ firstName, secondName, token, _id });
+		res.json({ email, token, _id });
 	} catch (error) {
 		sendError({ message: "Не удалось авторизоваться", error, res });
 	}
