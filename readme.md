@@ -125,7 +125,7 @@ fetch("http://localhost:3333/check/tickets/2", {
   { img: string, question: string, answers: string[], help: string }[]
   ```
 
-  `correctAnswers` - Массив правильных ответов
+  `img` - Base64 строка
 
 - В случае провала:
 
