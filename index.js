@@ -2,9 +2,9 @@ import express from "express";
 import cors from "cors";
 
 import {
+	answerValidation,
 	loginValidation,
 	registerValidation,
-	taskValidation,
 } from "./validations.js";
 
 import { checkAuth, handleValudationErrors } from "./midlewares.js";
@@ -36,6 +36,12 @@ app.get("/auth/me", checkAuth, userController.getMe);
 
 app.get("/tickets/count", checkAuth, taskController.sendTicketsCount);
 app.get("/tickets/:ticketNumber", checkAuth, taskController.sendTicket);
+app.post(
+	"/tickets/:ticketNumber",
+	checkAuth,
+	answerValidation,
+	taskController.sendTicketResult,
+);
 // 1.5MB (1)
 // 1.8MB (2)
 // 1.7MB (3)

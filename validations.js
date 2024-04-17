@@ -36,6 +36,7 @@ export const registerValidation = [
 	}),
 ];
 
-export const taskValidation = [
-	body("", "Данные должны быть не пустым массивом").isArray({ min: 1 }),
+export const answerValidation = [
+	body("userAnswer", "Ответ пользователя должен быть числом").isNumeric(),
+	body("questionNumber", "Номер вопроса должен быть числом").isNumeric(),
 ];

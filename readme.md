@@ -107,7 +107,7 @@ fetch("http://localhost:3333/tickets/count", {
 ### Запрос
 
 ```javascript
-fetch("http://localhost:3333/check/tickets/2", {
+fetch("http://localhost:3333/tickets/2", {
   method: "GET",
   headers: {
     Authorization: `Bearer ${token}`, // token - полученный после логина
@@ -133,4 +133,38 @@ fetch("http://localhost:3333/check/tickets/2", {
   }
   ```
 
+## Отправить ответ на вопрос - http://localhost:3333/tickets/:ticketNumber
 
+`ticketNumber` - Порядковый номер билета
+
+### Запрос
+
+```javascript
+fetch("http://localhost:3333/tickets/2", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`, // token - полученный после логина
+  },
+  body: JSON.stringify({ 
+    userAnswer: 2, // Порядковый номер ответа
+    questionNumber: 1 // Порядковый номер вопроса
+    }),
+});
+```
+
+### Ответ
+
+- В случае успеха:
+
+  ```typescript
+  { isCorrect: boolean }
+  ```
+
+- В случае провала:
+
+  ```typescript
+  {
+    message: string;
+  }
+  ```
