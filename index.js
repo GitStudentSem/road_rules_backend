@@ -36,7 +36,9 @@ app.get("/auth/me", checkAuth, userController.getMe);
 
 app.get("/tickets/count", checkAuth, taskController.sendTicketsCount);
 app.get("/tickets/:ticketNumber", checkAuth, taskController.sendTicket);
-
+// 1.5MB (1)
+// 1.8MB (2)
+// 1.7MB (3)
 // app.post(
 // 	"/check/exam",
 // 	checkAuth,
