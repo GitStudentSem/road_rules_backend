@@ -1,4 +1,4 @@
-const ticket_1 = [
+export const ticket_1 = [
 	{
 		id: 1,
 		img: "./img/0.jpg",

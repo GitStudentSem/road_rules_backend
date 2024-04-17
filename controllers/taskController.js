@@ -1,12 +1,18 @@
-import {
-	getUserFilePath,
-	isUserExist,
-	sendError,
-	checkExam,
-	checkTicketAnswers,
-} from "../assets.js";
-
+import { sendError } from "../assets/requestAssets.js";
+import { getUserFilePath, isUserExist } from "../assets/userAssets.js";
 import { db } from "../index.js";
+import { checkExam, checkTicketAnswers } from "../assets/tssksAssets.js";
+
+export const sendTicketsCount = async (req, res) => {
+	try {
+		const user = await isUserExist(req, res);
+		if (!user) return;
+
+		res.json(result);
+	} catch (error) {
+		sendError({ message: "Не удалось отправить билет", error, res });
+	}
+};
 
 export const sendTicket = async (req, res) => {
 	try {

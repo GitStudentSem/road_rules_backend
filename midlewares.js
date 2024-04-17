@@ -1,6 +1,7 @@
 import { validationResult } from "express-validator";
-import { sendError } from "./assets.js";
+
 import jwt from "jsonwebtoken";
+import { sendError } from "./assets/requestAssets.js";
 
 export const checkAuth = (req, res, next) => {
 	const token = (req.headers.authorization || "").replace(/Bearer\s?/, "");

@@ -1,8 +1,9 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { getUserFilePath, sendError, isUserExist } from "../assets.js";
 import { v4 as uuidv4 } from "uuid";
 import { db } from "../index.js";
+import { getUserFilePath, isUserExist } from "../assets/userAssets.js";
+import { sendError } from "../assets/requestAssets.js";
 
 export const register = async (req, res) => {
 	try {
