@@ -1,3 +1,5 @@
+import { ticket_1, ticket_2, ticket_3 } from "../tickets/index.js";
+
 const answersData = [
 	[2, 1, 1, 4, 2, 2, 4, 3, 1, 3, 1, 3, 3, 1, 3, 4, 3, 4, 3, 2],
 	[2, 1, 1, 3, 3, 1, 3, 3, 1, 3, 3, 2, 3, 3, 1, 3, 2, 1, 3, 3],

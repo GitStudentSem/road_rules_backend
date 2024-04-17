@@ -1,7 +1,7 @@
 import { sendError } from "../assets/requestAssets.js";
 import { getUserFilePath, isUserExist } from "../assets/userAssets.js";
 import { db } from "../index.js";
-import { checkExam, checkTicketAnswers } from "../assets/tssksAssets.js";
+import { checkExam, checkTicketAnswers } from "../assets/tasksAssets.js";
 
 export const sendTicketsCount = async (req, res) => {
 	try {
