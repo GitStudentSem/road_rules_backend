@@ -65,13 +65,13 @@ export const login = async (req, res) => {
 			return;
 		}
 
-		const { _id } = user;
+		const { _id, firstName, secondName } = user;
 
 		const token = jwt.sign({ _id }, "somthingStrangeString", {
 			expiresIn: "30d",
 		});
 
-		res.json({ email, token, _id });
+		res.json({ firstName, secondName, token });
 	} catch (error) {
 		sendError({ message: "Не удалось авторизоваться", error, res });
 	}

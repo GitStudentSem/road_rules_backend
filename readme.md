@@ -60,7 +60,7 @@ fetch("http://localhost:3333/auth/login", {
 - В случае успеха:
 
   ```typescript
-  { email: string, _id: string,token: string }
+  { firstName: string, secondName: string,token: string }
   ```
 
 - В случае провала:
