@@ -15,13 +15,13 @@ export const checkAuth = (req, res, next) => {
 		} catch (error) {
 			sendError({
 				status: 403,
-				message: "Нет доступа",
+				message: "Токен доступа неверен или истек",
 				error,
 				res,
 			});
 		}
 	} else {
-		return res.status(403).json({ message: "Нет доступа" });
+		return res.status(403).json({ message: "Токен доступа не был получен" });
 	}
 };
 

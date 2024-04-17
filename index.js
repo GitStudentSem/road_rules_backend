@@ -32,26 +32,23 @@ app.post(
 );
 app.get("/auth/me", checkAuth, userController.getMe);
 
-app.post(
-	"/check/exam",
-	checkAuth,
-	taskValidation,
-	handleValudationErrors,
-	taskController.sendExam,
-);
+/* =========================== */
 
-app.post(
-	"/check/ticket/:ticket",
-	checkAuth,
-	taskValidation,
-	handleValudationErrors,
-	taskController.sendTicket,
-);
+app.get("/tickets/count", checkAuth, taskController.sendTicketsCount);
+app.get("/tickets/:ticketNumber", checkAuth, taskController.sendTicket);
 
-app.get("/tasks/", checkAuth, taskController.getAll);
-app.get("/tasks/:ticket", checkAuth, taskController.getOne);
-app.delete("/tasks/:ticket", checkAuth, taskController.removeOne);
-app.delete("/tasks", checkAuth, taskController.remove);
+// app.post(
+// 	"/check/exam",
+// 	checkAuth,
+// 	taskValidation,
+// 	handleValudationErrors,
+// 	taskController.sendExam,
+// );
+
+// app.get("/tasks/", checkAuth, taskController.getAll);
+// app.get("/tasks/:ticket", checkAuth, taskController.getOne);
+// app.delete("/tasks/:ticket", checkAuth, taskController.removeOne);
+// app.delete("/tasks", checkAuth, taskController.remove);
 
 app.listen(3333, (err) => {
 	if (err) {

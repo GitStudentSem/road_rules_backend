@@ -1,14 +1,14 @@
 import { sendError } from "../assets/requestAssets.js";
 import { getUserFilePath, isUserExist } from "../assets/userAssets.js";
 import { db } from "../index.js";
-import { checkExam, checkTicketAnswers } from "../assets/tasksAssets.js";
+import { checkExam, getCountTickets, getTiket } from "../assets/tasksAssets.js";
 
 export const sendTicketsCount = async (req, res) => {
 	try {
 		const user = await isUserExist(req, res);
 		if (!user) return;
 
-		res.json(result);
+		res.json({ ticketsCount: getCountTickets() });
 	} catch (error) {
 		sendError({ message: "Не удалось отправить билет", error, res });
 	}
@@ -19,14 +19,21 @@ export const sendTicket = async (req, res) => {
 		const user = await isUserExist(req, res);
 		if (!user) return;
 
-		const filePath = getUserFilePath(user.firstName, user.secondName);
-
 		const ticketNumber = req.params.ticket;
-		const userAnswers = req.body;
-		await db.push(`${filePath}/results/${ticketNumber}`, userAnswers);
 
-		const result = checkTicketAnswers(ticketNumber, userAnswers);
-		res.json(result);
+		if (!ticketNumber) {
+			return sendError({ message: "Не указан номер билета", res });
+		}
+
+		const ticketsCount = getCountTickets();
+		if (ticketNumber > ticketsCount || ticketNumber < 1) {
+			return sendError({
+				message: `Указанный билет не существует, всего билетов: ${ticketsCount}`,
+				res,
+			});
+		}
+
+		res.json(getTiket(ticketNumber));
 	} catch (error) {
 		sendError({ message: "Не удалось отправить билет", error, res });
 	}

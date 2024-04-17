@@ -71,20 +71,19 @@ fetch("http://localhost:3333/auth/login", {
   }
   ```
 
-## Отправить билет - http://localhost:3333/check/ticket/:ticketNumber
+## Отправить билет - http://localhost:3333/check/tickets/:ticketNumber
 
 `ticketNumber` - Порядковый номер билета
 
 ### Запрос
 
 ```javascript
-fetch("http://localhost:3333/check/ticket/2", {
-  method: "POST",
+fetch("http://localhost:3333/check/tickets/2", {
+  method: "GET",
   headers: {
     Authorization: `Bearer ${token}`, // token - полученный после логина
     "Content-Type": "application/json",
   },
-  body: JSON.stringify([1, 2, 4, 3 /*...*/]), // Ваши ответы
 });
 ```
 
@@ -93,7 +92,7 @@ fetch("http://localhost:3333/check/ticket/2", {
 - В случае успеха:
 
   ```typescript
-  { result: boolean, correctAnswers: number[] }
+  { img: string, question: string, answers: string[], help: string }[]
   ```
 
   `correctAnswers` - Массив правильных ответов
@@ -106,24 +105,17 @@ fetch("http://localhost:3333/check/ticket/2", {
   }
   ```
 
-## Отправить экзамен - http://localhost:3333/check/exam
+## Отправить экзамен - http://localhost:3333/tickets/count
 
 ### Запрос
 
 ```javascript
-fetch("http://localhost:3333/check/exam", {
-  method: "POST",
+fetch("http://localhost:3333/tickets/count", {
+  method: "GET",
   headers: {
     Authorization: `Bearer ${token}`, // token - полученный после логина
     "Content-Type": "application/json",
-  },
-  body: JSON.stringify([
-    { ticket: 1, question: 1, answer: 1 },
-    { ticket: 2, question: 4, answer: 2 },
-    { ticket: 3, question: 13, answer: 4 },
-    { ticket: 2, question: 10, answer: 1 },
-    /*...*/
-  ]), // Ваши ответы
+  }
 });
 ```
 
@@ -132,10 +124,8 @@ fetch("http://localhost:3333/check/exam", {
 - В случае успеха:
 
   ```typescript
-  { result: boolean,correctAnswers: number[] }
+  { ticketsCount: number }
   ```
-
-  `correctAnswers` - Массив правильных ответов
 
 - В случае провала:
 
