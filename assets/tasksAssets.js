@@ -20,7 +20,7 @@ export const getTiket = (ticketNumber) => {
 	const ticketWithoutAnswers = ticket.map((question) => {
 		return {
 			...question,
-			img: imageToBase64(question.img),
+			img: `data:image/jpeg;base64,${imageToBase64(question.img)}`,
 			answers: question.answers.map((answer) => answer.text),
 		};
 	});
