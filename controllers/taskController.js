@@ -1,7 +1,7 @@
 import { sendError } from "../assets/requestAssets.js";
 import { getUserFilePath, isUserExist } from "../assets/userAssets.js";
 import { db } from "../index.js";
-import { checkExam, getCountTickets, getTiket } from "../assets/tasksAssets.js";
+import { getCountTickets, getTiket } from "../assets/tasksAssets.js";
 
 export const sendTicketsCount = async (req, res) => {
 	try {
@@ -19,7 +19,7 @@ export const sendTicket = async (req, res) => {
 		const user = await isUserExist(req, res);
 		if (!user) return;
 
-		const ticketNumber = req.params.ticket;
+		const { ticketNumber } = req.params;
 
 		if (!ticketNumber) {
 			return sendError({ message: "Не указан номер билета", res });
@@ -39,22 +39,22 @@ export const sendTicket = async (req, res) => {
 	}
 };
 
-export const sendExam = async (req, res) => {
-	try {
-		const user = await isUserExist(req, res);
-		if (!user) return;
+// export const sendExam = async (req, res) => {
+// 	try {
+// 		const user = await isUserExist(req, res);
+// 		if (!user) return;
 
-		const filePath = getUserFilePath(user.firstName, user.secondName);
+// 		const filePath = getUserFilePath(user.firstName, user.secondName);
 
-		const userAnswers = req.body;
-		await db.push(`${filePath}/results/exam`, userAnswers);
+// 		const userAnswers = req.body;
+// 		await db.push(`${filePath}/results/exam`, userAnswers);
 
-		const result = checkExam(userAnswers);
-		res.json(result);
-	} catch (error) {
-		sendError({ message: "Не удалось отправить билет", error, res });
-	}
-};
+// 		const result = checkExam(userAnswers);
+// 		res.json(result);
+// 	} catch (error) {
+// 		sendError({ message: "Не удалось отправить билет", error, res });
+// 	}
+// };
 
 export const getOne = async (req, res) => {
 	try {

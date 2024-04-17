@@ -26,4 +26,3 @@ export const getTiket = (ticketNumber) => {
 	});
 	return ticketWithoutAnswers;
 };
-console.log("ticketWithoutAnswers(", getTiket(1));
