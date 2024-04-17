@@ -71,7 +71,37 @@ fetch("http://localhost:3333/auth/login", {
   }
   ```
 
-## Получить количество билетов - http://localhost:3333/tickets/:ticketNumber
+## Получить количество билетов - http://localhost:3333/tickets/count
+
+### Запрос
+
+```javascript
+fetch("http://localhost:3333/tickets/count", {
+  method: "GET",
+  headers: {
+    Authorization: `Bearer ${token}`, // token - полученный после логина
+    "Content-Type": "application/json",
+  }
+});
+```
+
+### Ответ
+
+- В случае успеха:
+
+  ```typescript
+  { ticketsCount: number }
+  ```
+
+- В случае провала:
+
+  ```typescript
+  {
+    message: string;
+  }
+  ```
+
+## Получить вопросы по билету - http://localhost:3333/tickets/:ticketNumber
 
 `ticketNumber` - Порядковый номер билета
 
@@ -105,32 +135,4 @@ fetch("http://localhost:3333/check/tickets/2", {
   }
   ```
 
-## Получить вопросы по билету - http://localhost:3333/tickets/count
 
-### Запрос
-
-```javascript
-fetch("http://localhost:3333/tickets/count", {
-  method: "GET",
-  headers: {
-    Authorization: `Bearer ${token}`, // token - полученный после логина
-    "Content-Type": "application/json",
-  }
-});
-```
-
-### Ответ
-
-- В случае успеха:
-
-  ```typescript
-  { ticketsCount: number }
-  ```
-
-- В случае провала:
-
-  ```typescript
-  {
-    message: string;
-  }
-  ```
