@@ -80,7 +80,6 @@ fetch("http://localhost:3333/tickets/count", {
   method: "GET",
   headers: {
     Authorization: `Bearer ${token}`, // token - полученный после логина
-    "Content-Type": "application/json",
   }
 });
 ```
@@ -112,7 +111,6 @@ fetch("http://localhost:3333/check/tickets/2", {
   method: "GET",
   headers: {
     Authorization: `Bearer ${token}`, // token - полученный после логина
-    "Content-Type": "application/json",
   },
 });
 ```
