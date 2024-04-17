@@ -71,7 +71,7 @@ fetch("http://localhost:3333/auth/login", {
   }
   ```
 
-## Получить количество билетов - http://localhost:3333/check/tickets/:ticketNumber
+## Получить количество билетов - http://localhost:3333/tickets/:ticketNumber
 
 `ticketNumber` - Порядковый номер билета
 
