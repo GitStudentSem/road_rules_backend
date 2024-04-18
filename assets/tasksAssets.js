@@ -1,11 +1,8 @@
 import { ticket_1, ticket_2, ticket_3 } from "../tickets/index.js";
 import fs from "fs";
 import { sendError } from "./requestAssets.js";
-// const answersData = [
-// 	[2, 1, 1, 4, 2, 2, 4, 3, 1, 3, 1, 3, 3, 1, 3, 4, 3, 4, 3, 2],
-// 	[2, 1, 1, 3, 3, 1, 3, 3, 1, 3, 3, 2, 3, 3, 1, 3, 2, 1, 3, 3],
-// 	[1, 3, 3, 2, 2, 3, 2, 1, 3, 3, 3, 2, 2, 1, 3, 3, 4, 2, 3, 3],
-// ];
+
+export const tickets = [ticket_1, ticket_2, ticket_3];
 
 const imageToBase64 = (imagePath) => {
 	const image = fs.readFileSync(imagePath, { encoding: "base64" });
@@ -41,8 +38,6 @@ const removeCorrectAnswersFromTicket = (ticket) => {
 		};
 	});
 };
-
-export const tickets = [ticket_1, ticket_2, ticket_3];
 
 export const getCountTickets = () => tickets.length;
 
@@ -86,4 +81,22 @@ export const checkUserAnswer = ({
 	}
 
 	return { isCorrect: answer.isCorrect };
+};
+
+function randomInteger(min, max) {
+	// случайное число от min до (max+1)
+	const rand = min + Math.random() * (max + 1 - min);
+	return Math.floor(rand);
+}
+
+export const getExam = () => {
+	const questions = [];
+	for (let i = 0; i < 20; i++) {
+		const ticketNumber = randomInteger(1, tickets.length);
+		const question = tickets[ticketNumber - 1][i];
+		questions.push({ ...question, ticketNumber });
+	}
+
+	const questionsWithoutAnswers = removeCorrectAnswersFromTicket(questions);
+	return questionsWithoutAnswers;
 };

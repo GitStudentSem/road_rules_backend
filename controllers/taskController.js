@@ -4,6 +4,7 @@ import { db } from "../index.js";
 import {
 	checkUserAnswer,
 	getCountTickets,
+	getExam,
 	getTiket,
 	isTicketExist,
 } from "../assets/tasksAssets.js";
@@ -66,6 +67,17 @@ export const sendTicketResult = async (req, res) => {
 		await db.push(pathToAnswer, copyAnswers);
 
 		res.json(result);
+	} catch (error) {
+		sendError({ message: "Не удалось отправить билет", error, res });
+	}
+};
+
+export const sendExam = async (req, res) => {
+	try {
+		const user = await isUserExist(req, res);
+		if (!user) return;
+
+		res.json(getExam());
 	} catch (error) {
 		sendError({ message: "Не удалось отправить билет", error, res });
 	}

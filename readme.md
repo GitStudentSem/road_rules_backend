@@ -168,3 +168,39 @@ fetch("http://localhost:3333/tickets/2", {
     message: string;
   }
   ```
+
+## Получить экзамен - http://localhost:3333/exam
+
+`ticketNumber` - Порядковый номер билета
+
+### Запрос
+
+```javascript
+fetch("http://localhost:3333/exam", {
+  method: "GET",
+  headers: {
+    Authorization: `Bearer ${token}`, // token - полученный после логина
+  },
+});
+```
+
+### Ответ
+
+- В случае успеха:
+
+  ```typescript
+  { img: string, 
+  question: string, 
+  answers: string[], 
+  help: string, 
+  ticketNumber: number 
+  }[]
+  ```
+
+- В случае провала:
+
+  ```typescript
+  {
+    message: string;
+  }
+  ```

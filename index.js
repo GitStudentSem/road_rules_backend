@@ -42,6 +42,7 @@ app.post(
 	answerValidation,
 	taskController.sendTicketResult,
 );
+app.get("/exam", checkAuth, taskController.sendExam);
 // 1.5MB (1)
 // 1.8MB (2)
 // 1.7MB (3)
