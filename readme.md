@@ -204,3 +204,39 @@ fetch("http://localhost:3333/exam", {
     message: string;
   }
   ```
+
+  ## Отправить ответ на вопрос по экзамену - http://localhost:3333/exam/:ticketNumber
+
+`ticketNumber` - Порядковый номер билета
+
+### Запрос
+
+```javascript
+fetch("http://localhost:3333/exam/2", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`, // token - полученный после логина
+  },
+  body: JSON.stringify({ 
+    userAnswer: 2, // Порядковый номер ответа
+    questionNumber: 1 // Порядковый номер вопроса
+    }),
+});
+```
+
+### Ответ
+
+- В случае успеха:
+
+  ```typescript
+  { isCorrect: boolean }
+  ```
+
+- В случае провала:
+
+  ```typescript
+  {
+    message: string;
+  }
+  ```

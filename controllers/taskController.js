@@ -83,6 +83,44 @@ export const sendExam = async (req, res) => {
 	}
 };
 
+export const sendExamTicketResult = async (req, res) => {
+	try {
+		const user = await isUserExist(req, res);
+
+		if (!user) return;
+
+		const { ticketNumber } = req.params;
+		const { userAnswer, questionNumber } = req.body;
+
+		const ticket = isTicketExist(ticketNumber, res);
+		if (!ticket) return;
+
+		const result = checkUserAnswer({
+			ticketNumber,
+			userAnswer,
+			questionNumber,
+			res,
+		});
+
+		if (!result) return;
+
+		const filePath = getUserFilePath(user.email);
+		const pathToAnswer = `${filePath}/results/exam`;
+
+		const isExistAnswer = await db.exists(pathToAnswer);
+		if (!isExistAnswer) await db.push(pathToAnswer, Array(20).fill(-1));
+
+		const copyAnswers = await db.getData(pathToAnswer);
+
+		copyAnswers[questionNumber - 1] = userAnswer;
+		await db.push(pathToAnswer, copyAnswers);
+
+		res.json(result);
+	} catch (error) {
+		sendError({ message: "Не удалось отправить билет", error, res });
+	}
+};
+
 // export const sendExam = async (req, res) => {
 // 	try {
 // 		const user = await isUserExist(req, res);
