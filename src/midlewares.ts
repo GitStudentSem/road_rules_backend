@@ -1,10 +1,13 @@
 import { validationResult } from "express-validator";
-
+import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { sendError } from "./assets/requestAssets.js";
 
-export const checkAuth = (req, res, next) => {
-	const token = (req.headers.authorization || "").replace(/Bearer\s?/, "");
+export const checkAuth = (req: Request, res: Response, next: any) => {
+	const token: string = (req.headers.authorization || "").replace(
+		/Bearer\s?/,
+		"",
+	);
 
 	if (token) {
 		try {
@@ -25,7 +28,11 @@ export const checkAuth = (req, res, next) => {
 	}
 };
 
-export const handleValudationErrors = (req, res, next) => {
+export const handleValudationErrors = (
+	req: Request,
+	res: Response,
+	next: any,
+) => {
 	const errors = validationResult(req);
 	if (!errors.isEmpty()) {
 		const message = errors.array()[0].msg;

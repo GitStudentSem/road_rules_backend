@@ -1,11 +1,12 @@
+import { Request, Response } from "express";
 import { db } from "../index.js";
 
-export const getUserFilePath = (email) => {
+export const getUserFilePath = (email: string) => {
 	const filePath = `./users/${email}`;
 	return filePath;
 };
 
-export const isUserExist = async (req, res) => {
+export const isUserExist = async (req: Request, res: Response) => {
 	const userId = req.userId;
 	const users = await db.getData("/users");
 	const user = findUserById(users, userId);
@@ -16,7 +17,7 @@ export const isUserExist = async (req, res) => {
 	return user;
 };
 
-export const findUserById = (users, id) => {
+const findUserById = (users: any[], id: string) => {
 	for (const key in users) {
 		if (users[key]._id === id) {
 			return users[key];

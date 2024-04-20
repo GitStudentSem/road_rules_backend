@@ -1,5 +1,5 @@
-import { sendError } from "../assets/requestAssets.js";
-import { getUserFilePath, isUserExist } from "../assets/userAssets.js";
+import { sendError } from "../assets/requestAssets";
+import { getUserFilePath, isUserExist } from "../assets/userAssets";
 import { db } from "../index.js";
 import {
 	checkUserAnswer,
@@ -7,9 +7,10 @@ import {
 	getExam,
 	getTiket,
 	isTicketExist,
-} from "../assets/tasksAssets.js";
+} from "../assets/tasksAssets";
+import { Request, Response } from "express";
 
-export const sendTicketsCount = async (req, res) => {
+export const sendTicketsCount = async (req: Request, res: Response) => {
 	try {
 		const user = await isUserExist(req, res);
 		if (!user) return;
@@ -20,21 +21,21 @@ export const sendTicketsCount = async (req, res) => {
 	}
 };
 
-export const sendTicket = async (req, res) => {
+export const sendTicket = async (req: Request, res: Response) => {
 	try {
 		const user = await isUserExist(req, res);
 		if (!user) return;
 
 		const { ticketNumber } = req.params;
 
-		const ticket = isTicketExist(ticketNumber, res);
+		const ticket = isTicketExist(Number(ticketNumber), res);
 		res.json(ticket);
 	} catch (error) {
 		sendError({ message: "Не удалось отправить билет", error, res });
 	}
 };
 
-export const sendTicketResult = async (req, res) => {
+export const sendTicketResult = async (req: Request, res: Response) => {
 	try {
 		const user = await isUserExist(req, res);
 
@@ -43,11 +44,11 @@ export const sendTicketResult = async (req, res) => {
 		const { ticketNumber } = req.params;
 		const { userAnswer, questionNumber } = req.body;
 
-		const ticket = isTicketExist(ticketNumber, res);
+		const ticket = isTicketExist(Number(ticketNumber), res);
 		if (!ticket) return;
 
 		const result = checkUserAnswer({
-			ticketNumber,
+			ticketNumber: Number(ticketNumber),
 			userAnswer,
 			questionNumber,
 			res,
@@ -72,7 +73,7 @@ export const sendTicketResult = async (req, res) => {
 	}
 };
 
-export const sendExam = async (req, res) => {
+export const sendExam = async (req: Request, res: Response) => {
 	try {
 		const user = await isUserExist(req, res);
 		if (!user) return;
@@ -83,7 +84,7 @@ export const sendExam = async (req, res) => {
 	}
 };
 
-export const sendExamTicketResult = async (req, res) => {
+export const sendExamTicketResult = async (req: Request, res: Response) => {
 	try {
 		const user = await isUserExist(req, res);
 
@@ -92,11 +93,11 @@ export const sendExamTicketResult = async (req, res) => {
 		const { ticketNumber } = req.params;
 		const { userAnswer, questionNumber } = req.body;
 
-		const ticket = isTicketExist(ticketNumber, res);
+		const ticket = isTicketExist(Number(ticketNumber), res);
 		if (!ticket) return;
 
 		const result = checkUserAnswer({
-			ticketNumber,
+			ticketNumber: Number(ticketNumber),
 			userAnswer,
 			questionNumber,
 			res,

@@ -5,7 +5,7 @@ import {
 	answerValidation,
 	loginValidation,
 	registerValidation,
-} from "./validations.js";
+} from "./validations";
 
 import { checkAuth, handleValudationErrors } from "./midlewares.js";
 
@@ -31,7 +31,6 @@ app.post(
 	userController.login,
 );
 app.get("/auth/me", checkAuth, userController.getMe);
-
 /* =========================== */
 
 app.get("/tickets/count", checkAuth, taskController.sendTicketsCount);
@@ -42,8 +41,6 @@ app.post(
 	answerValidation,
 	taskController.sendTicketResult,
 );
-x;
-
 app.get("/exam", checkAuth, taskController.sendExam);
 app.post(
 	"/exam/:ticketNumber",
@@ -67,9 +64,6 @@ app.post(
 // app.delete("/tasks/:ticket", checkAuth, taskController.removeOne);
 // app.delete("/tasks", checkAuth, taskController.remove);
 
-app.listen(3333, (err) => {
-	if (err) {
-		return console.log("Ошибка запуска сервера", err);
-	}
+app.listen(3333, () => {
 	console.log("Server OK");
 });

@@ -1,15 +1,17 @@
-import { ticket_1, ticket_2, ticket_3 } from "../tickets/index.js";
+import { ticket_1, ticket_2, ticket_3 } from "../tickets";
 import fs from "fs";
 import { sendError } from "./requestAssets.js";
+import { TypeQuestion } from "../tickets/types";
+import { Response } from "express";
 
 export const tickets = [ticket_1, ticket_2, ticket_3];
 
-const imageToBase64 = (imagePath) => {
+const imageToBase64 = (imagePath: string) => {
 	const image = fs.readFileSync(imagePath, { encoding: "base64" });
 	return image;
 };
 
-export const isTicketExist = (ticketNumber, res) => {
+export const isTicketExist = (ticketNumber: number, res: Response) => {
 	if (!ticketNumber) {
 		sendError({ message: "Не указан номер билета", res });
 		return null;
@@ -29,7 +31,7 @@ export const isTicketExist = (ticketNumber, res) => {
 	return getTiket(ticketNumber);
 };
 
-const removeCorrectAnswersFromTicket = (ticket) => {
+const removeCorrectAnswersFromTicket = (ticket: TypeQuestion[]) => {
 	return ticket.map((question) => {
 		return {
 			...question,
@@ -41,22 +43,28 @@ const removeCorrectAnswersFromTicket = (ticket) => {
 
 export const getCountTickets = () => tickets.length;
 
-export const getTiket = (ticketNumber) => {
+export const getTiket = (ticketNumber: number) => {
 	const ticket = tickets[ticketNumber - 1];
 	const ticketWithoutAnswers = removeCorrectAnswersFromTicket(ticket);
 	return ticketWithoutAnswers;
 };
 
+type TypeCheckUserAnswer = {
+	ticketNumber: number;
+	userAnswer: number;
+	questionNumber: number;
+	res: Response;
+};
 export const checkUserAnswer = ({
 	ticketNumber,
 	userAnswer,
 	questionNumber,
 	res,
-}) => {
+}: TypeCheckUserAnswer) => {
 	const ticket = tickets[ticketNumber - 1];
 	if (!ticket) {
 		sendError({
-			message: `Указанный билет не существует, всего билетов: ${ticketsCount}`,
+			message: `Указанный билет не существует, всего билетов: ${getCountTickets()}`,
 			res,
 		});
 		return null;
@@ -83,14 +91,18 @@ export const checkUserAnswer = ({
 	return { isCorrect: answer.isCorrect };
 };
 
-function randomInteger(min, max) {
+function randomInteger(min: number, max: number) {
 	// случайное число от min до (max+1)
 	const rand = min + Math.random() * (max + 1 - min);
 	return Math.floor(rand);
 }
 
 export const getExam = () => {
-	const questions = [];
+	type ExtendedType = TypeQuestion & {
+		ticketNumber: number;
+	};
+
+	const questions: ExtendedType[] = [];
 	for (let i = 0; i < 20; i++) {
 		const ticketNumber = randomInteger(1, tickets.length);
 		const question = tickets[ticketNumber - 1][i];

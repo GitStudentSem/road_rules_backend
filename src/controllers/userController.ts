@@ -1,11 +1,12 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
-import { db } from "../index.js";
-import { getUserFilePath, isUserExist } from "../assets/userAssets.js";
-import { sendError } from "../assets/requestAssets.js";
+import { db } from "../index";
+import { getUserFilePath, isUserExist } from "../assets/userAssets";
+import { sendError } from "../assets/requestAssets";
+import { Request, Response } from "express";
 
-export const register = async (req, res) => {
+export const register = async (req: Request, res: Response) => {
 	try {
 		const { email, firstName, secondName, password } = req.body;
 		const salt = await bcrypt.genSalt(10);
@@ -45,7 +46,7 @@ export const register = async (req, res) => {
 	}
 };
 
-export const login = async (req, res) => {
+export const login = async (req: Request, res: Response) => {
 	try {
 		const { email, password } = req.body;
 
@@ -74,11 +75,14 @@ export const login = async (req, res) => {
 
 		res.json({ firstName, secondName, token });
 	} catch (error) {
-		sendError({ message: "Не удалось авторизоваться", error, res });
+		if (error instanceof Error) {
+			sendError({ message: "Не удалось авторизоваться", error, res });
+		}
+		sendError({ message: "Не удалось авторизоваться", res });
 	}
 };
 
-export const getMe = async (req, res) => {
+export const getMe = async (req: Request, res: Response) => {
 	try {
 		const user = await isUserExist(req, res);
 		if (!user) return;
