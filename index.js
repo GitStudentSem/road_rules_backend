@@ -42,7 +42,6 @@ app.post(
 	answerValidation,
 	taskController.sendTicketResult,
 );
-x;
 
 app.get("/exam", checkAuth, taskController.sendExam);
 app.post(
