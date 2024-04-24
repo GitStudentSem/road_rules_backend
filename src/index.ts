@@ -1,69 +1,32 @@
-import express from "express";
-import cors from "cors";
+import { app } from "./app";
 
-import {
-	answerValidation,
-	loginValidation,
-	registerValidation,
-} from "./validations";
+const port = process.env.PORT || 3333;
 
-import { checkAuth, handleValudationErrors } from "./midlewares.js";
+app.listen(port, () => {
+	const colors = {
+		black: "\x1b[30m",
+		red: "\x1b[31m",
+		green: "\x1b[32m",
+		yellow: "\x1b[33m",
+		blue: "\x1b[34m",
+		whiteblue: "\x1b[36m",
+		white: "\x1b[37m",
+	};
 
-import { JsonDB, Config } from "node-json-db";
-import * as userController from "./controllers/userController.js";
-import * as taskController from "./controllers/taskController.js";
+	const styles = {
+		bold: "\x1b[1m",
+		italic: "\x1b[3m",
+		underlined: "\x1b[4m",
+		flickering: "\x1b[5m",
+		hidden: "\x1b[8m",
+		shading: "\x1b[2m",
+	};
 
-const app = express();
-app.use(cors());
-app.use(express.json());
-export const db = new JsonDB(new Config("myDataBase", true, true, "/"));
+	const resetStyle = "\x1b[0m";
 
-app.post(
-	"/auth/register",
-	registerValidation,
-	handleValudationErrors,
-	userController.register,
-);
-app.post(
-	"/auth/login",
-	loginValidation,
-	handleValudationErrors,
-	userController.login,
-);
-app.get("/auth/me", checkAuth, userController.getMe);
-/* =========================== */
+	console.log(`${colors.green}${styles.bold}Server OK${resetStyle}`);
 
-app.get("/tickets/count", checkAuth, taskController.sendTicketsCount);
-app.get("/tickets/:ticketNumber", checkAuth, taskController.sendTicket);
-app.post(
-	"/tickets/:ticketNumber",
-	checkAuth,
-	answerValidation,
-	taskController.sendTicketResult,
-);
-app.get("/exam", checkAuth, taskController.sendExam);
-app.post(
-	"/exam/:ticketNumber",
-	checkAuth,
-	answerValidation,
-	taskController.sendExamTicketResult,
-);
-// 1.5MB (1)
-// 1.8MB (2)
-// 1.7MB (3)
-// app.post(
-// 	"/check/exam",
-// 	checkAuth,
-// 	taskValidation,
-// 	handleValudationErrors,
-// 	taskController.sendExam,
-// );
-
-// app.get("/tasks/", checkAuth, taskController.getAll);
-// app.get("/tasks/:ticket", checkAuth, taskController.getOne);
-// app.delete("/tasks/:ticket", checkAuth, taskController.removeOne);
-// app.delete("/tasks", checkAuth, taskController.remove);
-
-app.listen(3333, () => {
-	console.log("Server OK");
+	console.log(
+		`Адрес сервера: ${colors.whiteblue}http://localhost:${port}${resetStyle}`,
+	);
 });

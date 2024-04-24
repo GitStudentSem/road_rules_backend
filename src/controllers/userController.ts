@@ -1,12 +1,20 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
-import { db } from "../index";
+import { db } from "../app";
 import { getUserFilePath, isUserExist } from "../assets/userAssets";
 import { sendError } from "../assets/requestAssets";
 import { Request, Response } from "express";
+import { ErrorType, RequestWithBody } from "../types";
+import { BodyRegisterModel } from "../modeles/auth/BodyRegisterModel";
+import { UserRegisterViewModel } from "../modeles/auth/UserViewModel";
+import { UserRegisterDBModel } from "../modeles/auth/UserRegisterDBModel";
+import { BodyLoginModel } from "../modeles/auth/BodyLoginModel";
 
-export const register = async (req: Request, res: Response) => {
+export const register = async (
+	req: RequestWithBody<BodyRegisterModel>,
+	res: Response<UserRegisterViewModel | ErrorType>,
+) => {
 	try {
 		const { email, firstName, secondName, password } = req.body;
 		const salt = await bcrypt.genSalt(10);
@@ -24,29 +32,37 @@ export const register = async (req: Request, res: Response) => {
 			return;
 		}
 
-		await db.push(filePath, {
+		const newUser = {
 			email,
 			firstName,
 			secondName,
 			passwordHash: hash,
 			_id,
-		});
+		};
+		await db.push(filePath, newUser);
 
-		const user = await db.getData(filePath);
-		const userCopy = { ...user };
-		userCopy.passwordHash = undefined;
+		const user: UserRegisterDBModel = await db.getData(filePath);
 
-		jwt.sign({ _id: userCopy._id }, "somthingStrangeString", {
+		jwt.sign({ _id: user._id }, "somthingStrangeString", {
 			expiresIn: "30d",
 		});
 
-		res.json({ ...userCopy });
+		const userWithoutPasswordHash = {
+			email,
+			firstName,
+			secondName,
+			_id,
+		};
+		res.json(userWithoutPasswordHash);
 	} catch (error) {
 		sendError({ message: "Не удалось зарегистрироваться", error, res });
 	}
 };
 
-export const login = async (req: Request, res: Response) => {
+export const login = async (
+	req: RequestWithBody<BodyLoginModel>,
+	res: Response,
+) => {
 	try {
 		const { email, password } = req.body;
 

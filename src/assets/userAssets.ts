@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { db } from "../index.js";
+import { db } from "../app";
 
 export const getUserFilePath = (email: string) => {
 	const filePath = `./users/${email}`;
@@ -7,6 +7,7 @@ export const getUserFilePath = (email: string) => {
 };
 
 export const isUserExist = async (req: Request, res: Response) => {
+	//@ts-ignore
 	const userId = req.userId;
 	const users = await db.getData("/users");
 	const user = findUserById(users, userId);

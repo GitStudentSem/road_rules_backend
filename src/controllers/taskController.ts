@@ -1,6 +1,6 @@
 import { sendError } from "../assets/requestAssets";
 import { getUserFilePath, isUserExist } from "../assets/userAssets";
-import { db } from "../index.js";
+import { db } from "../app";
 import {
 	checkUserAnswer,
 	getCountTickets,
@@ -9,6 +9,7 @@ import {
 	isTicketExist,
 } from "../assets/tasksAssets";
 import { Request, Response } from "express";
+import { RequestWithParams } from "../types";
 
 export const sendTicketsCount = async (req: Request, res: Response) => {
 	try {
@@ -21,7 +22,10 @@ export const sendTicketsCount = async (req: Request, res: Response) => {
 	}
 };
 
-export const sendTicket = async (req: Request, res: Response) => {
+export const sendTicket = async (
+	req: RequestWithParams<{ ticketNumber: string }>,
+	res: Response,
+) => {
 	try {
 		const user = await isUserExist(req, res);
 		if (!user) return;
@@ -29,6 +33,8 @@ export const sendTicket = async (req: Request, res: Response) => {
 		const { ticketNumber } = req.params;
 
 		const ticket = isTicketExist(Number(ticketNumber), res);
+		if (!ticket) return;
+
 		res.json(ticket);
 	} catch (error) {
 		sendError({ message: "Не удалось отправить билет", error, res });
@@ -38,7 +44,6 @@ export const sendTicket = async (req: Request, res: Response) => {
 export const sendTicketResult = async (req: Request, res: Response) => {
 	try {
 		const user = await isUserExist(req, res);
-
 		if (!user) return;
 
 		const { ticketNumber } = req.params;

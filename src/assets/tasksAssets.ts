@@ -1,7 +1,7 @@
 import { ticket_1, ticket_2, ticket_3 } from "../tickets";
 import fs from "fs";
-import { sendError } from "./requestAssets.js";
-import { TypeQuestion } from "../tickets/types";
+import { sendError } from "./requestAssets";
+import { TypeQuestion } from "../types";
 import { Response } from "express";
 
 export const tickets = [ticket_1, ticket_2, ticket_3];
@@ -34,8 +34,10 @@ export const isTicketExist = (ticketNumber: number, res: Response) => {
 const removeCorrectAnswersFromTicket = (ticket: TypeQuestion[]) => {
 	return ticket.map((question) => {
 		return {
-			...question,
-			img: `data:image/jpeg;base64,${imageToBase64(question.img)}`,
+			question: question.question,
+			img: question.img
+				? `data:image/jpeg;base64,${imageToBase64(question.img)}`
+				: "",
 			answers: question.answers.map((answer) => answer.text),
 		};
 	});
@@ -88,7 +90,7 @@ export const checkUserAnswer = ({
 		return null;
 	}
 
-	return { isCorrect: answer.isCorrect };
+	return { isCorrect: answer.isCorrect, help: question.help };
 };
 
 function randomInteger(min: number, max: number) {
