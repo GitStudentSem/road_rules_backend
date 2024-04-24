@@ -3,9 +3,18 @@
 ## Запуск
 
 - Установите зависимости `npm i`
-- Запустите сборку введя в терминале `npm run dev`
+
+## Для режима разработчика (наблюдение за изменениями)
+- `npm run ts-w` - Запускает сборку TypeScript в режиме наблюдения за изменениями
+- `npm run build-w`- Запускает сборку JavaScript в режиме наблюдения за изменениями
 
 Сборка будет автоматически обновляться при каждом сохранени
+
+## Для статичной сборки (продакшен)
+- `npm run ts` - Запускает разовую сборку TypeScript
+- `npm run build` - Запускает разовую сборку JavaScript
+
+Сборка НЕ будет автоматически обновляться при каждом сохранени
 
 ## Регистрация - http://localhost:3333/auth/register
 
@@ -35,9 +44,7 @@ fetch("http://localhost:3333/auth/register", {
 - В случае провала:
 
   ```typescript
-  {
-    message: string;
-  }
+  { message: string; }
   ```
 
 ## Логин - http://localhost:3333/auth/login
@@ -66,9 +73,7 @@ fetch("http://localhost:3333/auth/login", {
 - В случае провала:
 
   ```typescript
-  {
-    message: string;
-  }
+  { message: string; }
   ```
 
 ## Получить количество билетов - http://localhost:3333/tickets/count
@@ -95,9 +100,7 @@ fetch("http://localhost:3333/tickets/count", {
 - В случае провала:
 
   ```typescript
-  {
-    message: string;
-  }
+  { message: string; }
   ```
 
 ## Получить вопросы по билету - http://localhost:3333/tickets/:ticketNumber
@@ -120,7 +123,7 @@ fetch("http://localhost:3333/tickets/2", {
 - В случае успеха:
 
   ```typescript
-  { img: string, question: string, answers: string[], help: string }[]
+  { img: string, question: string, answers: string[] }[]
   ```
 
   `img` - Base64 строка
@@ -128,9 +131,7 @@ fetch("http://localhost:3333/tickets/2", {
 - В случае провала:
 
   ```typescript
-  {
-    message: string;
-  }
+  { message: string; }
   ```
 
 ## Отправить ответ на вопрос - http://localhost:3333/tickets/:ticketNumber
@@ -158,15 +159,13 @@ fetch("http://localhost:3333/tickets/2", {
 - В случае успеха:
 
   ```typescript
-  { isCorrect: boolean }
+  { isCorrect: boolean, help: string }
   ```
 
 - В случае провала:
 
   ```typescript
-  {
-    message: string;
-  }
+  { message: string; }
   ```
 
 ## Получить экзамен - http://localhost:3333/exam
@@ -192,7 +191,6 @@ fetch("http://localhost:3333/exam", {
   { img: string, 
   question: string, 
   answers: string[], 
-  help: string, 
   ticketNumber: number 
   }[]
   ```
@@ -200,9 +198,7 @@ fetch("http://localhost:3333/exam", {
 - В случае провала:
 
   ```typescript
-  {
-    message: string;
-  }
+  {  message: string; }
   ```
 
   ## Отправить ответ на вопрос по экзамену - http://localhost:3333/exam/:ticketNumber
@@ -230,13 +226,11 @@ fetch("http://localhost:3333/exam/2", {
 - В случае успеха:
 
   ```typescript
-  { isCorrect: boolean }
+  { isCorrect: boolean, help: string }
   ```
 
 - В случае провала:
 
   ```typescript
-  {
-    message: string;
-  }
+  {  message: string; }
   ```

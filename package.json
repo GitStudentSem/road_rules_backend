@@ -7,8 +7,10 @@
 	"author": "@semen_purnemtzev",
 	"license": "ISC",
 	"scripts": {
-		"watch": "tsc -w",
-		"dev": "nodemon --inspect ./dist/index.js"
+		"ts-w": "tsc -w",
+		"build-w": "nodemon --inspect ./dist/index.js",
+		"ts": "tsc",
+		"build": "node ./dist/index.js"
 	},
 	"dependencies": {
 		"@types/bcrypt": "^5.0.2",
