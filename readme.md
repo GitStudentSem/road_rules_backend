@@ -159,7 +159,7 @@ fetch("http://localhost:3333/tickets/2", {
 - В случае успеха:
 
   ```typescript
-  { isCorrect: boolean, help: string }
+  { correctAnswer: number, help: string }
   ```
 
 - В случае провала:
@@ -226,7 +226,7 @@ fetch("http://localhost:3333/exam/2", {
 - В случае успеха:
 
   ```typescript
-  { isCorrect: boolean, help: string }
+  { correctAnswer: number, help: string }
   ```
 
 - В случае провала:

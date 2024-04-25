@@ -80,17 +80,10 @@ export const checkUserAnswer = ({
 		});
 		return null;
 	}
-	const answer = question.answers[userAnswer - 1];
 
-	if (!answer) {
-		sendError({
-			message: "Указанный номер ответа не существует",
-			res,
-		});
-		return null;
-	}
-
-	return { isCorrect: answer.isCorrect, help: question.help };
+	const correctAnsweIndex =
+		question.answers.findIndex((question) => question.isCorrect) || -9; // Просто отрицательное число, что бы бло ясно что он не нашелся
+	return { correctAnswer: correctAnsweIndex + 1, help: question.help };
 };
 
 function randomInteger(min: number, max: number) {

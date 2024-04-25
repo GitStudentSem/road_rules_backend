@@ -12,7 +12,6 @@ export const checkAuth = (req: Request, res: Response, next: any) => {
 	if (token) {
 		try {
 			const decoded = jwt.verify(token, "somthingStrangeString");
-
 			//@ts-ignore
 			req.userId = decoded._id;
 			next();
