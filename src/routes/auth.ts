@@ -1,6 +1,6 @@
 import express from "express";
 import { loginValidation, registerValidation } from "../validations";
-import { checkAuth, handleValudationErrors } from "../midlewares";
+import { handleValudationErrors } from "../midlewares";
 import * as userController from "../controllers/userController";
 
 export const getAuthRouter = () => {

@@ -10,11 +10,10 @@
 		"ts-w": "tsc -w",
 		"build-w": "nodemon --inspect ./dist/index.js",
 		"ts": "tsc",
-		"build": "node ./dist/index.js"
+		"build": "node ./dist/index.js",
+		"test": "jest --detectOpenHandles --no-cache"
 	},
 	"dependencies": {
-		"@types/bcrypt": "^5.0.2",
-		"@types/uuid": "^9.0.8",
 		"bcrypt": "^5.1.1",
 		"cors": "^2.8.5",
 		"express": "^4.18.2",
@@ -25,9 +24,16 @@
 		"uuid": "^9.0.1"
 	},
 	"devDependencies": {
+		"@types/bcrypt": "^5.0.2",
 		"@types/express": "^4.17.21",
+		"@types/jest": "^29.5.12",
 		"@types/node": "^20.12.7",
+		"@types/supertest": "^6.0.2",
+		"@types/uuid": "^9.0.8",
+		"jest": "^29.7.0",
 		"nodemon": "^3.1.0",
+		"supertest": "^6.3.4",
+		"ts-jest": "^29.1.2",
 		"ts-node": "^10.9.2",
 		"typescript": "^5.4.5"
 	}

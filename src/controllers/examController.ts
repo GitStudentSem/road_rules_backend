@@ -12,6 +12,7 @@ import { ErrorType, RequestWithParamsAndBody } from "../types";
 import { SendExamViewModel } from "../modeles/exam/SendExamViewModel";
 import { SendExamTicketResultViewModel } from "../modeles/exam/SendExamTicketResultViewModel";
 import { BodySendExamResult } from "../modeles/exam/BodySendExamResult";
+import { HTTP_STATUSES } from "../utils";
 
 export const sendExam = async (
 	req: Request,
@@ -45,6 +46,7 @@ export const sendExamResult = async (
 		const result = checkUserAnswer({
 			ticketNumber: Number(ticketNumber),
 			questionNumber,
+			userAnswer,
 			res,
 		});
 

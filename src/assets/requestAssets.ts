@@ -12,6 +12,6 @@ export const sendError = ({
 	error,
 	res,
 }: TypeError) => {
-	console.log(message, error);
+	error && console.log(message, error);
 	return res.status(status).send({ message });
 };

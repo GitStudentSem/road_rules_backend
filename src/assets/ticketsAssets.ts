@@ -3,6 +3,7 @@ import fs from "fs";
 import { sendError } from "./requestAssets";
 import { TypeQuestion } from "../types";
 import { Response } from "express";
+import { HTTP_STATUSES } from "../utils";
 
 export const tickets = [ticket_1, ticket_2, ticket_3];
 
@@ -22,6 +23,7 @@ export const isTicketExist = (ticketNumber: number, res: Response) => {
 	if (ticketNumber > ticketsCount || ticketNumber < 1) {
 		sendError({
 			message: `Указанный билет не существует, всего билетов: ${ticketsCount}`,
+			status: HTTP_STATUSES.NOT_FOUND_404,
 			res,
 		});
 
@@ -53,13 +55,14 @@ export const getTiket = (ticketNumber: number) => {
 
 type TypeCheckUserAnswer = {
 	ticketNumber: number;
-
+	userAnswer: number;
 	questionNumber: number;
 	res: Response;
 };
 export const checkUserAnswer = ({
 	ticketNumber,
 	questionNumber,
+	userAnswer,
 	res,
 }: TypeCheckUserAnswer) => {
 	const ticket = tickets[ticketNumber - 1];
@@ -70,6 +73,26 @@ export const checkUserAnswer = ({
 		});
 		return null;
 	}
+
+	if (questionNumber < 1 || ticket.length < questionNumber) {
+		sendError({
+			message: `Указанный номер вопроса не найден, всего вопросов: ${ticket.length}`,
+			status: HTTP_STATUSES.NOT_FOUND_404,
+			res,
+		});
+		return;
+	}
+	const answersLength = ticket[questionNumber - 1].answers.length;
+
+	if (userAnswer < 1 || userAnswer > answersLength) {
+		sendError({
+			message: `Указанный номер ответа не найден, всего ответов: ${answersLength}`,
+			status: HTTP_STATUSES.NOT_FOUND_404,
+			res,
+		});
+		return;
+	}
+
 	const question = ticket[questionNumber - 1];
 
 	if (!question) {
@@ -82,7 +105,11 @@ export const checkUserAnswer = ({
 
 	const correctAnsweIndex =
 		question.answers.findIndex((question) => question.isCorrect) || -9; // Просто отрицательное число, что бы бло ясно что он не нашелся
-	return { correctAnswer: correctAnsweIndex + 1, help: question.help };
+	return {
+		isCorrect: correctAnsweIndex === userAnswer - 1,
+		correctAnswer: correctAnsweIndex + 1,
+		help: question.help,
+	};
 };
 
 function randomInteger(min: number, max: number) {

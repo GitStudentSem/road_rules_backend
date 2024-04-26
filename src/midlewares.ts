@@ -2,6 +2,7 @@ import { validationResult } from "express-validator";
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { sendError } from "./assets/requestAssets";
+import { HTTP_STATUSES } from "./utils";
 
 export const checkAuth = (req: Request, res: Response, next: any) => {
 	const token: string = (req.headers.authorization || "").replace(
@@ -24,7 +25,9 @@ export const checkAuth = (req: Request, res: Response, next: any) => {
 			});
 		}
 	} else {
-		return res.status(403).json({ message: "Токен доступа не был получен" });
+		return res
+			.status(HTTP_STATUSES.FORRIBDEN_403)
+			.json({ message: "Токен доступа не был получен" });
 	}
 };
 
@@ -36,7 +39,7 @@ export const handleValudationErrors = (
 	const errors = validationResult(req);
 	if (!errors.isEmpty()) {
 		const message = errors.array()[0].msg;
-		return res.status(400).json({ message });
+		return res.status(HTTP_STATUSES.BAD_REQUEST_400).json({ message });
 	}
 
 	next();

@@ -16,6 +16,13 @@
 
 Сборка НЕ будет автоматически обновляться при каждом сохранени
 
+## Для запуска тестов
+- `npm run test` - Запускает e2e тесты
+
+Запуск необходимо производить без других поднятых вотчеров
+
+
+
 ## Регистрация - http://localhost:3333/auth/register
 
 ### Запрос
@@ -159,7 +166,7 @@ fetch("http://localhost:3333/tickets/2", {
 - В случае успеха:
 
   ```typescript
-  { correctAnswer: number, help: string }
+  { isCorrect: boolean correctAnswer: number, help: string }
   ```
 
 - В случае провала:
@@ -226,7 +233,7 @@ fetch("http://localhost:3333/exam/2", {
 - В случае успеха:
 
   ```typescript
-  { correctAnswer: number, help: string }
+  { isCorrect: boolean, correctAnswer: number, help: string }
   ```
 
 - В случае провала:

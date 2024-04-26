@@ -7,11 +7,12 @@ import { sendError } from "../assets/requestAssets";
 import { Response } from "express";
 import { ErrorType, RequestWithBody } from "../types";
 import { BodyRegisterModel } from "../modeles/auth/BodyRegisterModel";
-import { UserRegisterViewModel } from "../modeles/auth/UserViewModel";
+import { UserRegisterViewModel } from "../modeles/auth/UserRegisterViewModel";
 import { UserRegisterDBModel } from "../modeles/auth/UserRegisterDBModel";
 import { BodyLoginModel } from "../modeles/auth/BodyLoginModel";
 import { UserLoginViewModel } from "../modeles/auth/UserLoginViewModel";
 import { UserLoginDBModel } from "../modeles/auth/UserLoginDBModel";
+import { HTTP_STATUSES } from "../utils";
 
 export const register = async (
 	req: RequestWithBody<BodyRegisterModel>,
@@ -30,7 +31,9 @@ export const register = async (
 		const isExistUser = await db.exists(filePath);
 
 		if (isExistUser) {
-			res.status(400).json({ message: "Пользователь уже существует" });
+			res
+				.status(HTTP_STATUSES.BAD_REQUEST_400)
+				.json({ message: "Пользователь уже существует" });
 			return;
 		}
 
@@ -55,7 +58,8 @@ export const register = async (
 			secondName,
 			_id,
 		};
-		res.json(userWithoutPasswordHash);
+
+		res.status(HTTP_STATUSES.OK_200).json(userWithoutPasswordHash);
 	} catch (error) {
 		sendError({ message: "Не удалось зарегистрироваться", error, res });
 	}
@@ -73,7 +77,9 @@ export const login = async (
 		const isExistUser = await db.exists(filePath);
 
 		if (!isExistUser) {
-			res.status(404).json({ message: "Пользователь не существует" });
+			res
+				.status(HTTP_STATUSES.NOT_FOUND_404)
+				.json({ message: "Пользователь не существует" });
 			return;
 		}
 
@@ -81,7 +87,9 @@ export const login = async (
 
 		const isValidPass = await bcrypt.compare(password, user.passwordHash);
 		if (!isValidPass) {
-			res.status(400).json({ message: "Логин или пароль не верен" });
+			res
+				.status(HTTP_STATUSES.BAD_REQUEST_400)
+				.json({ message: "Логин или пароль не верен" });
 			return;
 		}
 
@@ -91,7 +99,7 @@ export const login = async (
 			expiresIn: "30d",
 		});
 
-		res.json({ firstName, secondName, token });
+		res.status(HTTP_STATUSES.OK_200).json({ firstName, secondName, token });
 	} catch (error) {
 		if (error instanceof Error) {
 			sendError({ message: "Не удалось авторизоваться", error, res });

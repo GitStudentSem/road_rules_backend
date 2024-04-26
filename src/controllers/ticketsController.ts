@@ -67,6 +67,7 @@ export const sendTicketResult = async (
 		const result = checkUserAnswer({
 			ticketNumber: Number(ticketNumber),
 			questionNumber,
+			userAnswer,
 			res,
 		});
 

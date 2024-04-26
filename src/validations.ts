@@ -18,7 +18,7 @@ export const registerValidation = [
 	body("email", "Длина почты должна быть больше 2 символов").isLength({
 		min: 6,
 	}),
-	body("email", "Длина почты должна быть больше 2 символов").isEmail(),
+	body("email", "Неверный формат почты").isEmail(),
 
 	body("firstName", "Имя должно быть строкой").isString(),
 	body("firstName", "Длина имени должна быть больше 2 символов").isLength({
