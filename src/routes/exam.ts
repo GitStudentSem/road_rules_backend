@@ -2,17 +2,17 @@ import express from "express";
 import { answerValidation } from "../validations";
 import { checkAuth } from "../midlewares";
 
-import * as taskController from "../controllers/ticketsController";
+import * as examController from "../controllers/examController";
 
 export const getExamRouter = () => {
 	const router = express.Router();
 
-	router.get("/", checkAuth, taskController.sendExam);
+	router.get("/", checkAuth, examController.sendExam);
 	router.post(
 		"/:ticketNumber",
 		checkAuth,
 		answerValidation,
-		taskController.sendExamTicketResult,
+		examController.sendExamResult,
 	);
 
 	return router;

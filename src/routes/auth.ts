@@ -18,7 +18,7 @@ export const getAuthRouter = () => {
 		handleValudationErrors,
 		userController.login,
 	);
-	router.get("/me", checkAuth, userController.getMe);
+	// router.get("/me", checkAuth, userController.getMe);
 
 	return router;
 };
