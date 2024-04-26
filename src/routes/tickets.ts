@@ -1,7 +1,7 @@
 import express from "express";
 import { answerValidation } from "../validations";
 import { checkAuth } from "../midlewares";
-import * as taskController from "../controllers/taskController";
+import * as taskController from "../controllers/ticketsController";
 
 export const getTicketsRouter = () => {
 	const router = express.Router();

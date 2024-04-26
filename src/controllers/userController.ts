@@ -4,12 +4,14 @@ import { v4 as uuidv4 } from "uuid";
 import { db } from "../app";
 import { getUserFilePath, isUserExist } from "../assets/userAssets";
 import { sendError } from "../assets/requestAssets";
-import { Request, Response } from "express";
+import { Response } from "express";
 import { ErrorType, RequestWithBody } from "../types";
 import { BodyRegisterModel } from "../modeles/auth/BodyRegisterModel";
 import { UserRegisterViewModel } from "../modeles/auth/UserViewModel";
 import { UserRegisterDBModel } from "../modeles/auth/UserRegisterDBModel";
 import { BodyLoginModel } from "../modeles/auth/BodyLoginModel";
+import { UserLoginViewModel } from "../modeles/auth/UserLoginViewModel";
+import { UserLoginDBModel } from "../modeles/auth/UserLoginDBModel";
 
 export const register = async (
 	req: RequestWithBody<BodyRegisterModel>,
@@ -61,7 +63,7 @@ export const register = async (
 
 export const login = async (
 	req: RequestWithBody<BodyLoginModel>,
-	res: Response,
+	res: Response<UserLoginViewModel | ErrorType>,
 ) => {
 	try {
 		const { email, password } = req.body;
@@ -75,7 +77,7 @@ export const login = async (
 			return;
 		}
 
-		const user = await db.getData(filePath);
+		const user: UserLoginDBModel = await db.getData(filePath);
 
 		const isValidPass = await bcrypt.compare(password, user.passwordHash);
 		if (!isValidPass) {
@@ -100,10 +102,12 @@ export const login = async (
 
 export const getMe = async (req: Request, res: Response) => {
 	try {
+		//@ts-ignore
 		const user = await isUserExist(req, res);
 		if (!user) return;
 
 		const userCopy = { ...user };
+		//@ts-ignore
 		userCopy.passwordHash = undefined;
 
 		res.json({ ...userCopy });

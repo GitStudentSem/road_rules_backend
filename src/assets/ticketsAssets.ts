@@ -53,13 +53,12 @@ export const getTiket = (ticketNumber: number) => {
 
 type TypeCheckUserAnswer = {
 	ticketNumber: number;
-	userAnswer: number;
+
 	questionNumber: number;
 	res: Response;
 };
 export const checkUserAnswer = ({
 	ticketNumber,
-	userAnswer,
 	questionNumber,
 	res,
 }: TypeCheckUserAnswer) => {
