@@ -79,7 +79,7 @@ export const login = async (
 		if (!isExistUser) {
 			res
 				.status(HTTP_STATUSES.NOT_FOUND_404)
-				.json({ message: "Пользователь не существует" });
+				.json({ message: "Логин или пароль не верен" });
 			return;
 		}
 

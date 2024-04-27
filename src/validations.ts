@@ -1,39 +1,51 @@
 import { body } from "express-validator";
 
-export const loginValidation = [
-	body("email", "Почта должна быть строкой").isString(),
-	body("email", "Длина почты должна быть больше 6 символов").isLength({
+const isEmailString = body("email", "Почта должна быть строкой").isString();
+const emailLength = body("email", "Длина почты должна быть больше 6 символов")
+	.trim()
+	.isLength({
 		min: 6,
-	}),
-	body("email", "Неверный формат почты").isEmail(),
+	});
+const isEmailValid = body("email", "Неверный формат почты").isEmail();
 
-	body("password", "Пароль должен быть строкой").isString(),
-	body("password", "Пароль должен быть минимум 5 символов").isLength({
-		min: 5,
-	}),
+const isPasswordString = body(
+	"password",
+	"Пароль должен быть строкой",
+).isString();
+const passwordLength = body("password", "Пароль должен быть минимум 6 символов")
+	.trim()
+	.isLength({
+		min: 6,
+	});
+
+export const loginValidation = [
+	isEmailString,
+	emailLength,
+	isEmailValid,
+
+	isPasswordString,
+	passwordLength,
 ];
 
 export const registerValidation = [
-	body("email", "Почта должна быть строкой").isString(),
-	body("email", "Длина почты должна быть больше 6 символов").isLength({
-		min: 6,
-	}),
-	body("email", "Неверный формат почты").isEmail(),
+	isEmailString,
+	emailLength,
+	isEmailValid,
 
-	body("firstName", "Имя должно быть строкой").isString(),
-	body("firstName", "Длина имени должна быть больше 2 символов").isLength({
-		min: 2,
-	}),
+	isPasswordString,
+	passwordLength,
+	body("firstName", "Длина имени должна быть больше 2 символов")
+		.trim()
+		.isLength({
+			min: 2,
+		}),
 
 	body("secondName", "Фамилия должна быть строкой").isString(),
-	body("secondName", "Длина фамилии должна быть больше 2 символов").isLength({
-		min: 2,
-	}),
-
-	body("password", "Пароль должен быть строкой").isString(),
-	body("password", "Пароль должен быть минимум 6 символов").isLength({
-		min: 6,
-	}),
+	body("secondName", "Длина фамилии должна быть больше 2 символов")
+		.trim()
+		.isLength({
+			min: 2,
+		}),
 ];
 
 export const answerValidation = [

@@ -54,15 +54,23 @@ describe("Логин", () => {
 		await onLogin(HTTP_STATUSES.BAD_REQUEST_400, { email: "" });
 	});
 
-	it("6. Логин пользователя c пустым паролем", async () => {
+	it("6. Логин пользователя c пробелами вместо почты", async () => {
+		await onLogin(HTTP_STATUSES.BAD_REQUEST_400, { email: "         " });
+	});
+
+	it("7. Логин пользователя c пустым паролем", async () => {
 		await onLogin(HTTP_STATUSES.BAD_REQUEST_400, { password: "" });
 	});
 
-	it("7. Логин пользователя c неправильным паролем", async () => {
+	it("8. Логин пользователя c неправильным паролем", async () => {
 		await onLogin(HTTP_STATUSES.BAD_REQUEST_400, { password: "__**__" });
 	});
 
-	it("8. Логин пользователя c коротким паролем", async () => {
+	it("9. Логин пользователя c коротким паролем", async () => {
 		await onLogin(HTTP_STATUSES.BAD_REQUEST_400, { password: "__**__" });
+	});
+
+	it("10. Логин пользователя c пробелами вместо пароля", async () => {
+		await onLogin(HTTP_STATUSES.BAD_REQUEST_400, { password: "      " });
 	});
 });

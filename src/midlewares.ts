@@ -1,10 +1,10 @@
 import { validationResult } from "express-validator";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { sendError } from "./assets/requestAssets";
 import { HTTP_STATUSES } from "./utils";
 
-export const checkAuth = (req: Request, res: Response, next: any) => {
+export const checkAuth = (req: Request, res: Response, next: NextFunction) => {
 	const token: string = (req.headers.authorization || "").replace(
 		/Bearer\s?/,
 		"",
@@ -34,7 +34,7 @@ export const checkAuth = (req: Request, res: Response, next: any) => {
 export const handleValudationErrors = (
 	req: Request,
 	res: Response,
-	next: any,
+	next: NextFunction,
 ) => {
 	const errors = validationResult(req);
 	if (!errors.isEmpty()) {
