@@ -131,5 +131,10 @@ export const getExam = () => {
 	}
 
 	const questionsWithoutAnswers = removeCorrectAnswersFromTicket(questions);
-	return questionsWithoutAnswers;
+	const questionsWithTicketNumber = questionsWithoutAnswers.map(
+		(question, i) => {
+			return { ...question, ticketNumber: questions[i].ticketNumber };
+		},
+	);
+	return questionsWithTicketNumber;
 };

@@ -11,7 +11,11 @@
 		"build-w": "nodemon --inspect ./dist/index.js",
 		"ts": "tsc",
 		"build": "node ./dist/index.js",
-		"test": "jest --detectOpenHandles --no-cache"
+		"test": "jest --detectOpenHandles --no-cache",
+		"test-exam": "npm run test -- exam.api.test.ts",
+		"test-login": "npm run test -- login.api.test.ts",
+		"test-register": "npm run test -- register.api.test.ts",
+		"test-ticket": "npm run test -- ticket.api.test.ts"
 	},
 	"dependencies": {
 		"bcrypt": "^5.1.1",

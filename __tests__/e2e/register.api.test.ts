@@ -41,10 +41,24 @@ describe("Регистрация", () => {
 	});
 
 	it("3. Регистрация пользователя c невалидной почтой", async () => {
+		await onRegister(HTTP_STATUSES.BAD_REQUEST_400, {
+			email: "unknown_user.com",
+		});
+	});
+
+	it("4. Регистрация пользователя c пустой почтой", async () => {
 		await onRegister(HTTP_STATUSES.BAD_REQUEST_400, { email: "" });
 	});
 
-	it("4. Регистрация пользователя c невалидным паролем", async () => {
+	it("5. Регистрация пользователя c пустым паролем", async () => {
 		await onRegister(HTTP_STATUSES.BAD_REQUEST_400, { password: "" });
+	});
+
+	it("6. Регистрация пользователя c неправильным паролем", async () => {
+		await onRegister(HTTP_STATUSES.BAD_REQUEST_400, { password: "__**__" });
+	});
+
+	it("7. Регистрация пользователя c коротким паролем", async () => {
+		await onRegister(HTTP_STATUSES.BAD_REQUEST_400, { password: "__**__" });
 	});
 });

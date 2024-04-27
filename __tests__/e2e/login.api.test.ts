@@ -46,15 +46,23 @@ describe("Логин", () => {
 		await onLogin(HTTP_STATUSES.NOT_FOUND_404, { email: "unknown@user.com" });
 	});
 
-	it("4. Логин пользователя c неправильным паролем", async () => {
-		await onLogin(HTTP_STATUSES.BAD_REQUEST_400, { password: "123321" });
+	it("4. Логин пользователя c невалидной почтой", async () => {
+		await onLogin(HTTP_STATUSES.BAD_REQUEST_400, { email: "unknown_user.com" });
 	});
 
-	it("5. Логин пользователя c невалидной почтой", async () => {
+	it("5. Логин пользователя c пустой почтой", async () => {
 		await onLogin(HTTP_STATUSES.BAD_REQUEST_400, { email: "" });
 	});
 
-	it("6. Логин пользователя c невалидным паролем", async () => {
+	it("6. Логин пользователя c пустым паролем", async () => {
 		await onLogin(HTTP_STATUSES.BAD_REQUEST_400, { password: "" });
+	});
+
+	it("7. Логин пользователя c неправильным паролем", async () => {
+		await onLogin(HTTP_STATUSES.BAD_REQUEST_400, { password: "__**__" });
+	});
+
+	it("8. Логин пользователя c коротким паролем", async () => {
+		await onLogin(HTTP_STATUSES.BAD_REQUEST_400, { password: "__**__" });
 	});
 });

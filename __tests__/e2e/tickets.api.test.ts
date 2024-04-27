@@ -71,6 +71,27 @@ describe("Получить количество билетов", () => {
 			ticketsCount: expect.any(Number),
 		});
 	});
+
+	it("4. Получить количество билетов с неправильным токеном", async () => {
+		const ticketCountResponse = await getRequest()
+			.get("/tickets/count")
+			.set("Authorization", "Bearer invalid_token")
+			.expect(HTTP_STATUSES.FORRIBDEN_403);
+
+		expect(ticketCountResponse.body).toEqual({
+			message: expect.any(String),
+		});
+	});
+
+	it("4. Получить количество билетов без токена авторизации", async () => {
+		const ticketCountResponse = await getRequest()
+			.get("/tickets/count")
+			.expect(HTTP_STATUSES.FORRIBDEN_403);
+
+		expect(ticketCountResponse.body).toEqual({
+			message: expect.any(String),
+		});
+	});
 });
 
 describe("Получить билет", () => {
@@ -108,6 +129,27 @@ describe("Получить билет", () => {
 			.get("/tickets/-1")
 			.set("Authorization", `Bearer ${token}`)
 			.expect(HTTP_STATUSES.NOT_FOUND_404);
+
+		expect(getTicketRespose.body).toEqual({
+			message: expect.any(String),
+		});
+	});
+
+	it("5. Получить билет с неправильным токеном авторизации", async () => {
+		const getTicketRespose = await getRequest()
+			.get("/tickets/1")
+			.set("Authorization", "Bearer invalid_token}")
+			.expect(HTTP_STATUSES.FORRIBDEN_403);
+
+		expect(getTicketRespose.body).toEqual({
+			message: expect.any(String),
+		});
+	});
+
+	it("6. Получить билет без токена авторизации", async () => {
+		const getTicketRespose = await getRequest()
+			.get("/tickets/1")
+			.expect(HTTP_STATUSES.FORRIBDEN_403);
 
 		expect(getTicketRespose.body).toEqual({
 			message: expect.any(String),
