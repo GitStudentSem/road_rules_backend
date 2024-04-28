@@ -34,6 +34,7 @@ export const registerValidation = [
 
 	isPasswordString,
 	passwordLength,
+	body("firstName", "имя должно быть строкой").isString(),
 	body("firstName", "Длина имени должна быть больше 2 символов")
 		.trim()
 		.isLength({

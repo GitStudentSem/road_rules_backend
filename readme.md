@@ -25,7 +25,16 @@
 
 Запуск необходимо производить без других поднятых вотчеров
 
+## Подъем mongodb базы локально
+- Инфомация взята из [22 урока по бекенду](https://www.youtube.com/watch?v=M4SUZlgnydA&list=PLcvhF2Wqh7DP4tZ851CauQ8GqgqlCocjk&index=22&ab_channel=YouTubeViewers) 
 
+- Скачать установщик по [ссылке](https://www.mongodb.com/try/download/community)
+- Разархивировть в нужное место
+### Для macOS
+- В папке с mongoDB (или где вам это нужно) создать папки data/db
+- В терминале открыть разархивированную папку
+- Запустить команду `./mongod --dbpath ./data/db`
+- Для дальнейших запусков можно использовать `./mongod`
 
 ## Регистрация - http://localhost:3333/auth/register
 
