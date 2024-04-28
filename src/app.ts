@@ -6,7 +6,6 @@ import { getAuthRouter } from "./routes/auth";
 import { JsonDB, Config } from "node-json-db";
 import { getTicketsRouter } from "./routes/tickets";
 import { getExamRouter } from "./routes/exam";
-import path from "path";
 
 export const app = express();
 app.use(cors());

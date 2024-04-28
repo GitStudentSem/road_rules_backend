@@ -1,6 +1,5 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { v4 as uuidv4 } from "uuid";
 import { db } from "../app";
 import { getUserFilePath, isUserExist } from "../assets/userAssets";
 import { sendError } from "../assets/requestAssets";
@@ -8,11 +7,12 @@ import { Response } from "express";
 import { ErrorType, RequestWithBody } from "../types";
 import { BodyRegisterModel } from "../modeles/auth/BodyRegisterModel";
 import { UserRegisterViewModel } from "../modeles/auth/UserRegisterViewModel";
-import { UserRegisterDBModel } from "../modeles/auth/UserRegisterDBModel";
 import { BodyLoginModel } from "../modeles/auth/BodyLoginModel";
 import { UserLoginViewModel } from "../modeles/auth/UserLoginViewModel";
 import { UserLoginDBModel } from "../modeles/auth/UserLoginDBModel";
 import { HTTP_STATUSES } from "../utils";
+import { DBError } from "./DBError";
+import { authService } from "../domain/authService";
 
 export const register = async (
 	req: RequestWithBody<BodyRegisterModel>,
@@ -20,47 +20,20 @@ export const register = async (
 ) => {
 	try {
 		const { email, firstName, secondName, password } = req.body;
-		const salt = await bcrypt.genSalt(10);
-		const hash = await bcrypt.hash(password, salt);
 
-		const _id = uuidv4();
-
-		//Проверка наличия документа
-		const filePath = getUserFilePath(email);
-
-		const isExistUser = await db.exists(filePath);
-
-		if (isExistUser) {
-			res
-				.status(HTTP_STATUSES.BAD_REQUEST_400)
-				.json({ message: "Пользователь уже существует" });
-			return;
-		}
-
-		const newUser = {
+		const registerdUser = await authService.register({
 			email,
 			firstName,
 			secondName,
-			passwordHash: hash,
-			_id,
-		};
-		await db.push(filePath, newUser);
-
-		const user: UserRegisterDBModel = await db.getData(filePath);
-
-		jwt.sign({ _id: user._id }, "somthingStrangeString", {
-			expiresIn: "30d",
+			password,
 		});
 
-		const userWithoutPasswordHash = {
-			email,
-			firstName,
-			secondName,
-			_id,
-		};
-
-		res.status(HTTP_STATUSES.OK_200).json(userWithoutPasswordHash);
+		res.status(HTTP_STATUSES.OK_200).json(registerdUser);
 	} catch (error) {
+		if (error instanceof DBError) {
+			res.status(error.status).json({ message: error.message });
+			return;
+		}
 		sendError({ message: "Не удалось зарегистрироваться", error, res });
 	}
 };
