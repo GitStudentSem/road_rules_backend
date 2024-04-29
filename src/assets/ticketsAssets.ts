@@ -103,12 +103,14 @@ export const checkUserAnswer = ({
 		return null;
 	}
 
-	const correctAnsweIndex =
-		question.answers.findIndex((question) => question.isCorrect) || -9; // Просто отрицательное число, что бы бло ясно что он не нашелся
+	const correctAnswer =
+		question.answers.findIndex((question) => question.isCorrect) + 1 || -1; // Просто отрицательное число, что бы бло ясно что он не нашелся
+
+	const isCorrect = correctAnswer === userAnswer;
 	return {
-		isCorrect: correctAnsweIndex === userAnswer - 1,
-		correctAnswer: correctAnsweIndex + 1,
-		help: question.help,
+		isCorrect,
+		correctAnswer,
+		help: isCorrect ? "" : question.help,
 	};
 };
 
