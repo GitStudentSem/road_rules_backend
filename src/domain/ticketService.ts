@@ -6,4 +6,5 @@ export const ticketService = {
 		await ticketRepository.sendTicketsCount(userId);
 		return getCountTickets();
 	},
+	async sendTicket() {},
 };
