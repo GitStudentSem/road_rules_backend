@@ -1,4 +1,3 @@
-import type { Request, Response } from "express";
 import { db } from "../app";
 import type { AllUsersDBModel } from "../modeles/AllUsersDBModel";
 import type { UserLoginDBModel } from "../modeles/auth/UserLoginDBModel";
