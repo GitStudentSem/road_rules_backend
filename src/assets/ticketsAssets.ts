@@ -18,7 +18,7 @@ export const isTicketExist = (ticketNumber: number, res: Response) => {
 		return null;
 	}
 
-	const ticketsCount = getCountTickets();
+	const ticketsCount = tickets.length;
 
 	if (ticketNumber > ticketsCount || ticketNumber < 1) {
 		sendError({
@@ -45,8 +45,6 @@ const removeCorrectAnswersFromTicket = (ticket: TypeQuestion[]) => {
 	});
 };
 
-export const getCountTickets = () => tickets.length;
-
 export const getTiket = (ticketNumber: number) => {
 	const ticket = tickets[ticketNumber - 1];
 	const ticketWithoutAnswers = removeCorrectAnswersFromTicket(ticket);
@@ -68,7 +66,7 @@ export const checkUserAnswer = ({
 	const ticket = tickets[ticketNumber - 1];
 	if (!ticket) {
 		sendError({
-			message: `Указанный билет не существует, всего билетов: ${getCountTickets()}`,
+			message: `Указанный билет не существует, всего билетов: ${tickets.length}`,
 			res,
 		});
 		return null;
