@@ -16,17 +16,23 @@ import type { sendTicketsCountViewModel } from "../modeles/tickets/SendTicketsCo
 import type { SendTicketViewModel } from "../modeles/tickets/SendTicketViewModel";
 import type { SendTicketResultViewModel } from "../modeles/tickets/SendTicketResultViewModel";
 import type { BodySendTicketResult } from "../modeles/tickets/BodySendTicketResult";
+import { DBError } from "./DBError";
+import { ticketService } from "../domain/ticketService";
 
 export const sendTicketsCount = async (
 	req: Request,
 	res: Response<sendTicketsCountViewModel | ErrorType>,
 ) => {
 	try {
-		const user = await isUserExist(req, res);
-		if (!user) return;
+		//@ts-ignore
+		const ticketsCount = await ticketService.sendTicketsCount(req.userId);
 
-		res.json({ ticketsCount: getCountTickets() });
+		res.json({ ticketsCount });
 	} catch (error) {
+		if (error instanceof DBError) {
+			res.status(error.status).json({ message: error.message });
+			return;
+		}
 		sendError({ message: "Не удалось отправить билет", error, res });
 	}
 };
@@ -46,6 +52,10 @@ export const sendTicket = async (
 
 		res.json(ticket);
 	} catch (error) {
+		if (error instanceof DBError) {
+			res.status(error.status).json({ message: error.message });
+			return;
+		}
 		sendError({ message: "Не удалось отправить билет", error, res });
 	}
 };
@@ -86,6 +96,10 @@ export const sendTicketResult = async (
 
 		res.json(result);
 	} catch (error) {
+		if (error instanceof DBError) {
+			res.status(error.status).json({ message: error.message });
+			return;
+		}
 		sendError({ message: "Не удалось отправить билет", error, res });
 	}
 };

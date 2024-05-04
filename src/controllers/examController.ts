@@ -12,6 +12,7 @@ import type { ErrorType, RequestWithParamsAndBody } from "../types";
 import type { SendExamViewModel } from "../modeles/exam/SendExamViewModel";
 import type { SendExamTicketResultViewModel } from "../modeles/exam/SendExamTicketResultViewModel";
 import type { BodySendExamResult } from "../modeles/exam/BodySendExamResult";
+import { DBError } from "./DBError";
 
 export const sendExam = async (
 	req: Request,
@@ -23,6 +24,10 @@ export const sendExam = async (
 
 		res.json(getExam());
 	} catch (error) {
+		if (error instanceof DBError) {
+			res.status(error.status).json({ message: error.message });
+			return;
+		}
 		sendError({ message: "Не удалось отправить билет", error, res });
 	}
 };
@@ -64,6 +69,10 @@ export const sendExamResult = async (
 
 		res.json(result);
 	} catch (error) {
+		if (error instanceof DBError) {
+			res.status(error.status).json({ message: error.message });
+			return;
+		}
 		sendError({ message: "Не удалось отправить билет", error, res });
 	}
 };
