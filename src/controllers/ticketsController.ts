@@ -6,16 +6,16 @@ import {
 	getCountTickets,
 	isTicketExist,
 } from "../assets/ticketsAssets";
-import { Request, Response } from "express";
-import {
+import type { Request, Response } from "express";
+import type {
 	ErrorType,
 	RequestWithParams,
 	RequestWithParamsAndBody,
 } from "../types";
-import { sendTicketsCountViewModel } from "../modeles/tickets/SendTicketsCountViewModel";
-import { SendTicketViewModel } from "../modeles/tickets/SendTicketViewModel";
-import { SendTicketResultViewModel } from "../modeles/tickets/SendTicketResultViewModel";
-import { BodySendTicketResult } from "../modeles/tickets/BodySendTicketResult";
+import type { sendTicketsCountViewModel } from "../modeles/tickets/SendTicketsCountViewModel";
+import type { SendTicketViewModel } from "../modeles/tickets/SendTicketViewModel";
+import type { SendTicketResultViewModel } from "../modeles/tickets/SendTicketResultViewModel";
+import type { BodySendTicketResult } from "../modeles/tickets/BodySendTicketResult";
 
 export const sendTicketsCount = async (
 	req: Request,

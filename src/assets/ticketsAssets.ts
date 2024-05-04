@@ -1,8 +1,8 @@
 import { ticket_1, ticket_2, ticket_3 } from "../tickets";
-import fs from "fs";
+import fs from "node:fs";
 import { sendError } from "./requestAssets";
-import { TypeQuestion } from "../types";
-import { Response } from "express";
+import type { TypeQuestion } from "../types";
+import type { Response } from "express";
 import { HTTP_STATUSES } from "../utils";
 
 export const tickets = [ticket_1, ticket_2, ticket_3];

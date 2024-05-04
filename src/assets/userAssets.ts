@@ -1,7 +1,7 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import { db } from "../app";
-import { AllUsersDBModel } from "../modeles/AllUsersDBModel";
-import { UserLoginDBModel } from "../modeles/auth/UserLoginDBModel";
+import type { AllUsersDBModel } from "../modeles/AllUsersDBModel";
+import type { UserLoginDBModel } from "../modeles/auth/UserLoginDBModel";
 import { HTTP_STATUSES } from "../utils";
 
 export const getUserFilePath = (email: string) => {

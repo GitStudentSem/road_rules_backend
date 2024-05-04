@@ -6,13 +6,12 @@ import {
 	getExam,
 	isTicketExist,
 } from "../assets/ticketsAssets";
-import { Request, Response } from "express";
-import { ErrorType, RequestWithParamsAndBody } from "../types";
+import type { Request, Response } from "express";
+import type { ErrorType, RequestWithParamsAndBody } from "../types";
 
-import { SendExamViewModel } from "../modeles/exam/SendExamViewModel";
-import { SendExamTicketResultViewModel } from "../modeles/exam/SendExamTicketResultViewModel";
-import { BodySendExamResult } from "../modeles/exam/BodySendExamResult";
-import { HTTP_STATUSES } from "../utils";
+import type { SendExamViewModel } from "../modeles/exam/SendExamViewModel";
+import type { SendExamTicketResultViewModel } from "../modeles/exam/SendExamTicketResultViewModel";
+import type { BodySendExamResult } from "../modeles/exam/BodySendExamResult";
 
 export const sendExam = async (
 	req: Request,
