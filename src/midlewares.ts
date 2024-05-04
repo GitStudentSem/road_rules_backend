@@ -1,5 +1,5 @@
 import { validationResult } from "express-validator";
-import { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { sendError } from "./assets/requestAssets";
 import { HTTP_STATUSES } from "./utils";

@@ -1,5 +1,5 @@
-import { BodyLoginModel } from "./modeles/auth/BodyLoginModel";
-import { BodyRegisterModel } from "./modeles/auth/BodyRegisterModel";
+import type { BodyLoginModel } from "./modeles/auth/BodyLoginModel";
+import type { BodyRegisterModel } from "./modeles/auth/BodyRegisterModel";
 
 export const HTTP_STATUSES = {
 	OK_200: 200,

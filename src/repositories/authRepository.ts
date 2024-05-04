@@ -2,9 +2,9 @@ import { v4 as uuidv4 } from "uuid";
 import { getUserFilePath } from "../assets/userAssets";
 import { HTTP_STATUSES } from "../utils";
 import { db } from "../app";
-import { UserRegisterDBModel } from "../modeles/auth/UserRegisterDBModel";
+import type { UserRegisterDBModel } from "../modeles/auth/UserRegisterDBModel";
 import { DBError } from "../controllers/DBError";
-import { UserLoginDBModel } from "../modeles/auth/UserLoginDBModel";
+import type { UserLoginDBModel } from "../modeles/auth/UserLoginDBModel";
 
 export const authRepository = {
 	async register(data: {

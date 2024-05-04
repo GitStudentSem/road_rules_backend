@@ -1,11 +1,11 @@
 import { isUserExist } from "../assets/userAssets";
 import { sendError } from "../assets/requestAssets";
-import { Response } from "express";
-import { ErrorType, RequestWithBody } from "../types";
-import { BodyRegisterModel } from "../modeles/auth/BodyRegisterModel";
-import { UserRegisterViewModel } from "../modeles/auth/UserRegisterViewModel";
-import { BodyLoginModel } from "../modeles/auth/BodyLoginModel";
-import { UserLoginViewModel } from "../modeles/auth/UserLoginViewModel";
+import type { Response } from "express";
+import type { ErrorType, RequestWithBody } from "../types";
+import type { BodyRegisterModel } from "../modeles/auth/BodyRegisterModel";
+import type { UserRegisterViewModel } from "../modeles/auth/UserRegisterViewModel";
+import type { BodyLoginModel } from "../modeles/auth/BodyLoginModel";
+import type { UserLoginViewModel } from "../modeles/auth/UserLoginViewModel";
 import { HTTP_STATUSES } from "../utils";
 import { DBError } from "./DBError";
 import { authService } from "../domain/authService";

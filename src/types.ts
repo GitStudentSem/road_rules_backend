@@ -1,4 +1,4 @@
-import { Request } from "express";
+import type { Request } from "express";
 
 // biome-ignore lint/complexity/noBannedTypes: <explanation>
 export type RequestWithBody<B> = Request<{}, {}, B>;
