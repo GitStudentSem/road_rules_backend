@@ -5,7 +5,6 @@ import type { UserLoginDBModel } from "../modeles/auth/UserLoginDBModel";
 import type { TypeQuestion } from "../types";
 import { HTTP_STATUSES } from "../utils";
 import { ticket_1, ticket_2, ticket_3 } from "../tickets";
-import type { TicketDBModel } from "../modeles/TicketDBModel";
 
 const tickets = [ticket_1, ticket_2, ticket_3];
 
