@@ -1,6 +1,5 @@
 import { sendError } from "../assets/requestAssets";
 import { getUserFilePath, isUserExist } from "../assets/userAssets";
-import { db } from "../app";
 import {
 	checkUserAnswer,
 	getExam,
@@ -13,16 +12,17 @@ import type { SendExamViewModel } from "../modeles/exam/SendExamViewModel";
 import type { SendExamTicketResultViewModel } from "../modeles/exam/SendExamTicketResultViewModel";
 import type { BodySendExamResult } from "../modeles/exam/BodySendExamResult";
 import { DBError } from "./DBError";
+import { examService } from "../domain/examService";
 
 export const sendExam = async (
 	req: Request,
 	res: Response<SendExamViewModel[] | ErrorType>,
 ) => {
 	try {
-		const user = await isUserExist(req, res);
-		if (!user) return;
+		//@ts-ignore
+		const exam = await examService.sendExam(req.userId);
 
-		res.json(getExam());
+		res.json(exam);
 	} catch (error) {
 		if (error instanceof DBError) {
 			res.status(error.status).json({ message: error.message });
@@ -37,35 +37,13 @@ export const sendExamResult = async (
 	res: Response<SendExamTicketResultViewModel | ErrorType>,
 ) => {
 	try {
-		const user = await isUserExist(req, res);
-
-		if (!user) return;
-
-		const { ticketNumber } = req.params;
-		const { userAnswer, questionNumber } = req.body;
-
-		const ticket = isTicketExist(Number(ticketNumber), res);
-		if (!ticket) return;
-
-		const result = checkUserAnswer({
-			ticketNumber: Number(ticketNumber),
-			questionNumber,
-			userAnswer,
-			res,
-		});
-
-		if (!result) return;
-
-		const filePath = getUserFilePath(user.email);
-		const pathToAnswer = `${filePath}/results/exam`;
-
-		const isExistAnswer = await db.exists(pathToAnswer);
-		if (!isExistAnswer) await db.push(pathToAnswer, Array(20).fill(-1));
-
-		const copyAnswers = await db.getData(pathToAnswer);
-
-		copyAnswers[questionNumber - 1] = userAnswer;
-		await db.push(pathToAnswer, copyAnswers);
+		const result = await examService.sendExamResult(
+			//@ts-ignore
+			req.userId,
+			+req.params.ticketNumber,
+			req.body.questionNumber,
+			req.body.userAnswer,
+		);
 
 		res.json(result);
 	} catch (error) {
