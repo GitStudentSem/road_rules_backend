@@ -1,7 +1,4 @@
 import { sendError } from "../assets/requestAssets";
-// удалить импорты после экзамена проверить импорты
-import { getUserFilePath, isUserExist } from "../assets/userAssets";
-import { checkUserAnswer, isTicketExist } from "../assets/ticketsAssets";
 import type { Request, Response } from "express";
 import type {
 	ErrorType,

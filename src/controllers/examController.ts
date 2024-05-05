@@ -1,10 +1,4 @@
 import { sendError } from "../assets/requestAssets";
-import { getUserFilePath, isUserExist } from "../assets/userAssets";
-import {
-	checkUserAnswer,
-	getExam,
-	isTicketExist,
-} from "../assets/ticketsAssets";
 import type { Request, Response } from "express";
 import type { ErrorType, RequestWithParamsAndBody } from "../types";
 

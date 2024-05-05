@@ -1,4 +1,3 @@
-import { isUserExist } from "../assets/userAssets";
 import { sendError } from "../assets/requestAssets";
 import type { Response } from "express";
 import type { ErrorType, RequestWithBody } from "../types";
@@ -53,22 +52,22 @@ export const login = async (
 	}
 };
 
-export const getMe = async (req: Request, res: Response) => {
-	try {
-		//@ts-ignore
-		const user = await isUserExist(req, res);
-		if (!user) return;
+// export const getMe = async (req: Request, res: Response) => {
+// 	try {
+// 		//@ts-ignore
+// 		const user = await isUserExist(req, res);
+// 		if (!user) return;
 
-		const userCopy = { ...user };
-		//@ts-ignore
-		userCopy.passwordHash = undefined;
+// 		const userCopy = { ...user };
+// 		//@ts-ignore
+// 		userCopy.passwordHash = undefined;
 
-		res.json({ ...userCopy });
-	} catch (error) {
-		sendError({
-			message: "Нет доступа",
-			error,
-			res,
-		});
-	}
-};
+// 		res.json({ ...userCopy });
+// 	} catch (error) {
+// 		sendError({
+// 			message: "Нет доступа",
+// 			error,
+// 			res,
+// 		});
+// 	}
+// };
