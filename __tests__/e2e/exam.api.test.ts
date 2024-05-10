@@ -126,7 +126,7 @@ describe("Отправить ответ на вопрос по экзамену"
 		onSendAnswer(HTTP_STATUSES.NOT_FOUND_404, "1", -1, 1);
 	});
 
-	it("6. Отправить несуществующий djghjc", async () => {
+	it("6. Отправить несуществующий вопрос", async () => {
 		onSendAnswer(HTTP_STATUSES.NOT_FOUND_404, "1", 1, -1);
 	});
 });
