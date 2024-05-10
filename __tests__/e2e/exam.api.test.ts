@@ -29,18 +29,18 @@ const onLogin = async () => {
 const onSendAnswer = async (
 	status: number,
 	ticketNumber: string,
-	userAnswer: number,
+	answerId: string,
 	questionNumber: number,
 ) => {
 	const getExamRespose = await getRequest()
 		.post(`/exam/${ticketNumber}`)
 		.set("Authorization", `Bearer ${token}`)
-		.send({ userAnswer, questionNumber })
+		.send({ answerId, questionNumber })
 		.expect(status);
 
 	const expectedData = {
 		isCorrect: expect.any(Boolean),
-		correctAnswer: expect.any(Number),
+		correctAnswer: expect.any(String),
 		help: expect.any(String),
 	};
 	const expectedError = { message: expect.any(String) };
@@ -72,7 +72,9 @@ describe("Получить билет на экзамен", () => {
 				question: expect.any(String),
 				img: expect.any(String),
 				ticketNumber: expect.any(Number),
-				answers: expect.arrayContaining([expect.any(String)]),
+				answers: expect.arrayContaining([
+					{ answerText: expect.any(String), id: expect.any(String) },
+				]),
 			},
 		];
 
@@ -115,18 +117,18 @@ describe("Отправить ответ на вопрос по экзамену"
 	it("2. Логин пользователя", async () => await onLogin());
 
 	it("3. Отправить корректный ответ на вопрос по экзамену", async () => {
-		onSendAnswer(HTTP_STATUSES.OK_200, "1", 1, 1);
+		onSendAnswer(HTTP_STATUSES.OK_200, "1", "1_1_1", 1);
 	});
 
 	it("4. Отправить несуществующий билет", async () => {
-		onSendAnswer(HTTP_STATUSES.NOT_FOUND_404, "-1", 1, 1);
+		onSendAnswer(HTTP_STATUSES.NOT_FOUND_404, "-1", "1_1_1", 1);
 	});
 
 	it("5. Отправить несуществующий ответ", async () => {
-		onSendAnswer(HTTP_STATUSES.NOT_FOUND_404, "1", -1, 1);
+		onSendAnswer(HTTP_STATUSES.OK_200, "1", "-1_1_1", 1);
 	});
 
 	it("6. Отправить несуществующий вопрос", async () => {
-		onSendAnswer(HTTP_STATUSES.NOT_FOUND_404, "1", 1, -1);
+		onSendAnswer(HTTP_STATUSES.NOT_FOUND_404, "1", "1_1_1", -1);
 	});
 });

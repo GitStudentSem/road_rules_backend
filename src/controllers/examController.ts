@@ -36,7 +36,7 @@ export const sendExamResult = async (
 			req.userId,
 			+req.params.ticketNumber,
 			req.body.questionNumber,
-			req.body.userAnswer,
+			req.body.answerId,
 		);
 
 		res.json(result);

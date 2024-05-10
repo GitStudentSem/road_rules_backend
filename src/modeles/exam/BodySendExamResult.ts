@@ -1,1 +1,1 @@
-export type BodySendExamResult = { userAnswer: number; questionNumber: number };
+export type BodySendExamResult = { answerId: string; questionNumber: number };

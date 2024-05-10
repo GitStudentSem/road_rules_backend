@@ -1,5 +1,6 @@
 export type SendExamViewModel = {
 	question: string;
 	img: string;
-	answers: string[];
+	ticketNumber: number;
+	answers: { answerText: string; id: string }[];
 };

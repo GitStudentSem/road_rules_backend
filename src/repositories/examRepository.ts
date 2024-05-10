@@ -8,16 +8,7 @@ import { ticket_1, ticket_2, ticket_3 } from "../tickets";
 
 const tickets = [ticket_1, ticket_2, ticket_3];
 
-type TypeCheckUserAnswer = {
-	ticketNumber: number;
-	userAnswer: number;
-	questionNumber: number;
-};
-const getQuestion = (
-	ticketNumber: number,
-	questionNumber: number,
-	userAnswer: number,
-) => {
+const getQuestion = (ticketNumber: number, questionNumber: number) => {
 	const ticket = tickets[ticketNumber - 1];
 	if (!ticket) {
 		throw new DBError(
@@ -29,14 +20,6 @@ const getQuestion = (
 	if (questionNumber < 1 || ticket.length < questionNumber) {
 		throw new DBError(
 			`Указанный номер вопроса не найден, всего вопросов: ${ticket.length}`,
-			HTTP_STATUSES.NOT_FOUND_404,
-		);
-	}
-	const answersLength = ticket[questionNumber - 1].answers.length;
-
-	if (userAnswer < 1 || userAnswer > answersLength) {
-		throw new DBError(
-			`Указанный номер ответа не найден, всего ответов: ${answersLength}`,
 			HTTP_STATUSES.NOT_FOUND_404,
 		);
 	}
@@ -114,10 +97,10 @@ export const examRepository = {
 		userId: string,
 		ticketNumber: number,
 		questionNumber: number,
-		userAnswer: number,
+		answerId: string,
 	) {
 		const user = await isUserExist(userId);
-		const question = getQuestion(ticketNumber, questionNumber, userAnswer);
+		const question = getQuestion(ticketNumber, questionNumber);
 
 		const filePath = getUserFilePath(user.email);
 		const pathToAnswer = `${filePath}/results/exam`;
@@ -127,7 +110,7 @@ export const examRepository = {
 
 		const copyAnswers = await db.getData(pathToAnswer);
 
-		copyAnswers[questionNumber - 1] = userAnswer;
+		copyAnswers[questionNumber - 1] = answerId;
 		await db.push(pathToAnswer, copyAnswers);
 
 		return question;

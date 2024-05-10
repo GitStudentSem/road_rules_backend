@@ -1,4 +1,5 @@
 export type SendExamTicketResultViewModel = {
-	correctAnswer: number;
+	isCorrect: boolean;
+	correctAnswer: string;
 	help: string;
 };

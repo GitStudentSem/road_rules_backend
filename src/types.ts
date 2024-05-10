@@ -14,6 +14,7 @@ export type RequestWithParams<P> = Request<P>;
 export type TypeAnswers = {
 	text: string;
 	isCorrect: boolean;
+	id: string;
 };
 
 export type TypeQuestion = {

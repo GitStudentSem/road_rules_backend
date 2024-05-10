@@ -210,7 +210,10 @@ fetch("http://localhost:3333/exam", {
   ```typescript
   { img: string, 
   question: string, 
-  answers: string[], 
+  answers: {
+        answerText: string;
+        id: string;
+    }[], 
   ticketNumber: number 
   }[]
   ```
@@ -235,7 +238,7 @@ fetch("http://localhost:3333/exam/2", {
     Authorization: `Bearer ${token}`, // token - полученный после логина
   },
   body: JSON.stringify({ 
-    userAnswer: 2, // Порядковый номер ответа
+    answerId: 2, // Порядковый номер ответа
     questionNumber: 1 // Порядковый номер вопроса
     }),
 });
@@ -246,7 +249,7 @@ fetch("http://localhost:3333/exam/2", {
 - В случае успеха:
 
   ```typescript
-  { isCorrect: boolean, correctAnswer: number, help: string }
+  { isCorrect: boolean, correctAnswer: string, help: string }
   ```
 
 - В случае провала:
