@@ -4,6 +4,7 @@ import { authRepository } from "../repositories/authRepository";
 import type { BodyRegisterModel } from "../modeles/auth/BodyRegisterModel";
 import { HTTP_STATUSES } from "../utils";
 import { DBError } from "../controllers/DBError";
+import { settings } from "../assets/settings";
 
 export const authService = {
 	async register(data: BodyRegisterModel) {
@@ -18,7 +19,7 @@ export const authService = {
 			passwordHash,
 		});
 
-		jwt.sign({ _id: registerdUser._id }, "somthingStrangeString", {
+		jwt.sign({ _id: registerdUser._id }, settings.JWT_SECRET, {
 			expiresIn: "30d",
 		});
 
@@ -51,7 +52,7 @@ export const authService = {
 
 		const { _id, firstName, secondName } = loginnedUser;
 
-		const token = jwt.sign({ _id }, "somthingStrangeString", {
+		const token = jwt.sign({ _id }, settings.JWT_SECRET, {
 			expiresIn: "30d",
 		});
 

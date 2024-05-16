@@ -3,6 +3,7 @@ import type { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { sendError } from "./assets/requestAssets";
 import { HTTP_STATUSES } from "./utils";
+import { settings } from "./assets/settings";
 
 export const checkAuth = (req: Request, res: Response, next: NextFunction) => {
 	const token: string = (req.headers.authorization || "").replace(
@@ -12,7 +13,7 @@ export const checkAuth = (req: Request, res: Response, next: NextFunction) => {
 
 	if (token) {
 		try {
-			const decoded = jwt.verify(token, "somthingStrangeString");
+			const decoded = jwt.verify(token, settings.JWT_SECRET);
 			//@ts-ignore
 			req.userId = decoded._id;
 			next();
