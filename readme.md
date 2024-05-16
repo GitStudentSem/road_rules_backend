@@ -238,7 +238,7 @@ fetch("http://localhost:3333/exam/2", {
     Authorization: `Bearer ${token}`, // token - полученный после логина
   },
   body: JSON.stringify({ 
-    answerId: 2, // Порядковый номер ответа
+    answerId: '1_1_2', // ID ответа
     questionNumber: 1 // Порядковый номер вопроса
     }),
 });
