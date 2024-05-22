@@ -175,7 +175,7 @@ fetch("http://localhost:3333/tickets/2", {
     Authorization: `Bearer ${token}`, // token - полученный после логина
   },
   body: JSON.stringify({ 
-    userAnswer: 2, // Порядковый номер ответа
+    answerId: '1_1_2', // id ответа
     questionNumber: 1 // Порядковый номер вопроса
     }),
 });
@@ -186,7 +186,7 @@ fetch("http://localhost:3333/tickets/2", {
 - В случае успеха:
 
   ```typescript
-  { isCorrect: boolean correctAnswer: number, help: string }
+  { isCorrect: boolean correctAnswer: string, help: string }
   ```
 
 - В случае провала:
