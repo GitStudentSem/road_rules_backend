@@ -1,4 +1,4 @@
 export type BodySendTicketResult = {
-	userAnswer: number;
+	answerId: string;
 	questionNumber: number;
 };

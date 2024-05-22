@@ -36,15 +36,15 @@ export const ticketService = {
 		userId: string,
 		ticketNumber: number,
 		questionNumber: number,
-		userAnswer: number,
+		answerId: string,
 	) {
 		const result = await ticketRepository.sendTicketResult(
 			userId,
 			ticketNumber,
 			questionNumber,
-			userAnswer,
+			answerId,
 		);
-		const isCorrect = result.correctAnswer === userAnswer;
+		const isCorrect = result.correctAnswer === answerId;
 		return {
 			isCorrect,
 			correctAnswer: result.correctAnswer,

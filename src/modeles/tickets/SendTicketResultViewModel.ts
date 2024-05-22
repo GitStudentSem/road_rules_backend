@@ -1,4 +1,5 @@
 export type SendTicketResultViewModel = {
-	correctAnswer: number;
+	correctAnswer: string;
 	help: string;
+	isCorrect: boolean;
 };

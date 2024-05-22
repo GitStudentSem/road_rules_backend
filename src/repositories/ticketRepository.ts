@@ -1,9 +1,9 @@
 import { db } from "../app";
+import { DBError } from "../controllers/DBError";
 import type { AllUsersDBModel } from "../modeles/AllUsersDBModel";
 import type { UserLoginDBModel } from "../modeles/auth/UserLoginDBModel";
-import { HTTP_STATUSES } from "../utils";
-import { DBError } from "../controllers/DBError";
 import { ticket_1, ticket_2, ticket_3 } from "../tickets";
+import { HTTP_STATUSES } from "../utils";
 
 const tickets = [ticket_1, ticket_2, ticket_3];
 
@@ -60,13 +60,13 @@ const findUserById = (
 
 type TypeGetCorrectAnswer = {
 	ticketNumber: number;
-	userAnswer: number;
+	answerId: string;
 	questionNumber: number;
 };
 const getCorrectAnswer = ({
 	ticketNumber,
+	answerId,
 	questionNumber,
-	userAnswer,
 }: TypeGetCorrectAnswer) => {
 	const ticket = tickets[ticketNumber - 1];
 
@@ -76,11 +76,15 @@ const getCorrectAnswer = ({
 			HTTP_STATUSES.NOT_FOUND_404,
 		);
 	}
-	const answersLength = ticket[questionNumber - 1].answers.length;
 
-	if (userAnswer < 1 || userAnswer > answersLength) {
+	const isExistAnswer =
+		ticket[ticketNumber - 1].answers.find((answer) => {
+			return answer.id === answerId;
+		}) || "";
+
+	if (!isExistAnswer) {
 		throw new DBError(
-			`Указанный номер ответа не найден, всего ответов: ${answersLength}`,
+			`Указанный ответ ${answerId} не найден`,
 			HTTP_STATUSES.NOT_FOUND_404,
 		);
 	}
@@ -95,7 +99,7 @@ const getCorrectAnswer = ({
 	}
 
 	const correctAnswer =
-		question.answers.findIndex((question) => question.isCorrect) + 1 || -1; // Просто отрицательное число, что бы бло ясно что он не нашелся
+		question.answers.find((question) => question.isCorrect)?.id || "";
 
 	return {
 		correctAnswer,
@@ -122,7 +126,7 @@ export const ticketRepository = {
 		userId: string,
 		ticketNumber: number,
 		questionNumber: number,
-		userAnswer: number,
+		answerId: string,
 	) {
 		const user = await isUserExist(userId);
 		isTicketExist(ticketNumber);
@@ -135,13 +139,13 @@ export const ticketRepository = {
 
 		const copyAnswers = await db.getData(pathToAnswer);
 
-		copyAnswers[questionNumber - 1] = userAnswer;
+		copyAnswers[questionNumber - 1] = answerId;
 		await db.push(pathToAnswer, copyAnswers);
 
 		const correctAnswer = getCorrectAnswer({
 			ticketNumber: ticketNumber,
 			questionNumber,
-			userAnswer,
+			answerId,
 		});
 
 		return correctAnswer;
