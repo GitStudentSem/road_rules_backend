@@ -1,6 +1,6 @@
+import fs from "node:fs";
 import { ticketRepository } from "../repositories/ticketRepository";
 import type { TypeQuestion } from "../types";
-import fs from "node:fs";
 
 const imageToBase64 = (imagePath: string) => {
 	const image = fs.readFileSync(imagePath, { encoding: "base64" });
@@ -14,7 +14,9 @@ const removeCorrectAnswersFromTicket = (ticket: TypeQuestion[]) => {
 			img: question.img
 				? `data:image/jpeg;base64,${imageToBase64(question.img)}`
 				: "",
-			answers: question.answers.map((answer) => answer.text),
+			answers: question.answers.map((answer) => {
+				return { answerText: answer.text, id: answer.id };
+			}),
 		};
 	});
 };

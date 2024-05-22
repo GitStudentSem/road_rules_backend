@@ -1,16 +1,16 @@
-import { sendError } from "../assets/requestAssets";
 import type { Request, Response } from "express";
+import { sendError } from "../assets/requestAssets";
+import { ticketService } from "../domain/ticketService";
+import type { BodySendTicketResult } from "../modeles/tickets/BodySendTicketResult";
+import type { SendTicketResultViewModel } from "../modeles/tickets/SendTicketResultViewModel";
+import type { SendTicketViewModel } from "../modeles/tickets/SendTicketViewModel";
+import type { sendTicketsCountViewModel } from "../modeles/tickets/SendTicketsCountViewModel";
 import type {
 	ErrorType,
 	RequestWithParams,
 	RequestWithParamsAndBody,
 } from "../types";
-import type { sendTicketsCountViewModel } from "../modeles/tickets/SendTicketsCountViewModel";
-import type { SendTicketViewModel } from "../modeles/tickets/SendTicketViewModel";
-import type { SendTicketResultViewModel } from "../modeles/tickets/SendTicketResultViewModel";
-import type { BodySendTicketResult } from "../modeles/tickets/BodySendTicketResult";
 import { DBError } from "./DBError";
-import { ticketService } from "../domain/ticketService";
 
 export const sendTicketsCount = async (
 	req: Request,

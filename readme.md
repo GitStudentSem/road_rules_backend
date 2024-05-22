@@ -143,7 +143,14 @@ fetch("http://localhost:3333/tickets/2", {
 - В случае успеха:
 
   ```typescript
-  { img: string, question: string, answers: string[] }[]
+{ 
+  img: string;
+	question: string;
+	answers: {
+		answerText: string;
+		id: string;
+	}[];
+}[]
   ```
 
   `img` - Base64 строка

@@ -3,8 +3,8 @@ import request from "supertest";
 import { app, db } from "../../src/app";
 import {
 	HTTP_STATUSES,
-	testRegisterUser,
 	testLoginnedUser,
+	testRegisterUser,
 } from "../../src/utils";
 import { onRegister } from "./register.api.test";
 
@@ -115,7 +115,9 @@ describe("Получить билет", () => {
 			{
 				question: expect.any(String),
 				img: expect.any(String),
-				answers: expect.arrayContaining([expect.any(String)]),
+				answers: expect.arrayContaining([
+					{ answerText: expect.any(String), id: expect.any(String) },
+				]),
 			},
 		];
 

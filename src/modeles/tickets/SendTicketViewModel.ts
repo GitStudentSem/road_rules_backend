@@ -1,5 +1,8 @@
 export type SendTicketViewModel = {
 	question: string;
 	img: string;
-	answers: string[];
+	answers: {
+		answerText: string;
+		id: string;
+	}[];
 };
