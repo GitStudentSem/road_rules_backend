@@ -77,10 +77,19 @@ const getCorrectAnswer = ({
 		);
 	}
 
+	console.log({
+		ticketNumber,
+		answerId,
+		questionNumber,
+	});
+
+	console.log("ticket", ticket);
 	const isExistAnswer =
-		ticket[ticketNumber - 1].answers.find((answer) => {
+		ticket[questionNumber - 1].answers.find((answer) => {
 			return answer.id === answerId;
 		}) || "";
+
+	console.log("isExistAnswer", isExistAnswer);
 
 	if (!isExistAnswer) {
 		throw new DBError(

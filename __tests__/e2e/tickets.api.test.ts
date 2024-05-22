@@ -171,13 +171,13 @@ describe("Отправить ответ на вопрос", () => {
 	it("2. Логин пользователя", onLogin);
 
 	it("3. Отправить ответ на 1й вопрос", async () =>
-		await onSendAnswer("1", "1_1_1", 2, HTTP_STATUSES.OK_200));
+		await onSendAnswer("1", "1_1_1", 1, HTTP_STATUSES.OK_200));
 
 	it("4. Отправить ответ на несуществующий билет", async () =>
-		await onSendAnswer("-1", "1_1_1", 2, HTTP_STATUSES.NOT_FOUND_404));
+		await onSendAnswer("-1", "1_1_1", 1, HTTP_STATUSES.NOT_FOUND_404));
 
 	it("5. Отправить несуществующий номер ответа", async () =>
-		await onSendAnswer("1", "-1_1_1", 2, HTTP_STATUSES.NOT_FOUND_404));
+		await onSendAnswer("1", "-1_1_1", 1, HTTP_STATUSES.NOT_FOUND_404));
 
 	it("6. Отправить несуществующий номер вопроса", async () =>
 		await onSendAnswer("1", "1_1_1", -1, HTTP_STATUSES.NOT_FOUND_404));
