@@ -4,6 +4,7 @@ import type { AllUsersDBModel } from "../modeles/AllUsersDBModel";
 import type { UserLoginDBModel } from "../modeles/auth/UserLoginDBModel";
 import { ticket_1, ticket_2, ticket_3 } from "../tickets";
 import { HTTP_STATUSES } from "../utils";
+import { userCollection } from "./db";
 
 const tickets = [ticket_1, ticket_2, ticket_3];
 
@@ -77,19 +78,10 @@ const getCorrectAnswer = ({
 		);
 	}
 
-	console.log({
-		ticketNumber,
-		answerId,
-		questionNumber,
-	});
-
-	console.log("ticket", ticket);
 	const isExistAnswer =
 		ticket[questionNumber - 1].answers.find((answer) => {
 			return answer.id === answerId;
 		}) || "";
-
-	console.log("isExistAnswer", isExistAnswer);
 
 	if (!isExistAnswer) {
 		throw new DBError(
@@ -137,26 +129,28 @@ export const ticketRepository = {
 		questionNumber: number,
 		answerId: string,
 	) {
-		const user = await isUserExist(userId);
-		isTicketExist(ticketNumber);
-
-		const filePath = getUserFilePath(user.email);
-		const pathToAnswer = `${filePath}/results/ticket-${ticketNumber}`;
-
-		const isExistAnswer = await db.exists(pathToAnswer);
-		if (!isExistAnswer) await db.push(pathToAnswer, Array(20).fill(-1));
-
-		const copyAnswers = await db.getData(pathToAnswer);
-
-		copyAnswers[questionNumber - 1] = answerId;
-		await db.push(pathToAnswer, copyAnswers);
-
 		const correctAnswer = getCorrectAnswer({
-			ticketNumber: ticketNumber,
+			ticketNumber,
 			questionNumber,
 			answerId,
 		});
 
-		return correctAnswer;
+		const isCorrect = correctAnswer.correctAnswer === answerId;
+
+		const filter = { id: userId };
+
+		const update = {
+			$set: {
+				[`results.ticket_${ticketNumber}`]: {
+					isCorrect,
+					answerId,
+				},
+			},
+		};
+		const options = { upsert: true };
+
+		await userCollection.updateOne(filter, update, options);
+
+		return { ...correctAnswer, isCorrect };
 	},
 };

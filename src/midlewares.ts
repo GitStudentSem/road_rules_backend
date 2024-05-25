@@ -10,12 +10,13 @@ export const checkAuth = (req: Request, res: Response, next: NextFunction) => {
 		/Bearer\s?/,
 		"",
 	);
-
+	console.log("req.headers.authorization", req.headers.authorization);
 	if (token) {
 		try {
 			const decoded = jwt.verify(token, settings.JWT_SECRET);
+			console.log("decoded", decoded);
 			//@ts-ignore
-			req.userId = decoded._id;
+			req.userId = decoded.id;
 			next();
 		} catch (error) {
 			sendError({

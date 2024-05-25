@@ -44,11 +44,11 @@ export const ticketService = {
 			questionNumber,
 			answerId,
 		);
-		const isCorrect = result.correctAnswer === answerId;
+
 		return {
-			isCorrect,
+			isCorrect: result.isCorrect,
 			correctAnswer: result.correctAnswer,
-			help: isCorrect ? "" : result.help,
+			help: result.isCorrect ? "" : result.help,
 		};
 	},
 };
