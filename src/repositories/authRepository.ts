@@ -35,7 +35,10 @@ export const authRepository = {
 		const user = await userCollection.findOne({ email });
 
 		if (!user) {
-			throw new DBError("Пользователь не найен", HTTP_STATUSES.BAD_REQUEST_400);
+			throw new DBError(
+				"Пользователь не найден",
+				HTTP_STATUSES.BAD_REQUEST_400,
+			);
 		}
 
 		return user;
@@ -45,7 +48,6 @@ export const authRepository = {
 		const { email } = data;
 
 		const user = await userCollection.findOne({ email });
-		console.log("USER", user);
 
 		if (!user) {
 			throw new DBError(
@@ -60,7 +62,6 @@ export const authRepository = {
 		const { email } = data;
 
 		const deletedUser = await userCollection.deleteOne({ email });
-		console.log("deletedYser", deletedUser);
 		return deletedUser.deletedCount === 1;
 	},
 	async getAllUsers() {
