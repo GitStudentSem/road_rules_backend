@@ -54,11 +54,11 @@ export const login = async (
 };
 
 export const deleteUser = async (
-	req: RequestWithParams<{ email: string }>,
+	req: RequestWithBody<{ email: string }>,
 	res: Response<{ isDeleted: boolean } | ErrorType>,
 ) => {
 	try {
-		const { email } = req.params;
+		const { email } = req.body;
 
 		const isDeleted = await authService.deleteUser({ email });
 

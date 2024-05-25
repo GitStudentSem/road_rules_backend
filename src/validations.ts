@@ -6,7 +6,7 @@ const emailLength = body("email", "Длина почты должна быть �
 	.isLength({
 		min: 6,
 	});
-const isEmailValid = body("email", "Неверный формат почты").isEmail();
+export const isEmailValid = body("email", "Неверный формат почты").isEmail();
 
 const isPasswordString = body(
 	"password",

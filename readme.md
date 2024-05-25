@@ -96,6 +96,66 @@ fetch("http://localhost:3333/auth/login", {
   { message: string; }
   ```
 
+## Удалить пользователя - http://localhost:3333/auth/delete
+
+### Запрос
+
+```javascript
+fetch("http://localhost:3333/auth/delete", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+	  email: 'your_email@yandex.ru' ,
+  });
+});
+```
+
+### Ответ
+
+- В случае успеха:
+
+  ```typescript
+  { isDeleted: boolean }
+  ```
+
+- В случае провала:
+
+  ```typescript
+  { message: string; }
+  ```
+## Получить список всех пользователей - http://localhost:3333/auth/getAllUsers
+
+### Запрос
+
+```javascript
+fetch("http://localhost:3333/auth/getAllUsers");
+```
+
+### Ответ
+
+- В случае успеха:
+
+  ```typescript
+  { 
+  email: string;
+	firstName: string;
+	secondName: string;
+	passwordHash: string;
+	id: string; 
+  results: {
+		/** key format: ticket-n где n - это число */
+		[key: string]: number[] | undefined;
+		exam?: number[];
+	};
+  }[]
+  ```
+
+- В случае провала:
+
+  ```typescript
+  { message: string; }
+  ```
+
 ## Получить количество билетов - http://localhost:3333/tickets/count
 
 ### Запрос

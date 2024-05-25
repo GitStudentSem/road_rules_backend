@@ -1,5 +1,9 @@
 import express from "express";
-import { loginValidation, registerValidation } from "../validations";
+import {
+	isEmailValid,
+	loginValidation,
+	registerValidation,
+} from "../validations";
 import { handleValudationErrors } from "../midlewares";
 import * as userController from "../controllers/userController";
 
@@ -18,7 +22,12 @@ export const getAuthRouter = () => {
 		handleValudationErrors,
 		userController.login,
 	);
-	router.get("/delete/:email", userController.deleteUser);
+	router.post(
+		"/delete",
+		isEmailValid,
+		handleValudationErrors,
+		userController.deleteUser,
+	);
 	router.get("/getAllUsers", userController.getAllUsers);
 	// router.get("/me", checkAuth, userController.getMe);
 
