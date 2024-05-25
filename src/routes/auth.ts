@@ -18,6 +18,8 @@ export const getAuthRouter = () => {
 		handleValudationErrors,
 		userController.login,
 	);
+	router.get("/delete/:email", userController.deleteUser);
+	router.get("/getAllUsers", userController.getAllUsers);
 	// router.get("/me", checkAuth, userController.getMe);
 
 	return router;

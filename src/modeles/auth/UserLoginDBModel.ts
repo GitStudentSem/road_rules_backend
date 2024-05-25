@@ -3,7 +3,7 @@ export type UserLoginDBModel = {
 	firstName: string;
 	secondName: string;
 	passwordHash: string;
-	_id: string;
+	id: string;
 	results: {
 		/** key format: ticket-n где n - это число */
 		[key: string]: number[] | undefined;

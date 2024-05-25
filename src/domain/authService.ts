@@ -19,7 +19,7 @@ export const authService = {
 			passwordHash,
 		});
 
-		jwt.sign({ _id: registerdUser._id }, settings.JWT_SECRET, {
+		jwt.sign({ id: registerdUser.id }, settings.JWT_SECRET, {
 			expiresIn: "30d",
 		});
 
@@ -27,7 +27,7 @@ export const authService = {
 			email: registerdUser.email,
 			firstName: registerdUser.firstName,
 			secondName: registerdUser.secondName,
-			_id: registerdUser._id,
+			id: registerdUser.id,
 		};
 
 		return userWithoutPasswordHash;
@@ -50,12 +50,26 @@ export const authService = {
 			);
 		}
 
-		const { _id, firstName, secondName } = loginnedUser;
+		const { id, firstName, secondName } = loginnedUser;
 
-		const token = jwt.sign({ _id }, settings.JWT_SECRET, {
+		const token = jwt.sign({ id }, settings.JWT_SECRET, {
 			expiresIn: "30d",
 		});
 
 		return { firstName, secondName, token };
+	},
+
+	async deleteUser(data: { email: string }) {
+		const { email } = data;
+
+		const isUserDelete = await authRepository.deleteUser({ email });
+
+		return isUserDelete;
+	},
+
+	async getAllUsers() {
+		const isUserDelete = await authRepository.getAllUsers();
+
+		return isUserDelete;
 	},
 };

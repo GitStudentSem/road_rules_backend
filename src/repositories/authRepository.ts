@@ -1,14 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import { HTTP_STATUSES } from "../utils";
-import { db } from "../app";
-import type { UserRegisterDBModel } from "../modeles/auth/UserRegisterDBModel";
 import { DBError } from "../controllers/DBError";
-import type { UserLoginDBModel } from "../modeles/auth/UserLoginDBModel";
-
-const getUserFilePath = (email: string) => {
-	const filePath = `./users/${email}`;
-	return filePath;
-};
+import { userCollection } from "./db";
 
 export const authRepository = {
 	async register(data: {
@@ -19,29 +12,31 @@ export const authRepository = {
 	}) {
 		const { email, firstName, secondName, passwordHash } = data;
 
-		const filePath = getUserFilePath(email);
+		const isAlreadyExistUser = await userCollection.findOne({ email });
 
-		const isExistUser = await db.exists(filePath);
-
-		if (isExistUser) {
+		if (isAlreadyExistUser) {
 			throw new DBError(
 				"Пользователь уже существует",
 				HTTP_STATUSES.BAD_REQUEST_400,
 			);
 		}
 
-		const _id = uuidv4();
+		const id = uuidv4();
 
-		const newUser = {
+		await userCollection.insertOne({
 			email,
 			firstName,
 			secondName,
 			passwordHash,
-			_id,
-		};
-		await db.push(filePath, newUser);
+			id,
+			results: {},
+		});
 
-		const user: UserRegisterDBModel = await db.getData(filePath);
+		const user = await userCollection.findOne({ email });
+
+		if (!user) {
+			throw new DBError("Пользователь не найен", HTTP_STATUSES.BAD_REQUEST_400);
+		}
 
 		return user;
 	},
@@ -49,19 +44,28 @@ export const authRepository = {
 	async login(data: { email: string }) {
 		const { email } = data;
 
-		const filePath = getUserFilePath(email);
+		const user = await userCollection.findOne({ email });
+		console.log("USER", user);
 
-		const isExistUser = await db.exists(filePath);
-
-		if (!isExistUser) {
+		if (!user) {
 			throw new DBError(
 				"Логин или пароль не верен",
 				HTTP_STATUSES.NOT_FOUND_404,
 			);
 		}
-
-		const user: UserLoginDBModel = await db.getData(filePath);
-
 		return user;
+	},
+
+	async deleteUser(data: { email: string }) {
+		const { email } = data;
+
+		const deletedUser = await userCollection.deleteOne({ email });
+		console.log("deletedYser", deletedUser);
+		return deletedUser.deletedCount === 1;
+	},
+	async getAllUsers() {
+		const allUsers = await userCollection.find({}).toArray();
+
+		return allUsers;
 	},
 };
