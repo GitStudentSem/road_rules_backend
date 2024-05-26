@@ -5,6 +5,7 @@ import type { UserLoginDBModel } from "../modeles/auth/UserLoginDBModel";
 import type { TypeQuestion } from "../types";
 import { HTTP_STATUSES } from "../utils";
 import { ticket_1, ticket_2, ticket_3 } from "../tickets";
+import { userCollection } from "./db";
 
 const tickets = [ticket_1, ticket_2, ticket_3];
 
@@ -99,20 +100,40 @@ export const examRepository = {
 		questionNumber: number,
 		answerId: string,
 	) {
-		const user = await isUserExist(userId);
 		const question = getQuestion(ticketNumber, questionNumber);
+		const correctAnswerId =
+			question.answers.find((question) => question.isCorrect)?.id || ""; // Просто отрицательное число, что бы бло ясно что он не нашелся
 
-		const filePath = getUserFilePath(user.email);
-		const pathToAnswer = `${filePath}/results/exam`;
+		const isCorrect = correctAnswerId === answerId;
+		const filter = { id: userId };
 
-		const isExistAnswer = await db.exists(pathToAnswer);
-		if (!isExistAnswer) await db.push(pathToAnswer, Array(20).fill(-1));
+		const user = await userCollection.findOne(filter);
 
-		const copyAnswers = await db.getData(pathToAnswer);
+		if (!user) {
+			throw new DBError("Пользователь не найден", HTTP_STATUSES.NOT_FOUND_404);
+		}
 
-		copyAnswers[questionNumber - 1] = answerId;
-		await db.push(pathToAnswer, copyAnswers);
+		let exam = user.results.exam;
 
-		return question;
+		if (!exam) exam = [];
+
+		exam[questionNumber - 1] = {
+			isCorrect,
+			answerId,
+		};
+
+		const update = {
+			$set: {
+				"results.exam": exam,
+			},
+		};
+		const options = { upsert: true };
+		await userCollection.updateOne(filter, update, options);
+
+		return {
+			isCorrect,
+			correctAnswer: correctAnswerId,
+			help: isCorrect ? "" : question.help,
+		};
 	},
 };

@@ -1,3 +1,8 @@
+type Result = {
+	isCorrect?: boolean;
+	answerId?: string;
+};
+
 export type UserLoginDBModel = {
 	email: string;
 	firstName: string;
@@ -6,7 +11,7 @@ export type UserLoginDBModel = {
 	id: string;
 	results: {
 		/** key format: ticket-n где n - это число */
-		[key: string]: number[] | undefined;
-		exam?: number[];
+		[key: string]: Result[] | undefined;
+		exam?: Result[];
 	};
 };

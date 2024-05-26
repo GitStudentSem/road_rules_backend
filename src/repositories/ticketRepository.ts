@@ -138,13 +138,25 @@ export const ticketRepository = {
 		const isCorrect = correctAnswer.correctAnswer === answerId;
 
 		const filter = { id: userId };
+		const user = await userCollection.findOne(filter);
+
+		if (!user) {
+			throw new DBError("Пользователь не найден", HTTP_STATUSES.NOT_FOUND_404);
+		}
+
+		const ticketObject = `results.ticket_${ticketNumber}`;
+		let ticket = user.results[ticketObject];
+
+		if (!ticket) ticket = [];
+
+		ticket[questionNumber - 1] = {
+			isCorrect,
+			answerId,
+		};
 
 		const update = {
 			$set: {
-				[`results.ticket_${ticketNumber}`]: {
-					isCorrect,
-					answerId,
-				},
+				[ticketObject]: ticket,
 			},
 		};
 		const options = { upsert: true };

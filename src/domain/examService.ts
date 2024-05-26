@@ -52,14 +52,7 @@ export const examService = {
 			questionNumber,
 			answerId,
 		);
-		const correctAnswerId =
-			question.answers.find((question) => question.isCorrect)?.id || ""; // Просто отрицательное число, что бы бло ясно что он не нашелся
 
-		const isCorrect = correctAnswerId === answerId;
-		return {
-			isCorrect,
-			correctAnswer: correctAnswerId,
-			help: isCorrect ? "" : question.help,
-		};
+		return question;
 	},
 };
