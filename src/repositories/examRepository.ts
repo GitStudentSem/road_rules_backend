@@ -1,7 +1,4 @@
-import { db } from "../app";
 import { DBError } from "../controllers/DBError";
-import type { AllUsersDBModel } from "../modeles/AllUsersDBModel";
-import type { UserLoginDBModel } from "../modeles/auth/UserLoginDBModel";
 import type { TypeQuestion } from "../types";
 import { HTTP_STATUSES } from "../utils";
 import { ticket_1, ticket_2, ticket_3 } from "../tickets";
@@ -35,7 +32,6 @@ const getQuestion = (ticketNumber: number, questionNumber: number) => {
 	}
 
 	return question;
-	///////
 };
 
 const randomInteger = (min: number, max: number) => {
@@ -59,32 +55,14 @@ const getExam = () => {
 	return questions;
 };
 
-const findUserById = (
-	users: AllUsersDBModel[],
-	id: string,
-): UserLoginDBModel | null => {
-	for (const key in users) {
-		//@ts-ignore
-		if (users[key]._id === id) {
-			//@ts-ignore
-			return users[key];
-		}
-	}
-	return null;
-};
-
 const isUserExist = async (userId: string) => {
-	const users: AllUsersDBModel[] = await db.getData("/users");
-	const user: UserLoginDBModel | null = findUserById(users, userId);
+	const filter = { id: userId };
+	const user = await userCollection.findOne(filter);
 
-	if (user) return user;
-
-	throw new DBError("Пользователь не найден", HTTP_STATUSES.NOT_FOUND_404);
-};
-
-const getUserFilePath = (email: string) => {
-	const filePath = `./users/${email}`;
-	return filePath;
+	if (!user) {
+		throw new DBError("Пользователь не найден", HTTP_STATUSES.NOT_FOUND_404);
+	}
+	return user;
 };
 
 export const examRepository = {
@@ -107,11 +85,7 @@ export const examRepository = {
 		const isCorrect = correctAnswerId === answerId;
 		const filter = { id: userId };
 
-		const user = await userCollection.findOne(filter);
-
-		if (!user) {
-			throw new DBError("Пользователь не найден", HTTP_STATUSES.NOT_FOUND_404);
-		}
+		const user = await isUserExist(userId);
 
 		let exam = user.results.exam;
 

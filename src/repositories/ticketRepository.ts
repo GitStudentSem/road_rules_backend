@@ -1,23 +1,9 @@
-import { db } from "../app";
 import { DBError } from "../controllers/DBError";
-import type { AllUsersDBModel } from "../modeles/AllUsersDBModel";
-import type { UserLoginDBModel } from "../modeles/auth/UserLoginDBModel";
 import { ticket_1, ticket_2, ticket_3 } from "../tickets";
 import { HTTP_STATUSES } from "../utils";
 import { userCollection } from "./db";
 
 const tickets = [ticket_1, ticket_2, ticket_3];
-
-const getUserFilePath = (email: string) => {
-	const filePath = `./users/${email}`;
-	return filePath;
-};
-
-const getTiket = (ticketNumber: number) => {
-	const ticket = tickets[ticketNumber - 1];
-	// const ticketWithoutAnswers = removeCorrectAnswersFromTicket(ticket);
-	return ticket;
-};
 
 const isTicketExist = (ticketNumber: number) => {
 	if (!ticketNumber) {
@@ -37,26 +23,13 @@ const isTicketExist = (ticketNumber: number) => {
 };
 
 const isUserExist = async (userId: string) => {
-	const users: AllUsersDBModel[] = await db.getData("/users");
-	const user: UserLoginDBModel | null = findUserById(users, userId);
+	const filter = { id: userId };
+	const user = await userCollection.findOne(filter);
 
-	if (user) return user;
-
-	throw new DBError("Пользователь не найден", HTTP_STATUSES.NOT_FOUND_404);
-};
-
-const findUserById = (
-	users: AllUsersDBModel[],
-	id: string,
-): UserLoginDBModel | null => {
-	for (const key in users) {
-		//@ts-ignore
-		if (users[key]._id === id) {
-			//@ts-ignore
-			return users[key];
-		}
+	if (!user) {
+		throw new DBError("Пользователь не найден", HTTP_STATUSES.NOT_FOUND_404);
 	}
-	return null;
+	return user;
 };
 
 type TypeGetCorrectAnswer = {
@@ -138,11 +111,7 @@ export const ticketRepository = {
 		const isCorrect = correctAnswer.correctAnswer === answerId;
 
 		const filter = { id: userId };
-		const user = await userCollection.findOne(filter);
-
-		if (!user) {
-			throw new DBError("Пользователь не найден", HTTP_STATUSES.NOT_FOUND_404);
-		}
+		const user = await isUserExist(userId);
 
 		const ticketObject = `results.ticket_${ticketNumber}`;
 		let ticket = user.results[ticketObject];
