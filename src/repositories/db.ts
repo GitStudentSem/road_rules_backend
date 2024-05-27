@@ -1,10 +1,18 @@
-import { MongoClient } from "mongodb";
+import { MongoClient,ServerApiVersion } from "mongodb";
 import { colors, resetStyle, styles } from "../assets/logStyles";
 import type { UserLoginDBModel } from "../modeles/auth/UserLoginDBModel";
+require('dotenv').config();
 
-const mongoUri = process.env.mongoURI || "mongodb://0.0.0.0:27017";
+const URL_LOCAL_DB = "mongodb://0.0.0.0:27017"
+const mongoUri = process.env.URL_CLOUD_DB || URL_LOCAL_DB;
 
-export const client = new MongoClient(mongoUri);
+export const client = new MongoClient(mongoUri,{
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }}
+);
 
 export const DB_NAME = "road-rules";
 export const USER_COLLECTION_DB_NAME = "user-info";
