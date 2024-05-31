@@ -1,8 +1,9 @@
 import type { Question } from "../Question";
 
-export type SendExamViewModel = {
+export type CreateQuestionDBModel = {
+	img?: string;
+	ticketId: string;
 	question: string;
-	img: string;
-	ticketNumber: number;
+	help: string;
 	answers: Question[];
 };

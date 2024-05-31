@@ -1,25 +1,37 @@
-import { MongoClient,ServerApiVersion } from "mongodb";
+import { MongoClient, ServerApiVersion } from "mongodb";
 import { colors, resetStyle, styles } from "../assets/logStyles";
 import type { UserLoginDBModel } from "../modeles/auth/UserLoginDBModel";
-require('dotenv').config();
+import type { TicketsDBModel } from "../modeles/editTicket/TicketsDBModel";
+require("dotenv").config();
 
-const URL_LOCAL_DB = "mongodb://0.0.0.0:27017"
+const URL_LOCAL_DB = "mongodb://0.0.0.0:27017";
 const mongoUri = process.env.URL_CLOUD_DB || URL_LOCAL_DB;
 
-export const client = new MongoClient(mongoUri,{
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  }}
-);
+const client = new MongoClient(mongoUri, {
+	serverApi: {
+		version: ServerApiVersion.v1,
+		strict: true,
+		deprecationErrors: true,
+	},
+});
 
-export const DB_NAME = "road-rules";
-export const USER_COLLECTION_DB_NAME = "user-info";
+const DB_NAME = "road-rules";
+const USER_COLLECTION_DB_NAME = "user-info";
 
 export const userCollection = client
 	.db(DB_NAME)
 	.collection<UserLoginDBModel>(USER_COLLECTION_DB_NAME);
+
+export type CreateTicket = {
+	img?: string;
+	question: string;
+	help: string;
+	answers: { answerText: string; id: string }[];
+};
+const TICKETS_COLLECTION_NAME = "tickets";
+export const ticketCollection = client
+	.db(DB_NAME)
+	.collection<TicketsDBModel>(TICKETS_COLLECTION_NAME);
 
 export const runDb = async () => {
 	try {

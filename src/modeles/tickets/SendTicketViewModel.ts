@@ -1,8 +1,7 @@
+import type { Question } from "../Question";
+
 export type SendTicketViewModel = {
 	question: string;
 	img: string;
-	answers: {
-		answerText: string;
-		id: string;
-	}[];
+	answers: Question[];
 };

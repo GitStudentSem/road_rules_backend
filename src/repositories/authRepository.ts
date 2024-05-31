@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from "uuid";
 import { HTTP_STATUSES } from "../utils";
 import { DBError } from "../controllers/DBError";
 import { userCollection } from "./db";
@@ -21,7 +20,7 @@ export const authRepository = {
 			);
 		}
 
-		const id = uuidv4();
+		const id = Number(new Date()).toString();
 
 		await userCollection.insertOne({
 			email,
