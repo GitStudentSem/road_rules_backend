@@ -1,6 +1,6 @@
 import sharp from "sharp";
 import { editTicketRepository } from "../repositories/editTicketRepository";
-import type { CreateQuestionBody } from "../modeles/editTicket/CreateQuestionBody";
+import type { CreateQuestionBody } from "../models/editTicket/CreateQuestionBody";
 
 const imageToBase64 = async (img?: ArrayBuffer) => {
 	if (!img) return "";

@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { authRepository } from "../repositories/authRepository";
-import type { BodyRegisterModel } from "../modeles/auth/BodyRegisterModel";
+import type { BodyRegisterModel } from "../models/auth/BodyRegisterModel";
 import { HTTP_STATUSES } from "../utils";
 import { DBError } from "../controllers/DBError";
 import { settings } from "../assets/settings";

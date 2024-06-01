@@ -1,6 +1,6 @@
 import { DBError } from "../controllers/DBError";
 import { addQuestion } from "../controllers/editTicket";
-import type { CreateQuestionDBModel } from "../modeles/editTicket/CreateQuestionDBModel.ts";
+import type { CreateQuestionDBModel } from "../models/editTicket/CreateQuestionDBModel";
 import { HTTP_STATUSES } from "../utils";
 import { ticketCollection } from "./db";
 

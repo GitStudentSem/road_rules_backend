@@ -7,6 +7,7 @@ import { getExamRouter } from "./routes/exam";
 import { editTicketRouter } from "./routes/editTicket";
 
 export const app = express();
+
 app.use(cors());
 
 app.use(express.json());

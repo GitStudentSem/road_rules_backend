@@ -2,9 +2,9 @@ import { sendError } from "../assets/requestAssets";
 import type { Request, Response } from "express";
 import type { ErrorType, RequestWithParamsAndBody } from "../types";
 
-import type { SendExamViewModel } from "../modeles/exam/SendExamViewModel";
-import type { SendExamTicketResultViewModel } from "../modeles/exam/SendExamTicketResultViewModel";
-import type { BodySendExamResult } from "../modeles/exam/BodySendExamResult";
+import type { SendExamViewModel } from "../models/exam/SendExamViewModel";
+import type { SendExamTicketResultViewModel } from "../models/exam/SendExamTicketResultViewModel";
+import type { BodySendExamResult } from "../models/exam/BodySendExamResult";
 import { DBError } from "./DBError";
 import { examService } from "../domain/examService";
 

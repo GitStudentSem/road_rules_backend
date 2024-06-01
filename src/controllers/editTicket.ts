@@ -6,7 +6,7 @@ import { HTTP_STATUSES } from "../utils";
 import { DBError } from "./DBError";
 
 import { editTicketService } from "../domain/editTicketService";
-import type { CreateQuestionBody } from "../modeles/editTicket/CreateQuestionBody";
+import type { CreateQuestionBody } from "../models/editTicket/CreateQuestionBody";
 
 export const createTicket = async (
 	req: Request,

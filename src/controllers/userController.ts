@@ -1,14 +1,14 @@
 import { sendError } from "../assets/requestAssets";
 import type { Response, Request } from "express";
 import type { ErrorType, RequestWithBody, RequestWithParams } from "../types";
-import type { BodyRegisterModel } from "../modeles/auth/BodyRegisterModel";
-import type { UserRegisterViewModel } from "../modeles/auth/UserRegisterViewModel";
-import type { BodyLoginModel } from "../modeles/auth/BodyLoginModel";
-import type { UserLoginViewModel } from "../modeles/auth/UserLoginViewModel";
+import type { BodyRegisterModel } from "../models/auth/BodyRegisterModel";
+import type { UserRegisterViewModel } from "../models/auth/UserRegisterViewModel";
+import type { BodyLoginModel } from "../models/auth/BodyLoginModel";
+import type { UserLoginViewModel } from "../models/auth/UserLoginViewModel";
 import { HTTP_STATUSES } from "../utils";
 import { DBError } from "./DBError";
 import { authService } from "../domain/authService";
-import type { UserLoginDBModel } from "../modeles/auth/UserLoginDBModel";
+import type { UserLoginDBModel } from "../models/auth/UserLoginDBModel";
 
 export const register = async (
 	req: RequestWithBody<BodyRegisterModel>,

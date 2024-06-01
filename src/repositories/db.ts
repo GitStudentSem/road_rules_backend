@@ -1,7 +1,7 @@
 import { MongoClient, ServerApiVersion } from "mongodb";
 import { colors, resetStyle, styles } from "../assets/logStyles";
-import type { UserLoginDBModel } from "../modeles/auth/UserLoginDBModel";
-import type { TicketsDBModel } from "../modeles/editTicket/TicketsDBModel";
+import type { UserLoginDBModel } from "../models/auth/UserLoginDBModel";
+import type { TicketsDBModel } from "../models/editTicket/TicketsDBModel";
 require("dotenv").config();
 
 const URL_LOCAL_DB = "mongodb://0.0.0.0:27017";
