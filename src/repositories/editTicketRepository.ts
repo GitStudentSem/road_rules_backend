@@ -11,6 +11,17 @@ type CreateQuestion = {
 	help: string;
 	answers: Question[];
 };
+
+const findTicket = async (ticketId: string) => {
+	const ticket = await ticketCollection.findOne({ ticketId });
+
+	if (!ticket) {
+		throw new DBError("Билет не найден", HTTP_STATUSES.NOT_FOUND_404);
+	}
+
+	return ticket;
+};
+
 export const editTicketRepository = {
 	async createTicket(ticketId: string) {
 		ticketCollection.insertOne({ ticketId, questions: [] });
@@ -19,11 +30,7 @@ export const editTicketRepository = {
 
 	async addQuestion(data: CreateQuestion) {
 		const { img, questionId, ticketId, question, help, answers } = data;
-		const ticket = await ticketCollection.findOne({ ticketId });
-
-		if (!ticket) {
-			throw new DBError("Билет не найден", HTTP_STATUSES.BAD_REQUEST_400);
-		}
+		const ticket = await findTicket(ticketId);
 
 		if (ticket.questions.length >= 20) {
 			throw new DBError(
@@ -31,15 +38,42 @@ export const editTicketRepository = {
 				HTTP_STATUSES.BAD_REQUEST_400,
 			);
 		}
-		await ticketCollection.updateOne(
+		const addedQuestion = await ticketCollection.updateOne(
 			{ ticketId },
 			{ $push: { questions: { img, questionId, question, help, answers } } },
 		);
 
-		return true;
+		return addedQuestion.modifiedCount === 1;
 	},
-	async deleteQuestion(questionId: string) {
-		const deletedUser = await ticketCollection.deleteOne({ questionId });
-		return deletedUser.deletedCount === 1;
+
+	async deleteTicket(ticketId: string) {
+		await findTicket(ticketId);
+
+		const deletedData = await ticketCollection.deleteOne({ ticketId });
+
+		return deletedData.deletedCount === 1;
+	},
+
+	async deleteQuestion(ticketId: string, questionId: string) {
+		await findTicket(ticketId);
+
+		const query = {
+			ticketId,
+			questions: {
+				$elemMatch: { questionId },
+			},
+		};
+
+		const question = await ticketCollection.findOne(query);
+
+		if (!question) {
+			throw new DBError("Вопрос не найден", HTTP_STATUSES.NOT_FOUND_404);
+		}
+		const update = {
+			$pull: { questions: { questionId } },
+		};
+		const deletedData = await ticketCollection.updateOne({ ticketId }, update);
+
+		return deletedData.modifiedCount === 1;
 	},
 };

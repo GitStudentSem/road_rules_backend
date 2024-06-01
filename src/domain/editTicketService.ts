@@ -1,6 +1,7 @@
 import sharp from "sharp";
 import { editTicketRepository } from "../repositories/editTicketRepository";
 import type { CreateQuestionBody } from "../models/editTicket/CreateQuestionBody";
+import type { DeleteTicketBody } from "../models/editTicket/DeleteTicketBody";
 
 const imageToBase64 = async (img?: ArrayBuffer) => {
 	if (!img) return "";
@@ -42,9 +43,19 @@ export const editTicketService = {
 		return isCreated;
 	},
 
-	async deleteQuestion(questionId: string) {
-		const isCreated = await editTicketRepository.deleteQuestion(questionId);
+	async deleteTicket(ticketId: string) {
+		const isDeleted = await editTicketRepository.deleteTicket(ticketId);
 
-		return isCreated;
+		return isDeleted;
+	},
+	async deleteQuestion(data: DeleteTicketBody) {
+		const { ticketId, questionId } = data;
+
+		const isDeleted = await editTicketRepository.deleteQuestion(
+			ticketId,
+			questionId,
+		);
+
+		return isDeleted;
 	},
 };

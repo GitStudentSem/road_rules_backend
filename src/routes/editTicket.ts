@@ -72,17 +72,16 @@ export const editTicketRouter = () => {
 
 	/**
 	 * @swagger
-	 * /editTicket/deleteQuestion/{questionId}:
+	 * /editTicket/deleteQuestion:
 	 *   delete:
 	 *     tags:
 	 *       - Редактор билетов
-	 *     summary: Удалить вопрос по id
-	 *     parameters:
-	 *       - name: questionId
-	 *         in: path
-	 *         description: id удаляемого вопроса
-	 *         required: true
-	 *         default: 1
+	 *     summary: Удалить вопрос из билета
+	 *     requestBody:
+	 *       content:
+	 *         application/json:
+	 *           schema:
+	 *             $ref: '#/components/schemas/DeleteTicketBody'
 	 *     responses:
 	 *       200:
 	 *         description: Вопрос успешно удален
@@ -93,18 +92,51 @@ export const editTicketRouter = () => {
 	 *              properties:
 	 *                isDeleted:
 	 *                  type: boolean
-	 *                  description: Удален ли билет
+	 *                  description: Удален ли вопрос из билета
 	 *       error:
-	 *         description: Ошибка добавления вопроса
+	 *         description: Ошибка удаления вопроса
 	 *         content:
 	 *           application/json:
 	 *             schema:
 	 *               $ref: '#/components/schemas/ErrorType'
 	 */
-	router.delete(
-		"/deleteQuestion/:questionId",
-		editTicketController.deleteQuestion,
-	);
+	router.delete("/deleteQuestion", editTicketController.deleteQuestion);
+
+	/**
+	 * @swagger
+	 * /editTicket/deleteTicket:
+	 *   delete:
+	 *     tags:
+	 *       - Редактор билетов
+	 *     summary: Удалить билет
+	 *     requestBody:
+	 *       content:
+	 *         application/json:
+	 *           schema:
+	 *              type: object
+	 *              properties:
+	 *                ticketId:
+	 *                  type: string
+	 *                  description: id удаляемого билета
+	 *     responses:
+	 *       200:
+	 *         description: Билет успешно удален
+	 *         content:
+	 *           application/json:
+	 *             schema:
+	 *              type: object
+	 *              properties:
+	 *                isDeleted:
+	 *                  type: boolean
+	 *                  description: Удален ли билет
+	 *       error:
+	 *         description: Ошибка удаления билета
+	 *         content:
+	 *           application/json:
+	 *             schema:
+	 *               $ref: '#/components/schemas/ErrorType'
+	 */
+	router.delete("/deleteTicket", editTicketController.deleteTicket);
 
 	return router;
 };

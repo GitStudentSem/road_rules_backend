@@ -1,12 +1,13 @@
 import { sendError } from "../assets/requestAssets";
 import type { Request, Response } from "express";
-import type { ErrorType, RequestWithBody, RequestWithParams } from "../types";
+import type { ErrorType, RequestWithBody } from "../types";
 
 import { HTTP_STATUSES } from "../utils";
 import { DBError } from "./DBError";
 
 import { editTicketService } from "../domain/editTicketService";
 import type { CreateQuestionBody } from "../models/editTicket/CreateQuestionBody";
+import type { DeleteTicketBody } from "../models/editTicket/DeleteTicketBody";
 
 export const createTicket = async (
 	req: Request,
@@ -45,18 +46,18 @@ export const addQuestion = async (
 			res.status(error.status).json({ message: error.message });
 			return;
 		}
-		sendError({ message: "Не удалось создать билет", error, res });
+		sendError({ message: "Не удалось добавить вопрос", error, res });
 	}
 };
 
-export const deleteQuestion = async (
-	req: RequestWithParams<{ questionId: string }>,
+export const deleteTicket = async (
+	req: RequestWithBody<{ ticketId: string }>,
 	res: Response<{ isDeleted: boolean } | ErrorType>,
 ) => {
 	try {
-		const { questionId } = req.params;
+		const { ticketId } = req.body;
 
-		const isDeleted = await editTicketService.deleteQuestion(questionId);
+		const isDeleted = await editTicketService.deleteTicket(ticketId);
 
 		res.status(HTTP_STATUSES.OK_200).json({ isDeleted });
 	} catch (error) {
@@ -64,6 +65,27 @@ export const deleteQuestion = async (
 			res.status(error.status).json({ message: error.message });
 			return;
 		}
-		sendError({ message: "Не удалось создать билет", error, res });
+		sendError({ message: "Не удалось удалить билет", error, res });
+	}
+};
+export const deleteQuestion = async (
+	req: RequestWithBody<DeleteTicketBody>,
+	res: Response<{ isDeleted: boolean } | ErrorType>,
+) => {
+	try {
+		const { ticketId, questionId } = req.body;
+
+		const isDeleted = await editTicketService.deleteQuestion({
+			ticketId,
+			questionId,
+		});
+
+		res.status(HTTP_STATUSES.OK_200).json({ isDeleted });
+	} catch (error) {
+		if (error instanceof DBError) {
+			res.status(error.status).json({ message: error.message });
+			return;
+		}
+		sendError({ message: "Не удалось удалить влпрос", error, res });
 	}
 };
