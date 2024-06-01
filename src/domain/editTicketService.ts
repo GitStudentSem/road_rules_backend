@@ -23,6 +23,7 @@ export const editTicketService = {
 	async addQuestion(data: CreateQuestionBody) {
 		const { img, ticketId, question, help, answers } = data;
 		const imageInBase64 = await imageToBase64(img);
+		const questionId = Number(new Date()).toString();
 
 		const answersWithId = answers.map((answer) => {
 			const id = performance.now().toString();
@@ -31,11 +32,18 @@ export const editTicketService = {
 
 		const isCreated = await editTicketRepository.addQuestion({
 			img: imageInBase64,
+			questionId,
 			ticketId,
 			question,
 			help,
 			answers: answersWithId,
 		});
+
+		return isCreated;
+	},
+
+	async deleteQuestion(questionId: string) {
+		const isCreated = await editTicketRepository.deleteQuestion(questionId);
 
 		return isCreated;
 	},

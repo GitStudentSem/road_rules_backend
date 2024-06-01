@@ -1,6 +1,6 @@
 import { sendError } from "../assets/requestAssets";
 import type { Request, Response } from "express";
-import type { ErrorType, RequestWithBody } from "../types";
+import type { ErrorType, RequestWithBody, RequestWithParams } from "../types";
 
 import { HTTP_STATUSES } from "../utils";
 import { DBError } from "./DBError";
@@ -40,6 +40,25 @@ export const addQuestion = async (
 		});
 
 		res.status(HTTP_STATUSES.OK_200).json({ isCreated });
+	} catch (error) {
+		if (error instanceof DBError) {
+			res.status(error.status).json({ message: error.message });
+			return;
+		}
+		sendError({ message: "Не удалось создать билет", error, res });
+	}
+};
+
+export const deleteQuestion = async (
+	req: RequestWithParams<{ questionId: string }>,
+	res: Response<{ isDeleted: boolean } | ErrorType>,
+) => {
+	try {
+		const { questionId } = req.params;
+
+		const isDeleted = await editTicketService.deleteQuestion(questionId);
+
+		res.status(HTTP_STATUSES.OK_200).json({ isDeleted });
 	} catch (error) {
 		if (error instanceof DBError) {
 			res.status(error.status).json({ message: error.message });

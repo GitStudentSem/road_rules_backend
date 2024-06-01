@@ -1,8 +1,8 @@
 import type { Question } from "../Question";
 
 export type CreateQuestionDBModel = {
-	img?: string;
-	ticketId: string;
+	img: string;
+	questionId: string;
 	question: string;
 	help: string;
 	answers: Question[];

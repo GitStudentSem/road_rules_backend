@@ -78,8 +78,8 @@ export const getAuthRouter = () => {
 
 	/**
 	 * @swagger
-	 * /auth/delete:
-	 *   post:
+	 * /auth/deleteUser:
+	 *   delete:
 	 *     tags:
 	 *      - Авторизация
 	 *     summary: Удалить пользователя по почте
@@ -111,8 +111,8 @@ export const getAuthRouter = () => {
 	 *             schema:
 	 *               $ref: '#/components/schemas/ErrorType'
 	 */
-	router.post(
-		"/delete",
+	router.delete(
+		"/deleteUser",
 		isEmailValid,
 		handleValudationErrors,
 		userController.deleteUser,

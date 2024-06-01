@@ -1,5 +1,7 @@
 import express from "express";
 import * as editTicketController from "../controllers/editTicket";
+import { addQuestionValidation } from "../validations";
+import { handleValudationErrors } from "../midlewares";
 
 export const editTicketRouter = () => {
 	const router = express.Router();
@@ -61,7 +63,48 @@ export const editTicketRouter = () => {
 	 *             schema:
 	 *               $ref: '#/components/schemas/ErrorType'
 	 */
-	router.post("/addQuestion", editTicketController.addQuestion);
+	router.post(
+		"/addQuestion",
+		addQuestionValidation,
+		handleValudationErrors,
+		editTicketController.addQuestion,
+	);
+
+	/**
+	 * @swagger
+	 * /editTicket/deleteQuestion/{questionId}:
+	 *   delete:
+	 *     tags:
+	 *       - Редактор билетов
+	 *     summary: Удалить вопрос по id
+	 *     parameters:
+	 *       - name: questionId
+	 *         in: path
+	 *         description: id удаляемого вопроса
+	 *         required: true
+	 *         default: 1
+	 *     responses:
+	 *       200:
+	 *         description: Вопрос успешно удален
+	 *         content:
+	 *           application/json:
+	 *             schema:
+	 *              type: object
+	 *              properties:
+	 *                isDeleted:
+	 *                  type: boolean
+	 *                  description: Удален ли билет
+	 *       error:
+	 *         description: Ошибка добавления вопроса
+	 *         content:
+	 *           application/json:
+	 *             schema:
+	 *               $ref: '#/components/schemas/ErrorType'
+	 */
+	router.delete(
+		"/deleteQuestion/:questionId",
+		editTicketController.deleteQuestion,
+	);
 
 	return router;
 };

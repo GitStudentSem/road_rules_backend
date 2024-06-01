@@ -53,3 +53,17 @@ export const answerValidation = [
 	body("userAnswer", "Ответ пользователя должен быть числом").isNumeric(),
 	body("questionNumber", "Номер вопроса должен быть числом").isNumeric(),
 ];
+
+export const addQuestionValidation = [
+	body("ticketId", "id билета должно быть строкой").isString(),
+	body("ticketId", "id не может быть пустым").trim().isLength({ min: 1 }),
+	body("question", "Минимальное число сивмолов для попроса: 10").isLength({
+		min: 10,
+	}),
+	body("help", "Минимальное число сивмолов для подсказки: 10").trim().isLength({
+		min: 10,
+	}),
+	body("answers", "Ответы должны быть массивом").isArray(),
+	body("answers.*", "Ответы должны быть строками").isString(),
+	body("answers", "Минимальное количество ответов: 2").isLength({ min: 2 }),
+];
