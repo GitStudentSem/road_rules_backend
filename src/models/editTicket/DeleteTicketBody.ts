@@ -8,10 +8,11 @@
  *         ticketId:
  *           type: string
  *           description: id билета из которого нужно удалить вопрос
- *           required: true
  *         questionId:
  *           type: string
  *           description: id вопроса который нужно удалить
- *           required: true
+ *       required:
+ *         - ticketId
+ *         - questionId
  */
 export type DeleteTicketBody = { ticketId: string; questionId: string };

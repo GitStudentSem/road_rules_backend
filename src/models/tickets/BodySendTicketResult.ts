@@ -8,12 +8,13 @@
  *         answerId:
  *           type: string
  *           description: id варианта ответа
- *           required: true
  *         questionNumber:
  *           type: number
  *           description: Порядковый номер вопроса
- *           required: true
  *           default: 1
+ *       required:
+ *         - answerId
+ *         - questionNumber
  */
 export type BodySendTicketResult = {
 	answerId: string;
