@@ -29,9 +29,8 @@ export const addQuestion = async (
 	res: Response<{ isCreated: boolean } | ErrorType>,
 ) => {
 	try {
-		console.log("===============");
 		const { img, question, help, answers, ticketId } = req.body;
-		console.log({ img, question, help, answers, ticketId });
+
 		const isCreated = await editTicketService.addQuestion({
 			img,
 			ticketId,
@@ -40,7 +39,7 @@ export const addQuestion = async (
 			answers,
 		});
 
-		res.status(HTTP_STATUSES.OK_200).json({ isCreated: true });
+		res.status(HTTP_STATUSES.OK_200).json({ isCreated });
 	} catch (error) {
 		if (error instanceof DBError) {
 			res.status(error.status).json({ message: error.message });

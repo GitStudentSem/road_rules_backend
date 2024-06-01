@@ -13,9 +13,14 @@ const options: swaggerJSDoc.Options = {
 			},
 		},
 		security: [{ bearerAuth: [] }],
+		servers: [
+			{
+				url: "http://localhost:3333",
+				description: "Локальный сервер",
+			},
+		],
 	},
 	apis: ["./src/routes/*.ts", "./src/models/**/*.ts"],
-	// apis: ["../routes/auth.ts"],
 };
 
 const swaggerSpec = swaggerJSDoc(options);

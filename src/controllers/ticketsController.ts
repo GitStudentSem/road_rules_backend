@@ -4,7 +4,7 @@ import { ticketService } from "../domain/ticketService";
 import type { BodySendTicketResult } from "../models/tickets/BodySendTicketResult";
 import type { SendTicketResultViewModel } from "../models/tickets/SendTicketResultViewModel";
 import type { SendTicketViewModel } from "../models/tickets/SendTicketViewModel";
-import type { sendTicketsCountViewModel } from "../models/tickets/SendTicketsCountViewModel";
+import type { SendTicketsCountViewModel } from "../models/tickets/SendTicketsCountViewModel";
 import type {
 	ErrorType,
 	RequestWithParams,
@@ -14,7 +14,7 @@ import { DBError } from "./DBError";
 
 export const sendTicketsCount = async (
 	req: Request,
-	res: Response<sendTicketsCountViewModel | ErrorType>,
+	res: Response<SendTicketsCountViewModel | ErrorType>,
 ) => {
 	try {
 		//@ts-ignore

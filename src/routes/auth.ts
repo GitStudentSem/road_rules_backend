@@ -15,7 +15,7 @@ export const getAuthRouter = () => {
 	 * /auth/register:
 	 *   post:
 	 *     tags:
-	 *      - Auth
+	 *       - Авторизация
 	 *     summary: Регистрация нового пользователя
 	 *     requestBody:
 	 *       content:
@@ -48,7 +48,7 @@ export const getAuthRouter = () => {
 	 * /auth/login:
 	 *   post:
 	 *     tags:
-	 *      - Auth
+	 *      - Авторизация
 	 *     summary: Логин пользователя
 	 *     requestBody:
 	 *       content:
@@ -81,7 +81,7 @@ export const getAuthRouter = () => {
 	 * /auth/delete:
 	 *   post:
 	 *     tags:
-	 *      - Auth
+	 *      - Авторизация
 	 *     summary: Удалить пользователя по почте
 	 *     requestBody:
 	 *       content:
@@ -91,7 +91,7 @@ export const getAuthRouter = () => {
 	 *              properties:
 	 *                email:
 	 *                  type: string
-	 *                  default: your_email.yandex.ru
+	 *                  default: your_email@yandex.ru
 	 *                  description: Почта пользователя
 	 *     responses:
 	 *       200:
@@ -120,17 +120,19 @@ export const getAuthRouter = () => {
 
 	/**
 	 * @swagger
-	 * /auth/login:
+	 * /auth/getAllUsers:
 	 *   get:
 	 *     tags:
-	 *      - Auth
+	 *      - Авторизация
 	 *     summary: Получить всех пользователей
 	 *     responses:
 	 *       200:
-	 *         description: Успешный логин
+	 *         description: Все пользователи получены
 	 *         content:
 	 *           application/json:
 	 *             schema:
+	 *              type: array
+	 *              items:
 	 *               $ref: '#/components/schemas/UserLoginDBModel'
 	 *       error:
 	 *         description: Ошибка получения всех пользователей
