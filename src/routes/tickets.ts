@@ -1,7 +1,7 @@
 import express from "express";
 import { answerValidation } from "../validations";
 import { checkAuth } from "../midlewares";
-import * as taskController from "../controllers/ticketsController";
+import * as ticketController from "../controllers/ticketsController";
 
 export const getTicketsRouter = () => {
 	const router = express.Router();
@@ -27,7 +27,7 @@ export const getTicketsRouter = () => {
 	 *             schema:
 	 *               $ref: '#/components/schemas/ErrorType'
 	 */
-	router.get("/count", checkAuth, taskController.sendTicketsCount);
+	router.get("/count", checkAuth, ticketController.sendTicketsCount);
 
 	/**
 	 * @swagger
@@ -58,7 +58,7 @@ export const getTicketsRouter = () => {
 	 *             schema:
 	 *               $ref: '#/components/schemas/ErrorType'
 	 */
-	router.get("/:ticketNumber", checkAuth, taskController.sendTicket);
+	router.get("/:ticketNumber", checkAuth, ticketController.sendTicket);
 
 	/**
 	 * @swagger
@@ -96,7 +96,7 @@ export const getTicketsRouter = () => {
 		"/:ticketNumber",
 		checkAuth,
 		answerValidation,
-		taskController.sendTicketResult,
+		ticketController.sendTicketResult,
 	);
 
 	return router;
