@@ -30,7 +30,7 @@ const swaggerDocs = (app: Express, port: number) => {
 
 	//Docs is JSON format
 
-	app.get("docs.json", (req: Request, res: Response) => {
+	app.get("/docs.json", (req: Request, res: Response) => {
 		res.setHeader("Content-Type", "application/json");
 		res.send(swaggerSpec);
 	});
