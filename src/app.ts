@@ -15,4 +15,4 @@ app.use(express.json());
 app.use("/auth", getAuthRouter());
 app.use("/tickets", getTicketsRouter());
 app.use("/exam", getExamRouter());
-app.use("/editTicket", editTicketRouter());
+app.use("/editor", editTicketRouter());

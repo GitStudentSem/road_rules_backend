@@ -29,14 +29,10 @@ const options: swaggerJSDoc.Options = {
 			"/auth/deleteUser": registerSwaggerDoc["/auth/deleteUser"],
 			"/auth/getAllUsers": registerSwaggerDoc["/auth/getAllUsers"],
 
-			"/editTicket/createTicket":
-				editTicketSwaggerDoc["/editTicket/createTicket"],
-			"/editTicket/addQuestion":
-				editTicketSwaggerDoc["/editTicket/addQuestion"],
-			"/editTicket/deleteTicket":
-				editTicketSwaggerDoc["/editTicket/deleteTicket"],
-			"/editTicket/deleteQuestion":
-				editTicketSwaggerDoc["/editTicket/deleteQuestion"],
+			"/editor/createTicket": editTicketSwaggerDoc["/editor/createTicket"],
+			"/editor/addQuestion": editTicketSwaggerDoc["/editor/addQuestion"],
+			"/editor/deleteTicket": editTicketSwaggerDoc["/editor/deleteTicket"],
+			"/editor/deleteQuestion": editTicketSwaggerDoc["/editor/deleteQuestion"],
 
 			"/exam/{ticketNumber}": examSwaggerDoc["/exam/{ticketNumber}"],
 			"/exam": examSwaggerDoc["/exam"],

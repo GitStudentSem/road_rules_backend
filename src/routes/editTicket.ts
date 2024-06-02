@@ -5,7 +5,7 @@ import { handleValudationErrors } from "../midlewares";
 import { getErrorWaggerDoc } from "../assets/getErrorSwaggerDoc";
 
 export const editTicketSwaggerDoc = {
-	"/editTicket/createTicket": {
+	"/editor/createTicket": {
 		get: {
 			tags: ["Редактор билетов"],
 			summary: "Создать пустой билет",
@@ -19,7 +19,7 @@ export const editTicketSwaggerDoc = {
 		},
 	},
 
-	"/editTicket/addQuestion": {
+	"/editor/addQuestion": {
 		post: {
 			tags: ["Редактор билетов"],
 			summary: "Добавить вопрос в билет",
@@ -40,7 +40,7 @@ export const editTicketSwaggerDoc = {
 		},
 	},
 
-	"/editTicket/deleteTicket": {
+	"/editor/deleteTicket": {
 		delete: {
 			tags: ["Редактор билетов"],
 			summary: "Удалить билет",
@@ -69,7 +69,7 @@ export const editTicketSwaggerDoc = {
 		},
 	},
 
-	"/editTicket/deleteQuestion": {
+	"/editor/deleteQuestion": {
 		delete: {
 			tags: ["Редактор билетов"],
 			summary: "Удалить вопрос из билета",
