@@ -2,7 +2,7 @@
  * @swagger
  * components:
  *   schemas:
- *     SendExamTicketResultViewModel:
+ *     SendExamResultViewModel:
  *       type: object
  *       properties:
  *         isCorrect:
@@ -15,7 +15,7 @@
  *           type: string
  *           description: Помощь по вопросу
  */
-export type SendExamTicketResultViewModel = {
+export type SendExamResultViewModel = {
 	isCorrect: boolean;
 	correctAnswer: string;
 	help: string;

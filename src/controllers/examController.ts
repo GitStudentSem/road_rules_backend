@@ -3,7 +3,7 @@ import type { Request, Response } from "express";
 import type { ErrorType, RequestWithParamsAndBody } from "../types";
 
 import type { SendExamViewModel } from "../models/exam/SendExamViewModel";
-import type { SendExamTicketResultViewModel } from "../models/exam/SendExamTicketResultViewModel";
+import type { SendExamResultViewModel } from "../models/exam/SendExamResultViewModel";
 import type { BodySendExamResult } from "../models/exam/BodySendExamResult";
 import { DBError } from "./DBError";
 import { examService } from "../domain/examService";
@@ -28,7 +28,7 @@ export const sendExam = async (
 
 export const sendExamResult = async (
 	req: RequestWithParamsAndBody<{ ticketNumber: string }, BodySendExamResult>,
-	res: Response<SendExamTicketResultViewModel | ErrorType>,
+	res: Response<SendExamResultViewModel | ErrorType>,
 ) => {
 	try {
 		const result = await examService.sendExamResult(
