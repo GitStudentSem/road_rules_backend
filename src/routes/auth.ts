@@ -6,6 +6,7 @@ import {
 } from "../validations";
 import { handleValudationErrors } from "../midlewares";
 import * as userController from "../controllers/userController";
+import { getErrorWaggerDoc } from "../assets/getErrorSwaggerDoc";
 
 export const registerSwaggerDoc = {
 	"/auth/register": {
@@ -31,16 +32,7 @@ export const registerSwaggerDoc = {
 						},
 					},
 				},
-				error: {
-					description: "Ошибка регистрации",
-					content: {
-						"application/json": {
-							schema: {
-								$ref: "#/components/schemas/ErrorType",
-							},
-						},
-					},
-				},
+				error: getErrorWaggerDoc("Ошибка регистрации"),
 			},
 		},
 	},
@@ -68,16 +60,7 @@ export const registerSwaggerDoc = {
 						},
 					},
 				},
-				error: {
-					description: "Ошибка логина",
-					content: {
-						"application/json": {
-							schema: {
-								$ref: "#/components/schemas/ErrorType",
-							},
-						},
-					},
-				},
+				error: getErrorWaggerDoc("Ошибка логина"),
 			},
 		},
 	},
@@ -107,16 +90,7 @@ export const registerSwaggerDoc = {
 				204: {
 					description: "Пользователь удален",
 				},
-				error: {
-					description: "Ошибка удаления пользователя",
-					content: {
-						"application/json": {
-							schema: {
-								$ref: "#/components/schemas/ErrorType",
-							},
-						},
-					},
-				},
+				error: getErrorWaggerDoc("Ошибка удаления пользователя"),
 			},
 		},
 	},
@@ -138,16 +112,7 @@ export const registerSwaggerDoc = {
 						},
 					},
 				},
-				error: {
-					description: "Ошибка получения всех пользователей",
-					content: {
-						"application/json": {
-							schema: {
-								$ref: "#/components/schemas/ErrorType",
-							},
-						},
-					},
-				},
+				error: getErrorWaggerDoc("Ошибка получения всех пользователей"),
 			},
 		},
 	},

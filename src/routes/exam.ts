@@ -3,6 +3,7 @@ import { answerValidation } from "../validations";
 import { checkAuth } from "../midlewares";
 
 import * as examController from "../controllers/examController";
+import { getErrorWaggerDoc } from "../assets/getErrorSwaggerDoc";
 
 export const examSwaggerDoc = {
 	"/exam": {
@@ -21,16 +22,7 @@ export const examSwaggerDoc = {
 						},
 					},
 				},
-				error: {
-					description: "Ошибка получения экзамена",
-					content: {
-						"application/json": {
-							schema: {
-								$ref: "#/components/schemas/ErrorType",
-							},
-						},
-					},
-				},
+				error: getErrorWaggerDoc("Ошибка получения экзамена"),
 			},
 		},
 	},
@@ -67,16 +59,7 @@ export const examSwaggerDoc = {
 						},
 					},
 				},
-				error: {
-					description: "Ошибка отправки ответа",
-					content: {
-						"application/json": {
-							schema: {
-								$ref: "#/components/schemas/ErrorType",
-							},
-						},
-					},
-				},
+				error: getErrorWaggerDoc("Ошибка отправки ответа"),
 			},
 		},
 	},

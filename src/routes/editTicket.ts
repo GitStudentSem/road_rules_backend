@@ -2,6 +2,7 @@ import express from "express";
 import * as editTicketController from "../controllers/editTicket";
 import { addQuestionValidation } from "../validations";
 import { handleValudationErrors } from "../midlewares";
+import { getErrorWaggerDoc } from "../assets/getErrorSwaggerDoc";
 
 export const editTicketSwaggerDoc = {
 	"/editTicket/createTicket": {
@@ -13,16 +14,7 @@ export const editTicketSwaggerDoc = {
 				204: {
 					description: "Билет упешно создан",
 				},
-				error: {
-					description: "Ошибка создания билета",
-					content: {
-						"application/json": {
-							schema: {
-								$ref: "#/components/schemas/ErrorType",
-							},
-						},
-					},
-				},
+				error: getErrorWaggerDoc("Ошибка создания билета"),
 			},
 		},
 	},
@@ -43,16 +35,7 @@ export const editTicketSwaggerDoc = {
 				204: {
 					description: "Вопрос успешно добавлен",
 				},
-				error: {
-					description: "Ошибка добавления вопроса",
-					content: {
-						"application/json": {
-							schema: {
-								$ref: "#/components/schemas/ErrorType",
-							},
-						},
-					},
-				},
+				error: getErrorWaggerDoc("Ошибка добавления вопроса"),
 			},
 		},
 	},
@@ -81,16 +64,7 @@ export const editTicketSwaggerDoc = {
 				204: {
 					description: "Билет успешно удален",
 				},
-				error: {
-					description: "Ошибка удаления билета",
-					content: {
-						"application/json": {
-							schema: {
-								$ref: "#/components/schemas/ErrorType",
-							},
-						},
-					},
-				},
+				error: getErrorWaggerDoc("Ошибка удаления билета"),
 			},
 		},
 	},
@@ -111,16 +85,7 @@ export const editTicketSwaggerDoc = {
 				204: {
 					description: "Вопрос успешно удален",
 				},
-				error: {
-					description: "Ошибка удаления вопроса",
-					content: {
-						"application/json": {
-							schema: {
-								$ref: "#/components/schemas/ErrorType",
-							},
-						},
-					},
-				},
+				error: getErrorWaggerDoc("Ошибка удаления вопроса"),
 			},
 		},
 	},

@@ -7,6 +7,7 @@
  *       properties:
  *         ticketsCount:
  *           type: number
+ *           default: 20
  *           description: Количество билетов
  */
 export type SendTicketsCountViewModel = { ticketsCount: number };

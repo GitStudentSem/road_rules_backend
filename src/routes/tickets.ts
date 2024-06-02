@@ -2,96 +2,106 @@ import express from "express";
 import { answerValidation } from "../validations";
 import { checkAuth } from "../midlewares";
 import * as ticketController from "../controllers/ticketsController";
+import { getErrorWaggerDoc } from "../assets/getErrorSwaggerDoc";
+
+export const ticketsSwaggerDoc = {
+	"/tickets/count": {
+		get: {
+			tags: ["Билеты"],
+			summary: "Получить количество билетов",
+			// security: [{ bearerAuth: [] }],
+			responses: {
+				200: {
+					description: "Количество билетов упешно получено",
+					content: {
+						"application/json": {
+							schema: {
+								$ref: "#/components/schemas/SendTicketsCountViewModel",
+							},
+						},
+					},
+				},
+				error: getErrorWaggerDoc("Ошибка получения количества билетов"),
+			},
+		},
+	},
+
+	"/tickets/{ticketNumber}": {
+		get: {
+			tags: ["Билеты"],
+			summary: "Получить указанный билет",
+			// security: [{ bearerAuth: [] }],
+			parameters: [
+				{
+					name: "ticketNumber",
+					in: "path",
+					description: "Порядковый номер билета",
+					required: true,
+					default: 1,
+				},
+			],
+			responses: {
+				200: {
+					description: "Билет успешно получен",
+					content: {
+						"application/json": {
+							schema: {
+								type: "array",
+								items: {
+									$ref: "#/components/schemas/SendTicketViewModel",
+								},
+							},
+						},
+					},
+				},
+				error: getErrorWaggerDoc("Ошибка получения билета"),
+			},
+		},
+
+		post: {
+			tags: ["Билеты"],
+			summary: "Отправить ответ на вопрос по билету",
+			// security: [{ bearerAuth: [] }],
+			parameters: [
+				{
+					name: "ticketNumber",
+					in: "path",
+					description: "Порядковый номер билета",
+					required: true,
+					default: 1,
+				},
+			],
+			requestBody: {
+				content: {
+					"application/json": {
+						schema: { $ref: "#/components/schemas/BodySendTicketResult" },
+					},
+				},
+			},
+			responses: {
+				200: {
+					description: "Ответ успешно отправлен",
+					content: {
+						"application/json": {
+							schema: {
+								$ref: "#/components/schemas/SendTicketResultViewModel",
+							},
+						},
+					},
+				},
+				error: getErrorWaggerDoc("Ошибка отправки ответа"),
+			},
+		},
+	},
+};
 
 export const getTicketsRouter = () => {
 	const router = express.Router();
 
-	/**
-	 * @swagger
-	 * /tickets/count:
-	 *   get:
-	 *     tags:
-	 *       - Билеты
-	 *     summary: Получить количество билетов
-	 *     responses:
-	 *       200:
-	 *         description: Количество билетов упешно получено
-	 *         content:
-	 *           application/json:
-	 *             schema:
-	 *               $ref: '#/components/schemas/SendTicketsCountViewModel'
-	 *       error:
-	 *         description: Ошибка получения количества билетов
-	 *         content:
-	 *           application/json:
-	 *             schema:
-	 *               $ref: '#/components/schemas/ErrorType'
-	 */
 	router.get("/count", checkAuth, ticketController.sendTicketsCount);
 
-	/**
-	 * @swagger
-	 * /tickets/{ticketNumber}:
-	 *   get:
-	 *     tags:
-	 *       - Билеты
-	 *     summary: Получить указанный билет
-	 *     parameters:
-	 *       - name: ticketNumber
-	 *         in: path
-	 *         description: Порядковый номер билета
-	 *         required: true
-	 *         default: 1
-	 *     responses:
-	 *       200:
-	 *         description: Билет успешно получен
-	 *         content:
-	 *           application/json:
-	 *             schema:
-	 *               type: array
-	 *               items:
-	 *                $ref: '#/components/schemas/SendTicketViewModel'
-	 *       error:
-	 *         description: Ошибка получения билета
-	 *         content:
-	 *           application/json:
-	 *             schema:
-	 *               $ref: '#/components/schemas/ErrorType'
-	 */
 	router.get("/:ticketNumber", checkAuth, ticketController.sendTicket);
 
-	/**
-	 * @swagger
-	 * /tickets/{ticketNumber}:
-	 *   post:
-	 *     tags:
-	 *       - Билеты
-	 *     summary: Отправить ответ на вопрос по билету
-	 *     parameters:
-	 *       - name: ticketNumber
-	 *         in: path
-	 *         description: Порядковый номер билета
-	 *         required: true
-	 *         default: 1
-	 *     requestBody:
-	 *       content:
-	 *         application/json:
-	 *           schema:
-	 *             $ref: '#/components/schemas/BodySendTicketResult'
-	 *     responses:
-	 *       200:
-	 *         description: Ответ упешно отправлен
-	 *         content:
-	 *           application/json:
-	 *             schema:
-	 *               $ref: '#/components/schemas/SendTicketResultViewModel'
-	 *       error:
-	 *         description: Ошибка отправки ответа
-	 *         content:
-	 *           application/json:
-	 *             schema:
-	 *               $ref: '#/components/schemas/ErrorType'
-	 */
 	router.post(
 		"/:ticketNumber",
 		checkAuth,
