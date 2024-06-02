@@ -3,6 +3,7 @@ import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { version } from "../../package.json";
 import { registerSwaggerDoc } from "../routes/auth";
+import { editTicketSwaggerDoc } from "../routes/editTicket";
 
 const options: swaggerJSDoc.Options = {
 	swaggerDefinition: {
@@ -25,6 +26,15 @@ const options: swaggerJSDoc.Options = {
 			"/auth/login": registerSwaggerDoc["/auth/login"],
 			"/auth/deleteUser": registerSwaggerDoc["/auth/deleteUser"],
 			"/auth/getAllUsers": registerSwaggerDoc["/auth/getAllUsers"],
+
+			"/editTicket/createTicket":
+				editTicketSwaggerDoc["/editTicket/createTicket"],
+			"/editTicket/addQuestion":
+				editTicketSwaggerDoc["/editTicket/addQuestion"],
+			"/editTicket/deleteTicket":
+				editTicketSwaggerDoc["/editTicket/deleteTicket"],
+			"/editTicket/deleteQuestion":
+				editTicketSwaggerDoc["/editTicket/deleteQuestion"],
 		},
 	},
 	apis: ["./src/routes/*.ts", "./src/models/**/*.ts"],

@@ -24,8 +24,7 @@ const findTicket = async (ticketId: string) => {
 
 export const editTicketRepository = {
 	async createTicket(ticketId: string) {
-		ticketCollection.insertOne({ ticketId, questions: [] });
-		return true;
+		await ticketCollection.insertOne({ ticketId, questions: [] });
 	},
 
 	async addQuestion(data: CreateQuestion) {
@@ -38,20 +37,16 @@ export const editTicketRepository = {
 				HTTP_STATUSES.BAD_REQUEST_400,
 			);
 		}
-		const addedQuestion = await ticketCollection.updateOne(
+		await ticketCollection.updateOne(
 			{ ticketId },
 			{ $push: { questions: { img, questionId, question, help, answers } } },
 		);
-
-		return addedQuestion.modifiedCount === 1;
 	},
 
 	async deleteTicket(ticketId: string) {
 		await findTicket(ticketId);
 
-		const deletedData = await ticketCollection.deleteOne({ ticketId });
-
-		return deletedData.deletedCount === 1;
+		await ticketCollection.deleteOne({ ticketId });
 	},
 
 	async deleteQuestion(ticketId: string, questionId: string) {
@@ -72,8 +67,7 @@ export const editTicketRepository = {
 		const update = {
 			$pull: { questions: { questionId } },
 		};
-		const deletedData = await ticketCollection.updateOne({ ticketId }, update);
 
-		return deletedData.modifiedCount === 1;
+		await ticketCollection.updateOne({ ticketId }, update);
 	},
 };

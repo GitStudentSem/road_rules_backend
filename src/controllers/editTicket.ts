@@ -7,15 +7,12 @@ import { DBError } from "./DBError";
 
 import { editTicketService } from "../domain/editTicketService";
 import type { CreateQuestionBody } from "../models/editTicket/CreateQuestionBody";
-import type { DeleteTicketBody } from "../models/editTicket/DeleteTicketBody";
+import type { DeleteQuestionBody } from "../models/editTicket/DeleteQuestionBody";
 
-export const createTicket = async (
-	req: Request,
-	res: Response<{ isCreated: boolean } | ErrorType>,
-) => {
+export const createTicket = async (req: Request, res: Response<ErrorType>) => {
 	try {
-		const isCreated = await editTicketService.createTicket();
-		res.status(HTTP_STATUSES.OK_200).json({ isCreated });
+		await editTicketService.createTicket();
+		res.status(HTTP_STATUSES.NO_CONTENT_204);
 	} catch (error) {
 		if (error instanceof DBError) {
 			res.status(error.status).json({ message: error.message });
@@ -27,12 +24,12 @@ export const createTicket = async (
 
 export const addQuestion = async (
 	req: RequestWithBody<CreateQuestionBody>,
-	res: Response<{ isCreated: boolean } | ErrorType>,
+	res: Response<ErrorType>,
 ) => {
 	try {
 		const { img, question, help, answers, ticketId } = req.body;
 
-		const isCreated = await editTicketService.addQuestion({
+		await editTicketService.addQuestion({
 			img,
 			ticketId,
 			question,
@@ -40,7 +37,7 @@ export const addQuestion = async (
 			answers,
 		});
 
-		res.status(HTTP_STATUSES.OK_200).json({ isCreated });
+		res.status(HTTP_STATUSES.NO_CONTENT_204);
 	} catch (error) {
 		if (error instanceof DBError) {
 			res.status(error.status).json({ message: error.message });
@@ -52,14 +49,14 @@ export const addQuestion = async (
 
 export const deleteTicket = async (
 	req: RequestWithBody<{ ticketId: string }>,
-	res: Response<{ isDeleted: boolean } | ErrorType>,
+	res: Response<ErrorType>,
 ) => {
 	try {
 		const { ticketId } = req.body;
 
-		const isDeleted = await editTicketService.deleteTicket(ticketId);
+		await editTicketService.deleteTicket(ticketId);
 
-		res.status(HTTP_STATUSES.OK_200).json({ isDeleted });
+		res.status(HTTP_STATUSES.OK_200);
 	} catch (error) {
 		if (error instanceof DBError) {
 			res.status(error.status).json({ message: error.message });
@@ -69,18 +66,18 @@ export const deleteTicket = async (
 	}
 };
 export const deleteQuestion = async (
-	req: RequestWithBody<DeleteTicketBody>,
-	res: Response<{ isDeleted: boolean } | ErrorType>,
+	req: RequestWithBody<DeleteQuestionBody>,
+	res: Response<ErrorType>,
 ) => {
 	try {
 		const { ticketId, questionId } = req.body;
 
-		const isDeleted = await editTicketService.deleteQuestion({
+		await editTicketService.deleteQuestion({
 			ticketId,
 			questionId,
 		});
 
-		res.status(HTTP_STATUSES.OK_200).json({ isDeleted });
+		res.status(HTTP_STATUSES.NO_CONTENT_204);
 	} catch (error) {
 		if (error instanceof DBError) {
 			res.status(error.status).json({ message: error.message });

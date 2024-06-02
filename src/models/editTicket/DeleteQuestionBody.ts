@@ -2,7 +2,7 @@
  * @swagger
  * components:
  *   schemas:
- *     DeleteTicketBody:
+ *     DeleteQuestionBody:
  *       type: object
  *       properties:
  *         ticketId:
@@ -15,4 +15,4 @@
  *         - ticketId
  *         - questionId
  */
-export type DeleteTicketBody = { ticketId: string; questionId: string };
+export type DeleteQuestionBody = { ticketId: string; questionId: string };
