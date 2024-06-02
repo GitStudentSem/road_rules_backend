@@ -11,7 +11,7 @@
  *         email:
  *           type: string
  *           description: Почта пользователя
- *           default: your_email.yandex.ru
+ *           default: your_email@yandex.ru
  *         password:
  *           type: string
  *           description: Пароль пользователя

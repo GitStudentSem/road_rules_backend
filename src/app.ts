@@ -10,7 +10,7 @@ export const app = express();
 
 app.use(cors());
 
-app.use(express.json());
+app.use(express.json({}));
 
 app.use("/auth", getAuthRouter());
 app.use("/tickets", getTicketsRouter());

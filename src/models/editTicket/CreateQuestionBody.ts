@@ -6,7 +6,7 @@
  *       type: object
  *       properties:
  *         img:
- *           type: ArrayBuffer
+ *           type: "ArrayBuffer"
  *           description: id варианта ответа
  *         ticketId:
  *           type: string

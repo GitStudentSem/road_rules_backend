@@ -13,7 +13,7 @@
  *         email:
  *           type: string
  *           description: Почта пользователя
- *           default: your_email.yandex.ru
+ *           default: your_email@yandex.ru
  *         firstName:
  *           type: string
  *           description: Имя пользователя

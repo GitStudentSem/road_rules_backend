@@ -3,6 +3,8 @@ import * as editTicketController from "../controllers/editTicket";
 import { addQuestionValidation } from "../validations";
 import { handleValudationErrors } from "../midlewares";
 import { getErrorWaggerDoc } from "../assets/getErrorSwaggerDoc";
+import multer from "multer";
+const upload = multer({ storage: multer.memoryStorage() });
 
 export const editTicketSwaggerDoc = {
 	"/editor/createTicket": {
@@ -26,7 +28,7 @@ export const editTicketSwaggerDoc = {
 			// security: [{ bearerAuth: [] }],
 			requestBody: {
 				content: {
-					"application/json": {
+					formData: {
 						schema: { $ref: "#/components/schemas/CreateQuestionBody" },
 					},
 				},
@@ -98,6 +100,7 @@ export const editTicketRouter = () => {
 
 	router.post(
 		"/addQuestion",
+		upload.single("img"),
 		addQuestionValidation,
 		handleValudationErrors,
 		editTicketController.addQuestion,

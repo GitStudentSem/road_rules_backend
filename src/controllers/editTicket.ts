@@ -27,7 +27,9 @@ export const addQuestion = async (
 	res: Response<ErrorType>,
 ) => {
 	try {
-		const { img, question, help, answers, ticketId } = req.body;
+		//@ts-ignore
+		const img = req.file?.buffer;
+		const { question, help, answers, ticketId } = req.body;
 
 		await editTicketService.addQuestion({
 			img,

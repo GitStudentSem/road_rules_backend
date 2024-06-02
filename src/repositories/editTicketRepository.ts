@@ -37,6 +37,7 @@ export const editTicketRepository = {
 				HTTP_STATUSES.BAD_REQUEST_400,
 			);
 		}
+
 		await ticketCollection.updateOne(
 			{ ticketId },
 			{ $push: { questions: { img, questionId, question, help, answers } } },
