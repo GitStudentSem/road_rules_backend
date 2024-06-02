@@ -2,6 +2,7 @@ import type { Request, Response, Express } from "express";
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { version } from "../../package.json";
+import { registerSwaggerDoc } from "../routes/auth";
 
 const options: swaggerJSDoc.Options = {
 	swaggerDefinition: {
@@ -19,6 +20,12 @@ const options: swaggerJSDoc.Options = {
 				description: "Локальный сервер",
 			},
 		],
+		paths: {
+			"/auth/register": registerSwaggerDoc["/auth/register"],
+			"/auth/login": registerSwaggerDoc["/auth/login"],
+			"/auth/deleteUser": registerSwaggerDoc["/auth/deleteUser"],
+			"/auth/getAllUsers": registerSwaggerDoc["/auth/getAllUsers"],
+		},
 	},
 	apis: ["./src/routes/*.ts", "./src/models/**/*.ts"],
 };

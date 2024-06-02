@@ -14,6 +14,7 @@ export const getExamRouter = () => {
 	 *     tags:
 	 *       - Экзамен
 	 *     summary: Получить вопросы по экзамену
+	 *     security: [{ bearerAuth: [] }]
 	 *     responses:
 	 *       200:
 	 *         description: Экзамен получен

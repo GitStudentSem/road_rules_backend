@@ -62,9 +62,7 @@ export const authService = {
 	async deleteUser(data: { email: string }) {
 		const { email } = data;
 
-		const isUserDelete = await authRepository.deleteUser({ email });
-
-		return isUserDelete;
+		await authRepository.deleteUser({ email });
 	},
 
 	async getAllUsers() {
