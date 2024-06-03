@@ -10,7 +10,7 @@ export const examSwaggerDoc = {
 		get: {
 			tags: ["Экзамен"],
 			summary: "Получить вопросы по экзамену",
-			// security: [{ bearerAuth: [] }],
+			security: [{ bearerAuth: [] }],
 			responses: {
 				200: {
 					description: "Экзамен получен",
@@ -31,7 +31,7 @@ export const examSwaggerDoc = {
 		post: {
 			tags: ["Экзамен"],
 			summary: "Отправить ответ на вопрос по экзамену",
-			// security: [{ bearerAuth: [] }],
+			security: [{ bearerAuth: [] }],
 			parameters: [
 				{
 					name: "ticketNumber",

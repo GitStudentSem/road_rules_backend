@@ -11,12 +11,12 @@ const options: swaggerJSDoc.Options = {
 	swaggerDefinition: {
 		openapi: "3.0.0",
 		info: { title: "API описание для АТУ тестирования", version },
+
 		components: {
-			securitySchemas: {
+			securitySchemes: {
 				bearerAuth: { type: "http", scheme: "bearer", bearerFormat: "JWT" },
 			},
 		},
-		security: [{ bearerAuth: [] }],
 		servers: [
 			{
 				url: "http://localhost:3333",

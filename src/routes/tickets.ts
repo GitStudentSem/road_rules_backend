@@ -9,7 +9,7 @@ export const ticketsSwaggerDoc = {
 		get: {
 			tags: ["Билеты"],
 			summary: "Получить количество билетов",
-			// security: [{ bearerAuth: [] }],
+			security: [{ bearerAuth: [] }],
 			responses: {
 				200: {
 					description: "Количество билетов упешно получено",
@@ -30,7 +30,7 @@ export const ticketsSwaggerDoc = {
 		get: {
 			tags: ["Билеты"],
 			summary: "Получить указанный билет",
-			// security: [{ bearerAuth: [] }],
+			security: [{ bearerAuth: [] }],
 			parameters: [
 				{
 					name: "ticketNumber",
@@ -61,7 +61,7 @@ export const ticketsSwaggerDoc = {
 		post: {
 			tags: ["Билеты"],
 			summary: "Отправить ответ на вопрос по билету",
-			// security: [{ bearerAuth: [] }],
+			security: [{ bearerAuth: [] }],
 			parameters: [
 				{
 					name: "ticketNumber",
