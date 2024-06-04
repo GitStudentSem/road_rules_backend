@@ -5,13 +5,13 @@ import type { ErrorType, RequestWithBody } from "../types";
 import { HTTP_STATUSES } from "../utils";
 import { DBError } from "./DBError";
 
-import { editTicketService } from "../domain/editTicketService";
-import type { CreateQuestionBody } from "../models/editTicket/CreateQuestionBody";
-import type { DeleteQuestionBody } from "../models/editTicket/DeleteQuestionBody";
+import { editorService } from "../domain/editorService";
+import type { CreateQuestionBody } from "../models/editor/CreateQuestionBody";
+import type { DeleteQuestionBody } from "../models/editor/DeleteQuestionBody";
 
 export const createTicket = async (req: Request, res: Response<ErrorType>) => {
 	try {
-		await editTicketService.createTicket();
+		await editorService.createTicket();
 		res.status(HTTP_STATUSES.NO_CONTENT_204);
 	} catch (error) {
 		if (error instanceof DBError) {
@@ -31,7 +31,7 @@ export const addQuestion = async (
 		const img = req.file?.buffer;
 		const { question, help, answers, ticketId } = req.body;
 
-		await editTicketService.addQuestion({
+		await editorService.addQuestion({
 			img,
 			ticketId,
 			question,
@@ -56,7 +56,7 @@ export const deleteTicket = async (
 	try {
 		const { ticketId } = req.body;
 
-		await editTicketService.deleteTicket(ticketId);
+		await editorService.deleteTicket(ticketId);
 
 		res.status(HTTP_STATUSES.OK_200);
 	} catch (error) {
@@ -74,7 +74,7 @@ export const deleteQuestion = async (
 	try {
 		const { ticketId, questionId } = req.body;
 
-		await editTicketService.deleteQuestion({
+		await editorService.deleteQuestion({
 			ticketId,
 			questionId,
 		});

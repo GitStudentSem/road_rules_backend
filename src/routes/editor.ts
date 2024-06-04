@@ -1,12 +1,12 @@
 import express from "express";
-import * as editTicketController from "../controllers/editTicket";
+import * as editorController from "../controllers/editor";
 import { addQuestionValidation } from "../validations";
 import { handleValudationErrors } from "../midlewares";
 import { getErrorWaggerDoc } from "../assets/getErrorSwaggerDoc";
 import multer from "multer";
 const upload = multer({ storage: multer.memoryStorage() });
 
-export const editTicketSwaggerDoc = {
+export const editorSwaggerDoc = {
 	"/editor/createTicket": {
 		get: {
 			tags: ["Редактор билетов"],
@@ -93,22 +93,22 @@ export const editTicketSwaggerDoc = {
 	},
 };
 
-export const editTicketRouter = () => {
+export const editorRouter = () => {
 	const router = express.Router();
 
-	router.get("/createTicket", editTicketController.createTicket);
+	router.get("/createTicket", editorController.createTicket);
 
 	router.post(
 		"/addQuestion",
 		upload.single("img"),
 		addQuestionValidation,
 		handleValudationErrors,
-		editTicketController.addQuestion,
+		editorController.addQuestion,
 	);
 
-	router.delete("/deleteQuestion", editTicketController.deleteQuestion);
+	router.delete("/deleteQuestion", editorController.deleteQuestion);
 
-	router.delete("/deleteTicket", editTicketController.deleteTicket);
+	router.delete("/deleteTicket", editorController.deleteTicket);
 
 	return router;
 };

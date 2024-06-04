@@ -22,7 +22,7 @@ const findTicket = async (ticketId: string) => {
 	return ticket;
 };
 
-export const editTicketRepository = {
+export const editorRepository = {
 	async createTicket(ticketId: string) {
 		await ticketCollection.insertOne({ ticketId, questions: [] });
 	},

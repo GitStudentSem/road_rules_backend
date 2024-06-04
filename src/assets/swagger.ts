@@ -3,7 +3,7 @@ import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { version } from "../../package.json";
 import { registerSwaggerDoc } from "../routes/auth";
-import { editTicketSwaggerDoc } from "../routes/editTicket";
+import { editorSwaggerDoc } from "../routes/editor";
 import { examSwaggerDoc } from "../routes/exam";
 import { ticketsSwaggerDoc } from "../routes/tickets";
 
@@ -14,7 +14,13 @@ const options: swaggerJSDoc.Options = {
 
 		components: {
 			securitySchemes: {
-				bearerAuth: { type: "http", scheme: "bearer", bearerFormat: "JWT" },
+				bearerAuth: {
+					type: "http",
+					scheme: "bearer",
+					bearerFormat: "JWT",
+					description:
+						"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE3MTc0NDA3NDEzMDQiLCJpYXQiOjE3MTc0NDI1MjAsImV4cCI6MTcyMDAzNDUyMH0.imiX_CYuKDB1u58elXLfQfE8_oNpO8rvh3Uk2fkWEsU",
+				},
 			},
 		},
 		servers: [
@@ -29,10 +35,10 @@ const options: swaggerJSDoc.Options = {
 			"/auth/deleteUser": registerSwaggerDoc["/auth/deleteUser"],
 			"/auth/getAllUsers": registerSwaggerDoc["/auth/getAllUsers"],
 
-			"/editor/createTicket": editTicketSwaggerDoc["/editor/createTicket"],
-			"/editor/addQuestion": editTicketSwaggerDoc["/editor/addQuestion"],
-			"/editor/deleteTicket": editTicketSwaggerDoc["/editor/deleteTicket"],
-			"/editor/deleteQuestion": editTicketSwaggerDoc["/editor/deleteQuestion"],
+			"/editor/createTicket": editorSwaggerDoc["/editor/createTicket"],
+			"/editor/addQuestion": editorSwaggerDoc["/editor/addQuestion"],
+			"/editor/deleteTicket": editorSwaggerDoc["/editor/deleteTicket"],
+			"/editor/deleteQuestion": editorSwaggerDoc["/editor/deleteQuestion"],
 
 			"/exam/{ticketNumber}": examSwaggerDoc["/exam/{ticketNumber}"],
 			"/exam": examSwaggerDoc["/exam"],

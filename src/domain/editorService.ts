@@ -1,7 +1,7 @@
 import sharp from "sharp";
-import { editTicketRepository } from "../repositories/editTicketRepository";
-import type { CreateQuestionBody } from "../models/editTicket/CreateQuestionBody";
-import type { DeleteQuestionBody } from "../models/editTicket/DeleteQuestionBody";
+import { editorRepository } from "../repositories/editorRepository";
+import type { CreateQuestionBody } from "../models/editor/CreateQuestionBody";
+import type { DeleteQuestionBody } from "../models/editor/DeleteQuestionBody";
 import { colors, resetStyle } from "../assets/logStyles";
 
 const calculateSizeInKB = (arrayBuffer: ArrayBuffer) => {
@@ -33,10 +33,10 @@ const imageToBase64 = async (img?: ArrayBuffer) => {
 	return imageInBase64;
 };
 
-export const editTicketService = {
+export const editorService = {
 	async createTicket() {
 		const ticketId = Number(new Date()).toString();
-		await editTicketRepository.createTicket(ticketId);
+		await editorRepository.createTicket(ticketId);
 	},
 
 	async addQuestion(data: CreateQuestionBody) {
@@ -49,7 +49,7 @@ export const editTicketService = {
 			return { answerText: answer, id };
 		});
 
-		await editTicketRepository.addQuestion({
+		await editorRepository.addQuestion({
 			img: imageInBase64,
 			questionId,
 			ticketId,
@@ -60,11 +60,11 @@ export const editTicketService = {
 	},
 
 	async deleteTicket(ticketId: string) {
-		await editTicketRepository.deleteTicket(ticketId);
+		await editorRepository.deleteTicket(ticketId);
 	},
 	async deleteQuestion(data: DeleteQuestionBody) {
 		const { ticketId, questionId } = data;
 
-		await editTicketRepository.deleteQuestion(ticketId, questionId);
+		await editorRepository.deleteQuestion(ticketId, questionId);
 	},
 };

@@ -4,7 +4,7 @@ import cors from "cors";
 import { getAuthRouter } from "./routes/auth";
 import { getTicketsRouter } from "./routes/tickets";
 import { getExamRouter } from "./routes/exam";
-import { editTicketRouter } from "./routes/editTicket";
+import { editorRouter } from "./routes/editor";
 
 export const app = express();
 
@@ -15,4 +15,4 @@ app.use(express.json({}));
 app.use("/auth", getAuthRouter());
 app.use("/tickets", getTicketsRouter());
 app.use("/exam", getExamRouter());
-app.use("/editor", editTicketRouter());
+app.use("/editor", editorRouter());
