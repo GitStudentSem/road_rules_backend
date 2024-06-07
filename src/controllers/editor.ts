@@ -30,7 +30,7 @@ export const addQuestion = async (
 		//@ts-ignore
 		const img = req.file?.buffer;
 		const { question, help, answers, ticketId } = req.body;
-
+		console.log("answers", answers);
 		await editorService.addQuestion({
 			img,
 			ticketId,

@@ -15,6 +15,10 @@ const startApp = async () => {
 		console.log(
 			`Адрес сервера: ${colors.whiteblue}http://localhost:${port}${resetStyle}`,
 		);
+
+		console.log(
+			`Адрес документации: ${colors.whiteblue}http://localhost:${port}/docs${resetStyle}`,
+		);
 	});
 };
 startApp();

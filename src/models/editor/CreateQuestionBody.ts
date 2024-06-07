@@ -6,8 +6,9 @@
  *       type: object
  *       properties:
  *         img:
- *           type: "ArrayBuffer"
- *           description: id варианта ответа
+ *           type: string
+ *           format: binary
+ *           description: Картинка в виде ArrayBuffer
  *         ticketId:
  *           type: string
  *           description: id билета

@@ -6,6 +6,37 @@ import { getErrorWaggerDoc } from "../assets/getErrorSwaggerDoc";
 import multer from "multer";
 const upload = multer({ storage: multer.memoryStorage() });
 
+/**
+ * @swagger
+ * /upload:
+ *   post:
+ *     summary: Загрузка данных
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               image:
+ *                 type: string
+ *                 format: binary
+ *                 description: Картинка в виде ArrayBuffer
+ *               question:
+ *                 type: string
+ *                 description: Вопрос в виде строки
+ *               answers:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 description: Ответы в виде массива строк
+ *     responses:
+ *       200:
+ *         description: Успешная загрузка
+ *       400:
+ *         description: Ошибка валидации
+ */
+
 export const editorSwaggerDoc = {
 	"/editor/createTicket": {
 		get: {
@@ -28,7 +59,7 @@ export const editorSwaggerDoc = {
 			// security: [{ bearerAuth: [] }],
 			requestBody: {
 				content: {
-					formData: {
+					"multipart/form-data": {
 						schema: { $ref: "#/components/schemas/CreateQuestionBody" },
 					},
 				},
@@ -112,3 +143,4 @@ export const editorRouter = () => {
 
 	return router;
 };
+//

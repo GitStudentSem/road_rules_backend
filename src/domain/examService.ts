@@ -21,7 +21,7 @@ const removeCorrectAnswersFromTicket = (ticket: TypeQuestion[]) => {
 				? `data:image/jpeg;base64,${imageToBase64(question.img)}`
 				: "",
 			answers: shuffledAnswers.map((answer) => {
-				return { answerText: answer.text, id: answer.id };
+				return { answerText: answer.text, answerId: answer.id };
 			}),
 		};
 	});

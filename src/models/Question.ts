@@ -8,8 +8,8 @@
  *         answerText:
  *           type: string
  *           description: Текст варианта ответа
- *         id:
+ *         answerId:
  *           type: string
  *           description: id варианта ответа
  */
-export type Question = { answerText: string; id: string };
+export type Question = { answerText: string; answerId: string };

@@ -44,9 +44,9 @@ export const editorService = {
 		const imageInBase64 = await imageToBase64(img);
 		const questionId = Number(new Date()).toString();
 
-		const answersWithId = answers.map((answer) => {
-			const id = performance.now().toString();
-			return { answerText: answer, id };
+		const answersWithId = answers.map((answer, i) => {
+			const answerId = Number(new Date()).toString() + i;
+			return { answerText: answer, answerId };
 		});
 
 		await editorRepository.addQuestion({
