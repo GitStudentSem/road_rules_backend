@@ -12,7 +12,7 @@ import type { DeleteQuestionBody } from "../models/editor/DeleteQuestionBody";
 export const createTicket = async (req: Request, res: Response<ErrorType>) => {
 	try {
 		await editorService.createTicket();
-		res.status(HTTP_STATUSES.NO_CONTENT_204);
+		res.sendStatus(HTTP_STATUSES.NO_CONTENT_204);
 	} catch (error) {
 		if (error instanceof DBError) {
 			res.status(error.status).json({ message: error.message });
@@ -39,7 +39,7 @@ export const addQuestion = async (
 			answers,
 		});
 
-		res.status(HTTP_STATUSES.NO_CONTENT_204);
+		res.sendStatus(HTTP_STATUSES.NO_CONTENT_204);
 	} catch (error) {
 		if (error instanceof DBError) {
 			res.status(error.status).json({ message: error.message });
@@ -58,7 +58,7 @@ export const deleteTicket = async (
 
 		await editorService.deleteTicket(ticketId);
 
-		res.status(HTTP_STATUSES.OK_200);
+		res.sendStatus(HTTP_STATUSES.NO_CONTENT_204);
 	} catch (error) {
 		if (error instanceof DBError) {
 			res.status(error.status).json({ message: error.message });
@@ -79,7 +79,7 @@ export const deleteQuestion = async (
 			questionId,
 		});
 
-		res.status(HTTP_STATUSES.NO_CONTENT_204);
+		res.sendStatus(HTTP_STATUSES.NO_CONTENT_204);
 	} catch (error) {
 		if (error instanceof DBError) {
 			res.status(error.status).json({ message: error.message });

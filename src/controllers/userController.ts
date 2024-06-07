@@ -62,7 +62,7 @@ export const deleteUser = async (
 
 		await authService.deleteUser({ email });
 
-		res.status(HTTP_STATUSES.NO_CONTENT_204);
+		res.sendStatus(HTTP_STATUSES.NO_CONTENT_204);
 	} catch (error) {
 		if (error instanceof DBError) {
 			res.status(error.status).json({ message: error.message });
