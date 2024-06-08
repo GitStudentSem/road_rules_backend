@@ -55,7 +55,7 @@ export const login = async (
 
 export const deleteUser = async (
 	req: RequestWithBody<{ email: string }>,
-	res: Response<{ isDeleted: boolean } | ErrorType>,
+	res: Response<ErrorType>,
 ) => {
 	try {
 		const { email } = req.body;
