@@ -2,7 +2,7 @@ import sharp from "sharp";
 import { editorRepository } from "../repositories/editorRepository";
 import type { CreateQuestionBody } from "../models/editor/CreateQuestionBody";
 import type { DeleteQuestionBody } from "../models/editor/DeleteQuestionBody";
-import { colors, resetStyle } from "../assets/logStyles";
+import { colors, resetStyle, styles } from "../assets/logStyles";
 
 const calculateSizeInKB = (arrayBuffer: ArrayBuffer) => {
 	const bytes = arrayBuffer.byteLength;
@@ -12,20 +12,28 @@ const calculateSizeInKB = (arrayBuffer: ArrayBuffer) => {
 
 const imageToBase64 = async (img?: ArrayBuffer) => {
 	if (!img) return "";
-	const sizeMB = img.byteLength / (1024 * 1024);
+
+	const imageSizeBefore = calculateSizeInKB(img);
 	console.log(
-		`${colors.blue}image size before ${calculateSizeInKB(
-			img,
-		)} KB ${resetStyle}`,
+		`${colors.blue}Размер картинки до сжатия: ${styles.bold}${imageSizeBefore} KB ${resetStyle}`,
 	);
 
 	const imageBuffer = await sharp(img).jpeg().toBuffer();
 
+	const imageSizeAfter = calculateSizeInKB(imageBuffer);
 	console.log(
-		`${colors.blue}image size after ${calculateSizeInKB(
-			imageBuffer,
-		)} KB${resetStyle}`,
+		`${colors.blue}Размер картинки после сжатия: ${styles.bold}${imageSizeAfter} KB${resetStyle}`,
 	);
+
+	const reductionPercentage = (
+		((imageSizeBefore - imageSizeAfter) / imageSizeBefore) *
+		100
+	).toFixed(2);
+
+	console.log(
+		`${colors.blue}Картинка была оптимизирована на ${styles.bold}${reductionPercentage}%${resetStyle}`,
+	);
+	console.log(`${colors.blue}======================${resetStyle}`);
 
 	const imageInBase64 = `data:image/png;base64,${imageBuffer.toString(
 		"base64",
@@ -44,7 +52,7 @@ export const editorService = {
 		const { img, ticketId, question, help, correctAnswer, answers } = data;
 		const imageInBase64 = await imageToBase64(img);
 		const questionId = Number(new Date()).toString();
-		console.log("correctAnswer", correctAnswer);
+
 		const answersWithId = answers.map((answer, i) => {
 			const answerId = Number(new Date()).toString() + i;
 			return { answerText: answer, isCorrect: i === correctAnswer, answerId };

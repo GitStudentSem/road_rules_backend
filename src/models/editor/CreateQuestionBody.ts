@@ -29,23 +29,15 @@ export const CreateQuestionBodySwaggerDoc = {
 		answers: {
 			type: "array",
 			description: "Варианты ответов на вопрос",
+
 			items: {
-				type: "object",
-				properties: {
-					answerText: {
-						type: "string",
-						default: "Только направо",
-						description: "Текст варианта ответа на вопрос",
-					},
-					isCorrect: {
-						type: "boolean",
-						default: true,
-						description: "Правильный это ответ или нет",
-					},
-				},
+				type: "string",
+				default: "Только направо",
+				description: "Текст варианта ответа на вопрос",
 			},
 		},
 	},
+	required: ["ticketId", "question", "help", "correctAnswer", "answers"],
 };
 export type CreateQuestionBody = {
 	img?: ArrayBuffer;
@@ -53,5 +45,5 @@ export type CreateQuestionBody = {
 	question: string;
 	help: string;
 	correctAnswer: number;
-	answers: [];
+	answers: string[];
 };
