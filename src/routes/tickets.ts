@@ -4,6 +4,7 @@ import { checkAuth } from "../midlewares";
 import * as ticketController from "../controllers/ticketsController";
 import { getErrorWaggerDoc } from "../assets/getErrorSwaggerDoc";
 import { SendTicketsViewModelSwaggerDoc } from "../models/tickets/SendTicketsViewModel";
+import { SendTicketViewModelSwaggerDoc } from "../models/tickets/SendTicketViewModel";
 
 export const ticketsSwaggerDoc = {
 	"/tickets": {
@@ -25,18 +26,18 @@ export const ticketsSwaggerDoc = {
 		},
 	},
 
-	"/tickets/{ticketNumber}": {
+	"/tickets/{ticketId}": {
 		get: {
 			tags: ["Билеты"],
 			summary: "Получить указанный билет",
 			security: [{ bearerAuth: [] }],
 			parameters: [
 				{
-					name: "ticketNumber",
+					name: "ticketId",
 					in: "path",
-					description: "Порядковый номер билета",
+					description: "id билета",
 					required: true,
-					default: 1,
+					default: "5687948694",
 				},
 			],
 			responses: {
@@ -44,12 +45,7 @@ export const ticketsSwaggerDoc = {
 					description: "Билет успешно получен",
 					content: {
 						"application/json": {
-							schema: {
-								type: "array",
-								items: {
-									$ref: "#/components/schemas/SendTicketViewModel",
-								},
-							},
+							schema: SendTicketViewModelSwaggerDoc,
 						},
 					},
 				},
@@ -99,10 +95,10 @@ export const getTicketsRouter = () => {
 
 	router.get("/", checkAuth, ticketController.sendTickets);
 
-	router.get("/:ticketNumber", checkAuth, ticketController.sendTicket);
+	router.get("/:ticketId", checkAuth, ticketController.sendTicket);
 
 	router.post(
-		"/:ticketNumber",
+		"/:ticketId",
 		checkAuth,
 		answerValidation,
 		ticketController.sendTicketResult,

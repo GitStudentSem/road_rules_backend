@@ -5,21 +5,14 @@ import { ticketCollection, userCollection } from "./db";
 
 const ticketsOld = [ticket_1, ticket_2, ticket_3];
 
-const isTicketExist = (ticketNumber: number) => {
-	if (!ticketNumber) {
-		throw new DBError("Не указан номер билета", HTTP_STATUSES.BAD_REQUEST_400);
+const isTicketExist = async (ticketId: string) => {
+	console.log("ticketId", ticketId);
+	const ticket = await ticketCollection.findOne({ ticketId });
+	if (!ticket) {
+		throw new DBError("Билет не найден", HTTP_STATUSES.NOT_FOUND_404);
 	}
 
-	const ticketsCount = ticketsOld.length;
-
-	if (ticketNumber > ticketsCount || ticketNumber < 1) {
-		throw new DBError(
-			`Указанный билет не существует, всего билетов: ${ticketsCount}`,
-			HTTP_STATUSES.NOT_FOUND_404,
-		);
-	}
-
-	return ticketsOld[ticketNumber - 1];
+	return ticket;
 };
 
 const isUserExist = async (userId: string) => {
@@ -92,10 +85,10 @@ export const ticketRepository = {
 		return tickets;
 	},
 
-	async sendTicket(userId: string, ticketNumber: number) {
+	async sendTicket(userId: string, ticketId: string) {
 		await isUserExist(userId);
 
-		const ticket = isTicketExist(ticketNumber);
+		const ticket = await isTicketExist(ticketId);
 
 		return ticket;
 	},

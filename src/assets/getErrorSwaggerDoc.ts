@@ -4,7 +4,13 @@ export const getErrorWaggerDoc = (description: string) => {
 		content: {
 			"application/json": {
 				schema: {
-					$ref: "#/components/schemas/ErrorType",
+					type: "object",
+					properties: {
+						message: {
+							type: "string",
+							default: "Ошибка получения данных",
+						},
+					},
 				},
 			},
 		},

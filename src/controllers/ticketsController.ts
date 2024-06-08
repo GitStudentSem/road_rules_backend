@@ -31,14 +31,15 @@ export const sendTickets = async (
 };
 
 export const sendTicket = async (
-	req: RequestWithParams<{ ticketNumber: string }>,
+	req: RequestWithParams<{ ticketId: string }>,
 	res: Response<SendTicketViewModel[] | ErrorType>,
 ) => {
 	try {
+		console.log("req.params.ticketId", req.params.ticketId);
 		const ticket = await ticketService.sendTicket(
 			//@ts-ignore
 			req.userId,
-			+req.params.ticketNumber,
+			req.params.ticketId,
 		);
 
 		res.json(ticket);

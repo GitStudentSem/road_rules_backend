@@ -44,7 +44,7 @@ const options: swaggerJSDoc.Options = {
 			"/exam": examSwaggerDoc["/exam"],
 
 			"/tickets": ticketsSwaggerDoc["/tickets"],
-			"/tickets/{ticketNumber}": ticketsSwaggerDoc["/tickets/{ticketNumber}"],
+			"/tickets/{ticketId}": ticketsSwaggerDoc["/tickets/{ticketId}"],
 		},
 	},
 	apis: ["./src/routes/*.ts", "./src/models/**/*.ts"],
