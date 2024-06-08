@@ -3,21 +3,20 @@ import { answerValidation } from "../validations";
 import { checkAuth } from "../midlewares";
 import * as ticketController from "../controllers/ticketsController";
 import { getErrorWaggerDoc } from "../assets/getErrorSwaggerDoc";
+import { SendTicketsViewModelSwaggerDoc } from "../models/tickets/SendTicketsViewModel";
 
 export const ticketsSwaggerDoc = {
-	"/tickets/count": {
+	"/tickets": {
 		get: {
 			tags: ["Билеты"],
-			summary: "Получить количество билетов",
+			summary: "Получить список билетов для выбора",
 			security: [{ bearerAuth: [] }],
 			responses: {
 				200: {
 					description: "Количество билетов упешно получено",
 					content: {
 						"application/json": {
-							schema: {
-								$ref: "#/components/schemas/SendTicketsCountViewModel",
-							},
+							schema: SendTicketsViewModelSwaggerDoc,
 						},
 					},
 				},
@@ -98,7 +97,7 @@ export const ticketsSwaggerDoc = {
 export const getTicketsRouter = () => {
 	const router = express.Router();
 
-	router.get("/count", checkAuth, ticketController.sendTicketsCount);
+	router.get("/", checkAuth, ticketController.sendTickets);
 
 	router.get("/:ticketNumber", checkAuth, ticketController.sendTicket);
 

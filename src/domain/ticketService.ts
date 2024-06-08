@@ -22,9 +22,12 @@ const removeCorrectAnswersFromTicket = (ticket: TypeQuestion[]) => {
 };
 
 export const ticketService = {
-	async sendTicketsCount(userId: string) {
-		const ticketsCount = await ticketRepository.sendTicketsCount(userId);
-		return ticketsCount;
+	async sendTickets(userId: string) {
+		const tickets = await ticketRepository.sendTickets(userId);
+		const ticketsWithOnlyId = tickets.map((ticket) => {
+			return { ticketId: ticket.ticketId };
+		});
+		return ticketsWithOnlyId;
 	},
 
 	async sendTicket(userId: string, ticketNumber: number) {

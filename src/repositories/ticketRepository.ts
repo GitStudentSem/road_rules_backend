@@ -1,16 +1,16 @@
 import { DBError } from "../controllers/DBError";
 import { ticket_1, ticket_2, ticket_3 } from "../tickets";
 import { HTTP_STATUSES } from "../utils";
-import { userCollection } from "./db";
+import { ticketCollection, userCollection } from "./db";
 
-const tickets = [ticket_1, ticket_2, ticket_3];
+const ticketsOld = [ticket_1, ticket_2, ticket_3];
 
 const isTicketExist = (ticketNumber: number) => {
 	if (!ticketNumber) {
 		throw new DBError("Не указан номер билета", HTTP_STATUSES.BAD_REQUEST_400);
 	}
 
-	const ticketsCount = tickets.length;
+	const ticketsCount = ticketsOld.length;
 
 	if (ticketNumber > ticketsCount || ticketNumber < 1) {
 		throw new DBError(
@@ -19,7 +19,7 @@ const isTicketExist = (ticketNumber: number) => {
 		);
 	}
 
-	return tickets[ticketNumber - 1];
+	return ticketsOld[ticketNumber - 1];
 };
 
 const isUserExist = async (userId: string) => {
@@ -42,7 +42,7 @@ const getCorrectAnswer = ({
 	answerId,
 	questionNumber,
 }: TypeGetCorrectAnswer) => {
-	const ticket = tickets[ticketNumber - 1];
+	const ticket = ticketsOld[ticketNumber - 1];
 
 	if (questionNumber < 1 || ticket.length < questionNumber) {
 		throw new DBError(
@@ -82,10 +82,14 @@ const getCorrectAnswer = ({
 };
 
 export const ticketRepository = {
-	async sendTicketsCount(userId: string) {
+	async sendTickets(userId: string) {
 		await isUserExist(userId);
+		const tickets = await ticketCollection
+			.find()
+			.sort({ createdAt: 1 })
+			.toArray();
 
-		return tickets.length;
+		return tickets;
 	},
 
 	async sendTicket(userId: string, ticketNumber: number) {

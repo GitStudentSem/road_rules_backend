@@ -43,7 +43,7 @@ const options: swaggerJSDoc.Options = {
 			"/exam/{ticketNumber}": examSwaggerDoc["/exam/{ticketNumber}"],
 			"/exam": examSwaggerDoc["/exam"],
 
-			"/tickets/count": ticketsSwaggerDoc["/tickets/count"],
+			"/tickets": ticketsSwaggerDoc["/tickets"],
 			"/tickets/{ticketNumber}": ticketsSwaggerDoc["/tickets/{ticketNumber}"],
 		},
 	},

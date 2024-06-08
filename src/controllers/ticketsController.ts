@@ -4,7 +4,7 @@ import { ticketService } from "../domain/ticketService";
 import type { BodySendTicketResult } from "../models/tickets/BodySendTicketResult";
 import type { SendTicketResultViewModel } from "../models/tickets/SendTicketResultViewModel";
 import type { SendTicketViewModel } from "../models/tickets/SendTicketViewModel";
-import type { SendTicketsCountViewModel } from "../models/tickets/SendTicketsCountViewModel";
+import type { SendTicketsViewModel } from "../models/tickets/SendTicketsViewModel";
 import type {
 	ErrorType,
 	RequestWithParams,
@@ -12,15 +12,15 @@ import type {
 } from "../types";
 import { DBError } from "./DBError";
 
-export const sendTicketsCount = async (
+export const sendTickets = async (
 	req: Request,
-	res: Response<SendTicketsCountViewModel | ErrorType>,
+	res: Response<SendTicketsViewModel | ErrorType>,
 ) => {
 	try {
 		//@ts-ignore
-		const ticketsCount = await ticketService.sendTicketsCount(req.userId);
+		const tickets = await ticketService.sendTickets(req.userId);
 
-		res.json({ ticketsCount });
+		res.json(tickets);
 	} catch (error) {
 		if (error instanceof DBError) {
 			res.status(error.status).json({ message: error.message });
