@@ -63,6 +63,8 @@ export const addQuestionValidation = [
 	body("help", "Минимальное число сивмолов для подсказки: 10").trim().isLength({
 		min: 10,
 	}),
+	body("correctAnswer", "Правильный ответ должен быть числом").isNumeric(),
+
 	body("answers", "Варианты ответов должны быть массивом").isArray(),
 	body("answers", "Минимальное количество ответов: 2").isArray({ min: 2 }),
 	body("answers.*", "Вариант ответа должны быть строкой").isString(),

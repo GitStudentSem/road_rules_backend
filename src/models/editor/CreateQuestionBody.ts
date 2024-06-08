@@ -21,7 +21,11 @@ export const CreateQuestionBodySwaggerDoc = {
 			default: "В направлении движения по полосам",
 			description: "Текст помощи по вопросу",
 		},
-
+		correctAnswer: {
+			type: "number",
+			default: "1",
+			description: "индекс правильного ответа ответа",
+		},
 		answers: {
 			type: "array",
 			description: "Варианты ответов на вопрос",
@@ -48,6 +52,6 @@ export type CreateQuestionBody = {
 	ticketId: string;
 	question: string;
 	help: string;
-	isCorrect: boolean;
+	correctAnswer: number;
 	answers: [];
 };

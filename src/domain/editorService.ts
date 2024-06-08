@@ -41,13 +41,13 @@ export const editorService = {
 	},
 
 	async addQuestion(data: CreateQuestionBody) {
-		const { img, ticketId, question, help, answers } = data;
+		const { img, ticketId, question, help, correctAnswer, answers } = data;
 		const imageInBase64 = await imageToBase64(img);
 		const questionId = Number(new Date()).toString();
-
+		console.log("correctAnswer", correctAnswer);
 		const answersWithId = answers.map((answer, i) => {
 			const answerId = Number(new Date()).toString() + i;
-			return { answerText: answer, answerId };
+			return { answerText: answer, isCorrect: i === correctAnswer, answerId };
 		});
 
 		await editorRepository.addQuestion({

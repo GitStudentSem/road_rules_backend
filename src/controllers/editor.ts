@@ -29,13 +29,14 @@ export const addQuestion = async (
 	try {
 		//@ts-ignore
 		const img = req.file?.buffer;
-		const { question, help, answers, ticketId } = req.body;
-		console.log("answers", answers);
+		const { question, help, answers, ticketId, correctAnswer } = req.body;
+
 		await editorService.addQuestion({
 			img,
 			ticketId,
 			question,
 			help,
+			correctAnswer: Number(correctAnswer),
 			answers,
 		});
 
