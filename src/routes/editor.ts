@@ -4,6 +4,7 @@ import { addQuestionValidation } from "../validations";
 import { handleValudationErrors } from "../midlewares";
 import { getErrorWaggerDoc } from "../assets/getErrorSwaggerDoc";
 import multer from "multer";
+import { CreateQuestionBodySwaggerDoc } from "../models/editor/CreateQuestionBody";
 const upload = multer({ storage: multer.memoryStorage() });
 
 export const editorSwaggerDoc = {
@@ -29,7 +30,7 @@ export const editorSwaggerDoc = {
 			requestBody: {
 				content: {
 					"multipart/form-data": {
-						schema: { $ref: "#/components/schemas/CreateQuestionBody" },
+						schema: CreateQuestionBodySwaggerDoc,
 					},
 				},
 			},
