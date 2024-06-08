@@ -8,7 +8,7 @@ export const getErrorWaggerDoc = (description: string) => {
 					properties: {
 						message: {
 							type: "string",
-							default: "Ошибка получения данных",
+							default: description,
 						},
 					},
 				},
