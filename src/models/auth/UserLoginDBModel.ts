@@ -1,58 +1,70 @@
-/**
- * @swagger
- * components:
- *   schemas:
- *     Result:
- *       type: object
- *       properties:
- *         isCorrect:
- *           type: boolean
- *           description: Правильный ответ или нет
- *         answerId:
- *           type: string
- *           description: id ответа который дал пользователь
- */
+const ResultSwaggerDoc = {
+	type: "object",
+	properties: {
+		isCorrect: {
+			type: "boolean",
+			default: "true",
+			description: "Правильный ответ или нет",
+		},
+		answerId: {
+			type: "string",
+			default: "17178414023020",
+			description: "id ответа который дал пользователь",
+		},
+	},
+};
 type Result = {
 	isCorrect?: boolean;
 	answerId?: string;
 };
-/**
- * @swagger
- * components:
- *   schemas:
- *     UserLoginDBModel:
- *       type: object
- *       properties:
- *         email:
- *           type: string
- *           description: Почта пользователя
- *         firstName:
- *           type: string
- *           description: Имя пользователя
- *         secondName:
- *           type: string
- *           description: Фамилия пользователя
- *         passwordHash:
- *           type: string
- *           description: Зашифрованный пароль пользователя
- *         id:
- *           type: string
- *           description: id пользователя
- *         results:
- *           type: object
- *           description: Результаты билетов и экзамена пользователя
- *           properties:
- *            exam:
- *              type: array
- *              description: Массив результатов экзамена
- *              items:
- *                $ref: '#/components/schemas/Result'
- *            ticket-1:
- *              type: array
- *              description: Массив результатов билетов
- *              items:
- *                $ref: '#/components/schemas/Result'
- */
+
+export const UserLoginDBModelSwaggerDoc = {
+	type: "object",
+	properties: {
+		email: {
+			type: "string",
+			default: "your_email@yandex.ru",
+			description: "Почта пользователя",
+		},
+		firstName: {
+			type: "string",
+			default: "Иван",
+			description: "Имя пользователя",
+		},
+		secondName: {
+			type: "string",
+			default: "Иванов",
+			description: "Фамилия пользователя",
+		},
+		passwordHash: {
+			type: "string",
+			default: "$2b$10$yqHo2wRVFzsaz0bFYZSGsuAH7uDWxYvXKDQkruHEkJX5fFnhq9hkq",
+			description: "Зашифрованный пароль пользователя",
+		},
+		id: {
+			type: "string",
+			default: "1717440741304",
+			description: "ID пользователя",
+		},
+		results: {
+			type: "object",
+			description: "Результаты билетов и экзамена пользователя",
+			properties: {
+				exam: {
+					type: "array",
+					description: "Массив результатов экзамена",
+					items: ResultSwaggerDoc,
+				},
+				ticket_1: {
+					type: "array",
+					description: "Массив результатов билета 1",
+					items: ResultSwaggerDoc,
+				},
+			},
+		},
+	},
+};
+
 export type UserLoginDBModel = {
 	email: string;
 	firstName: string;

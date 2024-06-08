@@ -7,17 +7,21 @@ import {
 import { handleValudationErrors } from "../midlewares";
 import * as userController from "../controllers/userController";
 import { getErrorWaggerDoc } from "../assets/getErrorSwaggerDoc";
+import { BodyLoginModelSwaggerDoc } from "../models/auth/BodyLoginModel";
+import { BodyRegisterModelSwaggerDoc } from "../models/auth/BodyRegisterModel";
+import { UserLoginDBModelSwaggerDoc } from "../models/auth/UserLoginDBModel";
+import { UserLoginViewModelSwaggerDoc } from "../models/auth/UserLoginViewModel";
+import { UserRegisterViewModelSwaggerDoc } from "../models/auth/UserRegisterViewModel";
 
 export const registerSwaggerDoc = {
 	"/auth/register": {
 		post: {
 			tags: ["Авторизация"],
 			summary: "Регистрация нового пользователя",
-			// security: [{ bearerAuth: [] }],
 			requestBody: {
 				content: {
 					"application/json": {
-						schema: { $ref: "#/components/schemas/BodyRegisterModel" },
+						schema: BodyRegisterModelSwaggerDoc,
 					},
 				},
 			},
@@ -26,9 +30,7 @@ export const registerSwaggerDoc = {
 					description: "Успешная регистрация",
 					content: {
 						"application/json": {
-							schema: {
-								$ref: "#/components/schemas/UserRegisterViewModel",
-							},
+							schema: UserRegisterViewModelSwaggerDoc,
 						},
 					},
 				},
@@ -41,11 +43,10 @@ export const registerSwaggerDoc = {
 		post: {
 			tags: ["Авторизация"],
 			summary: "Логин пользователя",
-			// security: [{ bearerAuth: [] }],
 			requestBody: {
 				content: {
 					"application/json": {
-						schema: { $ref: "#/components/schemas/BodyLoginModel" },
+						schema: BodyLoginModelSwaggerDoc,
 					},
 				},
 			},
@@ -54,9 +55,7 @@ export const registerSwaggerDoc = {
 					description: "Успешный логин",
 					content: {
 						"application/json": {
-							schema: {
-								$ref: "#/components/schemas/UserLoginViewModel",
-							},
+							schema: UserLoginViewModelSwaggerDoc,
 						},
 					},
 				},
@@ -105,9 +104,7 @@ export const registerSwaggerDoc = {
 						"application/json": {
 							schema: {
 								type: "array",
-								items: {
-									$ref: "#/components/schemas/UserLoginDBModel",
-								},
+								items: UserLoginDBModelSwaggerDoc,
 							},
 						},
 					},
