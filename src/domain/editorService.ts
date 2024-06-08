@@ -36,7 +36,8 @@ const imageToBase64 = async (img?: ArrayBuffer) => {
 export const editorService = {
 	async createTicket() {
 		const ticketId = Number(new Date()).toString();
-		await editorRepository.createTicket(ticketId);
+		const createdAt = Number(new Date());
+		await editorRepository.createTicket(ticketId, createdAt);
 	},
 
 	async addQuestion(data: CreateQuestionBody) {
