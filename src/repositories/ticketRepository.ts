@@ -74,6 +74,11 @@ export const ticketRepository = {
 		ticketId: string;
 		questionId: string;
 	}) {
+		/**
+		 * Сделать ставку ответов пользователя
+		 * Формат еще нужно будет доработать
+		 * Сейчас он создает только поле для вставки
+		 */
 		const { userId, ticketId, questionId } = data;
 		const question = await isQuestionExist(ticketId, questionId);
 
