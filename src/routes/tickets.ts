@@ -5,6 +5,7 @@ import * as ticketController from "../controllers/ticketsController";
 import { getErrorWaggerDoc } from "../assets/getErrorSwaggerDoc";
 import { SendTicketsViewModelSwaggerDoc } from "../models/tickets/SendTicketsViewModel";
 import { SendTicketViewModelSwaggerDoc } from "../models/tickets/SendTicketViewModel";
+import { BodySendTicketResultSwaggerDoc } from "../models/tickets/BodySendTicketResult";
 
 export const ticketsSwaggerDoc = {
 	"/tickets": {
@@ -37,7 +38,7 @@ export const ticketsSwaggerDoc = {
 					in: "path",
 					description: "id билета",
 					required: true,
-					default: "5687948694",
+					default: "1717841402302",
 				},
 			],
 			responses: {
@@ -59,17 +60,17 @@ export const ticketsSwaggerDoc = {
 			security: [{ bearerAuth: [] }],
 			parameters: [
 				{
-					name: "ticketNumber",
+					name: "ticketId",
 					in: "path",
-					description: "Порядковый номер билета",
+					description: "id билета",
 					required: true,
-					default: 1,
+					default: 1717841402302,
 				},
 			],
 			requestBody: {
 				content: {
 					"application/json": {
-						schema: { $ref: "#/components/schemas/BodySendTicketResult" },
+						schema: BodySendTicketResultSwaggerDoc,
 					},
 				},
 			},

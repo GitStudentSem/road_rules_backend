@@ -4,6 +4,7 @@ import { checkAuth } from "../midlewares";
 
 import * as examController from "../controllers/examController";
 import { getErrorWaggerDoc } from "../assets/getErrorSwaggerDoc";
+import { SendExamViewModelSwaggerDoc } from "../models/exam/SendExamViewModel";
 
 export const examSwaggerDoc = {
 	"/exam": {
@@ -16,9 +17,7 @@ export const examSwaggerDoc = {
 					description: "Экзамен получен",
 					content: {
 						"application/json": {
-							schema: {
-								$ref: "#/components/schemas/SendExamViewModel",
-							},
+							schema: SendExamViewModelSwaggerDoc,
 						},
 					},
 				},

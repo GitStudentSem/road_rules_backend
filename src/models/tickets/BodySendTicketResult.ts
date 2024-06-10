@@ -1,22 +1,21 @@
-/**
- * @swagger
- * components:
- *   schemas:
- *     BodySendTicketResult:
- *       type: object
- *       properties:
- *         answerId:
- *           type: string
- *           description: id варианта ответа
- *         questionNumber:
- *           type: number
- *           description: Порядковый номер вопроса
- *           default: 1
- *       required:
- *         - answerId
- *         - questionNumber
- */
+import type { OpenAPIV3 } from "openapi-types";
+
+export const BodySendTicketResultSwaggerDoc: OpenAPIV3.SchemaObject = {
+	type: "object",
+	properties: {
+		questionId: {
+			type: "string",
+			description: "id вопроса",
+			default: "1717918012771",
+		},
+		answerId: {
+			type: "string",
+			description: "id ответа",
+			default: "17179180127710",
+		},
+	},
+};
 export type BodySendTicketResult = {
 	answerId: string;
-	questionNumber: number;
+	questionId: string;
 };

@@ -16,6 +16,8 @@ export const sendExam = async (
 		//@ts-ignore
 		const exam = await examService.sendExam(req.userId);
 
+		// Сделать по типизации, сейчас ticketNumber не совпадает с ticketId полем
+		//@ts-ignore
 		res.json(exam);
 	} catch (error) {
 		if (error instanceof DBError) {

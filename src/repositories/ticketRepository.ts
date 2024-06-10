@@ -1,4 +1,5 @@
 import { DBError } from "../controllers/DBError";
+import type { CreateQuestionDBModel } from "../models/editor/CreateQuestionDBModel";
 import { ticket_1, ticket_2, ticket_3 } from "../tickets";
 import { HTTP_STATUSES } from "../utils";
 import { ticketCollection, userCollection } from "./db";
@@ -6,13 +7,37 @@ import { ticketCollection, userCollection } from "./db";
 const ticketsOld = [ticket_1, ticket_2, ticket_3];
 
 const isTicketExist = async (ticketId: string) => {
-	console.log("ticketId", ticketId);
 	const ticket = await ticketCollection.findOne({ ticketId });
 	if (!ticket) {
 		throw new DBError("Билет не найден", HTTP_STATUSES.NOT_FOUND_404);
 	}
 
 	return ticket;
+};
+const isQuestionExist = async (
+	ticketId: string,
+	questionId: string,
+): Promise<CreateQuestionDBModel> => {
+	console.log("ticketId, questionID", ticketId, questionId);
+	const question = await ticketCollection
+		.aggregate([
+			{ $match: { ticketId } },
+			{ $unwind: "$questions" },
+			{ $match: { "questions.questionId": questionId } },
+			{
+				$replaceRoot: { newRoot: "$questions" },
+			},
+		])
+		.toArray();
+	// console.log("question", question);
+	// console.log("question[0]", question[0]);
+	if (!question)
+		throw new DBError(
+			"Указанный билет или вопрос не найден",
+			HTTP_STATUSES.NOT_FOUND_404,
+		);
+	//@ts-ignore
+	return question[0];
 };
 
 const isUserExist = async (userId: string) => {
@@ -23,55 +48,6 @@ const isUserExist = async (userId: string) => {
 		throw new DBError("Пользователь не найден", HTTP_STATUSES.NOT_FOUND_404);
 	}
 	return user;
-};
-
-type TypeGetCorrectAnswer = {
-	ticketNumber: number;
-	answerId: string;
-	questionNumber: number;
-};
-const getCorrectAnswer = ({
-	ticketNumber,
-	answerId,
-	questionNumber,
-}: TypeGetCorrectAnswer) => {
-	const ticket = ticketsOld[ticketNumber - 1];
-
-	if (questionNumber < 1 || ticket.length < questionNumber) {
-		throw new DBError(
-			`Указанный номер вопроса не найден, всего вопросов: ${ticket.length}`,
-			HTTP_STATUSES.NOT_FOUND_404,
-		);
-	}
-
-	const isExistAnswer =
-		ticket[questionNumber - 1].answers.find((answer) => {
-			return answer.id === answerId;
-		}) || "";
-
-	if (!isExistAnswer) {
-		throw new DBError(
-			`Указанный ответ ${answerId} не найден`,
-			HTTP_STATUSES.NOT_FOUND_404,
-		);
-	}
-
-	const question = ticket[questionNumber - 1];
-
-	if (!question) {
-		throw new DBError(
-			"Указанный номер вопроса не существует",
-			HTTP_STATUSES.NOT_FOUND_404,
-		);
-	}
-
-	const correctAnswer =
-		question.answers.find((question) => question.isCorrect)?.id || "";
-
-	return {
-		correctAnswer,
-		help: question.help,
-	};
 };
 
 export const ticketRepository = {
@@ -93,42 +69,31 @@ export const ticketRepository = {
 		return ticket;
 	},
 
-	async sendTicketResult(
-		userId: string,
-		ticketNumber: number,
-		questionNumber: number,
-		answerId: string,
-	) {
-		const correctAnswer = getCorrectAnswer({
-			ticketNumber,
-			questionNumber,
-			answerId,
-		});
-
-		const isCorrect = correctAnswer.correctAnswer === answerId;
+	async sendTicketResult(data: {
+		userId: string;
+		ticketId: string;
+		questionId: string;
+	}) {
+		const { userId, ticketId, questionId } = data;
+		const question = await isQuestionExist(ticketId, questionId);
 
 		const filter = { id: userId };
 		const user = await isUserExist(userId);
 
-		const ticketObject = `results.ticket_${ticketNumber}`;
-		let ticket = user.results[ticketObject];
+		const ticketObjectName = `results.ticket_${ticketId}`;
+		let ticket = user.results[ticketObjectName];
 
 		if (!ticket) ticket = [];
 
-		ticket[questionNumber - 1] = {
-			isCorrect,
-			answerId,
-		};
-
 		const update = {
 			$set: {
-				[ticketObject]: ticket,
+				[ticketObjectName]: ticket,
 			},
 		};
 		const options = { upsert: true };
 
 		await userCollection.updateOne(filter, update, options);
 
-		return { ...correctAnswer, isCorrect };
+		return question;
 	},
 };

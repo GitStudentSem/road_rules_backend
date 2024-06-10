@@ -35,7 +35,6 @@ export const sendTicket = async (
 	res: Response<SendTicketViewModel[] | ErrorType>,
 ) => {
 	try {
-		console.log("req.params.ticketId", req.params.ticketId);
 		const ticket = await ticketService.sendTicket(
 			//@ts-ignore
 			req.userId,
@@ -53,17 +52,17 @@ export const sendTicket = async (
 };
 
 export const sendTicketResult = async (
-	req: RequestWithParamsAndBody<{ ticketNumber: string }, BodySendTicketResult>,
+	req: RequestWithParamsAndBody<{ ticketId: string }, BodySendTicketResult>,
 	res: Response<SendTicketResultViewModel | ErrorType>,
 ) => {
 	try {
-		const result = await ticketService.sendTicketResult(
+		const result = await ticketService.sendTicketResult({
 			//@ts-ignore
-			req.userId,
-			+req.params.ticketNumber,
-			req.body.questionNumber,
-			req.body.answerId,
-		);
+			userId: req.userId,
+			ticketId: req.params.ticketId,
+			questionId: req.body.questionId,
+			answerId: req.body.answerId,
+		});
 
 		res.json(result);
 	} catch (error) {

@@ -38,23 +38,22 @@ export const ticketService = {
 		return removeCorrectAnswersFromTicket(ticket);
 	},
 
-	async sendTicketResult(
-		userId: string,
-		ticketNumber: number,
-		questionNumber: number,
-		answerId: string,
-	) {
-		const result = await ticketRepository.sendTicketResult(
-			userId,
-			ticketNumber,
-			questionNumber,
-			answerId,
-		);
+	async sendTicketResult(data: {
+		userId: string;
+		ticketId: string;
+		questionId: string;
+		answerId: string;
+	}) {
+		const foundedQuestion = await ticketRepository.sendTicketResult(data);
+		const correctAnswerId =
+			foundedQuestion.answers.find((answer) => answer.isCorrect)?.answerId ||
+			"";
+		const isCorrect = correctAnswerId === data.answerId;
 
 		return {
-			isCorrect: result.isCorrect,
-			correctAnswer: result.correctAnswer,
-			help: result.isCorrect ? "" : result.help,
+			isCorrect: isCorrect,
+			correctAnswer: correctAnswerId,
+			help: isCorrect ? "" : foundedQuestion.help,
 		};
 	},
 };

@@ -1,5 +1,3 @@
-import { QuestionSwaggerDoc, type Question } from "../Question";
-
 export const SendTicketViewModelSwaggerDoc = {
 	type: "object",
 	properties: {
@@ -21,7 +19,21 @@ export const SendTicketViewModelSwaggerDoc = {
 		answers: {
 			type: "array",
 			description: "Варианты ответа на вопрос",
-			items: QuestionSwaggerDoc,
+			items: {
+				type: "object",
+				properties: {
+					answerText: {
+						type: "string",
+						description: "Текст варианта ответа",
+						default: "Только направо",
+					},
+					answerId: {
+						type: "string",
+						description: "id варианта ответа",
+						default: "17178541405880",
+					},
+				},
+			},
 		},
 	},
 };
@@ -29,5 +41,8 @@ export type SendTicketViewModel = {
 	question: string;
 	questionId: string;
 	img: string;
-	answers: Question[];
+	answers: {
+		answerText: string;
+		answerId: string;
+	}[];
 };

@@ -11,6 +11,15 @@ export const QuestionSwaggerDoc = {
 			description: "id варианта ответа",
 			default: "17178541405880",
 		},
+		isCorrect: {
+			type: "boolean",
+			description: "правильный ли ответ",
+			default: "false",
+		},
 	},
 };
-export type Question = { answerText: string; answerId: string };
+export type Question = {
+	answerText: string;
+	answerId: string;
+	isCorrect: boolean;
+};
