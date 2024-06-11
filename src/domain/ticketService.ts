@@ -26,15 +26,14 @@ const removeCorrectAnswersFromTicket = (ticket: WithId<TicketsDBModel>) => {
 
 export const ticketService = {
 	async sendTickets(userId: string) {
-		const tickets = await ticketRepository.sendTickets(userId);
-		const ticketsWithOnlyId = tickets.map((ticket) => {
-			return { ticketId: ticket.ticketId };
-		});
-		return ticketsWithOnlyId;
+		const ticketsIds = await ticketRepository.sendTickets(userId);
+
+		return ticketsIds;
 	},
 
 	async sendTicket(userId: string, ticketId: string) {
 		const ticket = await ticketRepository.sendTicket(userId, ticketId);
+
 		return removeCorrectAnswersFromTicket(ticket);
 	},
 

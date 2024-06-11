@@ -1,5 +1,6 @@
 import { DBError } from "../controllers/DBError";
 import type { CreateQuestionDBModel } from "../models/editor/CreateQuestionDBModel";
+import { SendTicketsViewModel } from "../models/tickets/SendTicketsViewModel";
 import { ticket_1, ticket_2, ticket_3 } from "../tickets";
 import { HTTP_STATUSES } from "../utils";
 import { ticketCollection, userCollection } from "./db";
@@ -18,7 +19,6 @@ const isQuestionExist = async (
 	ticketId: string,
 	questionId: string,
 ): Promise<CreateQuestionDBModel> => {
-	console.log("ticketId, questionID", ticketId, questionId);
 	const question = await ticketCollection
 		.aggregate([
 			{ $match: { ticketId } },
@@ -53,12 +53,24 @@ const isUserExist = async (userId: string) => {
 export const ticketRepository = {
 	async sendTickets(userId: string) {
 		await isUserExist(userId);
-		const tickets = await ticketCollection
-			.find()
-			.sort({ createdAt: 1 })
+
+		const ticketsIds = await ticketCollection
+			.aggregate<{ ticketId: string }>([
+				// Сортируем документы по полю 'createdAt'
+				{ $sort: { createdAt: 1 } },
+
+				// Группируем по 'ticketId' и добавляем уникальные ticketId в массив
+				{ $group: { _id: "$ticketId", createdAt: { $first: "$createdAt" } } },
+
+				// Проектируем только ticketId
+				{ $project: { _id: 0, ticketId: "$_id" } },
+
+				// Финальная сортировка по полю 'createdAt'
+				{ $sort: { createdAt: 1 } },
+			])
 			.toArray();
 
-		return tickets;
+		return ticketsIds;
 	},
 
 	async sendTicket(userId: string, ticketId: string) {
