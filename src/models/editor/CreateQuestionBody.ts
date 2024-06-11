@@ -1,4 +1,6 @@
-export const CreateQuestionBodySwaggerDoc = {
+import type { OpenAPIV3 } from "openapi-types";
+
+export const CreateQuestionBodySwaggerDoc: OpenAPIV3.SchemaObject = {
 	type: "object",
 	properties: {
 		img: {

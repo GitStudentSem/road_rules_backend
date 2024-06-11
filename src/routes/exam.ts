@@ -5,6 +5,8 @@ import { checkAuth } from "../midlewares";
 import * as examController from "../controllers/examController";
 import { getErrorWaggerDoc } from "../assets/getErrorSwaggerDoc";
 import { SendExamViewModelSwaggerDoc } from "../models/exam/SendExamViewModel";
+import { BodySendExamResultSwaggerDoc } from "../models/exam/BodySendExamResult";
+import { SendExamResultViewModelSwaggerDoc } from "../models/exam/SendExamResultViewModel";
 
 export const examSwaggerDoc = {
 	"/exam": {
@@ -43,7 +45,7 @@ export const examSwaggerDoc = {
 			requestBody: {
 				content: {
 					"application/json": {
-						schema: { $ref: "#/components/schemas/BodySendExamResult" },
+						schema: BodySendExamResultSwaggerDoc,
 					},
 				},
 			},
@@ -52,9 +54,7 @@ export const examSwaggerDoc = {
 					description: "Ответ успешно отправлен",
 					content: {
 						"application/json": {
-							schema: {
-								$ref: "#/components/schemas/SendExamResultViewModel",
-							},
+							schema: SendExamResultViewModelSwaggerDoc,
 						},
 					},
 				},
