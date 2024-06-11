@@ -3,6 +3,7 @@ export const SendExamViewModelSwaggerDoc = {
 	properties: {
 		img: {
 			type: "string",
+			default: [],
 			description: "Картинка в формате base64",
 		},
 		question: {

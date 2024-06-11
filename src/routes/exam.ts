@@ -28,18 +28,18 @@ export const examSwaggerDoc = {
 		},
 	},
 
-	"/exam/{ticketNumber}": {
+	"/exam/{ticketId}": {
 		post: {
 			tags: ["Экзамен"],
 			summary: "Отправить ответ на вопрос по экзамену",
 			security: [{ bearerAuth: [] }],
 			parameters: [
 				{
-					name: "ticketNumber",
+					name: "ticketId",
 					in: "path",
-					description: "Порядковый номер билета",
+					description: "id билета",
 					required: true,
-					default: 1,
+					default: "1717841402302",
 				},
 			],
 			requestBody: {

@@ -5,6 +5,7 @@ import { handleValudationErrors } from "../midlewares";
 import { getErrorWaggerDoc } from "../assets/getErrorSwaggerDoc";
 import multer from "multer";
 import { CreateQuestionBodySwaggerDoc } from "../models/editor/CreateQuestionBody";
+import { DeleteQuestionlSwaggerDoc } from "../models/editor/DeleteQuestionBody";
 const upload = multer({ storage: multer.memoryStorage() });
 
 export const editorSwaggerDoc = {
@@ -56,6 +57,7 @@ export const editorSwaggerDoc = {
 							properties: {
 								ticketId: {
 									type: "string",
+									default: "1717841402302",
 									description: "id удаляемого билета",
 								},
 							},
@@ -79,9 +81,7 @@ export const editorSwaggerDoc = {
 			// security: [{ bearerAuth: [] }],
 			requestBody: {
 				content: {
-					"application/json": {
-						schema: { $ref: "#/components/schemas/DeleteQuestionBody" },
-					},
+					"application/json": { schema: DeleteQuestionlSwaggerDoc },
 				},
 			},
 			responses: {

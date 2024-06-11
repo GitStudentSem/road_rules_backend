@@ -6,6 +6,7 @@ import { getErrorWaggerDoc } from "../assets/getErrorSwaggerDoc";
 import { SendTicketsViewModelSwaggerDoc } from "../models/tickets/SendTicketsViewModel";
 import { SendTicketViewModelSwaggerDoc } from "../models/tickets/SendTicketViewModel";
 import { BodySendTicketResultSwaggerDoc } from "../models/tickets/BodySendTicketResult";
+import { SendTicketResultViewModelModelSwaggerDoc } from "../models/tickets/SendTicketResultViewModel";
 
 export const ticketsSwaggerDoc = {
 	"/tickets": {
@@ -79,9 +80,7 @@ export const ticketsSwaggerDoc = {
 					description: "Ответ успешно отправлен",
 					content: {
 						"application/json": {
-							schema: {
-								$ref: "#/components/schemas/SendTicketResultViewModel",
-							},
+							schema: SendTicketResultViewModelModelSwaggerDoc,
 						},
 					},
 				},
