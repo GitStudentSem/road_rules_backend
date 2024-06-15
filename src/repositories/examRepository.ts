@@ -69,7 +69,7 @@ const getRandomTicket = async () => {
 };
 
 const isUserExist = async (userId: string) => {
-	const filter = { id: userId };
+	const filter = { userId };
 	const user = await userCollection.findOne(filter);
 
 	if (!user) {
@@ -79,14 +79,10 @@ const isUserExist = async (userId: string) => {
 };
 
 const removePreviousAnswers = async (userId: string) => {
-	try {
-		await userCollection.updateOne(
-			{ userId },
-			{ $unset: { "results.exam": "" } },
-		);
-	} catch (error) {
-		console.log(" error", error);
-	}
+	await userCollection.updateOne(
+		{ userId },
+		{ $unset: { "results.exam": "" } },
+	);
 };
 
 export type QuestionWithTicketId = CreateQuestionDBModel & {
@@ -138,7 +134,7 @@ export const examRepository = {
 			},
 		};
 
-		await userCollection.updateOne({ id: userId }, update, { upsert: true });
+		await userCollection.updateOne({ userId }, update, { upsert: true });
 
 		return { help: question.help, correctAnswerId, isCorrect };
 	},

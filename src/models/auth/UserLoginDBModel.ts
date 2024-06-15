@@ -43,7 +43,7 @@ export const UserLoginDBModelSwaggerDoc = {
 			default: "$2b$10$yqHo2wRVFzsaz0bFYZSGsuAH7uDWxYvXKDQkruHEkJX5fFnhq9hkq",
 			description: "Зашифрованный пароль пользователя",
 		},
-		id: {
+		userId: {
 			type: "string",
 			default: "1717440741304",
 			description: "ID пользователя",

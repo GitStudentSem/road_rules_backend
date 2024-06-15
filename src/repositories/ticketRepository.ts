@@ -37,7 +37,7 @@ const isQuestionExist = async (
 };
 
 const isUserExist = async (userId: string) => {
-	const filter = { id: userId };
+	const filter = { userId };
 	const user = await userCollection.findOne(filter);
 
 	if (!user) {
@@ -120,7 +120,7 @@ export const ticketRepository = {
 			},
 		};
 
-		await userCollection.updateOne({ id: userId }, update, { upsert: true });
+		await userCollection.updateOne({ userId }, update, { upsert: true });
 
 		return question;
 	},

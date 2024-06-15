@@ -1,6 +1,5 @@
 import fs from "node:fs";
 import { ticketRepository } from "../repositories/ticketRepository";
-import type { TypeQuestion } from "../types";
 import type { WithId } from "mongodb";
 import type { TicketsDBModel } from "../models/editor/TicketsDBModel";
 

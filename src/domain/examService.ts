@@ -1,12 +1,7 @@
-import type { WithId } from "mongodb";
 import { examRepository } from "../repositories/examRepository";
 import type { QuestionWithTicketId } from "../repositories/examRepository";
-import type { TypeAnswers, TypeQuestion } from "../types";
 import fs from "node:fs";
-import type { TicketsDBModel } from "../models/editor/TicketsDBModel";
-import type { CreateQuestionDBModel } from "../models/editor/CreateQuestionDBModel";
 import type { Answer } from "../models/Question";
-import { header } from "express-validator";
 
 const imageToBase64 = (imagePath: string) => {
 	const image = fs.readFileSync(imagePath, { encoding: "base64" });

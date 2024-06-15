@@ -22,12 +22,6 @@ export const userCollection = client
 	.db(DB_NAME)
 	.collection<UserLoginDBModel>(USER_COLLECTION_DB_NAME);
 
-export type CreateTicket = {
-	img?: string;
-	question: string;
-	help: string;
-	answers: { answerText: string; id: string }[];
-};
 const TICKETS_COLLECTION_NAME = "tickets";
 export const ticketCollection = client
 	.db(DB_NAME)
