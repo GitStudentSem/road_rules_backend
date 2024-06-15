@@ -49,6 +49,33 @@ export const addQuestion = async (
 		sendError({ message: "Не удалось добавить вопрос", error, res });
 	}
 };
+export const editQuestion = async (
+	req: RequestWithBody<CreateQuestionBody>,
+	res: Response<ErrorType>,
+) => {
+	try {
+		//@ts-ignore
+		const img = req.file?.buffer;
+		const { question, help, answers, ticketId, correctAnswer } = req.body;
+
+		await editorService.editQuestion({
+			img,
+			ticketId,
+			question,
+			help,
+			correctAnswer: Number(correctAnswer),
+			answers,
+		});
+
+		res.sendStatus(HTTP_STATUSES.NO_CONTENT_204);
+	} catch (error) {
+		if (error instanceof DBError) {
+			res.status(error.status).json({ message: error.message });
+			return;
+		}
+		sendError({ message: "Не удалось добавить вопрос", error, res });
+	}
+};
 
 export const deleteTicket = async (
 	req: RequestWithBody<{ ticketId: string }>,

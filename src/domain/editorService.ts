@@ -68,6 +68,25 @@ export const editorService = {
 			answers: answersWithId,
 		});
 	},
+	async editQuestion(data: CreateQuestionBody) {
+		const { img, ticketId, question, help, correctAnswer, answers } = data;
+		const imageInBase64 = await imageToBase64(img);
+		const questionId = Number(new Date()).toString();
+
+		const answersWithId = answers.map((answer, i) => {
+			const answerId = Number(new Date()).toString() + i;
+			return { answerText: answer, isCorrect: i === correctAnswer, answerId };
+		});
+
+		await editorRepository.editQuestion({
+			img: imageInBase64,
+			questionId,
+			ticketId,
+			question,
+			help,
+			answers: answersWithId,
+		});
+	},
 
 	async deleteTicket(ticketId: string) {
 		await editorRepository.deleteTicket(ticketId);

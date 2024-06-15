@@ -43,6 +43,22 @@ export const editorRepository = {
 			{ $push: { questions: { img, questionId, question, help, answers } } },
 		);
 	},
+	async editQuestion(data: CreateQuestion) {
+		const { img, questionId, ticketId, question, help, answers } = data;
+		const ticket = await findTicket(ticketId);
+
+		if (ticket.questions.length >= 20) {
+			throw new DBError(
+				"Максимальное количество вопросов в балете 20",
+				HTTP_STATUSES.BAD_REQUEST_400,
+			);
+		}
+
+		await ticketCollection.updateOne(
+			{ ticketId },
+			{ $push: { questions: { img, questionId, question, help, answers } } },
+		);
+	},
 
 	async deleteTicket(ticketId: string) {
 		await findTicket(ticketId);

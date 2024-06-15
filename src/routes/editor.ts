@@ -98,7 +98,6 @@ export const editorRouter = () => {
 	const router = express.Router();
 
 	router.get("/createTicket", editorController.createTicket);
-
 	router.post(
 		"/addQuestion",
 		upload.single("img"),
@@ -108,8 +107,8 @@ export const editorRouter = () => {
 	);
 
 	router.delete("/deleteQuestion", editorController.deleteQuestion);
-
 	router.delete("/deleteTicket", editorController.deleteTicket);
+	router.patch("/editQuestion", editorController.editQuestion);
 
 	return router;
 };
