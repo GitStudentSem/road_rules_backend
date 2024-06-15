@@ -4,6 +4,7 @@ import type { CreateQuestionBody } from "../models/editor/CreateQuestionBody";
 import type { DeleteQuestionBody } from "../models/editor/DeleteQuestionBody";
 import { colors, resetStyle, styles } from "../assets/logStyles";
 import { crc32 } from "crc";
+import type { EditQuestionBody } from "../models/editor/EditQuestionBody";
 
 const calculateSizeInKB = (arrayBuffer: ArrayBuffer) => {
 	const bytes = arrayBuffer.byteLength;
@@ -70,10 +71,18 @@ export const editorService = {
 			answers: answersWithId,
 		});
 	},
-	async editQuestion(data: CreateQuestionBody) {
-		const { img, ticketId, question, help, correctAnswer, answers } = data;
+
+	async editQuestion(data: EditQuestionBody) {
+		const {
+			img,
+			ticketId,
+			questionId,
+			question,
+			help,
+			correctAnswer,
+			answers,
+		} = data;
 		const imageInBase64 = await imageToBase64(img);
-		const questionId = Number(new Date()).toString();
 
 		const answersWithId = answers.map((answer, i) => {
 			const answerId = Number(new Date()).toString() + i;

@@ -8,6 +8,7 @@ import { DBError } from "./DBError";
 import { editorService } from "../domain/editorService";
 import type { CreateQuestionBody } from "../models/editor/CreateQuestionBody";
 import type { DeleteQuestionBody } from "../models/editor/DeleteQuestionBody";
+import type { EditQuestionBody } from "../models/editor/EditQuestionBody";
 
 export const createTicket = async (req: Request, res: Response<ErrorType>) => {
 	try {
@@ -50,17 +51,19 @@ export const addQuestion = async (
 	}
 };
 export const editQuestion = async (
-	req: RequestWithBody<CreateQuestionBody>,
+	req: RequestWithBody<EditQuestionBody>,
 	res: Response<ErrorType>,
 ) => {
 	try {
 		//@ts-ignore
 		const img = req.file?.buffer;
-		const { question, help, answers, ticketId, correctAnswer } = req.body;
+		const { question, help, answers, ticketId, questionId, correctAnswer } =
+			req.body;
 
 		await editorService.editQuestion({
 			img,
 			ticketId,
+			questionId,
 			question,
 			help,
 			correctAnswer: Number(correctAnswer),

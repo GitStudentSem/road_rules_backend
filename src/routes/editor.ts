@@ -6,6 +6,7 @@ import { getErrorSwaggerDoc } from "../assets/getErrorSwaggerDoc";
 import multer from "multer";
 import { CreateQuestionBodySwaggerDoc } from "../models/editor/CreateQuestionBody";
 import { DeleteQuestionlSwaggerDoc } from "../models/editor/DeleteQuestionBody";
+import { EditQuestionBodySwaggerDoc } from "../models/editor/EditQuestionBody";
 const upload = multer({ storage: multer.memoryStorage() });
 
 export const editorSwaggerDoc = {
@@ -40,6 +41,27 @@ export const editorSwaggerDoc = {
 					description: "Вопрос успешно добавлен",
 				},
 				error: getErrorSwaggerDoc("Ошибка добавления вопроса"),
+			},
+		},
+	},
+
+	"/editor/editQuestion": {
+		patch: {
+			tags: ["Редактор билетов"],
+			summary: "Изменить существующий вопрос",
+			// security: [{ bearerAuth: [] }],
+			requestBody: {
+				content: {
+					"multipart/form-data": {
+						schema: EditQuestionBodySwaggerDoc,
+					},
+				},
+			},
+			responses: {
+				204: {
+					description: "Вопрос успешно изменен",
+				},
+				error: getErrorSwaggerDoc("Ошибка изменения вопроса"),
 			},
 		},
 	},
