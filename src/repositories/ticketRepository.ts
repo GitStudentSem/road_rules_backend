@@ -90,17 +90,16 @@ export const ticketRepository = {
 		userId: string;
 		ticketId: string;
 		questionId: string;
+		answerId: string;
 	}) {
 		/**
 		 * Сделать ставку ответов пользователя
 		 * Формат еще нужно будет доработать
 		 * Сейчас он создает только поле для вставки
 		 */
-		const { userId, ticketId, questionId } = data;
-		const question = await isQuestionExist(ticketId, questionId);
-
-		const filter = { id: userId };
+		const { userId, ticketId, questionId, answerId } = data;
 		const user = await isUserExist(userId);
+		const question = await isQuestionExist(ticketId, questionId);
 
 		const ticketObjectName = `results.ticket_${ticketId}`;
 		let ticket = user.results[ticketObjectName];
@@ -112,9 +111,8 @@ export const ticketRepository = {
 				[ticketObjectName]: ticket,
 			},
 		};
-		const options = { upsert: true };
 
-		await userCollection.updateOne(filter, update, options);
+		await userCollection.updateOne({ id: userId }, update, { upsert: true });
 
 		return question;
 	},

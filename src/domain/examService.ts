@@ -6,6 +6,7 @@ import fs from "node:fs";
 import type { TicketsDBModel } from "../models/editor/TicketsDBModel";
 import type { CreateQuestionDBModel } from "../models/editor/CreateQuestionDBModel";
 import type { Answer } from "../models/Question";
+import { header } from "express-validator";
 
 const imageToBase64 = (imagePath: string) => {
 	const image = fs.readFileSync(imagePath, { encoding: "base64" });
@@ -49,13 +50,18 @@ export const examService = {
 		answerId: string;
 	}) {
 		const { userId, ticketId, questionId, answerId } = data;
-		const question = await examRepository.sendExamResult({
+		const dataFromDB = await examRepository.sendExamResult({
 			userId,
 			ticketId,
 			questionId,
 			answerId,
 		});
+		const result = {
+			isCorrect: dataFromDB.isCorrect,
+			correctAnswer: dataFromDB.correctAnswerId,
+			help: dataFromDB.isCorrect ? "" : dataFromDB.help,
+		};
 
-		return question;
+		return result;
 	},
 };

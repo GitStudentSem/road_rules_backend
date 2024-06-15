@@ -52,6 +52,31 @@ const randomInteger = (min: number, max: number) => {
 	return Math.floor(rand);
 };
 
+const isQuestionExist = async (
+	ticketId: string,
+	questionId: string,
+): Promise<CreateQuestionDBModel> => {
+	const question = await ticketCollection
+		.aggregate([
+			{ $match: { ticketId } },
+			{ $unwind: "$questions" },
+			{ $match: { "questions.questionId": questionId } },
+			{
+				$replaceRoot: { newRoot: "$questions" },
+			},
+		])
+		.toArray();
+	// console.log("question", question);
+	// console.log("question[0]", question[0]);
+	if (!question)
+		throw new DBError(
+			"Указанный билет или вопрос не найден",
+			HTTP_STATUSES.NOT_FOUND_404,
+		);
+	//@ts-ignore
+	return question[0];
+};
+
 const getTicketsIds = async () => {
 	const ticketsIds = await ticketCollection
 		.aggregate<{ ticketId: string }>([
@@ -119,29 +144,24 @@ export const examRepository = {
 	}) {
 		const { userId, ticketId, questionId, answerId } = data;
 
-		const filter = { id: userId };
-
 		const user = await isUserExist(userId);
+		const question = await isQuestionExist(ticketId, questionId);
+		const correctAnswerId =
+			question.answers.find((answer) => answer.isCorrect)?.answerId || "";
+		const isCorrect = correctAnswerId === answerId;
 
-		let exam = user.results.exam;
+		let examResult = user.results.exam;
 
-		if (!exam) exam = [];
-
+		if (!examResult) examResult = [];
+		examResult.push({ ticketId, questionId, answerId, isCorrect });
 		const update = {
 			$set: {
-				"results.exam": exam,
+				"results.exam": examResult,
 			},
 		};
-		const options = { upsert: true };
-		await userCollection.updateOne(filter, update, options);
 
-		const isCorrect = true;
-		const correctAnswerId = "tempCorrectAnsweer";
-		const question = { help: "temp question help" };
-		return {
-			isCorrect,
-			correctAnswer: correctAnswerId,
-			help: isCorrect ? "" : question.help,
-		};
+		await userCollection.updateOne({ id: userId }, update, { upsert: true });
+
+		return { help: question.help, correctAnswerId, isCorrect };
 	},
 };

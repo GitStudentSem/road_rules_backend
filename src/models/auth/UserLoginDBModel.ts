@@ -14,8 +14,10 @@ const ResultSwaggerDoc = {
 	},
 };
 type Result = {
-	isCorrect?: boolean;
-	answerId?: string;
+	isCorrect: boolean;
+	ticketId: string;
+	questionId: string;
+	answerId: string;
 };
 
 export const UserLoginDBModelSwaggerDoc = {
