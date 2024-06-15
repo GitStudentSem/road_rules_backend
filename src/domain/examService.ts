@@ -1,27 +1,34 @@
+import type { WithId } from "mongodb";
 import { examRepository } from "../repositories/examRepository";
+import type { QuestionWithTicketId } from "../repositories/examRepository";
 import type { TypeAnswers, TypeQuestion } from "../types";
 import fs from "node:fs";
+import type { TicketsDBModel } from "../models/editor/TicketsDBModel";
+import type { CreateQuestionDBModel } from "../models/editor/CreateQuestionDBModel";
+import type { Answer } from "../models/Question";
 
 const imageToBase64 = (imagePath: string) => {
 	const image = fs.readFileSync(imagePath, { encoding: "base64" });
 	return image;
 };
 
-const shuffleAnswers = (answers: TypeAnswers[]) => {
+const shuffleAnswers = (answers: Answer[]) => {
+	console.log("answers", answers);
 	return answers.sort(() => Math.random() - 0.5);
 };
 
-const removeCorrectAnswersFromTicket = (ticket: TypeQuestion[]) => {
-	return ticket.map((question) => {
-		const shuffledAnswers = shuffleAnswers(question.answers);
-
+const removeCorrectAnswersFromTicket1 = (questions: QuestionWithTicketId[]) => {
+	console.log("questions", questions[0].answers);
+	return questions.map((question) => {
 		return {
 			question: question.question,
 			img: question.img
 				? `data:image/jpeg;base64,${imageToBase64(question.img)}`
 				: "",
-			answers: shuffledAnswers.map((answer) => {
-				return { answerText: answer.text, answerId: answer.id };
+			questionId: question.questionId,
+			ticketId: question.ticketId,
+			answers: shuffleAnswers(question.answers).map((answer) => {
+				return { answerText: answer.answerText, answerId: answer.answerId };
 			}),
 		};
 	});
@@ -30,14 +37,9 @@ const removeCorrectAnswersFromTicket = (ticket: TypeQuestion[]) => {
 export const examService = {
 	async sendExam(userId: string) {
 		const exam = await examRepository.sendExam(userId);
-		const questionsWithoutAnswers = removeCorrectAnswersFromTicket(exam);
+		const questionWithoutCorrectAnswers = removeCorrectAnswersFromTicket1(exam);
 
-		const questionsWithTicketNumber = questionsWithoutAnswers.map(
-			(question, i) => {
-				return { ...question, ticketNumber: exam[i].ticketNumber };
-			},
-		);
-		return questionsWithTicketNumber;
+		return questionWithoutCorrectAnswers;
 	},
 
 	async sendExamResult(

@@ -1,9 +1,9 @@
-import type { Question } from "../Question";
+import type { Answer } from "../Question";
 
 export type CreateQuestionDBModel = {
 	img: string;
 	questionId: string;
 	question: string;
 	help: string;
-	answers: Question[];
+	answers: Answer[];
 };

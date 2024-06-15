@@ -15,6 +15,7 @@ const isTicketExist = async (ticketId: string) => {
 
 	return ticket;
 };
+
 const isQuestionExist = async (
 	ticketId: string,
 	questionId: string,
@@ -50,26 +51,30 @@ const isUserExist = async (userId: string) => {
 	return user;
 };
 
+const getTicketsIds = async () => {
+	const ticketsIds = await ticketCollection
+		.aggregate<{ ticketId: string }>([
+			// Сортируем документы по полю 'createdAt'
+			{ $sort: { createdAt: 1 } },
+
+			// Группируем по 'ticketId' и добавляем уникальные ticketId в массив
+			{ $group: { _id: "$ticketId", createdAt: { $first: "$createdAt" } } },
+
+			// Проектируем только ticketId
+			{ $project: { _id: 0, ticketId: "$_id" } },
+
+			// Финальная сортировка по полю 'createdAt'
+			{ $sort: { createdAt: 1 } },
+		])
+		.toArray();
+
+	return ticketsIds;
+};
+
 export const ticketRepository = {
 	async sendTickets(userId: string) {
 		await isUserExist(userId);
-
-		const ticketsIds = await ticketCollection
-			.aggregate<{ ticketId: string }>([
-				// Сортируем документы по полю 'createdAt'
-				{ $sort: { createdAt: 1 } },
-
-				// Группируем по 'ticketId' и добавляем уникальные ticketId в массив
-				{ $group: { _id: "$ticketId", createdAt: { $first: "$createdAt" } } },
-
-				// Проектируем только ticketId
-				{ $project: { _id: 0, ticketId: "$_id" } },
-
-				// Финальная сортировка по полю 'createdAt'
-				{ $sort: { createdAt: 1 } },
-			])
-			.toArray();
-
+		const ticketsIds = await getTicketsIds();
 		return ticketsIds;
 	},
 

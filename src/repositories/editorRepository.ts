@@ -1,5 +1,5 @@
 import { DBError } from "../controllers/DBError";
-import type { Question } from "../models/Question";
+import type { Answer } from "../models/Question";
 import { HTTP_STATUSES } from "../utils";
 import { ticketCollection } from "./db";
 
@@ -9,7 +9,7 @@ type CreateQuestion = {
 	ticketId: string;
 	question: string;
 	help: string;
-	answers: Question[];
+	answers: Answer[];
 };
 
 const findTicket = async (ticketId: string) => {

@@ -1,10 +1,21 @@
 import { DBError } from "../controllers/DBError";
-import type { TypeQuestion } from "../types";
+
 import { HTTP_STATUSES } from "../utils";
 import { ticket_1, ticket_2, ticket_3 } from "../tickets";
-import { userCollection } from "./db";
+import { ticketCollection, userCollection } from "./db";
+
+import type { CreateQuestionDBModel } from "../models/editor/CreateQuestionDBModel";
 
 const tickets = [ticket_1, ticket_2, ticket_3];
+
+const isTicketExist = async (ticketId: string) => {
+	const ticket = await ticketCollection.findOne({ ticketId });
+	if (!ticket) {
+		throw new DBError("Билет не найден", HTTP_STATUSES.NOT_FOUND_404);
+	}
+
+	return ticket;
+};
 
 const getQuestion = (ticketNumber: number, questionNumber: number) => {
 	const ticket = tickets[ticketNumber - 1];
@@ -40,19 +51,30 @@ const randomInteger = (min: number, max: number) => {
 	return Math.floor(rand);
 };
 
-const getExam = () => {
-	type ExtendedType = TypeQuestion & {
-		ticketNumber: number;
-	};
+const getTicketsIds = async () => {
+	const ticketsIds = await ticketCollection
+		.aggregate<{ ticketId: string }>([
+			// Сортируем документы по полю 'createdAt'
+			{ $sort: { createdAt: 1 } },
 
-	const questions: ExtendedType[] = [];
-	for (let i = 0; i < 20; i++) {
-		const ticketNumber = randomInteger(1, tickets.length);
-		const question = tickets[ticketNumber - 1][i];
-		questions.push({ ...question, ticketNumber });
-	}
+			// Группируем по 'ticketId' и добавляем уникальные ticketId в массив
+			{ $group: { _id: "$ticketId", createdAt: { $first: "$createdAt" } } },
 
-	return questions;
+			// Проектируем только ticketId
+			{ $project: { _id: 0, ticketId: "$_id" } },
+
+			// Финальная сортировка по полю 'createdAt'
+			{ $sort: { createdAt: 1 } },
+		])
+		.toArray();
+
+	return ticketsIds;
+};
+
+const getRandomTicket = async () => {
+	const ticketsIds = await getTicketsIds();
+	const randomIndex = randomInteger(0, ticketsIds.length - 1);
+	return ticketsIds[randomIndex].ticketId;
 };
 
 const isUserExist = async (userId: string) => {
@@ -64,12 +86,28 @@ const isUserExist = async (userId: string) => {
 	}
 	return user;
 };
+export type QuestionWithTicketId = CreateQuestionDBModel & {
+	ticketId: string;
+};
 
 export const examRepository = {
 	async sendExam(userId: string) {
 		await isUserExist(userId);
-		const exam = getExam();
-		return exam;
+
+		const tickets: QuestionWithTicketId[] = [];
+		let i = 0;
+		while (i <= 20) {
+			const ticketId = await getRandomTicket();
+			const ticket = await isTicketExist(ticketId);
+			const randomIndex = randomInteger(0, ticket.questions.length - 1);
+			const randomQuestion = ticket.questions[randomIndex];
+			if (!randomQuestion?.answers.length) {
+				continue;
+			}
+			tickets.push({ ...randomQuestion, ticketId });
+			i++;
+		}
+		return tickets;
 	},
 
 	async sendExamResult(

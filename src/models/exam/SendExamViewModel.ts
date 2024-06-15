@@ -16,6 +16,11 @@ export const SendExamViewModelSwaggerDoc = {
 			description: "id билета из которого был взят этот вопрос",
 			default: "1717841402302",
 		},
+		questionId: {
+			type: "string",
+			description: "id вопроса",
+			default: "1717841402302",
+		},
 		answers: {
 			type: "object",
 			properties: {
@@ -37,6 +42,7 @@ export type SendExamViewModel = {
 	question: string;
 	img: string;
 	ticketId: string;
+	questionId: string;
 	answers: {
 		answerText: string;
 		answerId: string;

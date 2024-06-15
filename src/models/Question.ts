@@ -1,4 +1,4 @@
-export const QuestionSwaggerDoc = {
+export const AnswerSwaggerDoc = {
 	type: "object",
 	properties: {
 		answerText: {
@@ -18,7 +18,7 @@ export const QuestionSwaggerDoc = {
 		},
 	},
 };
-export type Question = {
+export type Answer = {
 	answerText: string;
 	answerId: string;
 	isCorrect: boolean;
