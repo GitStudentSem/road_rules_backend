@@ -1,13 +1,7 @@
 import { DBError } from "../controllers/DBError";
-
 import { HTTP_STATUSES } from "../utils";
-import { ticket_1, ticket_2, ticket_3 } from "../tickets";
 import { ticketCollection, userCollection } from "./db";
-
 import type { CreateQuestionDBModel } from "../models/editor/CreateQuestionDBModel";
-import { header } from "express-validator";
-
-const tickets = [ticket_1, ticket_2, ticket_3];
 
 const isTicketExist = async (ticketId: string) => {
 	const ticket = await ticketCollection.findOne({ ticketId });
@@ -16,34 +10,6 @@ const isTicketExist = async (ticketId: string) => {
 	}
 
 	return ticket;
-};
-
-const getQuestion = (ticketNumber: number, questionNumber: number) => {
-	const ticket = tickets[ticketNumber - 1];
-	if (!ticket) {
-		throw new DBError(
-			`Указанный билет не существует, всего билетов: ${tickets.length}`,
-			HTTP_STATUSES.NOT_FOUND_404,
-		);
-	}
-
-	if (questionNumber < 1 || ticket.length < questionNumber) {
-		throw new DBError(
-			`Указанный номер вопроса не найден, всего вопросов: ${ticket.length}`,
-			HTTP_STATUSES.NOT_FOUND_404,
-		);
-	}
-
-	const question = ticket[questionNumber - 1];
-
-	if (!question) {
-		throw new DBError(
-			"Указанный номер вопроса не существует",
-			HTTP_STATUSES.NOT_FOUND_404,
-		);
-	}
-
-	return question;
 };
 
 const randomInteger = (min: number, max: number) => {
@@ -66,8 +32,7 @@ const isQuestionExist = async (
 			},
 		])
 		.toArray();
-	// console.log("question", question);
-	// console.log("question[0]", question[0]);
+
 	if (!question)
 		throw new DBError(
 			"Указанный билет или вопрос не найден",

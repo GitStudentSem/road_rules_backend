@@ -1,11 +1,7 @@
 import { DBError } from "../controllers/DBError";
 import type { CreateQuestionDBModel } from "../models/editor/CreateQuestionDBModel";
-import { SendTicketsViewModel } from "../models/tickets/SendTicketsViewModel";
-import { ticket_1, ticket_2, ticket_3 } from "../tickets";
 import { HTTP_STATUSES } from "../utils";
 import { ticketCollection, userCollection } from "./db";
-
-const ticketsOld = [ticket_1, ticket_2, ticket_3];
 
 const isTicketExist = async (ticketId: string) => {
 	const ticket = await ticketCollection.findOne({ ticketId });
