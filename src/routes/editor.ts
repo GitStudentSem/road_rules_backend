@@ -33,6 +33,12 @@ export const editorSwaggerDoc = {
 				content: {
 					"multipart/form-data": {
 						schema: CreateQuestionBodySwaggerDoc,
+						encoding: {
+							answers: {
+								style: "form",
+								explode: true,
+							},
+						},
 					},
 				},
 			},
@@ -54,6 +60,12 @@ export const editorSwaggerDoc = {
 				content: {
 					"multipart/form-data": {
 						schema: EditQuestionBodySwaggerDoc,
+						encoding: {
+							answers: {
+								style: "form",
+								explode: true,
+							},
+						},
 					},
 				},
 			},
@@ -135,3 +147,71 @@ export const editorRouter = () => {
 	return router;
 };
 //
+const endpointSwaggerDoc = {
+	openapi: "3.0.0",
+	info: {
+		version: "1.0.0",
+		title: "Swagger Petstore",
+		license: {
+			name: "MIT",
+		},
+	},
+	servers: [
+		{
+			url: "http://petstore.swagger.io/v1",
+		},
+	],
+	paths: {
+		"/pets": {
+			post: {
+				summary: "Create a pet",
+				operationId: "createPets",
+				tags: ["pets"],
+				parameters: [
+					{
+						name: "limit",
+						in: "query",
+						description: "How many items to return at one time (max 100)",
+						required: false,
+						schema: {
+							type: "array",
+							items: {
+								type: "string",
+							},
+						},
+						style: "form",
+						explode: true,
+					},
+				],
+				requestBody: {
+					content: {
+						"application/x-www-form-urlencoded": {
+							schema: {
+								type: "object",
+								properties: {
+									color: {
+										type: "array",
+										items: {
+											type: "string",
+										},
+									},
+								},
+							},
+							encoding: {
+								color: {
+									style: "form",
+									explode: true,
+								},
+							},
+						},
+					},
+				},
+				responses: {
+					"201": {
+						description: "Null response",
+					},
+				},
+			},
+		},
+	},
+};
