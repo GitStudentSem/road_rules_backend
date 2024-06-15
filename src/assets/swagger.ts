@@ -40,7 +40,6 @@ const options: swaggerJSDoc.Options = {
 			"/editor/deleteTicket": editorSwaggerDoc["/editor/deleteTicket"],
 			"/editor/deleteQuestion": editorSwaggerDoc["/editor/deleteQuestion"],
 
-			"/exam/{ticketId}": examSwaggerDoc["/exam/{ticketId}"],
 			"/exam": examSwaggerDoc["/exam"],
 
 			"/tickets": ticketsSwaggerDoc["/tickets"],

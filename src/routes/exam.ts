@@ -26,33 +26,33 @@ export const examSwaggerDoc = {
 				error: getErrorSwaggerDoc("Ошибка получения экзамена"),
 			},
 		},
-	},
+		post: {
+			tags: ["Экзамен"],
+			summary: "Отправить ответ на вопрос по экзамену",
+			security: [{ bearerAuth: [] }],
 
-	post: {
-		tags: ["Экзамен"],
-		summary: "Отправить ответ на вопрос по экзамену",
-		security: [{ bearerAuth: [] }],
-
-		requestBody: {
-			content: {
-				"application/json": {
-					schema: BodySendExamResultSwaggerDoc,
-				},
-			},
-		},
-		responses: {
-			200: {
-				description: "Ответ успешно отправлен",
+			requestBody: {
 				content: {
 					"application/json": {
-						schema: SendExamResultViewModelSwaggerDoc,
+						schema: BodySendExamResultSwaggerDoc,
 					},
 				},
 			},
-			error: getErrorSwaggerDoc("Ошибка отправки ответа"),
+			responses: {
+				200: {
+					description: "Ответ успешно отправлен",
+					content: {
+						"application/json": {
+							schema: SendExamResultViewModelSwaggerDoc,
+						},
+					},
+				},
+				error: getErrorSwaggerDoc("Ошибка отправки ответа"),
+			},
 		},
 	},
 };
+
 export const getExamRouter = () => {
 	const router = express.Router();
 
