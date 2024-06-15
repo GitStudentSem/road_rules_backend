@@ -79,10 +79,14 @@ const isUserExist = async (userId: string) => {
 };
 
 const removePreviousAnswers = async (userId: string) => {
-	await ticketCollection.updateOne(
-		{ userId },
-		{ $unset: { "results.exam": "" } },
-	);
+	try {
+		await userCollection.updateOne(
+			{ id: userId },
+			{ $unset: { "results.exam": "" } },
+		);
+	} catch (error) {
+		console.log(" error", error);
+	}
 };
 
 export type QuestionWithTicketId = CreateQuestionDBModel & {

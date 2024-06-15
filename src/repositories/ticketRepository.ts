@@ -26,8 +26,7 @@ const isQuestionExist = async (
 			},
 		])
 		.toArray();
-	// console.log("question", question);
-	// console.log("question[0]", question[0]);
+
 	if (!question)
 		throw new DBError(
 			"Указанный билет или вопрос не найден",
@@ -70,9 +69,9 @@ const getTicketsIds = async () => {
 const removePreviousAnswers = async (userId: string, ticketId: string) => {
 	const ticketObjectName = `results.ticket_${ticketId}`;
 
-	await ticketCollection.updateOne(
-		{ userId },
-		{ $unset: { [`results.${ticketObjectName}`]: "" } },
+	await userCollection.updateOne(
+		{ id: userId },
+		{ $unset: { [ticketObjectName]: "" } },
 	);
 };
 

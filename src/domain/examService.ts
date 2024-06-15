@@ -14,12 +14,10 @@ const imageToBase64 = (imagePath: string) => {
 };
 
 const shuffleAnswers = (answers: Answer[]) => {
-	console.log("answers", answers);
 	return answers.sort(() => Math.random() - 0.5);
 };
 
 const removeCorrectAnswersFromTicket1 = (questions: QuestionWithTicketId[]) => {
-	console.log("questions", questions[0].answers);
 	return questions.map((question) => {
 		return {
 			question: question.question,
