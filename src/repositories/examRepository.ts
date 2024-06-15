@@ -5,6 +5,7 @@ import { ticket_1, ticket_2, ticket_3 } from "../tickets";
 import { ticketCollection, userCollection } from "./db";
 
 import type { CreateQuestionDBModel } from "../models/editor/CreateQuestionDBModel";
+import { header } from "express-validator";
 
 const tickets = [ticket_1, ticket_2, ticket_3];
 
@@ -110,17 +111,14 @@ export const examRepository = {
 		return tickets;
 	},
 
-	async sendExamResult(
-		userId: string,
-		ticketNumber: number,
-		questionNumber: number,
-		answerId: string,
-	) {
-		const question = getQuestion(ticketNumber, questionNumber);
-		const correctAnswerId =
-			question.answers.find((question) => question.isCorrect)?.id || ""; // Просто отрицательное число, что бы бло ясно что он не нашелся
+	async sendExamResult(data: {
+		userId: string;
+		ticketId: string;
+		questionId: string;
+		answerId: string;
+	}) {
+		const { userId, ticketId, questionId, answerId } = data;
 
-		const isCorrect = correctAnswerId === answerId;
 		const filter = { id: userId };
 
 		const user = await isUserExist(userId);
@@ -128,11 +126,6 @@ export const examRepository = {
 		let exam = user.results.exam;
 
 		if (!exam) exam = [];
-
-		exam[questionNumber - 1] = {
-			isCorrect,
-			answerId,
-		};
 
 		const update = {
 			$set: {
@@ -142,6 +135,9 @@ export const examRepository = {
 		const options = { upsert: true };
 		await userCollection.updateOne(filter, update, options);
 
+		const isCorrect = true;
+		const correctAnswerId = "tempCorrectAnsweer";
+		const question = { help: "temp question help" };
 		return {
 			isCorrect,
 			correctAnswer: correctAnswerId,

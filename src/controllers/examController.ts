@@ -29,17 +29,17 @@ export const sendExam = async (
 };
 
 export const sendExamResult = async (
-	req: RequestWithParamsAndBody<{ ticketNumber: string }, BodySendExamResult>,
+	req: RequestWithParamsAndBody<{ ticketId: string }, BodySendExamResult>,
 	res: Response<SendExamResultViewModel | ErrorType>,
 ) => {
 	try {
-		const result = await examService.sendExamResult(
+		const result = await examService.sendExamResult({
 			//@ts-ignore
-			req.userId,
-			+req.params.ticketNumber,
-			req.body.questionNumber,
-			req.body.answerId,
-		);
+			userId: req.userId,
+			ticketId: req.params.ticketId,
+			questionId: req.body.questionId,
+			answerId: req.body.answerId,
+		});
 
 		res.json(result);
 	} catch (error) {

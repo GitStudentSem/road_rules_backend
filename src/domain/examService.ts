@@ -42,18 +42,19 @@ export const examService = {
 		return questionWithoutCorrectAnswers;
 	},
 
-	async sendExamResult(
-		userId: string,
-		ticketNumber: number,
-		questionNumber: number,
-		answerId: string,
-	) {
-		const question = await examRepository.sendExamResult(
+	async sendExamResult(data: {
+		userId: string;
+		ticketId: string;
+		questionId: string;
+		answerId: string;
+	}) {
+		const { userId, ticketId, questionId, answerId } = data;
+		const question = await examRepository.sendExamResult({
 			userId,
-			ticketNumber,
-			questionNumber,
+			ticketId,
+			questionId,
 			answerId,
-		);
+		});
 
 		return question;
 	},

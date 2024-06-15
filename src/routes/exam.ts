@@ -69,7 +69,7 @@ export const getExamRouter = () => {
 	router.get("/", checkAuth, examController.sendExam);
 
 	router.post(
-		"/:ticketNumber",
+		"/:ticketId",
 		checkAuth,
 		answerValidation,
 		examController.sendExamResult,
