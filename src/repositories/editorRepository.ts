@@ -4,7 +4,7 @@ import { HTTP_STATUSES } from "../utils";
 import { ticketCollection } from "./db";
 
 type CreateQuestion = {
-	img: string;
+	imgInfo: { img: string; hash: string };
 	questionId: string;
 	ticketId: string;
 	question: string;
@@ -28,7 +28,7 @@ export const editorRepository = {
 	},
 
 	async addQuestion(data: CreateQuestion) {
-		const { img, questionId, ticketId, question, help, answers } = data;
+		const { imgInfo, questionId, ticketId, question, help, answers } = data;
 		const ticket = await findTicket(ticketId);
 
 		if (ticket.questions.length >= 20) {
@@ -40,11 +40,13 @@ export const editorRepository = {
 
 		await ticketCollection.updateOne(
 			{ ticketId },
-			{ $push: { questions: { img, questionId, question, help, answers } } },
+			{
+				$push: { questions: { imgInfo, questionId, question, help, answers } },
+			},
 		);
 	},
 	async editQuestion(data: CreateQuestion) {
-		const { img, questionId, ticketId, question, help, answers } = data;
+		const { imgInfo, questionId, ticketId, question, help, answers } = data;
 		const ticket = await findTicket(ticketId);
 
 		if (ticket.questions.length >= 20) {
@@ -56,7 +58,9 @@ export const editorRepository = {
 
 		await ticketCollection.updateOne(
 			{ ticketId },
-			{ $push: { questions: { img, questionId, question, help, answers } } },
+			{
+				$push: { questions: { imgInfo, questionId, question, help, answers } },
+			},
 		);
 	},
 

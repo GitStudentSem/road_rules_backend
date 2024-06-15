@@ -1,20 +1,13 @@
-import fs from "node:fs";
 import { ticketRepository } from "../repositories/ticketRepository";
 import type { WithId } from "mongodb";
 import type { TicketsDBModel } from "../models/editor/TicketsDBModel";
-
-const imageToBase64 = (imagePath: string) => {
-	const image = fs.readFileSync(imagePath, { encoding: "base64" });
-	return image;
-};
 
 const removeCorrectAnswersFromTicket = (ticket: WithId<TicketsDBModel>) => {
 	return ticket.questions.map((question) => {
 		return {
 			question: question.question,
-			img: question.img
-				? `data:image/jpeg;base64,${imageToBase64(question.img)}`
-				: "",
+			img: question.imgInfo.img,
+
 			questionId: question.questionId,
 			answers: question.answers.map((answer) => {
 				return { answerText: answer.answerText, answerId: answer.answerId };

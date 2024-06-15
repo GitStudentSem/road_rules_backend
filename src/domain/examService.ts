@@ -1,12 +1,6 @@
 import { examRepository } from "../repositories/examRepository";
 import type { QuestionWithTicketId } from "../repositories/examRepository";
-import fs from "node:fs";
 import type { Answer } from "../models/Answer";
-
-const imageToBase64 = (imagePath: string) => {
-	const image = fs.readFileSync(imagePath, { encoding: "base64" });
-	return image;
-};
 
 const shuffleAnswers = (answers: Answer[]) => {
 	return answers.sort(() => Math.random() - 0.5);
@@ -16,9 +10,7 @@ const removeCorrectAnswersFromTicket1 = (questions: QuestionWithTicketId[]) => {
 	return questions.map((question) => {
 		return {
 			question: question.question,
-			img: question.img
-				? `data:image/jpeg;base64,${imageToBase64(question.img)}`
-				: "",
+			img: question.imgInfo.img,
 			questionId: question.questionId,
 			ticketId: question.ticketId,
 			answers: shuffleAnswers(question.answers).map((answer) => {

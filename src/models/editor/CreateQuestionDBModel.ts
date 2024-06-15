@@ -1,7 +1,7 @@
 import type { Answer } from "../Answer";
 
 export type CreateQuestionDBModel = {
-	img: string;
+	imgInfo: { img: string; hash: string };
 	questionId: string;
 	question: string;
 	help: string;

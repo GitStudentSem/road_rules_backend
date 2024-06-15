@@ -3,6 +3,7 @@ import { editorRepository } from "../repositories/editorRepository";
 import type { CreateQuestionBody } from "../models/editor/CreateQuestionBody";
 import type { DeleteQuestionBody } from "../models/editor/DeleteQuestionBody";
 import { colors, resetStyle, styles } from "../assets/logStyles";
+import { crc32 } from "crc";
 
 const calculateSizeInKB = (arrayBuffer: ArrayBuffer) => {
 	const bytes = arrayBuffer.byteLength;
@@ -12,7 +13,7 @@ const calculateSizeInKB = (arrayBuffer: ArrayBuffer) => {
 
 const imageToBase64 = async (img?: ArrayBuffer) => {
 	// Для сравнения контрольных сумм используй crc64
-	if (!img) return "";
+	if (!img) return { img: "", hash: "" };
 
 	const imageSizeBefore = calculateSizeInKB(img);
 	console.log(
@@ -20,7 +21,8 @@ const imageToBase64 = async (img?: ArrayBuffer) => {
 	);
 
 	const imageBuffer = await sharp(img).jpeg().toBuffer();
-
+	const hash = crc32(imageBuffer).toString(16);
+	console.log("hash", hash);
 	const imageSizeAfter = calculateSizeInKB(imageBuffer);
 	console.log(
 		`${colors.blue}Размер картинки после сжатия: ${styles.bold}${imageSizeAfter} KB${resetStyle}`,
@@ -36,10 +38,10 @@ const imageToBase64 = async (img?: ArrayBuffer) => {
 	);
 	console.log(`${colors.blue}======================${resetStyle}`);
 
-	const imageInBase64 = `data:image/png;base64,${imageBuffer.toString(
+	const imageInBase64 = `data:image/jpeg;base64,${imageBuffer.toString(
 		"base64",
 	)}`;
-	return imageInBase64;
+	return { img: imageInBase64, hash };
 };
 
 export const editorService = {
@@ -60,7 +62,7 @@ export const editorService = {
 		});
 
 		await editorRepository.addQuestion({
-			img: imageInBase64,
+			imgInfo: imageInBase64,
 			questionId,
 			ticketId,
 			question,
@@ -79,7 +81,7 @@ export const editorService = {
 		});
 
 		await editorRepository.editQuestion({
-			img: imageInBase64,
+			imgInfo: imageInBase64,
 			questionId,
 			ticketId,
 			question,
