@@ -11,6 +11,7 @@ const calculateSizeInKB = (arrayBuffer: ArrayBuffer) => {
 };
 
 const imageToBase64 = async (img?: ArrayBuffer) => {
+	// Для сравнения контрольных сумм используй crc64
 	if (!img) return "";
 
 	const imageSizeBefore = calculateSizeInKB(img);

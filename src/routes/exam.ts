@@ -28,38 +28,28 @@ export const examSwaggerDoc = {
 		},
 	},
 
-	"/exam/{ticketId}": {
-		post: {
-			tags: ["Экзамен"],
-			summary: "Отправить ответ на вопрос по экзамену",
-			security: [{ bearerAuth: [] }],
-			parameters: [
-				{
-					name: "ticketId",
-					in: "path",
-					description: "id билета",
-					required: true,
-					default: "1717841402302",
+	post: {
+		tags: ["Экзамен"],
+		summary: "Отправить ответ на вопрос по экзамену",
+		security: [{ bearerAuth: [] }],
+
+		requestBody: {
+			content: {
+				"application/json": {
+					schema: BodySendExamResultSwaggerDoc,
 				},
-			],
-			requestBody: {
+			},
+		},
+		responses: {
+			200: {
+				description: "Ответ успешно отправлен",
 				content: {
 					"application/json": {
-						schema: BodySendExamResultSwaggerDoc,
+						schema: SendExamResultViewModelSwaggerDoc,
 					},
 				},
 			},
-			responses: {
-				200: {
-					description: "Ответ успешно отправлен",
-					content: {
-						"application/json": {
-							schema: SendExamResultViewModelSwaggerDoc,
-						},
-					},
-				},
-				error: getErrorSwaggerDoc("Ошибка отправки ответа"),
-			},
+			error: getErrorSwaggerDoc("Ошибка отправки ответа"),
 		},
 	},
 };
@@ -68,12 +58,7 @@ export const getExamRouter = () => {
 
 	router.get("/", checkAuth, examController.sendExam);
 
-	router.post(
-		"/:ticketId",
-		checkAuth,
-		answerValidation,
-		examController.sendExamResult,
-	);
+	router.post("/", checkAuth, answerValidation, examController.sendExamResult);
 
 	return router;
 };

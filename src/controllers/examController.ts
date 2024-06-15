@@ -34,7 +34,7 @@ export const sendExamResult = async (
 		const result = await examService.sendExamResult({
 			//@ts-ignore
 			userId: req.userId,
-			ticketId: req.params.ticketId,
+			ticketId: req.body.ticketId,
 			questionId: req.body.questionId,
 			answerId: req.body.answerId,
 		});
