@@ -2,7 +2,7 @@ import express from "express";
 import * as editorController from "../controllers/editor";
 import { addQuestionValidation } from "../validations";
 import { handleValudationErrors } from "../midlewares";
-import { getErrorWaggerDoc } from "../assets/getErrorSwaggerDoc";
+import { getErrorSwaggerDoc } from "../assets/getErrorSwaggerDoc";
 import multer from "multer";
 import { CreateQuestionBodySwaggerDoc } from "../models/editor/CreateQuestionBody";
 import { DeleteQuestionlSwaggerDoc } from "../models/editor/DeleteQuestionBody";
@@ -18,7 +18,7 @@ export const editorSwaggerDoc = {
 				204: {
 					description: "Билет упешно создан",
 				},
-				error: getErrorWaggerDoc("Ошибка создания билета"),
+				error: getErrorSwaggerDoc("Ошибка создания билета"),
 			},
 		},
 	},
@@ -39,7 +39,7 @@ export const editorSwaggerDoc = {
 				204: {
 					description: "Вопрос успешно добавлен",
 				},
-				error: getErrorWaggerDoc("Ошибка добавления вопроса"),
+				error: getErrorSwaggerDoc("Ошибка добавления вопроса"),
 			},
 		},
 	},
@@ -69,7 +69,7 @@ export const editorSwaggerDoc = {
 				204: {
 					description: "Билет успешно удален",
 				},
-				error: getErrorWaggerDoc("Ошибка удаления билета"),
+				error: getErrorSwaggerDoc("Ошибка удаления билета"),
 			},
 		},
 	},
@@ -88,7 +88,7 @@ export const editorSwaggerDoc = {
 				204: {
 					description: "Вопрос успешно удален",
 				},
-				error: getErrorWaggerDoc("Ошибка удаления вопроса"),
+				error: getErrorSwaggerDoc("Ошибка удаления вопроса"),
 			},
 		},
 	},

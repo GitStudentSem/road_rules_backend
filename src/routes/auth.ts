@@ -6,7 +6,7 @@ import {
 } from "../validations";
 import { handleValudationErrors } from "../midlewares";
 import * as userController from "../controllers/userController";
-import { getErrorWaggerDoc } from "../assets/getErrorSwaggerDoc";
+import { getErrorSwaggerDoc } from "../assets/getErrorSwaggerDoc";
 import { BodyLoginModelSwaggerDoc } from "../models/auth/BodyLoginModel";
 import { BodyRegisterModelSwaggerDoc } from "../models/auth/BodyRegisterModel";
 import { UserLoginDBModelSwaggerDoc } from "../models/auth/UserLoginDBModel";
@@ -34,7 +34,7 @@ export const registerSwaggerDoc = {
 						},
 					},
 				},
-				error: getErrorWaggerDoc("Ошибка регистрации"),
+				error: getErrorSwaggerDoc("Ошибка регистрации"),
 			},
 		},
 	},
@@ -59,7 +59,7 @@ export const registerSwaggerDoc = {
 						},
 					},
 				},
-				error: getErrorWaggerDoc("Ошибка логина"),
+				error: getErrorSwaggerDoc("Ошибка логина"),
 			},
 		},
 	},
@@ -89,7 +89,7 @@ export const registerSwaggerDoc = {
 				204: {
 					description: "Пользователь удален",
 				},
-				error: getErrorWaggerDoc("Ошибка удаления пользователя"),
+				error: getErrorSwaggerDoc("Ошибка удаления пользователя"),
 			},
 		},
 	},
@@ -109,7 +109,7 @@ export const registerSwaggerDoc = {
 						},
 					},
 				},
-				error: getErrorWaggerDoc("Ошибка получения всех пользователей"),
+				error: getErrorSwaggerDoc("Ошибка получения всех пользователей"),
 			},
 		},
 	},

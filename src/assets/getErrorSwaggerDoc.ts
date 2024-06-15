@@ -1,4 +1,4 @@
-export const getErrorWaggerDoc = (description: string) => {
+export const getErrorSwaggerDoc = (description: string) => {
 	return {
 		description,
 		content: {

@@ -2,7 +2,7 @@ import express from "express";
 import { answerValidation } from "../validations";
 import { checkAuth } from "../midlewares";
 import * as ticketController from "../controllers/ticketsController";
-import { getErrorWaggerDoc } from "../assets/getErrorSwaggerDoc";
+import { getErrorSwaggerDoc } from "../assets/getErrorSwaggerDoc";
 import { SendTicketsViewModelSwaggerDoc } from "../models/tickets/SendTicketsViewModel";
 import { SendTicketViewModelSwaggerDoc } from "../models/tickets/SendTicketViewModel";
 import { BodySendTicketResultSwaggerDoc } from "../models/tickets/BodySendTicketResult";
@@ -23,7 +23,7 @@ export const ticketsSwaggerDoc = {
 						},
 					},
 				},
-				error: getErrorWaggerDoc("Ошибка получения количества билетов"),
+				error: getErrorSwaggerDoc("Ошибка получения количества билетов"),
 			},
 		},
 	},
@@ -51,7 +51,7 @@ export const ticketsSwaggerDoc = {
 						},
 					},
 				},
-				error: getErrorWaggerDoc("Ошибка получения билета"),
+				error: getErrorSwaggerDoc("Ошибка получения билета"),
 			},
 		},
 
@@ -84,7 +84,7 @@ export const ticketsSwaggerDoc = {
 						},
 					},
 				},
-				error: getErrorWaggerDoc("Ошибка отправки ответа"),
+				error: getErrorSwaggerDoc("Ошибка отправки ответа"),
 			},
 		},
 	},

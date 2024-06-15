@@ -1,6 +1,6 @@
 import { sendError } from "../assets/requestAssets";
 import type { Response, Request } from "express";
-import type { ErrorType, RequestWithBody, RequestWithParams } from "../types";
+import type { ErrorType, RequestWithBody } from "../types";
 import type { BodyRegisterModel } from "../models/auth/BodyRegisterModel";
 import type { UserRegisterViewModel } from "../models/auth/UserRegisterViewModel";
 import type { BodyLoginModel } from "../models/auth/BodyLoginModel";

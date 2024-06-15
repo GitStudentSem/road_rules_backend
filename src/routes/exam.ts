@@ -3,7 +3,7 @@ import { answerValidation } from "../validations";
 import { checkAuth } from "../midlewares";
 
 import * as examController from "../controllers/examController";
-import { getErrorWaggerDoc } from "../assets/getErrorSwaggerDoc";
+import { getErrorSwaggerDoc } from "../assets/getErrorSwaggerDoc";
 import { SendExamViewModelSwaggerDoc } from "../models/exam/SendExamViewModel";
 import { BodySendExamResultSwaggerDoc } from "../models/exam/BodySendExamResult";
 import { SendExamResultViewModelSwaggerDoc } from "../models/exam/SendExamResultViewModel";
@@ -23,7 +23,7 @@ export const examSwaggerDoc = {
 						},
 					},
 				},
-				error: getErrorWaggerDoc("Ошибка получения экзамена"),
+				error: getErrorSwaggerDoc("Ошибка получения экзамена"),
 			},
 		},
 	},
@@ -58,7 +58,7 @@ export const examSwaggerDoc = {
 						},
 					},
 				},
-				error: getErrorWaggerDoc("Ошибка отправки ответа"),
+				error: getErrorSwaggerDoc("Ошибка отправки ответа"),
 			},
 		},
 	},
