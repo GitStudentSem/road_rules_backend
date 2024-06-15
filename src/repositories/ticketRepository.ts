@@ -96,15 +96,18 @@ export const ticketRepository = {
 		const { userId, ticketId, questionId, answerId } = data;
 		const user = await isUserExist(userId);
 		const question = await isQuestionExist(ticketId, questionId);
+		const correctAnswerId =
+			question.answers.find((answer) => answer.isCorrect)?.answerId || "";
+		const isCorrect = correctAnswerId === answerId;
 
 		const ticketObjectName = `results.ticket_${ticketId}`;
-		let ticket = user.results[ticketObjectName];
+		let ticketResult = user.results[ticketObjectName];
 
-		if (!ticket) ticket = [];
-
+		if (!ticketResult) ticketResult = [];
+		ticketResult.push({ ticketId, questionId, answerId, isCorrect });
 		const update = {
 			$set: {
-				[ticketObjectName]: ticket,
+				[ticketObjectName]: ticketResult,
 			},
 		};
 
