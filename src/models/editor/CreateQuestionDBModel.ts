@@ -1,4 +1,4 @@
-import type { Answer } from "../Question";
+import type { Answer } from "../Answer";
 
 export type CreateQuestionDBModel = {
 	img: string;

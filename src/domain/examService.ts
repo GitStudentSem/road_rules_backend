@@ -1,7 +1,7 @@
 import { examRepository } from "../repositories/examRepository";
 import type { QuestionWithTicketId } from "../repositories/examRepository";
 import fs from "node:fs";
-import type { Answer } from "../models/Question";
+import type { Answer } from "../models/Answer";
 
 const imageToBase64 = (imagePath: string) => {
 	const image = fs.readFileSync(imagePath, { encoding: "base64" });

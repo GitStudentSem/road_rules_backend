@@ -1,5 +1,5 @@
 import { DBError } from "../controllers/DBError";
-import type { Answer } from "../models/Question";
+import type { Answer } from "../models/Answer";
 import { HTTP_STATUSES } from "../utils";
 import { ticketCollection } from "./db";
 
