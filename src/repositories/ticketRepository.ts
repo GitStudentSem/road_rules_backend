@@ -67,6 +67,15 @@ const getTicketsIds = async () => {
 	return ticketsIds;
 };
 
+const removePreviousAnswers = async (userId: string, ticketId: string) => {
+	const ticketObjectName = `results.ticket_${ticketId}`;
+
+	await ticketCollection.updateOne(
+		{ userId },
+		{ $unset: { [`results.${ticketObjectName}`]: "" } },
+	);
+};
+
 export const ticketRepository = {
 	async sendTickets(userId: string) {
 		await isUserExist(userId);
@@ -76,6 +85,7 @@ export const ticketRepository = {
 
 	async sendTicket(userId: string, ticketId: string) {
 		await isUserExist(userId);
+		await removePreviousAnswers(userId, ticketId);
 
 		const ticket = await isTicketExist(ticketId);
 

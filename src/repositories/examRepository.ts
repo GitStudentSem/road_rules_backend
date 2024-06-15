@@ -77,6 +77,14 @@ const isUserExist = async (userId: string) => {
 	}
 	return user;
 };
+
+const removePreviousAnswers = async (userId: string) => {
+	await ticketCollection.updateOne(
+		{ userId },
+		{ $unset: { "results.exam": "" } },
+	);
+};
+
 export type QuestionWithTicketId = CreateQuestionDBModel & {
 	ticketId: string;
 };
@@ -84,6 +92,7 @@ export type QuestionWithTicketId = CreateQuestionDBModel & {
 export const examRepository = {
 	async sendExam(userId: string) {
 		await isUserExist(userId);
+		await removePreviousAnswers(userId);
 
 		const tickets: QuestionWithTicketId[] = [];
 		let i = 0;
