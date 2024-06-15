@@ -20,14 +20,14 @@ export const authRepository = {
 			);
 		}
 
-		const id = Number(new Date()).toString();
+		const userId = Number(new Date()).toString();
 
 		await userCollection.insertOne({
 			email,
 			firstName,
 			secondName,
 			passwordHash,
-			id,
+			userId,
 			results: {},
 		});
 

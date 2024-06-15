@@ -70,7 +70,7 @@ const removePreviousAnswers = async (userId: string, ticketId: string) => {
 	const ticketObjectName = `results.ticket_${ticketId}`;
 
 	await userCollection.updateOne(
-		{ id: userId },
+		{ userId },
 		{ $unset: { [ticketObjectName]: "" } },
 	);
 };

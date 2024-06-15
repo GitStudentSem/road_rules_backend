@@ -19,7 +19,7 @@ export const authService = {
 			passwordHash,
 		});
 
-		jwt.sign({ id: registerdUser.id }, settings.JWT_SECRET, {
+		jwt.sign({ userId: registerdUser.userId }, settings.JWT_SECRET, {
 			expiresIn: "30d",
 		});
 
@@ -27,7 +27,7 @@ export const authService = {
 			email: registerdUser.email,
 			firstName: registerdUser.firstName,
 			secondName: registerdUser.secondName,
-			id: registerdUser.id,
+			userId: registerdUser.userId,
 		};
 
 		return userWithoutPasswordHash;
@@ -50,9 +50,9 @@ export const authService = {
 			);
 		}
 
-		const { id, firstName, secondName } = loginnedUser;
+		const { userId, firstName, secondName } = loginnedUser;
 
-		const token = jwt.sign({ id }, settings.JWT_SECRET, {
+		const token = jwt.sign({ userId }, settings.JWT_SECRET, {
 			expiresIn: "30d",
 		});
 

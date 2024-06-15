@@ -16,9 +16,9 @@ export const UserRegisterViewModelSwaggerDoc = {
 			description: "Фамилия пользователя",
 			default: "Иванов",
 		},
-		id: {
+		userId: {
 			type: "string",
-			description: "Пароль пользователя",
+			description: "id пользователя пользователя",
 			default: "1717440741304",
 		},
 	},
@@ -28,5 +28,5 @@ export type UserRegisterViewModel = {
 	email: string;
 	firstName: string;
 	secondName: string;
-	id: string;
+	userId: string;
 };

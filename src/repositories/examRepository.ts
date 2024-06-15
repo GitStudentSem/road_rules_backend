@@ -81,7 +81,7 @@ const isUserExist = async (userId: string) => {
 const removePreviousAnswers = async (userId: string) => {
 	try {
 		await userCollection.updateOne(
-			{ id: userId },
+			{ userId },
 			{ $unset: { "results.exam": "" } },
 		);
 	} catch (error) {
