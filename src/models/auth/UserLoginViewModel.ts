@@ -11,6 +11,11 @@ export const UserLoginViewModelSwaggerDoc = {
 			default: "Иванов",
 			description: "Фамилия",
 		},
+		isAppointExam: {
+			type: "boolean",
+			default: "false",
+			description: "назначен ли экзамен пользователю",
+		},
 		token: {
 			type: "string",
 			default:
@@ -24,4 +29,5 @@ export type UserLoginViewModel = {
 	token: string;
 	firstName: string;
 	secondName: string;
+	isAppointExam: boolean;
 };

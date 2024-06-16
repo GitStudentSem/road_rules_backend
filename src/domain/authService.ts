@@ -50,13 +50,13 @@ export const authService = {
 			);
 		}
 
-		const { userId, firstName, secondName } = loginnedUser;
+		const { userId, firstName, secondName, isAppointExam } = loginnedUser;
 
 		const token = jwt.sign({ userId }, settings.JWT_SECRET, {
 			expiresIn: "30d",
 		});
 
-		return { firstName, secondName, token };
+		return { firstName, secondName, token, isAppointExam };
 	},
 
 	async deleteUser(data: { email: string }) {
