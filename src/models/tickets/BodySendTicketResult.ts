@@ -3,6 +3,11 @@ import type { OpenAPIV3 } from "openapi-types";
 export const BodySendTicketResultSwaggerDoc: OpenAPIV3.SchemaObject = {
 	type: "object",
 	properties: {
+		ticketId: {
+			type: "string",
+			description: "id билета",
+			default: "1717918012771",
+		},
 		questionId: {
 			type: "string",
 			description: "id вопроса",
@@ -16,6 +21,7 @@ export const BodySendTicketResultSwaggerDoc: OpenAPIV3.SchemaObject = {
 	},
 };
 export type BodySendTicketResult = {
-	answerId: string;
+	ticketId: string;
 	questionId: string;
+	answerId: string;
 };

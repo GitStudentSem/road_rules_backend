@@ -1,6 +1,6 @@
 import express from "express";
 import { answerValidation } from "../validations";
-import { checkAuth } from "../midlewares";
+import { checkAuth, handleValidationErrors } from "../midlewares";
 import * as ticketController from "../controllers/ticketsController";
 import { getErrorSwaggerDoc } from "../assets/getErrorSwaggerDoc";
 import { SendTicketsViewModelSwaggerDoc } from "../models/tickets/SendTicketsViewModel";
@@ -101,6 +101,7 @@ export const getTicketsRouter = () => {
 		"/:ticketId",
 		checkAuth,
 		answerValidation,
+		handleValidationErrors,
 		ticketController.sendTicketResult,
 	);
 

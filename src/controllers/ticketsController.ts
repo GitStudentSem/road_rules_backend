@@ -7,6 +7,7 @@ import type { SendTicketViewModel } from "../models/tickets/SendTicketViewModel"
 import type { SendTicketsViewModel } from "../models/tickets/SendTicketsViewModel";
 import type {
 	ErrorType,
+	RequestWithBody,
 	RequestWithParams,
 	RequestWithParamsAndBody,
 } from "../types";
@@ -52,14 +53,14 @@ export const sendTicket = async (
 };
 
 export const sendTicketResult = async (
-	req: RequestWithParamsAndBody<{ ticketId: string }, BodySendTicketResult>,
+	req: RequestWithBody<BodySendTicketResult>,
 	res: Response<SendTicketResultViewModel | ErrorType>,
 ) => {
 	try {
 		const result = await ticketService.sendTicketResult({
 			//@ts-ignore
 			userId: req.userId,
-			ticketId: req.params.ticketId,
+			ticketId: req.body.ticketId,
 			questionId: req.body.questionId,
 			answerId: req.body.answerId,
 		});

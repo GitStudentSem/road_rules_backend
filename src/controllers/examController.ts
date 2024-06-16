@@ -33,7 +33,7 @@ export const sendExam = async (
 };
 
 export const sendExamResult = async (
-	req: RequestWithParamsAndBody<{ ticketId: string }, BodySendExamResult>,
+	req: RequestWithBody<BodySendExamResult>,
 	res: Response<SendExamResultViewModel | ErrorType>,
 ) => {
 	try {
@@ -56,7 +56,7 @@ export const sendExamResult = async (
 };
 
 export const sendTrainingExamResult = async (
-	req: RequestWithParamsAndBody<{ ticketId: string }, BodySendExamResult>,
+	req: RequestWithBody<BodySendExamResult>,
 	res: Response<SendExamResultViewModel | ErrorType>,
 ) => {
 	try {

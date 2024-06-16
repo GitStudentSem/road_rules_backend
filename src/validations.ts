@@ -50,8 +50,9 @@ export const registerValidation = [
 ];
 
 export const answerValidation = [
-	body("userAnswer", "Ответ пользователя должен быть числом").isNumeric(),
-	body("questionNumber", "Номер вопроса должен быть числом").isNumeric(),
+	body("ticketId", "id билета должен быть строкой").isString(),
+	body("questionId", "id вопроса должен быть строкой").isString(),
+	body("answerId", "id ответа пользователя должен быть строкой").isString(),
 ];
 
 export const addQuestionValidation = [
