@@ -138,4 +138,33 @@ export const examRepository = {
 
 		return { help: question.help, correctAnswerId, isCorrect };
 	},
+
+	async sendTrainingExamResult(data: {
+		userId: string;
+		ticketId: string;
+		questionId: string;
+		answerId: string;
+	}) {
+		const { userId, ticketId, questionId, answerId } = data;
+
+		const user = await isUserExist(userId);
+		const question = await isQuestionExist(ticketId, questionId);
+		const correctAnswerId =
+			question.answers.find((answer) => answer.isCorrect)?.answerId || "";
+		const isCorrect = correctAnswerId === answerId;
+
+		let examResult = user.results.training_exam;
+
+		if (!examResult) examResult = [];
+		examResult.push({ ticketId, questionId, answerId, isCorrect });
+		const update = {
+			$set: {
+				"results.training_exam": examResult,
+			},
+		};
+
+		await userCollection.updateOne({ userId }, update, { upsert: true });
+
+		return { help: question.help, correctAnswerId, isCorrect };
+	},
 };

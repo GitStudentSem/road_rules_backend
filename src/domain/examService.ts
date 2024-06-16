@@ -49,4 +49,26 @@ export const examService = {
 
 		return result;
 	},
+
+	async sendTrainingExamResult(data: {
+		userId: string;
+		ticketId: string;
+		questionId: string;
+		answerId: string;
+	}) {
+		const { userId, ticketId, questionId, answerId } = data;
+		const dataFromDB = await examRepository.sendTrainingExamResult({
+			userId,
+			ticketId,
+			questionId,
+			answerId,
+		});
+		const result = {
+			isCorrect: dataFromDB.isCorrect,
+			correctAnswer: dataFromDB.correctAnswerId,
+			help: dataFromDB.isCorrect ? "" : dataFromDB.help,
+		};
+
+		return result;
+	},
 };

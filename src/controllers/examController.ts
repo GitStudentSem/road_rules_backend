@@ -48,3 +48,26 @@ export const sendExamResult = async (
 		sendError({ message: "Не удалось отправить билет", error, res });
 	}
 };
+
+export const sendTrainingExamResult = async (
+	req: RequestWithParamsAndBody<{ ticketId: string }, BodySendExamResult>,
+	res: Response<SendExamResultViewModel | ErrorType>,
+) => {
+	try {
+		const result = await examService.sendTrainingExamResult({
+			//@ts-ignore
+			userId: req.userId,
+			ticketId: req.body.ticketId,
+			questionId: req.body.questionId,
+			answerId: req.body.answerId,
+		});
+
+		res.json(result);
+	} catch (error) {
+		if (error instanceof DBError) {
+			res.status(error.status).json({ message: error.message });
+			return;
+		}
+		sendError({ message: "Не удалось отправить билет", error, res });
+	}
+};
