@@ -26,6 +26,30 @@ export const ticketsSwaggerDoc = {
 				error: getErrorSwaggerDoc("Ошибка получения количества билетов"),
 			},
 		},
+		post: {
+			tags: ["Билеты"],
+			summary: "Отправить ответ на вопрос по билету",
+			security: [{ bearerAuth: [] }],
+
+			requestBody: {
+				content: {
+					"application/json": {
+						schema: BodySendTicketResultSwaggerDoc,
+					},
+				},
+			},
+			responses: {
+				200: {
+					description: "Ответ успешно отправлен",
+					content: {
+						"application/json": {
+							schema: SendTicketResultViewModelModelSwaggerDoc,
+						},
+					},
+				},
+				error: getErrorSwaggerDoc("Ошибка отправки ответа"),
+			},
+		},
 	},
 
 	"/tickets/{ticketId}": {
@@ -54,39 +78,6 @@ export const ticketsSwaggerDoc = {
 				error: getErrorSwaggerDoc("Ошибка получения билета"),
 			},
 		},
-
-		post: {
-			tags: ["Билеты"],
-			summary: "Отправить ответ на вопрос по билету",
-			security: [{ bearerAuth: [] }],
-			parameters: [
-				{
-					name: "ticketId",
-					in: "path",
-					description: "id билета",
-					required: true,
-					default: 1717841402302,
-				},
-			],
-			requestBody: {
-				content: {
-					"application/json": {
-						schema: BodySendTicketResultSwaggerDoc,
-					},
-				},
-			},
-			responses: {
-				200: {
-					description: "Ответ успешно отправлен",
-					content: {
-						"application/json": {
-							schema: SendTicketResultViewModelModelSwaggerDoc,
-						},
-					},
-				},
-				error: getErrorSwaggerDoc("Ошибка отправки ответа"),
-			},
-		},
 	},
 };
 
@@ -98,7 +89,7 @@ export const getTicketsRouter = () => {
 	router.get("/:ticketId", checkAuth, ticketController.sendTicket);
 
 	router.post(
-		"/:ticketId",
+		"/",
 		checkAuth,
 		answerValidation,
 		handleValidationErrors,
