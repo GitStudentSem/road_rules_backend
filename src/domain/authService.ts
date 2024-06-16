@@ -73,6 +73,7 @@ export const authService = {
 				firstName: user.firstName,
 				secondName: user.secondName,
 				results: user.results,
+				isAppointExam: user.isAppointExam,
 			};
 		});
 		return filterdUsersData;

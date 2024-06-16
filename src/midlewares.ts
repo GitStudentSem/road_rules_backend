@@ -31,7 +31,7 @@ export const checkAuth = (req: Request, res: Response, next: NextFunction) => {
 	}
 };
 
-export const handleValudationErrors = (
+export const handleValidationErrors = (
 	req: Request,
 	res: Response,
 	next: NextFunction,

@@ -69,3 +69,11 @@ export const addQuestionValidation = [
 	body("answers", "Минимальное количество ответов: 2").isArray({ min: 2 }),
 	body("answers.*", "Вариант ответа должны быть строкой").isString(),
 ];
+
+export const appointExamValidation = [
+	body(
+		"isAppoint",
+		"Назначен экзамен или нет должно быть в булевом формате",
+	).isBoolean(),
+	isEmailValid,
+];

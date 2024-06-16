@@ -4,12 +4,12 @@ import {
 	loginValidation,
 	registerValidation,
 } from "../validations";
-import { handleValudationErrors } from "../midlewares";
+import { handleValidationErrors } from "../midlewares";
 import * as userController from "../controllers/userController";
 import { getErrorSwaggerDoc } from "../assets/getErrorSwaggerDoc";
 import { BodyLoginModelSwaggerDoc } from "../models/auth/BodyLoginModel";
 import { BodyRegisterModelSwaggerDoc } from "../models/auth/BodyRegisterModel";
-import { UserLoginDBModelSwaggerDoc } from "../models/auth/UserLoginDBModel";
+
 import { UserLoginViewModelSwaggerDoc } from "../models/auth/UserLoginViewModel";
 import { UserRegisterViewModelSwaggerDoc } from "../models/auth/UserRegisterViewModel";
 import { GetAllUsersViewModelSwaggerDoc } from "../models/auth/GetAllUsersViewModel";
@@ -122,20 +122,20 @@ export const getAuthRouter = () => {
 	router.post(
 		"/register",
 		registerValidation,
-		handleValudationErrors,
+		handleValidationErrors,
 		userController.register,
 	);
 	router.post(
 		"/login",
 		loginValidation,
-		handleValudationErrors,
+		handleValidationErrors,
 		userController.login,
 	);
 
 	router.delete(
 		"/deleteUser",
 		isEmailValid,
-		handleValudationErrors,
+		handleValidationErrors,
 		userController.deleteUser,
 	);
 

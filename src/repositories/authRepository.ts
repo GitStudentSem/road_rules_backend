@@ -28,6 +28,7 @@ export const authRepository = {
 			secondName,
 			passwordHash,
 			userId,
+			isAppointExam: false,
 			results: {},
 		});
 
