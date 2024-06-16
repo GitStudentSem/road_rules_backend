@@ -8,7 +8,7 @@ import type { UserLoginViewModel } from "../models/auth/UserLoginViewModel";
 import { HTTP_STATUSES } from "../utils";
 import { DBError } from "./DBError";
 import { authService } from "../domain/authService";
-import type { UserLoginDBModel } from "../models/auth/UserLoginDBModel";
+import type { GetAllUsersViewModel } from "../models/auth/GetAllUsersViewModel";
 
 export const register = async (
 	req: RequestWithBody<BodyRegisterModel>,
@@ -74,7 +74,7 @@ export const deleteUser = async (
 
 export const getAllUsers = async (
 	req: Request,
-	res: Response<{ allUsers: UserLoginDBModel[] } | ErrorType>,
+	res: Response<{ allUsers: GetAllUsersViewModel[] } | ErrorType>,
 ) => {
 	try {
 		const allUsers = await authService.getAllUsers();

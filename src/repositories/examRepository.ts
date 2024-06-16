@@ -62,7 +62,7 @@ const getTicketsIds = async () => {
 	return ticketsIds;
 };
 
-const getRandomTicket = async () => {
+const getRandomTicketId = async () => {
 	const ticketsIds = await getTicketsIds();
 	const randomIndex = randomInteger(0, ticketsIds.length - 1);
 	return ticketsIds[randomIndex].ticketId;
@@ -97,7 +97,7 @@ export const examRepository = {
 		const tickets: QuestionWithTicketId[] = [];
 		let i = 0;
 		while (i <= 20) {
-			const ticketId = await getRandomTicket();
+			const ticketId = await getRandomTicketId();
 			const ticket = await isTicketExist(ticketId);
 			const randomIndex = randomInteger(0, ticket.questions.length - 1);
 			const randomQuestion = ticket.questions[randomIndex];

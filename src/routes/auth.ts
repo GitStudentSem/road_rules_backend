@@ -12,6 +12,7 @@ import { BodyRegisterModelSwaggerDoc } from "../models/auth/BodyRegisterModel";
 import { UserLoginDBModelSwaggerDoc } from "../models/auth/UserLoginDBModel";
 import { UserLoginViewModelSwaggerDoc } from "../models/auth/UserLoginViewModel";
 import { UserRegisterViewModelSwaggerDoc } from "../models/auth/UserRegisterViewModel";
+import { GetAllUsersViewModelSwaggerDoc } from "../models/auth/GetAllUsersViewModel";
 
 export const registerSwaggerDoc = {
 	"/auth/register": {
@@ -104,7 +105,7 @@ export const registerSwaggerDoc = {
 						"application/json": {
 							schema: {
 								type: "array",
-								items: UserLoginDBModelSwaggerDoc,
+								items: GetAllUsersViewModelSwaggerDoc,
 							},
 						},
 					},

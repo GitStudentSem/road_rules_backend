@@ -66,8 +66,15 @@ export const authService = {
 	},
 
 	async getAllUsers() {
-		const isUserDelete = await authRepository.getAllUsers();
-
-		return isUserDelete;
+		const allUsers = await authRepository.getAllUsers();
+		const filterdUsersData = allUsers.map((user) => {
+			return {
+				email: user.email,
+				firstName: user.firstName,
+				secondName: user.secondName,
+				results: user.results,
+			};
+		});
+		return filterdUsersData;
 	},
 };
