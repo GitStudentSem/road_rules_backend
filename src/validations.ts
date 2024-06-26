@@ -68,6 +68,9 @@ export const addQuestionValidation = [
 
 	body("answers", "Варианты ответов должны быть массивом").isArray(),
 	body("answers", "Минимальное количество ответов: 2").isArray({ min: 2 }),
+	body("answers.*", "Вариант ответа не должен быть пустым").isLength({
+		min: 1,
+	}),
 	body("answers.*", "Вариант ответа должны быть строкой").isString(),
 ];
 
