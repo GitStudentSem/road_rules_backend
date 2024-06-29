@@ -49,24 +49,11 @@ export const editorRepository = {
 			},
 		);
 	},
-	// async editQuestion(data: CreateQuestion) {
-	// 	const { imgInfo, questionId, ticketId, question, help, answers } = data;
-	// 	const ticket = await findTicket(ticketId);
-
-	// 	if (ticket.questions.length >= 20) {
-	// 		throw new DBError(
-	// 			"Максимальное количество вопросов в балете 20",
-	// 			HTTP_STATUSES.BAD_REQUEST_400,
-	// 		);
-	// 	}
-
-	// 	await ticketCollection.updateOne(
-	// 		{ ticketId },
-	// 		{
-	// 			$push: { questions: { imgInfo, questionId, question, help, answers } },
-	// 		},
-	// 	);
-	// },
+	// третий билет фотография не правильная!!
+	async getQuestionsInTicket(ticketId: string) {
+		const ticket = await findTicket(ticketId);
+		return ticket.questions;
+	},
 
 	async editQuestion(data: CreateQuestion) {
 		const { imgInfo, questionId, ticketId, question, help, answers } = data;

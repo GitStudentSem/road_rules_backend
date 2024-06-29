@@ -7,6 +7,7 @@ import multer from "multer";
 import { CreateQuestionBodySwaggerDoc } from "../models/editor/CreateQuestionBody";
 import { DeleteQuestionlSwaggerDoc } from "../models/editor/DeleteQuestionBody";
 import { EditQuestionBodySwaggerDoc } from "../models/editor/EditQuestionBody";
+import { QuestionsViewModelSwaggerDoc } from "../models/editor/QuestionsViewModel";
 const upload = multer({ storage: multer.memoryStorage() });
 
 export const editorSwaggerDoc = {
@@ -33,6 +34,45 @@ export const editorSwaggerDoc = {
 					},
 				},
 				error: getErrorSwaggerDoc("Ошибка создания билета"),
+			},
+		},
+	},
+	"/editor/getQuestions": {
+		post: {
+			tags: ["Редактор билетов"],
+			summary: "Получить вопросы в билете",
+			// security: [{ bearerAuth: [] }],
+			requestBody: {
+				content: {
+					"application/json": {
+						schema: {
+							type: "object",
+							properties: {
+								ticketId: {
+									type: "string",
+									description: "id билета",
+									default: "1717841402302",
+								},
+							},
+							required: ["ticketId"],
+						},
+					},
+				},
+			},
+
+			responses: {
+				200: {
+					description: "Вопросы успешно получены",
+					content: {
+						"application/json": {
+							schema: {
+								type: "array",
+								items: QuestionsViewModelSwaggerDoc,
+							},
+						},
+					},
+				},
+				error: getErrorSwaggerDoc("Ошибка получения вопросов"),
 			},
 		},
 	},
@@ -145,6 +185,7 @@ export const editorRouter = () => {
 	const router = express.Router();
 
 	router.get("/createTicket", editorController.createTicket);
+	router.post("/getQuestions", editorController.getQuestionsInTicket);
 	router.post(
 		"/addQuestion",
 		upload.single("img"),

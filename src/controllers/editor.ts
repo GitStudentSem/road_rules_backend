@@ -9,6 +9,7 @@ import { editorService } from "../domain/editorService";
 import type { CreateQuestionBody } from "../models/editor/CreateQuestionBody";
 import type { DeleteQuestionBody } from "../models/editor/DeleteQuestionBody";
 import type { EditQuestionBody } from "../models/editor/EditQuestionBody";
+import type { QuestionsViewModel } from "../models/editor/QuestionsViewModel";
 
 export const createTicket = async (
 	req: Request,
@@ -24,6 +25,15 @@ export const createTicket = async (
 		}
 		sendError({ message: "Не удалось создать билет", error, res });
 	}
+};
+
+export const getQuestionsInTicket = async (
+	req: RequestWithBody<{ ticketId: string }>,
+	res: Response<QuestionsViewModel[] | ErrorType>,
+) => {
+	const { ticketId } = req.body;
+	const questions = await editorService.getQuestionsInTicket(ticketId);
+	res.json(questions);
 };
 
 export const addQuestion = async (

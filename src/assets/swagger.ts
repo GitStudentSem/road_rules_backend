@@ -36,6 +36,7 @@ const options: swaggerJSDoc.Options = {
 			"/auth/getAllUsers": registerSwaggerDoc["/auth/getAllUsers"],
 
 			"/editor/createTicket": editorSwaggerDoc["/editor/createTicket"],
+			"/editor/getQuestions": editorSwaggerDoc["/editor/getQuestions"],
 			"/editor/addQuestion": editorSwaggerDoc["/editor/addQuestion"],
 			"/editor/editQuestion": editorSwaggerDoc["/editor/editQuestion"],
 			"/editor/deleteTicket": editorSwaggerDoc["/editor/deleteTicket"],

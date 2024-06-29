@@ -73,6 +73,26 @@ export const editorService = {
 		return ticketId;
 	},
 
+	async getQuestionsInTicket(ticketId: string) {
+		const questions = await editorRepository.getQuestionsInTicket(ticketId);
+		const questionData = questions.map((question) => {
+			const answersWithoutId = question.answers.map((answerInfo) => {
+				return {
+					answerText: answerInfo.answerText,
+					isCorrect: answerInfo.isCorrect,
+				};
+			});
+			return {
+				img: question.imgInfo.img,
+				questionId: question.questionId,
+				question: question.question,
+				help: question.help,
+				answers: answersWithoutId,
+			};
+		});
+		return questionData;
+	},
+
 	async addQuestion(data: CreateQuestionBody) {
 		const { img, ticketId, question, help, correctAnswer, answers } = data;
 		const imageInBase64 = await imageToBase64({ img });
