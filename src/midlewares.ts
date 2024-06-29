@@ -13,8 +13,9 @@ export const checkAuth = (req: Request, res: Response, next: NextFunction) => {
 	if (token) {
 		try {
 			const decoded = jwt.verify(token, settings.JWT_SECRET);
+			console.log("decoded", decoded);
 			//@ts-ignore
-			req.userId = decoded.id;
+			req.userId = decoded.userId;
 			next();
 		} catch (error) {
 			sendError({

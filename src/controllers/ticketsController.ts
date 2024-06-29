@@ -19,6 +19,8 @@ export const sendTickets = async (
 ) => {
 	try {
 		//@ts-ignore
+		console.log("req.userId", req.userId);
+		//@ts-ignore
 		const tickets = await ticketService.sendTickets(req.userId);
 
 		res.json(tickets);
