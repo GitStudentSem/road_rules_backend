@@ -12,22 +12,34 @@ const calculateSizeInKB = (arrayBuffer: ArrayBuffer) => {
 	return kilobytes;
 };
 
-const imageToBase64 = async (img?: ArrayBuffer) => {
+const imageToBase64 = async ({
+	img,
+	imageInDB,
+	DBImageOriginalHash,
+}: {
+	img?: ArrayBuffer;
+	imageInDB?: string;
+	DBImageOriginalHash?: string;
+}) => {
 	// Для сравнения контрольных сумм используй crc64
-	if (!img) return { img: "", hash: "" };
+	if (!img) return { img: "", imageOriginalHash: "", imagePrcessedHash: "" };
 
 	const imageSizeBefore = calculateSizeInKB(img);
-	console.log(
-		`${colors.blue}Размер картинки до сжатия: ${styles.bold}${imageSizeBefore} KB ${resetStyle}`,
-	);
 
-	const imageBuffer = await sharp(img).jpeg().toBuffer();
-	const hash = crc32(imageBuffer).toString(16);
-	console.log("hash", hash);
-	const imageSizeAfter = calculateSizeInKB(imageBuffer);
-	console.log(
-		`${colors.blue}Размер картинки после сжатия: ${styles.bold}${imageSizeAfter} KB${resetStyle}`,
-	);
+	const processedImage = await sharp(img).jpeg().toBuffer();
+
+	const imageOriginalHash = crc32(img).toString(16);
+	const imagePrcessedHash = crc32(processedImage).toString(16);
+
+	if (imageOriginalHash === DBImageOriginalHash) {
+		return {
+			img: imageInDB || "",
+			imageOriginalHash,
+			imagePrcessedHash,
+		};
+	}
+
+	const imageSizeAfter = calculateSizeInKB(processedImage);
 
 	const reductionPercentage = (
 		((imageSizeBefore - imageSizeAfter) / imageSizeBefore) *
@@ -35,14 +47,22 @@ const imageToBase64 = async (img?: ArrayBuffer) => {
 	).toFixed(2);
 
 	console.log(
+		`${colors.blue}Размер картинки до сжатия: ${styles.bold}${imageSizeBefore} KB ${resetStyle}`,
+	);
+
+	console.log(
+		`${colors.blue}Размер картинки после сжатия: ${styles.bold}${imageSizeAfter} KB${resetStyle}`,
+	);
+
+	console.log(
 		`${colors.blue}Картинка была оптимизирована на ${styles.bold}${reductionPercentage}%${resetStyle}`,
 	);
 	console.log(`${colors.blue}======================${resetStyle}`);
 
-	const imageInBase64 = `data:image/jpeg;base64,${imageBuffer.toString(
+	const imageInBase64 = `data:image/jpeg;base64,${processedImage.toString(
 		"base64",
 	)}`;
-	return { img: imageInBase64, hash };
+	return { img: imageInBase64, imageOriginalHash, imagePrcessedHash };
 };
 
 export const editorService = {
@@ -54,7 +74,7 @@ export const editorService = {
 
 	async addQuestion(data: CreateQuestionBody) {
 		const { img, ticketId, question, help, correctAnswer, answers } = data;
-		const imageInBase64 = await imageToBase64(img);
+		const imageInBase64 = await imageToBase64({ img });
 		const questionId = Number(new Date()).toString();
 
 		const answersWithId = answers.map((answer, i) => {
@@ -82,7 +102,16 @@ export const editorService = {
 			correctAnswer,
 			answers,
 		} = data;
-		const imageInBase64 = await imageToBase64(img);
+		const questionInfo = await editorRepository.findQuestion(
+			ticketId,
+			questionId,
+		);
+		const { imgInfo } = questionInfo;
+		const imageInBase64 = await imageToBase64({
+			img,
+			imageInDB: imgInfo.img,
+			DBImageOriginalHash: imgInfo.imageOriginalHash,
+		});
 
 		const answersWithId = answers.map((answer, i) => {
 			const answerId = Number(new Date()).toString() + i;

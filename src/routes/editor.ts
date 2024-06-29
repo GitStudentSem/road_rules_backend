@@ -142,7 +142,13 @@ export const editorRouter = () => {
 
 	router.delete("/deleteQuestion", editorController.deleteQuestion);
 	router.delete("/deleteTicket", editorController.deleteTicket);
-	router.patch("/editQuestion", editorController.editQuestion);
+	router.patch(
+		"/editQuestion",
+		upload.single("img"),
+		addQuestionValidation,
+		handleValidationErrors,
+		editorController.editQuestion,
+	);
 
 	return router;
 };
