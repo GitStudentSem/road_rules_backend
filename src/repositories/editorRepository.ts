@@ -49,7 +49,6 @@ export const editorRepository = {
 			},
 		);
 	},
-	// третий билет фотография не правильная!!
 	async getQuestionsInTicket(ticketId: string) {
 		const ticket = await findTicket(ticketId);
 		return ticket.questions;
