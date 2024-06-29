@@ -41,7 +41,6 @@ export const addQuestion = async (
 	res: Response<ErrorType>,
 ) => {
 	try {
-		//@ts-ignore
 		const img = req.file?.buffer;
 		const { question, help, answers, ticketId, correctAnswer } = req.body;
 
@@ -68,7 +67,6 @@ export const editQuestion = async (
 	res: Response<ErrorType>,
 ) => {
 	try {
-		//@ts-ignore
 		const img = req.file?.buffer;
 		const { question, help, answers, ticketId, questionId, correctAnswer } =
 			req.body;

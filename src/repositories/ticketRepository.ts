@@ -39,8 +39,6 @@ const isQuestionExist = async (
 const isUserExist = async (userId: string) => {
 	const filter = { userId };
 	const user = await userCollection.findOne(filter);
-	console.log("userId", userId);
-	console.log("user", user);
 	if (!user) {
 		throw new DBError("Пользователь не найден", HTTP_STATUSES.NOT_FOUND_404);
 	}

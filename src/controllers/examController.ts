@@ -19,8 +19,7 @@ export const sendExam = async (
 	res: Response<SendExamViewModel[] | ErrorType>,
 ) => {
 	try {
-		//@ts-ignore
-		const exam = await examService.sendExam(req.userId);
+		const exam = await examService.sendExam(req.userId || "");
 
 		res.json(exam);
 	} catch (error) {
@@ -38,8 +37,7 @@ export const sendExamResult = async (
 ) => {
 	try {
 		const result = await examService.sendExamResult({
-			//@ts-ignore
-			userId: req.userId,
+			userId: req.userId || "",
 			ticketId: req.body.ticketId,
 			questionId: req.body.questionId,
 			answerId: req.body.answerId,
@@ -61,8 +59,7 @@ export const sendTrainingExamResult = async (
 ) => {
 	try {
 		const result = await examService.sendTrainingExamResult({
-			//@ts-ignore
-			userId: req.userId,
+			userId: req.userId || "",
 			ticketId: req.body.ticketId,
 			questionId: req.body.questionId,
 			answerId: req.body.answerId,

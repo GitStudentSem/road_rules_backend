@@ -18,10 +18,7 @@ export const sendTickets = async (
 	res: Response<SendTicketsViewModel | ErrorType>,
 ) => {
 	try {
-		//@ts-ignore
-		console.log("req.userId", req.userId);
-		//@ts-ignore
-		const tickets = await ticketService.sendTickets(req.userId);
+		const tickets = await ticketService.sendTickets(req.userId || "");
 
 		res.json(tickets);
 	} catch (error) {
@@ -39,8 +36,7 @@ export const sendTicket = async (
 ) => {
 	try {
 		const ticket = await ticketService.sendTicket(
-			//@ts-ignore
-			req.userId,
+			req.userId || "",
 			req.params.ticketId,
 		);
 
@@ -60,8 +56,7 @@ export const sendTicketResult = async (
 ) => {
 	try {
 		const result = await ticketService.sendTicketResult({
-			//@ts-ignore
-			userId: req.userId,
+			userId: req.userId || "",
 			ticketId: req.body.ticketId,
 			questionId: req.body.questionId,
 			answerId: req.body.answerId,

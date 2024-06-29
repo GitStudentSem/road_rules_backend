@@ -92,23 +92,3 @@ export const getAllUsers = async (
 		});
 	}
 };
-
-// export const getMe = async (req: Request, res: Response) => {
-// 	try {
-// 		//@ts-ignore
-// 		const user = await isUserExist(req, res);
-// 		if (!user) return;
-
-// 		const userCopy = { ...user };
-// 		//@ts-ignore
-// 		userCopy.passwordHash = undefined;
-
-// 		res.json({ ...userCopy });
-// 	} catch (error) {
-// 		sendError({
-// 			message: "Нет доступа",
-// 			error,
-// 			res,
-// 		});
-// 	}
-// };
