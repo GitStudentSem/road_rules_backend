@@ -10,10 +10,13 @@ import type { CreateQuestionBody } from "../models/editor/CreateQuestionBody";
 import type { DeleteQuestionBody } from "../models/editor/DeleteQuestionBody";
 import type { EditQuestionBody } from "../models/editor/EditQuestionBody";
 
-export const createTicket = async (req: Request, res: Response<ErrorType>) => {
+export const createTicket = async (
+	req: Request,
+	res: Response<{ ticketId: string } | ErrorType>,
+) => {
 	try {
-		await editorService.createTicket();
-		res.sendStatus(HTTP_STATUSES.NO_CONTENT_204);
+		const ticketId = await editorService.createTicket();
+		res.json({ ticketId });
 	} catch (error) {
 		if (error instanceof DBError) {
 			res.status(error.status).json({ message: error.message });

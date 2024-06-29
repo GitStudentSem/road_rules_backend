@@ -16,8 +16,21 @@ export const editorSwaggerDoc = {
 			summary: "Создать пустой билет",
 			// security: [{ bearerAuth: [] }],
 			responses: {
-				204: {
-					description: "Билет упешно создан",
+				200: {
+					description: "Билет успешно создан",
+					content: {
+						"application/json": {
+							schema: {
+								type: "object",
+								properties: {
+									ticketId: {
+										type: "string",
+										description: "id созданного билета",
+									},
+								},
+							},
+						},
+					},
 				},
 				error: getErrorSwaggerDoc("Ошибка создания билета"),
 			},

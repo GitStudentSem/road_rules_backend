@@ -70,6 +70,7 @@ export const editorService = {
 		const ticketId = Number(new Date()).toString();
 		const createdAt = Number(new Date());
 		await editorRepository.createTicket(ticketId, createdAt);
+		return ticketId;
 	},
 
 	async addQuestion(data: CreateQuestionBody) {
