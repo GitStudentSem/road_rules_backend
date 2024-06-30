@@ -1,5 +1,5 @@
 import { sendError } from "../assets/requestAssets";
-import type { Response, Request } from "express";
+import type { Response } from "express";
 import type { ErrorType, RequestWithBody } from "../types";
 import type { BodyRegisterModel } from "../models/auth/BodyRegisterModel";
 import type { UserRegisterViewModel } from "../models/auth/UserRegisterViewModel";
@@ -8,7 +8,6 @@ import type { UserLoginViewModel } from "../models/auth/UserLoginViewModel";
 import { HTTP_STATUSES } from "../utils";
 import { DBError } from "./DBError";
 import { authService } from "../domain/authService";
-import type { GetAllUsersViewModel } from "../models/auth/GetAllUsersViewModel";
 
 export const register = async (
 	req: RequestWithBody<BodyRegisterModel>,
@@ -69,49 +68,5 @@ export const deleteUser = async (
 			return;
 		}
 		sendError({ message: "Не удалось удалить пользователя", error, res });
-	}
-};
-
-export const setRole = async (
-	req: RequestWithBody<{ email: string; role: "user" | "admin" }>,
-	res: Response<ErrorType>,
-) => {
-	try {
-		const { email, role } = req.body;
-
-		await authService.setRole({ userId: req.userId || "", email, role });
-
-		res.sendStatus(HTTP_STATUSES.NO_CONTENT_204);
-	} catch (error) {
-		if (error instanceof DBError) {
-			res.status(error.status).json({ message: error.message });
-			return;
-		}
-		sendError({
-			message: "Не удалось установить роль пользователя",
-			error,
-			res,
-		});
-	}
-};
-
-export const getAllUsers = async (
-	req: Request,
-	res: Response<{ allUsers: GetAllUsersViewModel[] } | ErrorType>,
-) => {
-	try {
-		const allUsers = await authService.getAllUsers();
-
-		res.status(HTTP_STATUSES.OK_200).json({ allUsers });
-	} catch (error) {
-		if (error instanceof DBError) {
-			res.status(error.status).json({ message: error.message });
-			return;
-		}
-		sendError({
-			message: "Не удалось получить всех пользователей",
-			error,
-			res,
-		});
 	}
 };

@@ -1,134 +1,55 @@
 import { DBError } from "../controllers/DBError";
-import type { Answer } from "../models/Answer";
 import { HTTP_STATUSES } from "../utils";
-import { ticketCollection } from "./db";
+import { userCollection } from "./db";
 
-type CreateQuestion = {
-	imgInfo: {
-		img: string;
-		imageOriginalHash: string;
-		imagePrcessedHash: string;
-	};
-	questionId: string;
-	ticketId: string;
-	question: string;
-	help: string;
-	answers: Answer[];
-};
-
-const findTicket = async (ticketId: string) => {
-	const ticket = await ticketCollection.findOne({ ticketId });
-
-	if (!ticket) {
-		throw new DBError("Билет не найден", HTTP_STATUSES.NOT_FOUND_404);
+export const isUserExist = async (userId: string) => {
+	const filter = { userId };
+	const user = await userCollection.findOne(filter);
+	if (!user) {
+		throw new DBError("Пользователь не найден", HTTP_STATUSES.NOT_FOUND_404);
 	}
-
-	return ticket;
+	return user;
 };
 
-export const editorRepository = {
-	async createTicket(ticketId: string, createdAt: number) {
-		await ticketCollection.insertOne({ createdAt, ticketId, questions: [] });
+export const userEditorRepository = {
+	async getAllUsers() {
+		const allUsers = await userCollection.find({}).toArray();
+		return allUsers;
 	},
 
-	async addQuestion(data: CreateQuestion) {
-		const { imgInfo, questionId, ticketId, question, help, answers } = data;
-		const ticket = await findTicket(ticketId);
+	async setRole(data: {
+		userId: string;
+		email: string;
+		role: "user" | "admin";
+	}) {
+		const { userId, email, role } = data;
 
-		if (ticket.questions.length >= 20) {
+		const user = await isUserExist(userId);
+
+		if (user.role === "superadmin") {
 			throw new DBError(
-				"Максимальное количество вопросов в балете 20",
+				"Вы не можете менять роль для супер администратора",
 				HTTP_STATUSES.BAD_REQUEST_400,
 			);
 		}
 
-		await ticketCollection.updateOne(
-			{ ticketId },
-			{
-				$push: { questions: { imgInfo, questionId, question, help, answers } },
-			},
+		if (user.role === "user") {
+			throw new DBError(
+				"У вас нет прав доступа, для смены роли",
+				HTTP_STATUSES.BAD_REQUEST_400,
+			);
+		}
+
+		const result = await userCollection.updateOne(
+			{ email },
+			{ $set: { role } },
 		);
-	},
-	async getQuestionsInTicket(ticketId: string) {
-		const ticket = await findTicket(ticketId);
-		return ticket.questions;
-	},
 
-	async editQuestion(data: CreateQuestion) {
-		const { imgInfo, questionId, ticketId, question, help, answers } = data;
-		const query = {
-			ticketId: ticketId,
-			"questions.questionId": questionId,
-		};
-
-		const update = {
-			$set: {
-				"questions.$.question": question,
-				"questions.$.help": help,
-				"questions.$.imgInfo": imgInfo,
-				"questions.$.answers": answers,
-			},
-		};
-
-		const result = await ticketCollection.updateOne(query, update);
-
-		if (result.matchedCount > 0) {
-			return;
+		if (result.matchedCount === 0) {
+			throw new DBError(
+				"При обновлении роли произошло ошибка",
+				HTTP_STATUSES.BAD_REQUEST_400,
+			);
 		}
-		throw new DBError(
-			"Билет или вопрос не найден",
-			HTTP_STATUSES.NOT_FOUND_404,
-		);
-	},
-
-	async findQuestion(ticketId: string, questionId: string) {
-		// Поиск документа с использованием $elemMatch
-		const query = {
-			ticketId,
-			questions: {
-				$elemMatch: {
-					questionId,
-				},
-			},
-		};
-
-		const projection = {
-			_id: 0,
-			"questions.$": 1,
-		};
-
-		const ticket = await ticketCollection.findOne(query, { projection });
-		if (ticket?.questions && ticket.questions.length > 0) {
-			return ticket.questions[0];
-		}
-		throw new DBError("Билет не найден", HTTP_STATUSES.NOT_FOUND_404);
-	},
-
-	async deleteTicket(ticketId: string) {
-		await findTicket(ticketId);
-
-		await ticketCollection.deleteOne({ ticketId });
-	},
-
-	async deleteQuestion(ticketId: string, questionId: string) {
-		await findTicket(ticketId);
-
-		const query = {
-			ticketId,
-			questions: {
-				$elemMatch: { questionId },
-			},
-		};
-
-		const question = await ticketCollection.findOne(query);
-
-		if (!question) {
-			throw new DBError("Вопрос не найден", HTTP_STATUSES.NOT_FOUND_404);
-		}
-		const update = {
-			$pull: { questions: { questionId } },
-		};
-
-		await ticketCollection.updateOne({ ticketId }, update);
 	},
 };

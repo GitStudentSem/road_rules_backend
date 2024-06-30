@@ -1,161 +1,37 @@
-import sharp from "sharp";
-import { ticketEditorRepository } from "../repositories/ticketEditorRepository";
-import type { CreateQuestionBody } from "../models/ticketEditor/CreateQuestionBody";
-import type { DeleteQuestionBody } from "../models/ticketEditor/DeleteQuestionBody";
-import { colors, resetStyle, styles } from "../assets/logStyles";
-import { crc32 } from "crc";
-import type { EditQuestionBody } from "../models/ticketEditor/EditQuestionBody";
+import { userEditorRepository } from "../repositories/userEditorRepository";
+import { DBError } from "../controllers/DBError";
+import { HTTP_STATUSES } from "../utils";
 
-const calculateSizeInKB = (arrayBuffer: ArrayBuffer) => {
-	const bytes = arrayBuffer.byteLength;
-	const kilobytes = Math.round(bytes / 1024);
-	return kilobytes;
-};
-
-const imageToBase64 = async ({
-	img,
-	imageInDB,
-	DBImageOriginalHash,
-}: {
-	img?: ArrayBuffer;
-	imageInDB?: string;
-	DBImageOriginalHash?: string;
-}) => {
-	// Для сравнения контрольных сумм используй crc64
-	if (!img) return { img: "", imageOriginalHash: "", imagePrcessedHash: "" };
-
-	const imageSizeBefore = calculateSizeInKB(img);
-
-	const processedImage = await sharp(img).jpeg().toBuffer();
-
-	const imageOriginalHash = crc32(img).toString(16);
-	const imagePrcessedHash = crc32(processedImage).toString(16);
-
-	if (imageOriginalHash === DBImageOriginalHash) {
-		return {
-			img: imageInDB || "",
-			imageOriginalHash,
-			imagePrcessedHash,
-		};
-	}
-
-	const imageSizeAfter = calculateSizeInKB(processedImage);
-
-	const reductionPercentage = (
-		((imageSizeBefore - imageSizeAfter) / imageSizeBefore) *
-		100
-	).toFixed(2);
-
-	console.log(
-		`${colors.blue}Размер картинки до сжатия: ${styles.bold}${imageSizeBefore} KB ${resetStyle}`,
-	);
-
-	console.log(
-		`${colors.blue}Размер картинки после сжатия: ${styles.bold}${imageSizeAfter} KB${resetStyle}`,
-	);
-
-	console.log(
-		`${colors.blue}Картинка была оптимизирована на ${styles.bold}${reductionPercentage}%${resetStyle}`,
-	);
-	console.log(`${colors.blue}======================${resetStyle}`);
-
-	const imageInBase64 = `data:image/jpeg;base64,${processedImage.toString(
-		"base64",
-	)}`;
-	return { img: imageInBase64, imageOriginalHash, imagePrcessedHash };
-};
-
-export const editorService = {
-	async createTicket() {
-		const ticketId = Number(new Date()).toString();
-		const createdAt = Number(new Date());
-		await ticketEditorRepository.createTicket(ticketId, createdAt);
-		return ticketId;
-	},
-
-	async getQuestionsInTicket(ticketId: string) {
-		const questions =
-			await ticketEditorRepository.getQuestionsInTicket(ticketId);
-		const questionData = questions.map((question) => {
-			const answersWithoutId = question.answers.map((answerInfo) => {
-				return {
-					answerText: answerInfo.answerText,
-					isCorrect: answerInfo.isCorrect,
-				};
-			});
+export const userEditorService = {
+	async getAllUsers() {
+		const allUsers = await userEditorRepository.getAllUsers();
+		const filterdUsersData = allUsers.map((user) => {
 			return {
-				img: question.imgInfo.img,
-				questionId: question.questionId,
-				question: question.question,
-				help: question.help,
-				answers: answersWithoutId,
+				email: user.email,
+				firstName: user.firstName,
+				secondName: user.secondName,
+				examResults: user.results.exam,
+				role: user.role,
+				isAppointExam: user.isAppointExam,
 			};
 		});
-		return questionData;
+		return filterdUsersData;
 	},
 
-	async addQuestion(data: CreateQuestionBody) {
-		const { img, ticketId, question, help, correctAnswer, answers } = data;
-		const imageInBase64 = await imageToBase64({ img });
-		const questionId = Number(new Date()).toString();
+	async setRole(data: {
+		userId: string;
+		email: string;
+		role: "user" | "admin";
+	}) {
+		const { userId, email, role } = data;
 
-		const answersWithId = answers.map((answer, i) => {
-			const answerId = Number(new Date()).toString() + i;
-			return { answerText: answer, isCorrect: i === correctAnswer, answerId };
-		});
+		if (role !== "admin" && role !== "user") {
+			throw new DBError(
+				"Указан несуществующий тип роли",
+				HTTP_STATUSES.BAD_REQUEST_400,
+			);
+		}
 
-		await ticketEditorRepository.addQuestion({
-			imgInfo: imageInBase64,
-			questionId,
-			ticketId,
-			question,
-			help,
-			answers: answersWithId,
-		});
-	},
-
-	async editQuestion(data: EditQuestionBody) {
-		const {
-			img,
-			ticketId,
-			questionId,
-			question,
-			help,
-			correctAnswer,
-			answers,
-		} = data;
-		const questionInfo = await ticketEditorRepository.findQuestion(
-			ticketId,
-			questionId,
-		);
-		const { imgInfo } = questionInfo;
-		const imageInBase64 = await imageToBase64({
-			img,
-			imageInDB: imgInfo.img,
-			DBImageOriginalHash: imgInfo.imageOriginalHash,
-		});
-
-		const answersWithId = answers.map((answer, i) => {
-			const answerId = Number(new Date()).toString() + i;
-			return { answerText: answer, isCorrect: i === correctAnswer, answerId };
-		});
-
-		await ticketEditorRepository.editQuestion({
-			imgInfo: imageInBase64,
-			questionId,
-			ticketId,
-			question,
-			help,
-			answers: answersWithId,
-		});
-	},
-
-	async deleteTicket(ticketId: string) {
-		await ticketEditorRepository.deleteTicket(ticketId);
-	},
-	async deleteQuestion(data: DeleteQuestionBody) {
-		const { ticketId, questionId } = data;
-
-		await ticketEditorRepository.deleteQuestion(ticketId, questionId);
+		await userEditorRepository.setRole({ userId, email, role });
 	},
 };

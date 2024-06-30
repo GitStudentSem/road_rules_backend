@@ -12,7 +12,6 @@ import { BodyRegisterModelSwaggerDoc } from "../models/auth/BodyRegisterModel";
 
 import { UserLoginViewModelSwaggerDoc } from "../models/auth/UserLoginViewModel";
 import { UserRegisterViewModelSwaggerDoc } from "../models/auth/UserRegisterViewModel";
-import { GetAllUsersViewModelSwaggerDoc } from "../models/auth/GetAllUsersViewModel";
 
 export const registerSwaggerDoc = {
 	"/auth/register": {
@@ -94,62 +93,6 @@ export const registerSwaggerDoc = {
 			},
 		},
 	},
-
-	"/auth/role": {
-		patch: {
-			tags: ["Авторизация"],
-			summary: "Установить роль для пользователя",
-			security: [{ bearerAuth: [] }],
-			requestBody: {
-				content: {
-					"application/json": {
-						schema: {
-							type: "object",
-							properties: {
-								email: {
-									type: "string",
-									default: "your_email@yandex.ru",
-									description: "Почта пользователя",
-								},
-								role: {
-									type: "admin | user",
-									default: "user",
-									description: "Роль пользователя",
-								},
-							},
-						},
-					},
-				},
-			},
-			responses: {
-				204: {
-					description: "Пользователь удален",
-				},
-				error: getErrorSwaggerDoc("Ошибка удаления пользователя"),
-			},
-		},
-	},
-
-	"/auth/getAllUsers": {
-		get: {
-			tags: ["Авторизация"],
-			summary: "Получить всех пользователей",
-			responses: {
-				200: {
-					description: "Все пользователи получены",
-					content: {
-						"application/json": {
-							schema: {
-								type: "array",
-								items: GetAllUsersViewModelSwaggerDoc,
-							},
-						},
-					},
-				},
-				error: getErrorSwaggerDoc("Ошибка получения всех пользователей"),
-			},
-		},
-	},
 };
 
 export const getAuthRouter = () => {
@@ -174,15 +117,6 @@ export const getAuthRouter = () => {
 		handleValidationErrors,
 		userController.deleteUser,
 	);
-
-	router.patch(
-		"/role",
-		checkAuth,
-		isEmailValid,
-		handleValidationErrors,
-		userController.setRole,
-	);
-	router.get("/getAllUsers", userController.getAllUsers);
 
 	return router;
 };

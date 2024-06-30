@@ -6,6 +6,7 @@ import { registerSwaggerDoc } from "../routes/auth";
 import { ticketEditorSwaggerDoc } from "../routes/ticketEditor";
 import { examSwaggerDoc } from "../routes/exam";
 import { ticketsSwaggerDoc } from "../routes/tickets";
+import { userEditorSwaggerDoc } from "../routes/userEditor";
 
 const options: swaggerJSDoc.Options = {
 	swaggerDefinition: {
@@ -33,16 +34,23 @@ const options: swaggerJSDoc.Options = {
 			"/auth/register": registerSwaggerDoc["/auth/register"],
 			"/auth/login": registerSwaggerDoc["/auth/login"],
 			"/auth/deleteUser": registerSwaggerDoc["/auth/deleteUser"],
-			"/auth/getAllUsers": registerSwaggerDoc["/auth/getAllUsers"],
-			"/auth/role": registerSwaggerDoc["/auth/role"],
 
-			"/editor/createTicket": ticketEditorSwaggerDoc["/editor/createTicket"],
-			"/editor/getQuestions": ticketEditorSwaggerDoc["/editor/getQuestions"],
-			"/editor/addQuestion": ticketEditorSwaggerDoc["/editor/addQuestion"],
-			"/editor/editQuestion": ticketEditorSwaggerDoc["/editor/editQuestion"],
-			"/editor/deleteTicket": ticketEditorSwaggerDoc["/editor/deleteTicket"],
-			"/editor/deleteQuestion":
-				ticketEditorSwaggerDoc["/editor/deleteQuestion"],
+			"/userEditor/getAllUsers":
+				userEditorSwaggerDoc["/userEditor/getAllUsers"],
+			"/userEditor/role": userEditorSwaggerDoc["/userEditor/role"],
+
+			"/ticketEditor/createTicket":
+				ticketEditorSwaggerDoc["/ticketEditor/createTicket"],
+			"/ticketEditor/getQuestions":
+				ticketEditorSwaggerDoc["/ticketEditor/getQuestions"],
+			"/ticketEditor/addQuestion":
+				ticketEditorSwaggerDoc["/ticketEditor/addQuestion"],
+			"/ticketEditor/editQuestion":
+				ticketEditorSwaggerDoc["/ticketEditor/editQuestion"],
+			"/ticketEditor/deleteTicket":
+				ticketEditorSwaggerDoc["/ticketEditor/deleteTicket"],
+			"/ticketEditor/deleteQuestion":
+				ticketEditorSwaggerDoc["/ticketEditor/deleteQuestion"],
 
 			"/exam": examSwaggerDoc["/exam"],
 			"/exam/training": examSwaggerDoc["/exam/training"],
