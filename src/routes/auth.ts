@@ -69,22 +69,6 @@ export const registerSwaggerDoc = {
 			tags: ["Авторизация"],
 			summary: "Удалить пользователя по почте",
 			security: [{ bearerAuth: [] }],
-			requestBody: {
-				content: {
-					"application/json": {
-						schema: {
-							type: "object",
-							properties: {
-								email: {
-									type: "string",
-									default: "your_email@yandex.ru",
-									description: "Почта пользователя",
-								},
-							},
-						},
-					},
-				},
-			},
 			responses: {
 				204: {
 					description: "Пользователь удален",
