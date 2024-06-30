@@ -72,6 +72,29 @@ export const deleteUser = async (
 	}
 };
 
+export const setRole = async (
+	req: RequestWithBody<{ email: string; role: "user" | "admin" }>,
+	res: Response<ErrorType>,
+) => {
+	try {
+		const { email, role } = req.body;
+
+		await authService.setRole({ userId: req.userId || "", email, role });
+
+		res.sendStatus(HTTP_STATUSES.NO_CONTENT_204);
+	} catch (error) {
+		if (error instanceof DBError) {
+			res.status(error.status).json({ message: error.message });
+			return;
+		}
+		sendError({
+			message: "Не удалось установить роль пользователя",
+			error,
+			res,
+		});
+	}
+};
+
 export const getAllUsers = async (
 	req: Request,
 	res: Response<{ allUsers: GetAllUsersViewModel[] } | ErrorType>,

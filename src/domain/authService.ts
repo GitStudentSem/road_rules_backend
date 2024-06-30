@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { authRepository } from "../repositories/authRepository";
+import { authRepository, isUserExist } from "../repositories/authRepository";
 import type { BodyRegisterModel } from "../models/auth/BodyRegisterModel";
 import { HTTP_STATUSES } from "../utils";
 import { DBError } from "../controllers/DBError";
@@ -65,6 +65,31 @@ export const authService = {
 		await authRepository.deleteUser({ email });
 	},
 
+	async setRole(data: {
+		userId: string;
+		email: string;
+		role: "user" | "admin";
+	}) {
+		const { userId, email, role } = data;
+
+		const user = await isUserExist(userId);
+		if (user.role === "user") {
+			throw new DBError(
+				"У вас нет прав доступа, для смены роли",
+				HTTP_STATUSES.BAD_REQUEST_400,
+			);
+		}
+
+		if (role !== "admin" && role !== "user") {
+			throw new DBError(
+				"Указан несуществующий тип роли",
+				HTTP_STATUSES.BAD_REQUEST_400,
+			);
+		}
+
+		await authRepository.setRole({ email, role });
+	},
+
 	async getAllUsers() {
 		const allUsers = await authRepository.getAllUsers();
 		const filterdUsersData = allUsers.map((user) => {
@@ -72,7 +97,8 @@ export const authService = {
 				email: user.email,
 				firstName: user.firstName,
 				secondName: user.secondName,
-				results: user.results,
+				examResults: user.results.exam,
+				role: user.role,
 				isAppointExam: user.isAppointExam,
 			};
 		});

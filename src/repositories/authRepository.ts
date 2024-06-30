@@ -2,6 +2,15 @@ import { HTTP_STATUSES } from "../utils";
 import { DBError } from "../controllers/DBError";
 import { userCollection } from "./db";
 
+export const isUserExist = async (userId: string) => {
+	const filter = { userId };
+	const user = await userCollection.findOne(filter);
+	if (!user) {
+		throw new DBError("Пользователь не найден", HTTP_STATUSES.NOT_FOUND_404);
+	}
+	return user;
+};
+
 export const authRepository = {
 	async register(data: {
 		email: string;
@@ -29,6 +38,7 @@ export const authRepository = {
 			passwordHash,
 			userId,
 			isAppointExam: false,
+			role: "user",
 			results: {},
 		});
 
@@ -60,12 +70,30 @@ export const authRepository = {
 
 	async deleteUser(data: { email: string }) {
 		const { email } = data;
-
 		await userCollection.deleteOne({ email });
 	},
+
+	async setRole(data: {
+		email: string;
+		role: "user" | "admin";
+	}) {
+		const { email, role } = data;
+
+		const result = await userCollection.updateOne(
+			{ email },
+			{ $set: { role } },
+		);
+
+		if (result.matchedCount === 0) {
+			throw new DBError(
+				"При обновлении роли произошло ошибка",
+				HTTP_STATUSES.BAD_REQUEST_400,
+			);
+		}
+	},
+
 	async getAllUsers() {
 		const allUsers = await userCollection.find({}).toArray();
-
 		return allUsers;
 	},
 };

@@ -4,7 +4,7 @@ import {
 	loginValidation,
 	registerValidation,
 } from "../validations";
-import { handleValidationErrors } from "../midlewares";
+import { checkAuth, handleValidationErrors } from "../midlewares";
 import * as userController from "../controllers/userController";
 import { getErrorSwaggerDoc } from "../assets/getErrorSwaggerDoc";
 import { BodyLoginModelSwaggerDoc } from "../models/auth/BodyLoginModel";
@@ -94,6 +94,42 @@ export const registerSwaggerDoc = {
 			},
 		},
 	},
+
+	"/auth/role": {
+		patch: {
+			tags: ["Авторизация"],
+			summary: "Установить роль для пользователя",
+			security: [{ bearerAuth: [] }],
+			requestBody: {
+				content: {
+					"application/json": {
+						schema: {
+							type: "object",
+							properties: {
+								email: {
+									type: "string",
+									default: "your_email@yandex.ru",
+									description: "Почта пользователя",
+								},
+								role: {
+									type: "admin | user",
+									default: "user",
+									description: "Роль пользователя",
+								},
+							},
+						},
+					},
+				},
+			},
+			responses: {
+				204: {
+					description: "Пользователь удален",
+				},
+				error: getErrorSwaggerDoc("Ошибка удаления пользователя"),
+			},
+		},
+	},
+
 	"/auth/getAllUsers": {
 		get: {
 			tags: ["Авторизация"],
@@ -131,14 +167,21 @@ export const getAuthRouter = () => {
 		handleValidationErrors,
 		userController.login,
 	);
-
 	router.delete(
 		"/deleteUser",
+		checkAuth,
 		isEmailValid,
 		handleValidationErrors,
 		userController.deleteUser,
 	);
 
+	router.patch(
+		"/role",
+		checkAuth,
+		isEmailValid,
+		handleValidationErrors,
+		userController.setRole,
+	);
 	router.get("/getAllUsers", userController.getAllUsers);
 
 	return router;
