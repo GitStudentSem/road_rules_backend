@@ -5,6 +5,11 @@ import type { DeleteQuestionBody } from "../models/ticketEditor/DeleteQuestionBo
 import { colors, resetStyle, styles } from "../assets/logStyles";
 import { crc32 } from "crc";
 import type { EditQuestionBody } from "../models/ticketEditor/EditQuestionBody";
+import fs from "node:fs/promises";
+import fsSync from "node:fs";
+import path from "node:path";
+import { DBError } from "../controllers/DBError";
+import { HTTP_STATUSES } from "../utils";
 
 const calculateSizeInKB = (arrayBuffer: ArrayBuffer) => {
 	const bytes = arrayBuffer.byteLength;
@@ -12,17 +17,54 @@ const calculateSizeInKB = (arrayBuffer: ArrayBuffer) => {
 	return kilobytes;
 };
 
-const imageToBase64 = async ({
+const writeImageToDisk = (data: {
+	ticketId: string;
+	questionId: string;
+	processedImage: Buffer;
+}) => {
+	const { ticketId, questionId, processedImage } = data;
+	const ticketDirPath = `ticketsImages/${ticketId}`;
+	const filePath = path.join(ticketDirPath, `${questionId}.jpg`);
+
+	try {
+		if (!fsSync.existsSync(ticketDirPath)) {
+			fs.mkdir(ticketDirPath, { recursive: true });
+		}
+		fs.writeFile(filePath, processedImage, "binary");
+		return filePath;
+	} catch (error) {
+		if (error) {
+			throw new DBError(
+				"Не удолось сохранить изображение",
+				HTTP_STATUSES.BAD_REQUEST_400,
+			);
+		}
+	}
+};
+
+const saveImage = async ({
 	img,
+	ticketId,
+	questionId,
 	imageInDB,
 	DBImageOriginalHash,
 }: {
 	img?: ArrayBuffer;
+	ticketId: string;
+	questionId: string;
 	imageInDB?: string;
 	DBImageOriginalHash?: string;
 }) => {
-	// Для сравнения контрольных сумм используй crc64
-	if (!img) return { img: "", imageOriginalHash: "", imagePrcessedHash: "" };
+	if (!img) {
+		console.log("img", img);
+		const ticketDirPath = `ticketsImages/${ticketId}`;
+		const filePath = path.join(ticketDirPath, `${questionId}.jpg`);
+		if (fsSync.existsSync(filePath)) {
+			fs.unlink(filePath);
+		}
+
+		return { img: "", imageOriginalHash: "", imagePrcessedHash: "" };
+	}
 
 	const imageSizeBefore = calculateSizeInKB(img);
 
@@ -38,6 +80,8 @@ const imageToBase64 = async ({
 			imagePrcessedHash,
 		};
 	}
+
+	const filePath = writeImageToDisk({ ticketId, questionId, processedImage });
 
 	const imageSizeAfter = calculateSizeInKB(processedImage);
 
@@ -59,10 +103,7 @@ const imageToBase64 = async ({
 	);
 	console.log(`${colors.blue}======================${resetStyle}`);
 
-	const imageInBase64 = `data:image/jpeg;base64,${processedImage.toString(
-		"base64",
-	)}`;
-	return { img: imageInBase64, imageOriginalHash, imagePrcessedHash };
+	return { img: filePath || "", imageOriginalHash, imagePrcessedHash };
 };
 
 export const ticketEditorService = {
@@ -99,8 +140,8 @@ export const ticketEditorService = {
 	async createQuestion(data: { userId: string } & CreateQuestionBody) {
 		const { img, ticketId, question, help, correctAnswer, answers, userId } =
 			data;
-		const imageInBase64 = await imageToBase64({ img });
 		const questionId = Number(new Date()).toString();
+		const savedImageInfo = await saveImage({ img, ticketId, questionId });
 
 		const answersWithId = answers.map((answer, i) => {
 			const answerId = Number(new Date()).toString() + i;
@@ -108,7 +149,7 @@ export const ticketEditorService = {
 		});
 
 		await ticketEditorRepository.createQuestion({
-			imgInfo: imageInBase64,
+			imgInfo: savedImageInfo,
 			questionId,
 			ticketId,
 			question,
@@ -135,8 +176,10 @@ export const ticketEditorService = {
 			userId,
 		});
 		const { imgInfo } = questionInfo;
-		const imageInBase64 = await imageToBase64({
+		const savedImageInfo = await saveImage({
 			img,
+			ticketId,
+			questionId,
 			imageInDB: imgInfo.img,
 			DBImageOriginalHash: imgInfo.imageOriginalHash,
 		});
@@ -147,7 +190,7 @@ export const ticketEditorService = {
 		});
 
 		await ticketEditorRepository.editQuestion({
-			imgInfo: imageInBase64,
+			imgInfo: savedImageInfo,
 			questionId,
 			ticketId,
 			question,
