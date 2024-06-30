@@ -47,7 +47,7 @@ export const getQuestionsInTicket = async (
 	}
 };
 
-export const addQuestion = async (
+export const createQuestion = async (
 	req: RequestWithBody<CreateQuestionBody>,
 	res: Response<ErrorType>,
 ) => {
@@ -55,7 +55,7 @@ export const addQuestion = async (
 		const img = req.file?.buffer;
 		const { question, help, answers, ticketId, correctAnswer } = req.body;
 
-		await ticketEditorService.addQuestion({
+		await ticketEditorService.createQuestion({
 			img,
 			ticketId,
 			question,

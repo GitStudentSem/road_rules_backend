@@ -96,7 +96,7 @@ export const ticketEditorService = {
 		return questionData;
 	},
 
-	async addQuestion(data: { userId: string } & CreateQuestionBody) {
+	async createQuestion(data: { userId: string } & CreateQuestionBody) {
 		const { img, ticketId, question, help, correctAnswer, answers, userId } =
 			data;
 		const imageInBase64 = await imageToBase64({ img });
@@ -107,7 +107,7 @@ export const ticketEditorService = {
 			return { answerText: answer, isCorrect: i === correctAnswer, answerId };
 		});
 
-		await ticketEditorRepository.addQuestion({
+		await ticketEditorRepository.createQuestion({
 			imgInfo: imageInBase64,
 			questionId,
 			ticketId,

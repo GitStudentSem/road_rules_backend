@@ -196,7 +196,7 @@ export const ticketEditorRouter = () => {
 		upload.single("img"),
 		addQuestionValidation,
 		handleValidationErrors,
-		ticketEditorController.addQuestion,
+		ticketEditorController.createQuestion,
 	);
 
 	router.delete(

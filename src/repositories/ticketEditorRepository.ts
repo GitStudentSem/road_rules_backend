@@ -54,7 +54,7 @@ export const ticketEditorRepository = {
 		await ticketCollection.insertOne({ createdAt, ticketId, questions: [] });
 	},
 
-	async addQuestion(data: CreateQuestion) {
+	async createQuestion(data: CreateQuestion) {
 		const { imgInfo, questionId, ticketId, question, help, answers, userId } =
 			data;
 		const user = await isUserExist(userId);
