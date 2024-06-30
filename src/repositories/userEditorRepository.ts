@@ -2,7 +2,7 @@ import { DBError } from "../controllers/DBError";
 import { HTTP_STATUSES } from "../utils";
 import { userCollection } from "./db";
 
-export const isUserExist = async (userId: string) => {
+const isUserExist = async (userId: string) => {
 	const filter = { userId };
 	const user = await userCollection.findOne(filter);
 	if (!user) {
@@ -11,9 +11,20 @@ export const isUserExist = async (userId: string) => {
 	return user;
 };
 
+const checkAccessByRole = (role: string) => {
+	if (role === "user") {
+		throw new DBError(
+			"У вас нет прав доступа, для смены роли",
+			HTTP_STATUSES.BAD_REQUEST_400,
+		);
+	}
+};
+
 export const userEditorRepository = {
-	async getAllUsers() {
+	async getAllUsers(userId: string) {
 		const allUsers = await userCollection.find({}).toArray();
+		const user = await isUserExist(userId);
+		checkAccessByRole(user.role);
 		return allUsers;
 	},
 
@@ -26,16 +37,11 @@ export const userEditorRepository = {
 
 		const user = await isUserExist(userId);
 
+		checkAccessByRole(user.role);
+
 		if (user.role === "superadmin") {
 			throw new DBError(
 				"Вы не можете менять роль для супер администратора",
-				HTTP_STATUSES.BAD_REQUEST_400,
-			);
-		}
-
-		if (user.role === "user") {
-			throw new DBError(
-				"У вас нет прав доступа, для смены роли",
 				HTTP_STATUSES.BAD_REQUEST_400,
 			);
 		}
@@ -53,14 +59,16 @@ export const userEditorRepository = {
 		}
 	},
 
-	async appointExam(data: { isAppoint: boolean; email: string }) {
-		const { isAppoint, email } = data;
+	async appointExam(data: {
+		isAppoint: boolean;
+		email: string;
+		userId: string;
+	}) {
+		const { userId, isAppoint, email } = data;
 
-		const user = await userCollection.findOne({ email });
+		const user = await isUserExist(userId);
 
-		if (!user) {
-			throw new DBError("Пользователь не найден", HTTP_STATUSES.NOT_FOUND_404);
-		}
+		checkAccessByRole(user.role);
 
 		const update = {
 			$set: {

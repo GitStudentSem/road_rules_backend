@@ -66,16 +66,18 @@ const imageToBase64 = async ({
 };
 
 export const ticketEditorService = {
-	async createTicket() {
+	async createTicket(userId: string) {
 		const ticketId = Number(new Date()).toString();
 		const createdAt = Number(new Date());
-		await ticketEditorRepository.createTicket(ticketId, createdAt);
+		await ticketEditorRepository.createTicket({ ticketId, createdAt, userId });
 		return ticketId;
 	},
 
-	async getQuestionsInTicket(ticketId: string) {
-		const questions =
-			await ticketEditorRepository.getQuestionsInTicket(ticketId);
+	async getQuestionsInTicket(ticketId: string, userId: string) {
+		const questions = await ticketEditorRepository.getQuestionsInTicket(
+			ticketId,
+			userId,
+		);
 		const questionData = questions.map((question) => {
 			const answersWithoutId = question.answers.map((answerInfo) => {
 				return {
@@ -94,8 +96,9 @@ export const ticketEditorService = {
 		return questionData;
 	},
 
-	async addQuestion(data: CreateQuestionBody) {
-		const { img, ticketId, question, help, correctAnswer, answers } = data;
+	async addQuestion(data: { userId: string } & CreateQuestionBody) {
+		const { img, ticketId, question, help, correctAnswer, answers, userId } =
+			data;
 		const imageInBase64 = await imageToBase64({ img });
 		const questionId = Number(new Date()).toString();
 
@@ -111,10 +114,11 @@ export const ticketEditorService = {
 			question,
 			help,
 			answers: answersWithId,
+			userId,
 		});
 	},
 
-	async editQuestion(data: EditQuestionBody) {
+	async editQuestion(data: { userId: string } & EditQuestionBody) {
 		const {
 			img,
 			ticketId,
@@ -123,11 +127,13 @@ export const ticketEditorService = {
 			help,
 			correctAnswer,
 			answers,
+			userId,
 		} = data;
-		const questionInfo = await ticketEditorRepository.findQuestion(
+		const questionInfo = await ticketEditorRepository.findQuestion({
 			ticketId,
 			questionId,
-		);
+			userId,
+		});
 		const { imgInfo } = questionInfo;
 		const imageInBase64 = await imageToBase64({
 			img,
@@ -147,15 +153,21 @@ export const ticketEditorService = {
 			question,
 			help,
 			answers: answersWithId,
+			userId,
 		});
 	},
 
-	async deleteTicket(ticketId: string) {
-		await ticketEditorRepository.deleteTicket(ticketId);
+	async deleteTicket(ticketId: string, userId: string) {
+		await ticketEditorRepository.deleteTicket(ticketId, userId);
 	},
-	async deleteQuestion(data: DeleteQuestionBody) {
-		const { ticketId, questionId } = data;
 
-		await ticketEditorRepository.deleteQuestion(ticketId, questionId);
+	async deleteQuestion(data: { userId: string } & DeleteQuestionBody) {
+		const { ticketId, questionId, userId } = data;
+
+		await ticketEditorRepository.deleteQuestion({
+			ticketId,
+			questionId,
+			userId,
+		});
 	},
 };

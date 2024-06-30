@@ -45,6 +45,7 @@ export const userEditorSwaggerDoc = {
 		get: {
 			tags: ["Редактор пользователей"],
 			summary: "Получить всех пользователей",
+			security: [{ bearerAuth: [] }],
 			responses: {
 				200: {
 					description: "Все пользователи получены",
@@ -65,7 +66,7 @@ export const userEditorSwaggerDoc = {
 		post: {
 			tags: ["Редактор пользователей"],
 			summary: "Назначить экзамен для пользователя",
-			// security: [{ bearerAuth: [] }],
+			security: [{ bearerAuth: [] }],
 
 			requestBody: {
 				content: {
@@ -86,7 +87,7 @@ export const userEditorSwaggerDoc = {
 
 export const userEditorRouter = () => {
 	const router = express.Router();
-	router.get("/getAllUsers", userEditorController.getAllUsers);
+	router.get("/getAllUsers", checkAuth, userEditorController.getAllUsers);
 	router.patch(
 		"/role",
 		checkAuth,
@@ -96,6 +97,7 @@ export const userEditorRouter = () => {
 	);
 	router.post(
 		"/appoint",
+		checkAuth,
 		appointExamValidation,
 		handleValidationErrors,
 		userEditorController.appointExam,

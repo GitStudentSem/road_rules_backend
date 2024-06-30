@@ -16,7 +16,7 @@ export const createTicket = async (
 	res: Response<{ ticketId: string } | ErrorType>,
 ) => {
 	try {
-		const ticketId = await ticketEditorService.createTicket();
+		const ticketId = await ticketEditorService.createTicket(req.userId || "");
 		res.json({ ticketId });
 	} catch (error) {
 		if (error instanceof DBError) {
@@ -32,7 +32,10 @@ export const getQuestionsInTicket = async (
 	res: Response<QuestionsViewModel[] | ErrorType>,
 ) => {
 	const { ticketId } = req.body;
-	const questions = await ticketEditorService.getQuestionsInTicket(ticketId);
+	const questions = await ticketEditorService.getQuestionsInTicket(
+		ticketId,
+		req.userId || "",
+	);
 	res.json(questions);
 };
 
@@ -51,6 +54,7 @@ export const addQuestion = async (
 			help,
 			correctAnswer: Number(correctAnswer),
 			answers,
+			userId: req.userId || "",
 		});
 
 		res.sendStatus(HTTP_STATUSES.NO_CONTENT_204);
@@ -78,6 +82,7 @@ export const editQuestion = async (
 			help,
 			correctAnswer: Number(correctAnswer),
 			answers,
+			userId: req.userId || "",
 		});
 
 		res.sendStatus(HTTP_STATUSES.NO_CONTENT_204);
@@ -97,7 +102,7 @@ export const deleteTicket = async (
 	try {
 		const { ticketId } = req.body;
 
-		await ticketEditorService.deleteTicket(ticketId);
+		await ticketEditorService.deleteTicket(ticketId, req.userId || "");
 
 		res.sendStatus(HTTP_STATUSES.NO_CONTENT_204);
 	} catch (error) {
@@ -118,6 +123,7 @@ export const deleteQuestion = async (
 		await ticketEditorService.deleteQuestion({
 			ticketId,
 			questionId,
+			userId: req.userId || "",
 		});
 
 		res.sendStatus(HTTP_STATUSES.NO_CONTENT_204);

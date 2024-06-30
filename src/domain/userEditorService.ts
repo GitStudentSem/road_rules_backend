@@ -3,8 +3,8 @@ import { DBError } from "../controllers/DBError";
 import { HTTP_STATUSES } from "../utils";
 
 export const userEditorService = {
-	async getAllUsers() {
-		const allUsers = await userEditorRepository.getAllUsers();
+	async getAllUsers(userId: string) {
+		const allUsers = await userEditorRepository.getAllUsers(userId);
 		const filterdUsersData = allUsers.map((user) => {
 			return {
 				email: user.email,
@@ -35,7 +35,11 @@ export const userEditorService = {
 		await userEditorRepository.setRole({ userId, email, role });
 	},
 
-	async appointExam(data: { isAppoint: boolean; email: string }) {
+	async appointExam(data: {
+		isAppoint: boolean;
+		email: string;
+		userId: string;
+	}) {
 		await userEditorRepository.appointExam(data);
 	},
 };

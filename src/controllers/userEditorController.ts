@@ -12,7 +12,7 @@ export const getAllUsers = async (
 	res: Response<{ allUsers: GetAllUsersViewModel[] } | ErrorType>,
 ) => {
 	try {
-		const allUsers = await userEditorService.getAllUsers();
+		const allUsers = await userEditorService.getAllUsers(req.userId || "");
 
 		res.status(HTTP_STATUSES.OK_200).json({ allUsers });
 	} catch (error) {
@@ -59,6 +59,7 @@ export const appointExam = async (
 		await userEditorService.appointExam({
 			isAppoint: req.body.isAppoint,
 			email: req.body.email,
+			userId: req.userId || "",
 		});
 
 		res.sendStatus(HTTP_STATUSES.NO_CONTENT_204);

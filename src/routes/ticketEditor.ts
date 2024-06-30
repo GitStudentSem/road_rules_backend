@@ -1,7 +1,7 @@
 import express from "express";
 import * as ticketEditorController from "../controllers/ticketEditorController";
 import { addQuestionValidation } from "../validations";
-import { handleValidationErrors } from "../midlewares";
+import { checkAuth, handleValidationErrors } from "../midlewares";
 import { getErrorSwaggerDoc } from "../assets/getErrorSwaggerDoc";
 import multer from "multer";
 import { CreateQuestionBodySwaggerDoc } from "../models/ticketEditor/CreateQuestionBody";
@@ -15,7 +15,7 @@ export const ticketEditorSwaggerDoc = {
 		get: {
 			tags: ["Редактор билетов"],
 			summary: "Создать пустой билет",
-			// security: [{ bearerAuth: [] }],
+			security: [{ bearerAuth: [] }],
 			responses: {
 				200: {
 					description: "Билет успешно создан",
@@ -41,7 +41,7 @@ export const ticketEditorSwaggerDoc = {
 		post: {
 			tags: ["Редактор билетов"],
 			summary: "Получить вопросы в билете",
-			// security: [{ bearerAuth: [] }],
+			security: [{ bearerAuth: [] }],
 			requestBody: {
 				content: {
 					"application/json": {
@@ -81,7 +81,7 @@ export const ticketEditorSwaggerDoc = {
 		post: {
 			tags: ["Редактор билетов"],
 			summary: "Добавить вопрос в билет",
-			// security: [{ bearerAuth: [] }],
+			security: [{ bearerAuth: [] }],
 			requestBody: {
 				content: {
 					"multipart/form-data": {
@@ -108,7 +108,7 @@ export const ticketEditorSwaggerDoc = {
 		patch: {
 			tags: ["Редактор билетов"],
 			summary: "Изменить существующий вопрос",
-			// security: [{ bearerAuth: [] }],
+			security: [{ bearerAuth: [] }],
 			requestBody: {
 				content: {
 					"multipart/form-data": {
@@ -135,7 +135,7 @@ export const ticketEditorSwaggerDoc = {
 		delete: {
 			tags: ["Редактор билетов"],
 			summary: "Удалить билет",
-			// security: [{ bearerAuth: [] }],
+			security: [{ bearerAuth: [] }],
 			requestBody: {
 				content: {
 					"application/json": {
@@ -165,7 +165,7 @@ export const ticketEditorSwaggerDoc = {
 		delete: {
 			tags: ["Редактор билетов"],
 			summary: "Удалить вопрос из билета",
-			// security: [{ bearerAuth: [] }],
+			security: [{ bearerAuth: [] }],
 			requestBody: {
 				content: {
 					"application/json": { schema: DeleteQuestionlSwaggerDoc },
@@ -184,20 +184,34 @@ export const ticketEditorSwaggerDoc = {
 export const ticketEditorRouter = () => {
 	const router = express.Router();
 
-	router.get("/createTicket", ticketEditorController.createTicket);
-	router.post("/getQuestions", ticketEditorController.getQuestionsInTicket);
+	router.get("/createTicket", checkAuth, ticketEditorController.createTicket);
+	router.post(
+		"/getQuestions",
+		checkAuth,
+		ticketEditorController.getQuestionsInTicket,
+	);
 	router.post(
 		"/createQuestion",
+		checkAuth,
 		upload.single("img"),
 		addQuestionValidation,
 		handleValidationErrors,
 		ticketEditorController.addQuestion,
 	);
 
-	router.delete("/deleteQuestion", ticketEditorController.deleteQuestion);
-	router.delete("/deleteTicket", ticketEditorController.deleteTicket);
+	router.delete(
+		"/deleteQuestion",
+		checkAuth,
+		ticketEditorController.deleteQuestion,
+	);
+	router.delete(
+		"/deleteTicket",
+		checkAuth,
+		ticketEditorController.deleteTicket,
+	);
 	router.patch(
 		"/editQuestion",
+		checkAuth,
 		upload.single("img"),
 		addQuestionValidation,
 		handleValidationErrors,
