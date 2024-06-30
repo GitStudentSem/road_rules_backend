@@ -40,7 +40,6 @@ const uploadFile = async (data: {
 	};
 
 	const result = await s3.upload(params).promise();
-	console.log("result", result);
 	return result.Location;
 };
 
