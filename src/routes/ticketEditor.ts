@@ -1,5 +1,5 @@
 import express from "express";
-import * as editorController from "../controllers/ticketEditor";
+import * as ticketEditorController from "../controllers/ticketEditorController";
 import { addQuestionValidation } from "../validations";
 import { handleValidationErrors } from "../midlewares";
 import { getErrorSwaggerDoc } from "../assets/getErrorSwaggerDoc";
@@ -10,7 +10,7 @@ import { EditQuestionBodySwaggerDoc } from "../models/ticketEditor/EditQuestionB
 import { QuestionsViewModelSwaggerDoc } from "../models/ticketEditor/QuestionsViewModel";
 const upload = multer({ storage: multer.memoryStorage() });
 
-export const editorSwaggerDoc = {
+export const ticketEditorSwaggerDoc = {
 	"/ticketEditor/createTicket": {
 		get: {
 			tags: ["Редактор билетов"],
@@ -181,27 +181,27 @@ export const editorSwaggerDoc = {
 	},
 };
 
-export const editorRouter = () => {
+export const ticketEditorRouter = () => {
 	const router = express.Router();
 
-	router.get("/createTicket", editorController.createTicket);
-	router.post("/getQuestions", editorController.getQuestionsInTicket);
+	router.get("/createTicket", ticketEditorController.createTicket);
+	router.post("/getQuestions", ticketEditorController.getQuestionsInTicket);
 	router.post(
 		"/createQuestion",
 		upload.single("img"),
 		addQuestionValidation,
 		handleValidationErrors,
-		editorController.addQuestion,
+		ticketEditorController.addQuestion,
 	);
 
-	router.delete("/deleteQuestion", editorController.deleteQuestion);
-	router.delete("/deleteTicket", editorController.deleteTicket);
+	router.delete("/deleteQuestion", ticketEditorController.deleteQuestion);
+	router.delete("/deleteTicket", ticketEditorController.deleteTicket);
 	router.patch(
 		"/editQuestion",
 		upload.single("img"),
 		addQuestionValidation,
 		handleValidationErrors,
-		editorController.editQuestion,
+		ticketEditorController.editQuestion,
 	);
 
 	return router;

@@ -5,7 +5,7 @@ import type { ErrorType, RequestWithBody } from "../types";
 import { HTTP_STATUSES } from "../utils";
 import { DBError } from "./DBError";
 
-import { editorService } from "../domain/ticketEditorService";
+import { ticketEditorService } from "../domain/ticketEditorService";
 import type { CreateQuestionBody } from "../models/ticketEditor/CreateQuestionBody";
 import type { DeleteQuestionBody } from "../models/ticketEditor/DeleteQuestionBody";
 import type { EditQuestionBody } from "../models/ticketEditor/EditQuestionBody";
@@ -16,7 +16,7 @@ export const createTicket = async (
 	res: Response<{ ticketId: string } | ErrorType>,
 ) => {
 	try {
-		const ticketId = await editorService.createTicket();
+		const ticketId = await ticketEditorService.createTicket();
 		res.json({ ticketId });
 	} catch (error) {
 		if (error instanceof DBError) {
@@ -32,7 +32,7 @@ export const getQuestionsInTicket = async (
 	res: Response<QuestionsViewModel[] | ErrorType>,
 ) => {
 	const { ticketId } = req.body;
-	const questions = await editorService.getQuestionsInTicket(ticketId);
+	const questions = await ticketEditorService.getQuestionsInTicket(ticketId);
 	res.json(questions);
 };
 
@@ -44,7 +44,7 @@ export const addQuestion = async (
 		const img = req.file?.buffer;
 		const { question, help, answers, ticketId, correctAnswer } = req.body;
 
-		await editorService.addQuestion({
+		await ticketEditorService.addQuestion({
 			img,
 			ticketId,
 			question,
@@ -70,7 +70,7 @@ export const editQuestion = async (
 		const img = req.file?.buffer;
 		const { question, help, answers, ticketId, questionId, correctAnswer } =
 			req.body;
-		await editorService.editQuestion({
+		await ticketEditorService.editQuestion({
 			img,
 			ticketId,
 			questionId,
@@ -97,7 +97,7 @@ export const deleteTicket = async (
 	try {
 		const { ticketId } = req.body;
 
-		await editorService.deleteTicket(ticketId);
+		await ticketEditorService.deleteTicket(ticketId);
 
 		res.sendStatus(HTTP_STATUSES.NO_CONTENT_204);
 	} catch (error) {
@@ -115,7 +115,7 @@ export const deleteQuestion = async (
 	try {
 		const { ticketId, questionId } = req.body;
 
-		await editorService.deleteQuestion({
+		await ticketEditorService.deleteQuestion({
 			ticketId,
 			questionId,
 		});

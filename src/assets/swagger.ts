@@ -3,7 +3,7 @@ import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { version } from "../../package.json";
 import { registerSwaggerDoc } from "../routes/auth";
-import { editorSwaggerDoc } from "../routes/ticketEditor";
+import { ticketEditorSwaggerDoc } from "../routes/ticketEditor";
 import { examSwaggerDoc } from "../routes/exam";
 import { ticketsSwaggerDoc } from "../routes/tickets";
 
@@ -36,12 +36,13 @@ const options: swaggerJSDoc.Options = {
 			"/auth/getAllUsers": registerSwaggerDoc["/auth/getAllUsers"],
 			"/auth/role": registerSwaggerDoc["/auth/role"],
 
-			"/editor/createTicket": editorSwaggerDoc["/editor/createTicket"],
-			"/editor/getQuestions": editorSwaggerDoc["/editor/getQuestions"],
-			"/editor/addQuestion": editorSwaggerDoc["/editor/addQuestion"],
-			"/editor/editQuestion": editorSwaggerDoc["/editor/editQuestion"],
-			"/editor/deleteTicket": editorSwaggerDoc["/editor/deleteTicket"],
-			"/editor/deleteQuestion": editorSwaggerDoc["/editor/deleteQuestion"],
+			"/editor/createTicket": ticketEditorSwaggerDoc["/editor/createTicket"],
+			"/editor/getQuestions": ticketEditorSwaggerDoc["/editor/getQuestions"],
+			"/editor/addQuestion": ticketEditorSwaggerDoc["/editor/addQuestion"],
+			"/editor/editQuestion": ticketEditorSwaggerDoc["/editor/editQuestion"],
+			"/editor/deleteTicket": ticketEditorSwaggerDoc["/editor/deleteTicket"],
+			"/editor/deleteQuestion":
+				ticketEditorSwaggerDoc["/editor/deleteQuestion"],
 
 			"/exam": examSwaggerDoc["/exam"],
 			"/exam/training": examSwaggerDoc["/exam/training"],

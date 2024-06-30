@@ -65,7 +65,7 @@ const imageToBase64 = async ({
 	return { img: imageInBase64, imageOriginalHash, imagePrcessedHash };
 };
 
-export const ticketEditorService = {
+export const editorService = {
 	async createTicket() {
 		const ticketId = Number(new Date()).toString();
 		const createdAt = Number(new Date());

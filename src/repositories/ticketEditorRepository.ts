@@ -26,7 +26,7 @@ const findTicket = async (ticketId: string) => {
 	return ticket;
 };
 
-export const editorRepository = {
+export const ticketEditorRepository = {
 	async createTicket(ticketId: string, createdAt: number) {
 		await ticketCollection.insertOne({ createdAt, ticketId, questions: [] });
 	},
