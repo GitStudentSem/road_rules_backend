@@ -28,7 +28,8 @@ const writeImageToDisk = (data: {
 
 	try {
 		if (!fsSync.existsSync(ticketDirPath)) {
-			fs.mkdir(ticketDirPath, { recursive: true });
+			console.log("нет диреторр");
+			fsSync.mkdirSync(ticketDirPath, { recursive: true });
 		}
 		fs.writeFile(filePath, processedImage, "binary");
 		return filePath;
@@ -56,7 +57,6 @@ const saveImage = async ({
 	DBImageOriginalHash?: string;
 }) => {
 	if (!img) {
-		console.log("img", img);
 		const ticketDirPath = `ticketsImages/${ticketId}`;
 		const filePath = path.join(ticketDirPath, `${questionId}.jpg`);
 		if (fsSync.existsSync(filePath)) {
@@ -67,7 +67,7 @@ const saveImage = async ({
 	}
 
 	const imageSizeBefore = calculateSizeInKB(img);
-
+	//
 	const processedImage = await sharp(img).jpeg().toBuffer();
 
 	const imageOriginalHash = crc32(img).toString(16);
