@@ -74,10 +74,27 @@ export const authRepository = {
 	},
 
 	async setRole(data: {
+		userId: string;
 		email: string;
 		role: "user" | "admin";
 	}) {
-		const { email, role } = data;
+		const { userId, email, role } = data;
+
+		const user = await isUserExist(userId);
+
+		if (user.role === "superadmin") {
+			throw new DBError(
+				"Вы не можете менять роль для супер администратора",
+				HTTP_STATUSES.BAD_REQUEST_400,
+			);
+		}
+
+		if (user.role === "user") {
+			throw new DBError(
+				"У вас нет прав доступа, для смены роли",
+				HTTP_STATUSES.BAD_REQUEST_400,
+			);
+		}
 
 		const result = await userCollection.updateOne(
 			{ email },
