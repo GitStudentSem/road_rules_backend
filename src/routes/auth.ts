@@ -105,7 +105,9 @@ export const registerSwaggerDoc = {
 
 export const getAuthRouter = () => {
 	const router = express.Router();
-
+	router.get("/", (req, res) => {
+		res.send("Start page");
+	});
 	router.post(
 		"/register",
 		registerValidation,
