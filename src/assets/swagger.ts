@@ -3,7 +3,7 @@ import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { version } from "../../package.json";
 import { registerSwaggerDoc } from "../routes/auth";
-import { editorSwaggerDoc } from "../routes/editor";
+import { editorSwaggerDoc } from "../routes/ticketEditor";
 import { examSwaggerDoc } from "../routes/exam";
 import { ticketsSwaggerDoc } from "../routes/tickets";
 

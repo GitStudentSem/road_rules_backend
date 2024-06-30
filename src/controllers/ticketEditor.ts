@@ -5,11 +5,11 @@ import type { ErrorType, RequestWithBody } from "../types";
 import { HTTP_STATUSES } from "../utils";
 import { DBError } from "./DBError";
 
-import { editorService } from "../domain/editorService";
-import type { CreateQuestionBody } from "../models/editor/CreateQuestionBody";
-import type { DeleteQuestionBody } from "../models/editor/DeleteQuestionBody";
-import type { EditQuestionBody } from "../models/editor/EditQuestionBody";
-import type { QuestionsViewModel } from "../models/editor/QuestionsViewModel";
+import { editorService } from "../domain/ticketEditorService";
+import type { CreateQuestionBody } from "../models/ticketEditor/CreateQuestionBody";
+import type { DeleteQuestionBody } from "../models/ticketEditor/DeleteQuestionBody";
+import type { EditQuestionBody } from "../models/ticketEditor/EditQuestionBody";
+import type { QuestionsViewModel } from "../models/ticketEditor/QuestionsViewModel";
 
 export const createTicket = async (
 	req: Request,

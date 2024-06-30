@@ -1,5 +1,5 @@
 import { DBError } from "../controllers/DBError";
-import type { CreateQuestionDBModel } from "../models/editor/CreateQuestionDBModel";
+import type { CreateQuestionDBModel } from "../models/ticketEditor/CreateQuestionDBModel";
 import { HTTP_STATUSES } from "../utils";
 import { ticketCollection, userCollection } from "./db";
 

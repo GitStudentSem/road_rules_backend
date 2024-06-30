@@ -1,10 +1,10 @@
 import sharp from "sharp";
-import { editorRepository } from "../repositories/editorRepository";
-import type { CreateQuestionBody } from "../models/editor/CreateQuestionBody";
-import type { DeleteQuestionBody } from "../models/editor/DeleteQuestionBody";
+import { editorRepository } from "../repositories/ticketEditorRepository";
+import type { CreateQuestionBody } from "../models/ticketEditor/CreateQuestionBody";
+import type { DeleteQuestionBody } from "../models/ticketEditor/DeleteQuestionBody";
 import { colors, resetStyle, styles } from "../assets/logStyles";
 import { crc32 } from "crc";
-import type { EditQuestionBody } from "../models/editor/EditQuestionBody";
+import type { EditQuestionBody } from "../models/ticketEditor/EditQuestionBody";
 
 const calculateSizeInKB = (arrayBuffer: ArrayBuffer) => {
 	const bytes = arrayBuffer.byteLength;

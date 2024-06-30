@@ -1,17 +1,17 @@
 import express from "express";
-import * as editorController from "../controllers/editor";
+import * as editorController from "../controllers/ticketEditor";
 import { addQuestionValidation } from "../validations";
 import { handleValidationErrors } from "../midlewares";
 import { getErrorSwaggerDoc } from "../assets/getErrorSwaggerDoc";
 import multer from "multer";
-import { CreateQuestionBodySwaggerDoc } from "../models/editor/CreateQuestionBody";
-import { DeleteQuestionlSwaggerDoc } from "../models/editor/DeleteQuestionBody";
-import { EditQuestionBodySwaggerDoc } from "../models/editor/EditQuestionBody";
-import { QuestionsViewModelSwaggerDoc } from "../models/editor/QuestionsViewModel";
+import { CreateQuestionBodySwaggerDoc } from "../models/ticketEditor/CreateQuestionBody";
+import { DeleteQuestionlSwaggerDoc } from "../models/ticketEditor/DeleteQuestionBody";
+import { EditQuestionBodySwaggerDoc } from "../models/ticketEditor/EditQuestionBody";
+import { QuestionsViewModelSwaggerDoc } from "../models/ticketEditor/QuestionsViewModel";
 const upload = multer({ storage: multer.memoryStorage() });
 
 export const editorSwaggerDoc = {
-	"/editor/createTicket": {
+	"/ticketEditor/createTicket": {
 		get: {
 			tags: ["Редактор билетов"],
 			summary: "Создать пустой билет",
@@ -37,7 +37,7 @@ export const editorSwaggerDoc = {
 			},
 		},
 	},
-	"/editor/getQuestions": {
+	"/ticketEditor/getQuestions": {
 		post: {
 			tags: ["Редактор билетов"],
 			summary: "Получить вопросы в билете",
@@ -77,7 +77,7 @@ export const editorSwaggerDoc = {
 		},
 	},
 
-	"/editor/addQuestion": {
+	"/ticketEditor/createQuestion": {
 		post: {
 			tags: ["Редактор билетов"],
 			summary: "Добавить вопрос в билет",
@@ -104,7 +104,7 @@ export const editorSwaggerDoc = {
 		},
 	},
 
-	"/editor/editQuestion": {
+	"/ticketEditor/editQuestion": {
 		patch: {
 			tags: ["Редактор билетов"],
 			summary: "Изменить существующий вопрос",
@@ -131,7 +131,7 @@ export const editorSwaggerDoc = {
 		},
 	},
 
-	"/editor/deleteTicket": {
+	"/ticketEditor/deleteTicket": {
 		delete: {
 			tags: ["Редактор билетов"],
 			summary: "Удалить билет",
@@ -161,7 +161,7 @@ export const editorSwaggerDoc = {
 		},
 	},
 
-	"/editor/deleteQuestion": {
+	"/ticketEditor/deleteQuestion": {
 		delete: {
 			tags: ["Редактор билетов"],
 			summary: "Удалить вопрос из билета",
@@ -187,7 +187,7 @@ export const editorRouter = () => {
 	router.get("/createTicket", editorController.createTicket);
 	router.post("/getQuestions", editorController.getQuestionsInTicket);
 	router.post(
-		"/addQuestion",
+		"/createQuestion",
 		upload.single("img"),
 		addQuestionValidation,
 		handleValidationErrors,
