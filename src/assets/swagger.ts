@@ -38,6 +38,7 @@ const options: swaggerJSDoc.Options = {
 			"/userEditor/getAllUsers":
 				userEditorSwaggerDoc["/userEditor/getAllUsers"],
 			"/userEditor/role": userEditorSwaggerDoc["/userEditor/role"],
+			"/userEditor/appoint": userEditorSwaggerDoc["/userEditor/appoint"],
 
 			"/ticketEditor/createTicket":
 				ticketEditorSwaggerDoc["/ticketEditor/createTicket"],
@@ -54,7 +55,6 @@ const options: swaggerJSDoc.Options = {
 
 			"/exam": examSwaggerDoc["/exam"],
 			"/exam/training": examSwaggerDoc["/exam/training"],
-			"/exam/appoint": examSwaggerDoc["/exam/appoint"],
 
 			"/tickets": ticketsSwaggerDoc["/tickets"],
 			"/tickets/{ticketId}": ticketsSwaggerDoc["/tickets/{ticketId}"],

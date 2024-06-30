@@ -71,7 +71,4 @@ export const examService = {
 
 		return result;
 	},
-	async appointExam(data: { isAppoint: boolean; email: string }) {
-		const dataFromDB = await examRepository.appointExam(data);
-	},
 };

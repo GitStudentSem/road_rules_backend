@@ -52,4 +52,22 @@ export const userEditorRepository = {
 			);
 		}
 	},
+
+	async appointExam(data: { isAppoint: boolean; email: string }) {
+		const { isAppoint, email } = data;
+
+		const user = await userCollection.findOne({ email });
+
+		if (!user) {
+			throw new DBError("Пользователь не найден", HTTP_STATUSES.NOT_FOUND_404);
+		}
+
+		const update = {
+			$set: {
+				isAppointExam: isAppoint,
+			},
+		};
+
+		await userCollection.updateOne({ email }, update, { upsert: true });
+	},
 };

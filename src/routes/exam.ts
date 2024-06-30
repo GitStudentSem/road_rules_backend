@@ -1,13 +1,11 @@
 import express from "express";
-import { answerValidation, appointExamValidation } from "../validations";
+import { answerValidation } from "../validations";
 import { checkAuth, handleValidationErrors } from "../midlewares";
-
 import * as examController from "../controllers/examController";
 import { getErrorSwaggerDoc } from "../assets/getErrorSwaggerDoc";
 import { SendExamViewModelSwaggerDoc } from "../models/exam/SendExamViewModel";
 import { BodySendExamResultSwaggerDoc } from "../models/exam/BodySendExamResult";
 import { SendExamResultViewModelSwaggerDoc } from "../models/exam/SendExamResultViewModel";
-import { BodyAppointExamSwaggerDoc } from "../models/exam/BodyAppointExam";
 
 export const examSwaggerDoc = {
 	"/exam": {
@@ -78,27 +76,6 @@ export const examSwaggerDoc = {
 			},
 		},
 	},
-	"/exam/appoint": {
-		post: {
-			tags: ["Экзамен"],
-			summary: "Назначить экзамен для пользователя",
-			// security: [{ bearerAuth: [] }],
-
-			requestBody: {
-				content: {
-					"application/json": {
-						schema: BodyAppointExamSwaggerDoc,
-					},
-				},
-			},
-			responses: {
-				204: {
-					description: "Экзамен назначен",
-				},
-				error: getErrorSwaggerDoc("Ошибка назначения экзамена"),
-			},
-		},
-	},
 };
 
 export const getExamRouter = () => {
@@ -113,12 +90,7 @@ export const getExamRouter = () => {
 		handleValidationErrors,
 		examController.sendExamResult,
 	);
-	router.post(
-		"/appoint",
-		appointExamValidation,
-		handleValidationErrors,
-		examController.appointExam,
-	);
+
 	router.post(
 		"/training",
 		checkAuth,

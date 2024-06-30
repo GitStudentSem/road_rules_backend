@@ -1,9 +1,10 @@
 import express from "express";
 import * as userEditorController from "../controllers/userEditorController";
-import { isEmailValid } from "../validations";
+import { appointExamValidation, isEmailValid } from "../validations";
 import { checkAuth, handleValidationErrors } from "../midlewares";
 import { getErrorSwaggerDoc } from "../assets/getErrorSwaggerDoc";
 import { GetAllUsersViewModelSwaggerDoc } from "../models/auth/GetAllUsersViewModel";
+import { BodyAppointExamSwaggerDoc } from "../models/exam/BodyAppointExam";
 
 export const userEditorSwaggerDoc = {
 	"/userEditor/role": {
@@ -60,6 +61,27 @@ export const userEditorSwaggerDoc = {
 			},
 		},
 	},
+	"/userEditor/appoint": {
+		post: {
+			tags: ["Редактор пользователей"],
+			summary: "Назначить экзамен для пользователя",
+			// security: [{ bearerAuth: [] }],
+
+			requestBody: {
+				content: {
+					"application/json": {
+						schema: BodyAppointExamSwaggerDoc,
+					},
+				},
+			},
+			responses: {
+				204: {
+					description: "Экзамен назначен",
+				},
+				error: getErrorSwaggerDoc("Ошибка назначения экзамена"),
+			},
+		},
+	},
 };
 
 export const userEditorRouter = () => {
@@ -71,6 +93,12 @@ export const userEditorRouter = () => {
 		isEmailValid,
 		handleValidationErrors,
 		userEditorController.setRole,
+	);
+	router.post(
+		"/appoint",
+		appointExamValidation,
+		handleValidationErrors,
+		userEditorController.appointExam,
 	);
 	return router;
 };

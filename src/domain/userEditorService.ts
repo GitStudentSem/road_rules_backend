@@ -34,4 +34,8 @@ export const userEditorService = {
 
 		await userEditorRepository.setRole({ userId, email, role });
 	},
+
+	async appointExam(data: { isAppoint: boolean; email: string }) {
+		await userEditorRepository.appointExam(data);
+	},
 };
