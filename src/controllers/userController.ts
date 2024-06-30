@@ -1,5 +1,5 @@
 import { sendError } from "../assets/requestAssets";
-import type { Response } from "express";
+import type { Request, Response } from "express";
 import type { ErrorType, RequestWithBody } from "../types";
 import type { BodyRegisterModel } from "../models/auth/BodyRegisterModel";
 import type { UserRegisterViewModel } from "../models/auth/UserRegisterViewModel";
@@ -52,14 +52,9 @@ export const login = async (
 	}
 };
 
-export const deleteUser = async (
-	req: RequestWithBody<{ email: string }>,
-	res: Response<ErrorType>,
-) => {
+export const deleteUser = async (req: Request, res: Response<ErrorType>) => {
 	try {
-		const { email } = req.body;
-
-		await authService.deleteUser({ email });
+		await authService.deleteUser({ userId: req.userId || "" });
 
 		res.sendStatus(HTTP_STATUSES.NO_CONTENT_204);
 	} catch (error) {

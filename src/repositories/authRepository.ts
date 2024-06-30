@@ -68,8 +68,9 @@ export const authRepository = {
 		return user;
 	},
 
-	async deleteUser(data: { email: string }) {
-		const { email } = data;
-		await userCollection.deleteOne({ email });
+	async deleteUser(data: { userId: string }) {
+		const { userId } = data;
+		await isUserExist(userId);
+		await userCollection.deleteOne({ userId });
 	},
 };

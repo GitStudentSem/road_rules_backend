@@ -68,7 +68,7 @@ export const registerSwaggerDoc = {
 		delete: {
 			tags: ["Авторизация"],
 			summary: "Удалить пользователя по почте",
-			// security: [{ bearerAuth: [] }],
+			security: [{ bearerAuth: [] }],
 			requestBody: {
 				content: {
 					"application/json": {
@@ -110,13 +110,7 @@ export const getAuthRouter = () => {
 		handleValidationErrors,
 		userController.login,
 	);
-	router.delete(
-		"/deleteUser",
-		checkAuth,
-		isEmailValid,
-		handleValidationErrors,
-		userController.deleteUser,
-	);
+	router.delete("/deleteUser", checkAuth, userController.deleteUser);
 
 	return router;
 };

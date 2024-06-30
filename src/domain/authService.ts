@@ -59,9 +59,9 @@ export const authService = {
 		return { firstName, secondName, token, isAppointExam };
 	},
 
-	async deleteUser(data: { email: string }) {
-		const { email } = data;
+	async deleteUser(data: { userId: string }) {
+		const { userId } = data;
 
-		await authRepository.deleteUser({ email });
+		await authRepository.deleteUser({ userId });
 	},
 };
