@@ -5,11 +5,9 @@ import type { DeleteQuestionBody } from "../models/ticketEditor/DeleteQuestionBo
 import { colors, resetStyle, styles } from "../assets/logStyles";
 import { crc32 } from "crc";
 import type { EditQuestionBody } from "../models/ticketEditor/EditQuestionBody";
-import fs from "node:fs/promises";
-import fsSync from "node:fs";
-import path from "node:path";
 import { DBError } from "../controllers/DBError";
 import { HTTP_STATUSES } from "../utils";
+import AWS from "aws-sdk";
 
 const calculateSizeInKB = (arrayBuffer: ArrayBuffer) => {
 	const bytes = arrayBuffer.byteLength;
@@ -17,30 +15,45 @@ const calculateSizeInKB = (arrayBuffer: ArrayBuffer) => {
 	return kilobytes;
 };
 
-const writeImageToDisk = (data: {
+const s3 = new AWS.S3({
+	endpoint: "https://s3.timeweb.cloud",
+	accessKeyId: "JUBT30RXHBQE3133Y62J",
+	secretAccessKey: "Yea0YlbOIfRUUyE5M2e3KX1aPyReLsINtVlAtiqh",
+	// s3ForcePathStyle: true, // Включи это, если требуется
+	signatureVersion: "v4",
+});
+
+// Функция для загрузки файла
+const uploadFile = async (data: {
+	img: Buffer;
 	ticketId: string;
 	questionId: string;
-	processedImage: Buffer;
 }) => {
-	const { ticketId, questionId, processedImage } = data;
-	const ticketDirPath = `ticketsImages/${ticketId}`;
-	const filePath = path.join(ticketDirPath, `${questionId}.jpg`);
+	const { img, ticketId, questionId } = data;
+	const bucketName = "ea8b9dd7-1fb48044-a9a0-4288-bfcc-6c73da005f5c";
+	const key = `${ticketId}/${questionId}.jpg`;
 
-	try {
-		if (!fsSync.existsSync(ticketDirPath)) {
-			console.log("нет диреторр");
-			fsSync.mkdirSync(ticketDirPath, { recursive: true });
-		}
-		fs.writeFile(filePath, processedImage, "binary");
-		return filePath;
-	} catch (error) {
-		if (error) {
-			throw new DBError(
-				"Не удолось сохранить изображение",
-				HTTP_STATUSES.BAD_REQUEST_400,
-			);
-		}
-	}
+	const params = {
+		Bucket: bucketName,
+		Key: key,
+		Body: img,
+	};
+
+	const result = await s3.upload(params).promise();
+	console.log("result", result);
+	return result.Location;
+};
+
+const deleteImage = async (ticketId: string, questionId: string) => {
+	const bucketName = "ea8b9dd7-1fb48044-a9a0-4288-bfcc-6c73da005f5c";
+	const key = `${ticketId}/${questionId}.jpg`;
+
+	const params = {
+		Bucket: bucketName,
+		Key: key,
+	};
+
+	await s3.deleteObject(params).promise();
 };
 
 const saveImage = async ({
@@ -57,12 +70,7 @@ const saveImage = async ({
 	DBImageOriginalHash?: string;
 }) => {
 	if (!img) {
-		const ticketDirPath = `ticketsImages/${ticketId}`;
-		const filePath = path.join(ticketDirPath, `${questionId}.jpg`);
-		if (fsSync.existsSync(filePath)) {
-			fs.unlink(filePath);
-		}
-
+		await deleteImage(ticketId, questionId);
 		return { img: "", imageOriginalHash: "", imagePrcessedHash: "" };
 	}
 
@@ -81,7 +89,11 @@ const saveImage = async ({
 		};
 	}
 
-	const filePath = writeImageToDisk({ ticketId, questionId, processedImage });
+	const filePath = await uploadFile({
+		img: processedImage,
+		ticketId,
+		questionId,
+	});
 
 	const imageSizeAfter = calculateSizeInKB(processedImage);
 
