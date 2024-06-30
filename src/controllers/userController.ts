@@ -51,6 +51,24 @@ export const login = async (
 		sendError({ message: "Не удалось зарегистрироваться", error, res });
 	}
 };
+export const adminLogin = async (
+	req: RequestWithBody<BodyLoginModel>,
+	res: Response<UserLoginViewModel | ErrorType>,
+) => {
+	try {
+		const { email, password } = req.body;
+
+		const loginnedUser = await authService.adminLogin({ email, password });
+
+		res.status(HTTP_STATUSES.OK_200).json(loginnedUser);
+	} catch (error) {
+		if (error instanceof DBError) {
+			res.status(error.status).json({ message: error.message });
+			return;
+		}
+		sendError({ message: "Не удалось зарегистрироваться", error, res });
+	}
+};
 
 export const deleteUser = async (req: Request, res: Response<ErrorType>) => {
 	try {

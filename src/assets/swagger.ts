@@ -33,6 +33,7 @@ const options: swaggerJSDoc.Options = {
 		paths: {
 			"/auth/register": registerSwaggerDoc["/auth/register"],
 			"/auth/login": registerSwaggerDoc["/auth/login"],
+			"/auth/adminLogin": registerSwaggerDoc["/auth/adminLogin"],
 			"/auth/deleteUser": registerSwaggerDoc["/auth/deleteUser"],
 
 			"/userEditor/getAllUsers":
@@ -42,10 +43,10 @@ const options: swaggerJSDoc.Options = {
 
 			"/ticketEditor/createTicket":
 				ticketEditorSwaggerDoc["/ticketEditor/createTicket"],
+			"/ticketEditor/createQuestion":
+				ticketEditorSwaggerDoc["/ticketEditor/createQuestion"],
 			"/ticketEditor/getQuestions":
 				ticketEditorSwaggerDoc["/ticketEditor/getQuestions"],
-			"/ticketEditor/addQuestion":
-				ticketEditorSwaggerDoc["/ticketEditor/addQuestion"],
 			"/ticketEditor/editQuestion":
 				ticketEditorSwaggerDoc["/ticketEditor/editQuestion"],
 			"/ticketEditor/deleteTicket":

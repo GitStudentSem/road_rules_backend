@@ -63,6 +63,30 @@ export const registerSwaggerDoc = {
 			},
 		},
 	},
+	"/auth/adminLogin": {
+		post: {
+			tags: ["Авторизация"],
+			summary: "Логин администратора",
+			requestBody: {
+				content: {
+					"application/json": {
+						schema: BodyLoginModelSwaggerDoc,
+					},
+				},
+			},
+			responses: {
+				200: {
+					description: "Успешный логин",
+					content: {
+						"application/json": {
+							schema: UserLoginViewModelSwaggerDoc,
+						},
+					},
+				},
+				error: getErrorSwaggerDoc("Ошибка логина"),
+			},
+		},
+	},
 
 	"/auth/deleteUser": {
 		delete: {
@@ -93,6 +117,12 @@ export const getAuthRouter = () => {
 		loginValidation,
 		handleValidationErrors,
 		userController.login,
+	);
+	router.post(
+		"/adminLogin",
+		loginValidation,
+		handleValidationErrors,
+		userController.adminLogin,
 	);
 	router.delete("/deleteUser", checkAuth, userController.deleteUser);
 

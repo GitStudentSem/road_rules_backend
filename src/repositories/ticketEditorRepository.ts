@@ -38,10 +38,7 @@ const isUserExist = async (userId: string) => {
 
 const checkAccessByRole = (role: string) => {
 	if (role === "user") {
-		throw new DBError(
-			"У вас нет прав доступа, для смены роли",
-			HTTP_STATUSES.BAD_REQUEST_400,
-		);
+		throw new DBError("У вас нет прав доступа", HTTP_STATUSES.BAD_REQUEST_400);
 	}
 };
 

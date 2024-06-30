@@ -31,12 +31,20 @@ export const getQuestionsInTicket = async (
 	req: RequestWithBody<{ ticketId: string }>,
 	res: Response<QuestionsViewModel[] | ErrorType>,
 ) => {
-	const { ticketId } = req.body;
-	const questions = await ticketEditorService.getQuestionsInTicket(
-		ticketId,
-		req.userId || "",
-	);
-	res.json(questions);
+	try {
+		const { ticketId } = req.body;
+		const questions = await ticketEditorService.getQuestionsInTicket(
+			ticketId,
+			req.userId || "",
+		);
+		res.json(questions);
+	} catch (error) {
+		if (error instanceof DBError) {
+			res.status(error.status).json({ message: error.message });
+			return;
+		}
+		sendError({ message: "Не удалось добавить вопрос", error, res });
+	}
 };
 
 export const addQuestion = async (
