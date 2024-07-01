@@ -1,6 +1,6 @@
 import type { OpenAPIV3 } from "openapi-types";
 
-export const SendExamResultViewModelSwaggerDoc: OpenAPIV3.SchemaObject = {
+export const SendExamAnswerViewModelSwaggerDoc: OpenAPIV3.SchemaObject = {
 	type: "object",
 	properties: {
 		isCorrect: {
@@ -20,7 +20,7 @@ export const SendExamResultViewModelSwaggerDoc: OpenAPIV3.SchemaObject = {
 		},
 	},
 };
-export type SendExamResultViewModel = {
+export type SendExamAnswerViewModel = {
 	isCorrect: boolean;
 	correctAnswer: string;
 	help: string;

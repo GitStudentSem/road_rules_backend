@@ -29,6 +29,10 @@ const options: swaggerJSDoc.Options = {
 				url: "http://localhost:3333",
 				description: "Локальный сервер",
 			},
+			{
+				url: "http://road-rules-backend.webtm.ru",
+				description: "Продакшен сервер",
+			},
 		],
 		paths: {
 			"/auth/register": registerSwaggerDoc["/auth/register"],
@@ -56,6 +60,8 @@ const options: swaggerJSDoc.Options = {
 
 			"/exam": examSwaggerDoc["/exam"],
 			"/exam/training": examSwaggerDoc["/exam/training"],
+			"/exam/getResult": examSwaggerDoc["/exam/getResult"],
+			"/exam/getTrainingResult": examSwaggerDoc["/exam/getTrainingResult"],
 
 			"/tickets": ticketsSwaggerDoc["/tickets"],
 			"/tickets/{ticketId}": ticketsSwaggerDoc["/tickets/{ticketId}"],

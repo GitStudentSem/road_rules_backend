@@ -109,7 +109,7 @@ export const examRepository = {
 		return tickets;
 	},
 
-	async sendExamResult(data: {
+	async sendExamAnswer(data: {
 		userId: string;
 		ticketId: string;
 		questionId: string;
@@ -138,7 +138,7 @@ export const examRepository = {
 		return { help: question.help, correctAnswerId, isCorrect };
 	},
 
-	async sendTrainingExamResult(data: {
+	async sendTrainingExamAnswer(data: {
 		userId: string;
 		ticketId: string;
 		questionId: string;
@@ -165,5 +165,31 @@ export const examRepository = {
 		await userCollection.updateOne({ userId }, update, { upsert: true });
 
 		return { help: question.help, correctAnswerId, isCorrect };
+	},
+
+	async getExamResult(userId: string) {
+		const user = await isUserExist(userId);
+
+		const result = user.results.exam;
+
+		if (result) return result;
+
+		throw new DBError(
+			"Экзамен еще не был сдан, получить результаты невозможно",
+			HTTP_STATUSES.BAD_REQUEST_400,
+		);
+	},
+
+	async getTrainingExamResult(userId: string) {
+		const user = await isUserExist(userId);
+
+		const result = user.results.training_exam;
+
+		if (result) return result;
+
+		throw new DBError(
+			"Экзамен еще не был сдан, получить результаты невозможно",
+			HTTP_STATUSES.BAD_REQUEST_400,
+		);
 	},
 };

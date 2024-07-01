@@ -54,12 +54,7 @@ export const ticketEditorRepository = {
 		await ticketCollection.insertOne({ createdAt, ticketId, questions: [] });
 	},
 
-	async createQuestion(data: CreateQuestion) {
-		const { imgInfo, questionId, ticketId, question, help, answers, userId } =
-			data;
-		const user = await isUserExist(userId);
-		checkAccessByRole(user.role);
-
+	async checkMaxCountQuestions(ticketId: string) {
 		const ticket = await findTicket(ticketId);
 
 		if (ticket.questions.length >= 20) {
@@ -68,6 +63,13 @@ export const ticketEditorRepository = {
 				HTTP_STATUSES.BAD_REQUEST_400,
 			);
 		}
+	},
+
+	async createQuestion(data: CreateQuestion) {
+		const { imgInfo, questionId, ticketId, question, help, answers, userId } =
+			data;
+		const user = await isUserExist(userId);
+		checkAccessByRole(user.role);
 
 		await ticketCollection.updateOne(
 			{ ticketId },

@@ -1,6 +1,6 @@
 import type { OpenAPIV3 } from "openapi-types";
 
-export const BodySendExamResultSwaggerDoc: OpenAPIV3.SchemaObject = {
+export const BodySendExamAnswerSwaggerDoc: OpenAPIV3.SchemaObject = {
 	type: "object",
 	properties: {
 		ticketId: {
@@ -22,7 +22,7 @@ export const BodySendExamResultSwaggerDoc: OpenAPIV3.SchemaObject = {
 	required: ["answerId", "questionId", "ticketId"],
 };
 
-export type BodySendExamResult = {
+export type BodySendExamAnswer = {
 	ticketId: string;
 	questionId: string;
 	answerId: string;

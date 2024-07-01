@@ -1,11 +1,12 @@
 import express from "express";
 import { answerValidation } from "../validations";
 import { checkAuth, handleValidationErrors } from "../midlewares";
-import * as examController from "../controllers/examController";
+import { examController } from "../controllers/examController";
 import { getErrorSwaggerDoc } from "../assets/getErrorSwaggerDoc";
 import { SendExamViewModelSwaggerDoc } from "../models/exam/SendExamViewModel";
-import { BodySendExamResultSwaggerDoc } from "../models/exam/BodySendExamResult";
-import { SendExamResultViewModelSwaggerDoc } from "../models/exam/SendExamResultViewModel";
+import { BodySendExamAnswerSwaggerDoc } from "../models/exam/BodySendExamAnswer";
+import { SendExamAnswerViewModelSwaggerDoc } from "../models/exam/SendExamAnswerViewModel";
+import { GetExamResultViewModelSwaggerDoc } from "../models/exam/GetExamResult";
 
 export const examSwaggerDoc = {
 	"/exam": {
@@ -33,7 +34,7 @@ export const examSwaggerDoc = {
 			requestBody: {
 				content: {
 					"application/json": {
-						schema: BodySendExamResultSwaggerDoc,
+						schema: BodySendExamAnswerSwaggerDoc,
 					},
 				},
 			},
@@ -42,7 +43,7 @@ export const examSwaggerDoc = {
 					description: "Ответ успешно отправлен",
 					content: {
 						"application/json": {
-							schema: SendExamResultViewModelSwaggerDoc,
+							schema: SendExamAnswerViewModelSwaggerDoc,
 						},
 					},
 				},
@@ -50,6 +51,7 @@ export const examSwaggerDoc = {
 			},
 		},
 	},
+
 	"/exam/training": {
 		post: {
 			tags: ["Экзамен"],
@@ -59,7 +61,7 @@ export const examSwaggerDoc = {
 			requestBody: {
 				content: {
 					"application/json": {
-						schema: BodySendExamResultSwaggerDoc,
+						schema: BodySendExamAnswerSwaggerDoc,
 					},
 				},
 			},
@@ -68,11 +70,51 @@ export const examSwaggerDoc = {
 					description: "Ответ успешно отправлен",
 					content: {
 						"application/json": {
-							schema: SendExamResultViewModelSwaggerDoc,
+							schema: SendExamAnswerViewModelSwaggerDoc,
 						},
 					},
 				},
 				error: getErrorSwaggerDoc("Ошибка отправки ответа"),
+			},
+		},
+	},
+
+	"/exam/getResult": {
+		get: {
+			tags: ["Экзамен"],
+			summary: "Получить результаты экзамена",
+			security: [{ bearerAuth: [] }],
+
+			responses: {
+				200: {
+					description: "Результат успешно отправлен",
+					content: {
+						"application/json": {
+							schema: GetExamResultViewModelSwaggerDoc,
+						},
+					},
+				},
+				error: getErrorSwaggerDoc("Ошибка отправки результата"),
+			},
+		},
+	},
+
+	"/exam/getTrainingResult": {
+		get: {
+			tags: ["Экзамен"],
+			summary: "Получить результаты тренировочного экзамена",
+			security: [{ bearerAuth: [] }],
+
+			responses: {
+				200: {
+					description: "Результат успешно отправлен",
+					content: {
+						"application/json": {
+							schema: GetExamResultViewModelSwaggerDoc,
+						},
+					},
+				},
+				error: getErrorSwaggerDoc("Ошибка отправки результата"),
 			},
 		},
 	},
@@ -88,7 +130,7 @@ export const getExamRouter = () => {
 		checkAuth,
 		answerValidation,
 		handleValidationErrors,
-		examController.sendExamResult,
+		examController.sendExamAnswer,
 	);
 
 	router.post(
@@ -96,7 +138,14 @@ export const getExamRouter = () => {
 		checkAuth,
 		answerValidation,
 		handleValidationErrors,
-		examController.sendTrainingExamResult,
+		examController.sendTrainingExamAnswer,
+	);
+
+	router.get("/getResult", checkAuth, examController.getExamResult);
+	router.get(
+		"/getTrainingResult",
+		checkAuth,
+		examController.getTrainingExamResult,
 	);
 
 	return router;

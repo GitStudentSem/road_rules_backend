@@ -3,68 +3,102 @@ import type { Request, Response } from "express";
 import type { ErrorType, RequestWithBody } from "../types";
 
 import type { SendExamViewModel } from "../models/exam/SendExamViewModel";
-import type { SendExamResultViewModel } from "../models/exam/SendExamResultViewModel";
-import type { BodySendExamResult } from "../models/exam/BodySendExamResult";
+import type { SendExamAnswerViewModel } from "../models/exam/SendExamAnswerViewModel";
+import type { BodySendExamAnswer } from "../models/exam/BodySendExamAnswer";
 import { DBError } from "./DBError";
 import { examService } from "../domain/examService";
+import type { GetExamResult } from "../models/exam/GetExamResult";
 
-export const sendExam = async (
-	req: Request,
-	res: Response<SendExamViewModel[] | ErrorType>,
-) => {
-	try {
-		const exam = await examService.sendExam(req.userId || "");
+export const examController = {
+	async sendExam(req: Request, res: Response<SendExamViewModel[] | ErrorType>) {
+		try {
+			const exam = await examService.sendExam(req.userId || "");
 
-		res.json(exam);
-	} catch (error) {
-		if (error instanceof DBError) {
-			res.status(error.status).json({ message: error.message });
-			return;
+			res.json(exam);
+		} catch (error) {
+			if (error instanceof DBError) {
+				res.status(error.status).json({ message: error.message });
+				return;
+			}
+			sendError({ message: "Не удалось отправить билет", error, res });
 		}
-		sendError({ message: "Не удалось отправить билет", error, res });
-	}
-};
+	},
 
-export const sendExamResult = async (
-	req: RequestWithBody<BodySendExamResult>,
-	res: Response<SendExamResultViewModel | ErrorType>,
-) => {
-	try {
-		const result = await examService.sendExamResult({
-			userId: req.userId || "",
-			ticketId: req.body.ticketId,
-			questionId: req.body.questionId,
-			answerId: req.body.answerId,
-		});
+	async sendExamAnswer(
+		req: RequestWithBody<BodySendExamAnswer>,
+		res: Response<SendExamAnswerViewModel | ErrorType>,
+	) {
+		try {
+			const result = await examService.sendExamAnswer({
+				userId: req.userId || "",
+				ticketId: req.body.ticketId,
+				questionId: req.body.questionId,
+				answerId: req.body.answerId,
+			});
 
-		res.json(result);
-	} catch (error) {
-		if (error instanceof DBError) {
-			res.status(error.status).json({ message: error.message });
-			return;
+			res.json(result);
+		} catch (error) {
+			if (error instanceof DBError) {
+				res.status(error.status).json({ message: error.message });
+				return;
+			}
+			sendError({ message: "Не удалось отправить билет", error, res });
 		}
-		sendError({ message: "Не удалось отправить билет", error, res });
-	}
-};
+	},
 
-export const sendTrainingExamResult = async (
-	req: RequestWithBody<BodySendExamResult>,
-	res: Response<SendExamResultViewModel | ErrorType>,
-) => {
-	try {
-		const result = await examService.sendTrainingExamResult({
-			userId: req.userId || "",
-			ticketId: req.body.ticketId,
-			questionId: req.body.questionId,
-			answerId: req.body.answerId,
-		});
+	async sendTrainingExamAnswer(
+		req: RequestWithBody<BodySendExamAnswer>,
+		res: Response<SendExamAnswerViewModel | ErrorType>,
+	) {
+		try {
+			const result = await examService.sendTrainingExamAnswer({
+				userId: req.userId || "",
+				ticketId: req.body.ticketId,
+				questionId: req.body.questionId,
+				answerId: req.body.answerId,
+			});
 
-		res.json(result);
-	} catch (error) {
-		if (error instanceof DBError) {
-			res.status(error.status).json({ message: error.message });
-			return;
+			res.json(result);
+		} catch (error) {
+			if (error instanceof DBError) {
+				res.status(error.status).json({ message: error.message });
+				return;
+			}
+			sendError({ message: "Не удалось отправить билет", error, res });
 		}
-		sendError({ message: "Не удалось отправить билет", error, res });
-	}
+	},
+
+	async getExamResult(
+		req: Request,
+		res: Response<GetExamResult[] | ErrorType>,
+	) {
+		try {
+			const result = await examService.getExamResult(req.userId || "");
+
+			res.json(result);
+		} catch (error) {
+			if (error instanceof DBError) {
+				res.status(error.status).json({ message: error.message });
+				return;
+			}
+			sendError({ message: "Не удалось отправить билет", error, res });
+		}
+	},
+
+	async getTrainingExamResult(
+		req: Request,
+		res: Response<GetExamResult[] | ErrorType>,
+	) {
+		try {
+			const result = await examService.getTrainingExamResult(req.userId || "");
+
+			res.json(result);
+		} catch (error) {
+			if (error instanceof DBError) {
+				res.status(error.status).json({ message: error.message });
+				return;
+			}
+			sendError({ message: "Не удалось отправить билет", error, res });
+		}
+	},
 };

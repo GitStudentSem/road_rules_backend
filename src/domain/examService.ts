@@ -28,14 +28,14 @@ export const examService = {
 		return questionWithoutCorrectAnswers;
 	},
 
-	async sendExamResult(data: {
+	async sendExamAnswer(data: {
 		userId: string;
 		ticketId: string;
 		questionId: string;
 		answerId: string;
 	}) {
 		const { userId, ticketId, questionId, answerId } = data;
-		const dataFromDB = await examRepository.sendExamResult({
+		const dataFromDB = await examRepository.sendExamAnswer({
 			userId,
 			ticketId,
 			questionId,
@@ -50,14 +50,14 @@ export const examService = {
 		return result;
 	},
 
-	async sendTrainingExamResult(data: {
+	async sendTrainingExamAnswer(data: {
 		userId: string;
 		ticketId: string;
 		questionId: string;
 		answerId: string;
 	}) {
 		const { userId, ticketId, questionId, answerId } = data;
-		const dataFromDB = await examRepository.sendTrainingExamResult({
+		const dataFromDB = await examRepository.sendTrainingExamAnswer({
 			userId,
 			ticketId,
 			questionId,
@@ -69,6 +69,16 @@ export const examService = {
 			help: dataFromDB.isCorrect ? "" : dataFromDB.help,
 		};
 
+		return result;
+	},
+
+	async getExamResult(userId: string) {
+		const result = await examRepository.getExamResult(userId);
+		return result;
+	},
+
+	async getTrainingExamResult(userId: string) {
+		const result = await examRepository.getTrainingExamResult(userId);
 		return result;
 	},
 };
