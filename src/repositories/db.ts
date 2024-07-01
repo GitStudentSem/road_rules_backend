@@ -29,6 +29,7 @@ export const ticketCollection = client
 
 export const runDb = async () => {
 	try {
+		console.log("mongoUri", mongoUri);
 		await client.connect();
 
 		await client.db(DB_NAME).command({ ping: 1 });

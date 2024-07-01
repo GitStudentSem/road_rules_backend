@@ -6,6 +6,7 @@ import swaggerDocs from "./assets/swagger";
 const port = process.env.PORT || 3333;
 
 const startApp = async () => {
+	console.log("port", port);
 	await runDb();
 
 	app.listen(port, () => {
