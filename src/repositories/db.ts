@@ -7,6 +7,10 @@ require("dotenv").config();
 const URL_LOCAL_DB = "mongodb://0.0.0.0:27017";
 const mongoUri = process.env.URL_CLOUD_DB || URL_LOCAL_DB;
 
+console.log("process.env.URL_CLOUD_DB", process.env.URL_CLOUD_DB);
+console.log(" URL_LOCAL_DB", URL_LOCAL_DB);
+console.log("mongoUri", mongoUri);
+
 const client = new MongoClient(mongoUri, {
 	serverApi: {
 		version: ServerApiVersion.v1,
