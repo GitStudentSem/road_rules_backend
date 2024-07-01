@@ -4,12 +4,9 @@ import type { UserLoginDBModel } from "../models/auth/UserLoginDBModel";
 import type { TicketsDBModel } from "../models/ticketEditor/TicketsDBModel";
 require("dotenv").config();
 
-// const URL_LOCAL_DB = "mongodb://0.0.0.0:27017";
-// const mongoUri = process.env.URL_CLOUD_DB || URL_LOCAL_DB;
 const URL_LOCAL_DB = "mongodb://0.0.0.0:27017";
-const mongoUri = process.env.URL_CLOUD_DB;
+const mongoUri = process.env.URL_CLOUD_DB || URL_LOCAL_DB;
 
-//@ts-ignore
 const client = new MongoClient(mongoUri, {
 	serverApi: {
 		version: ServerApiVersion.v1,
