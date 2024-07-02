@@ -1,6 +1,6 @@
 import type { OpenAPIV3 } from "openapi-types";
 
-export const QuestionsViewModelSwaggerDoc: OpenAPIV3.SchemaObject = {
+export const QuestionViewModelSwaggerDoc: OpenAPIV3.SchemaObject = {
 	type: "object",
 	properties: {
 		img: {
@@ -45,7 +45,7 @@ export const QuestionsViewModelSwaggerDoc: OpenAPIV3.SchemaObject = {
 	},
 };
 
-export type QuestionsViewModel = {
+export type QuestionViewModel = {
 	img: string;
 	questionId: string;
 	question: string;

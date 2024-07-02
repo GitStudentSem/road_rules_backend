@@ -1,7 +1,7 @@
 import express from "express";
 import { answerValidation } from "../validations";
 import { checkAuth, handleValidationErrors } from "../midlewares";
-import * as ticketController from "../controllers/ticketsController";
+import { ticketsController } from "../controllers/ticketsController";
 import { getErrorSwaggerDoc } from "../assets/getErrorSwaggerDoc";
 import { SendTicketsViewModelSwaggerDoc } from "../models/tickets/SendTicketsViewModel";
 import { SendTicketViewModelSwaggerDoc } from "../models/tickets/SendTicketViewModel";
@@ -84,16 +84,16 @@ export const ticketsSwaggerDoc = {
 export const getTicketsRouter = () => {
 	const router = express.Router();
 
-	router.get("/", checkAuth, ticketController.sendTickets);
+	router.get("/", checkAuth, ticketsController.sendTickets);
 
-	router.get("/:ticketId", checkAuth, ticketController.sendTicket);
+	router.get("/:ticketId", checkAuth, ticketsController.sendTicket);
 
 	router.post(
 		"/",
 		checkAuth,
 		answerValidation,
 		handleValidationErrors,
-		ticketController.sendTicketResult,
+		ticketsController.sendTicketResult,
 	);
 
 	return router;

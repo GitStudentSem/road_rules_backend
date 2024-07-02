@@ -7,7 +7,7 @@ import multer from "multer";
 import { CreateQuestionBodySwaggerDoc } from "../models/ticketEditor/CreateQuestionBody";
 import { DeleteQuestionlSwaggerDoc } from "../models/ticketEditor/DeleteQuestionBody";
 import { EditQuestionBodySwaggerDoc } from "../models/ticketEditor/EditQuestionBody";
-import { QuestionsViewModelSwaggerDoc } from "../models/ticketEditor/QuestionsViewModel";
+import { QuestionViewModelSwaggerDoc } from "../models/ticketEditor/QuestionViewModel";
 const upload = multer({ storage: multer.memoryStorage() });
 
 export const ticketEditorSwaggerDoc = {
@@ -67,7 +67,7 @@ export const ticketEditorSwaggerDoc = {
 						"application/json": {
 							schema: {
 								type: "array",
-								items: QuestionsViewModelSwaggerDoc,
+								items: QuestionViewModelSwaggerDoc,
 							},
 						},
 					},

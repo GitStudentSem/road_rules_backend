@@ -9,7 +9,7 @@ import { ticketEditorService } from "../domain/ticketEditorService";
 import type { CreateQuestionBody } from "../models/ticketEditor/CreateQuestionBody";
 import type { DeleteQuestionBody } from "../models/ticketEditor/DeleteQuestionBody";
 import type { EditQuestionBody } from "../models/ticketEditor/EditQuestionBody";
-import type { QuestionsViewModel } from "../models/ticketEditor/QuestionsViewModel";
+import type { QuestionViewModel } from "../models/ticketEditor/QuestionViewModel";
 
 export const createTicket = async (
 	req: Request,
@@ -29,7 +29,7 @@ export const createTicket = async (
 
 export const getQuestionsInTicket = async (
 	req: RequestWithBody<{ ticketId: string }>,
-	res: Response<QuestionsViewModel[] | ErrorType>,
+	res: Response<QuestionViewModel[] | ErrorType>,
 ) => {
 	try {
 		const { ticketId } = req.body;

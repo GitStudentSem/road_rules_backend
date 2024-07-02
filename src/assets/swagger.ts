@@ -7,6 +7,7 @@ import { ticketEditorSwaggerDoc } from "../routes/ticketEditor";
 import { examSwaggerDoc } from "../routes/exam";
 import { ticketsSwaggerDoc } from "../routes/tickets";
 import { userEditorSwaggerDoc } from "../routes/userEditor";
+import { questionSwaggerDoc } from "../routes/question";
 
 const options: swaggerJSDoc.Options = {
 	swaggerDefinition: {
@@ -65,6 +66,8 @@ const options: swaggerJSDoc.Options = {
 
 			"/tickets": ticketsSwaggerDoc["/tickets"],
 			"/tickets/{ticketId}": ticketsSwaggerDoc["/tickets/{ticketId}"],
+
+			"/question": questionSwaggerDoc["/question"],
 		},
 	},
 	apis: ["./src/routes/*.ts", "./src/models/**/*.ts"],
