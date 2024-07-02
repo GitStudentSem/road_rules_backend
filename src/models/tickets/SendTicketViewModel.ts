@@ -8,6 +8,11 @@ export const SendTicketViewModelSwaggerDoc = {
 			description: "Вопрос билета",
 			default: "В каком направлении вам разреено движение?",
 		},
+		ticketId: {
+			type: "string",
+			description: "id билета",
+			default: defaultSwaggerValues.ticketId,
+		},
 		questionId: {
 			type: "string",
 			description: "id вопроса",
@@ -41,6 +46,7 @@ export const SendTicketViewModelSwaggerDoc = {
 };
 export type SendTicketViewModel = {
 	question: string;
+	ticketId: string;
 	questionId: string;
 	img: string;
 	answers: {

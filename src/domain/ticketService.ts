@@ -7,7 +7,7 @@ const removeCorrectAnswersFromTicket = (ticket: WithId<TicketsDBModel>) => {
 		return {
 			question: question.question,
 			img: question.imgInfo.img,
-
+			ticketId: ticket.ticketId,
 			questionId: question.questionId,
 			answers: question.answers.map((answer) => {
 				return { answerText: answer.answerText, answerId: answer.answerId };
@@ -26,7 +26,10 @@ export const ticketService = {
 	async sendTicket(userId: string, ticketId: string) {
 		const ticket = await ticketRepository.sendTicket(userId, ticketId);
 
-		return removeCorrectAnswersFromTicket(ticket);
+		return removeCorrectAnswersFromTicket({
+			...ticket,
+			ticketId: ticket.ticketId,
+		});
 	},
 
 	async sendTicketResult(data: {
