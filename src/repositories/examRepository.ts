@@ -94,8 +94,8 @@ export const examRepository = {
 		await removePreviousAnswers(userId);
 
 		const tickets: QuestionWithTicketId[] = [];
-		let i = 0;
-		while (i <= 20) {
+
+		for (let i = 1; i <= 20; i++) {
 			const ticketId = await getRandomTicketId();
 			const ticket = await isTicketExist(ticketId);
 			const randomIndex = randomInteger(0, ticket.questions.length - 1);
@@ -104,8 +104,8 @@ export const examRepository = {
 				continue;
 			}
 			tickets.push({ ...randomQuestion, ticketId });
-			i++;
 		}
+
 		return tickets;
 	},
 
