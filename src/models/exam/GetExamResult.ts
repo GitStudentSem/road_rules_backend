@@ -1,4 +1,5 @@
 import type { OpenAPIV3 } from "openapi-types";
+import { defaultSwaggerValues } from "../../assets/settings";
 
 export const GetExamResultViewModelSwaggerDoc: OpenAPIV3.SchemaObject = {
 	type: "object",
@@ -6,17 +7,17 @@ export const GetExamResultViewModelSwaggerDoc: OpenAPIV3.SchemaObject = {
 		ticketId: {
 			type: "string",
 			description: "id билета",
-			default: "1719759332908",
+			default: defaultSwaggerValues.ticketId,
 		},
 		questionId: {
 			type: "string",
 			description: "id вопроса",
-			default: "1719759345626",
+			default: defaultSwaggerValues.questionId,
 		},
 		answerId: {
 			type: "string",
 			description: "id ответа",
-			default: "17197813656880",
+			default: defaultSwaggerValues.answerId,
 		},
 		isCorrect: {
 			type: "boolean",

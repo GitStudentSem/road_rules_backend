@@ -8,6 +8,7 @@ import { examSwaggerDoc } from "../routes/exam";
 import { ticketsSwaggerDoc } from "../routes/tickets";
 import { userEditorSwaggerDoc } from "../routes/userEditor";
 import { questionSwaggerDoc } from "../routes/question";
+import { defaultSwaggerValues } from "./settings";
 
 const options: swaggerJSDoc.Options = {
 	swaggerDefinition: {
@@ -20,8 +21,7 @@ const options: swaggerJSDoc.Options = {
 					type: "http",
 					scheme: "bearer",
 					bearerFormat: "JWT",
-					description:
-						"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE3MTc0NDA3NDEzMDQiLCJpYXQiOjE3MTc0NDI1MjAsImV4cCI6MTcyMDAzNDUyMH0.imiX_CYuKDB1u58elXLfQfE8_oNpO8rvh3Uk2fkWEsU",
+					description: defaultSwaggerValues.authToken,
 				},
 			},
 		},

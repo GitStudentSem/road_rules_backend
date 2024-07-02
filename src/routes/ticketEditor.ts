@@ -8,6 +8,7 @@ import { CreateQuestionBodySwaggerDoc } from "../models/ticketEditor/CreateQuest
 import { DeleteQuestionlSwaggerDoc } from "../models/ticketEditor/DeleteQuestionBody";
 import { EditQuestionBodySwaggerDoc } from "../models/ticketEditor/EditQuestionBody";
 import { QuestionViewModelSwaggerDoc } from "../models/ticketEditor/QuestionViewModel";
+import { defaultSwaggerValues } from "../assets/settings";
 const upload = multer({ storage: multer.memoryStorage() });
 
 export const ticketEditorSwaggerDoc = {
@@ -51,7 +52,7 @@ export const ticketEditorSwaggerDoc = {
 								ticketId: {
 									type: "string",
 									description: "id билета",
-									default: "1717841402302",
+									default: defaultSwaggerValues.ticketId,
 								},
 							},
 							required: ["ticketId"],
@@ -144,7 +145,7 @@ export const ticketEditorSwaggerDoc = {
 							properties: {
 								ticketId: {
 									type: "string",
-									default: "1717841402302",
+									default: defaultSwaggerValues.ticketId,
 									description: "id удаляемого билета",
 								},
 							},

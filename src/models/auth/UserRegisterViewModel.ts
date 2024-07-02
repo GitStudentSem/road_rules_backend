@@ -1,10 +1,12 @@
+import { defaultSwaggerValues } from "../../assets/settings";
+
 export const UserRegisterViewModelSwaggerDoc = {
 	type: "object",
 	properties: {
 		email: {
 			type: "string",
 			description: "Почта пользователя",
-			default: "your_email@yandex.ru",
+			default: defaultSwaggerValues.email,
 		},
 		firstName: {
 			type: "string",

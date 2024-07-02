@@ -1,4 +1,5 @@
 import type { OpenAPIV3 } from "openapi-types";
+import { defaultSwaggerValues } from "../../assets/settings";
 
 export const BodyAppointExamSwaggerDoc: OpenAPIV3.SchemaObject = {
 	type: "object",
@@ -11,7 +12,7 @@ export const BodyAppointExamSwaggerDoc: OpenAPIV3.SchemaObject = {
 		email: {
 			type: "string",
 			description: "Почта пользователя для которого нужно назначить экзамен",
-			default: "your_email@yandex.ru",
+			default: defaultSwaggerValues.email,
 		},
 	},
 	required: ["isAppoint", "email"],

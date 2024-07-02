@@ -1,9 +1,11 @@
+import { defaultSwaggerValues } from "../../assets/settings";
+
 export const SendExamViewModelSwaggerDoc = {
 	type: "object",
 	properties: {
 		img: {
 			type: "string",
-			default: [],
+			default: "",
 			description: "Картинка в формате base64",
 		},
 		question: {
@@ -14,12 +16,12 @@ export const SendExamViewModelSwaggerDoc = {
 		ticketId: {
 			type: "string",
 			description: "id билета из которого был взят этот вопрос",
-			default: "1717841402302",
+			default: defaultSwaggerValues.ticketId,
 		},
 		questionId: {
 			type: "string",
 			description: "id вопроса",
-			default: "1717841402302",
+			default: defaultSwaggerValues.questionId,
 		},
 		answers: {
 			type: "object",
@@ -32,7 +34,7 @@ export const SendExamViewModelSwaggerDoc = {
 				answerId: {
 					type: "string",
 					description: "id варианта ответа",
-					default: "17178541405880",
+					default: defaultSwaggerValues.answerId,
 				},
 			},
 		},

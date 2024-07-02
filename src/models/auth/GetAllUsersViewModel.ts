@@ -1,3 +1,5 @@
+import { defaultSwaggerValues } from "../../assets/settings";
+
 const ResultSwaggerDoc = {
 	type: "object",
 	properties: {
@@ -8,7 +10,7 @@ const ResultSwaggerDoc = {
 		},
 		answerId: {
 			type: "string",
-			default: "17178414023020",
+			default: defaultSwaggerValues.answerId,
 			description: "id ответа который дал пользователь",
 		},
 	},
@@ -25,7 +27,7 @@ export const GetAllUsersViewModelSwaggerDoc = {
 	properties: {
 		email: {
 			type: "string",
-			default: "your_email@yandex.ru",
+			default: defaultSwaggerValues.email,
 			description: "Почта пользователя",
 		},
 		firstName: {

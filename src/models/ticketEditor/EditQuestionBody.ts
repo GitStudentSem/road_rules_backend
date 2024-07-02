@@ -1,4 +1,5 @@
 import type { OpenAPIV3 } from "openapi-types";
+import { defaultSwaggerValues } from "../../assets/settings";
 
 export const EditQuestionBodySwaggerDoc: OpenAPIV3.SchemaObject = {
 	type: "object",
@@ -10,12 +11,12 @@ export const EditQuestionBodySwaggerDoc: OpenAPIV3.SchemaObject = {
 		},
 		ticketId: {
 			type: "string",
-			default: "1717841402302",
+			default: defaultSwaggerValues.ticketId,
 			description: "id билета",
 		},
 		questionId: {
 			type: "string",
-			default: "1717841402302",
+			default: defaultSwaggerValues.questionId,
 			description: "id вопроса который редактируется",
 		},
 		question: {

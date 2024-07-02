@@ -1,16 +1,18 @@
+import { defaultSwaggerValues } from "../../assets/settings";
+
 export const BodyRegisterModelSwaggerDoc = {
 	type: "object",
 	properties: {
 		email: {
 			type: "string",
 			description: "Почта пользователя",
-			default: "your_email@yandex.ru",
+			default: defaultSwaggerValues.email,
 			required: true,
 		},
 		password: {
 			type: "string",
 			description: "Пароль пользователя",
-			default: "123456",
+			default: defaultSwaggerValues.password,
 		},
 		firstName: {
 			type: "string",

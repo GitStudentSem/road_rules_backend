@@ -1,4 +1,5 @@
 import type { OpenAPIV3 } from "openapi-types";
+import { defaultSwaggerValues } from "../../assets/settings";
 
 export const SendTicketResultViewModelModelSwaggerDoc: OpenAPIV3.SchemaObject =
 	{
@@ -12,7 +13,7 @@ export const SendTicketResultViewModelModelSwaggerDoc: OpenAPIV3.SchemaObject =
 			correctAnswer: {
 				type: "string",
 				description: "id правильного ответа",
-				default: "17179180127711",
+				default: defaultSwaggerValues.answerId,
 			},
 			help: {
 				type: "string",

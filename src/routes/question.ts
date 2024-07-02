@@ -3,6 +3,7 @@ import { questionController } from "../controllers/questionController";
 import { getErrorSwaggerDoc } from "../assets/getErrorSwaggerDoc";
 import express from "express";
 import { SendQuestionViewModelSwaggerDoc } from "../models/tickets/SendQuestionViewModel";
+import { defaultSwaggerValues } from "../assets/settings";
 
 export const questionSwaggerDoc = {
 	"/question": {
@@ -20,12 +21,12 @@ export const questionSwaggerDoc = {
 								ticketId: {
 									type: "string",
 									description: "id билета",
-									default: "1719675339512",
+									default: defaultSwaggerValues.ticketId,
 								},
 								questionId: {
 									type: "string",
 									description: "id вопроса",
-									default: "1719675471864",
+									default: defaultSwaggerValues.questionId,
 								},
 							},
 							required: ["ticketId", "questionId"],

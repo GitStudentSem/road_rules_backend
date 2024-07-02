@@ -1,3 +1,5 @@
+import { defaultSwaggerValues } from "../../assets/settings";
+
 export const SendTicketViewModelSwaggerDoc = {
 	type: "object",
 	properties: {
@@ -9,7 +11,7 @@ export const SendTicketViewModelSwaggerDoc = {
 		questionId: {
 			type: "string",
 			description: "id вопроса",
-			default: "1717854140588",
+			default: defaultSwaggerValues.questionId,
 		},
 		img: {
 			type: "string",
@@ -30,7 +32,7 @@ export const SendTicketViewModelSwaggerDoc = {
 					answerId: {
 						type: "string",
 						description: "id варианта ответа",
-						default: "17178541405880",
+						default: defaultSwaggerValues.answerId,
 					},
 				},
 			},

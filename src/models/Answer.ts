@@ -1,3 +1,5 @@
+import { defaultSwaggerValues } from "../assets/settings";
+
 export const AnswerSwaggerDoc = {
 	type: "object",
 	properties: {
@@ -9,12 +11,12 @@ export const AnswerSwaggerDoc = {
 		answerId: {
 			type: "string",
 			description: "id варианта ответа",
-			default: "17178541405880",
+			default: defaultSwaggerValues.answerId,
 		},
 		isCorrect: {
 			type: "boolean",
 			description: "правильный ли ответ",
-			default: "false",
+			default: "true",
 		},
 	},
 };

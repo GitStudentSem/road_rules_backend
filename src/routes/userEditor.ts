@@ -5,6 +5,7 @@ import { checkAuth, handleValidationErrors } from "../midlewares";
 import { getErrorSwaggerDoc } from "../assets/getErrorSwaggerDoc";
 import { GetAllUsersViewModelSwaggerDoc } from "../models/auth/GetAllUsersViewModel";
 import { BodyAppointExamSwaggerDoc } from "../models/exam/BodyAppointExam";
+import { defaultSwaggerValues } from "../assets/settings";
 
 export const userEditorSwaggerDoc = {
 	"/userEditor/role": {
@@ -20,7 +21,7 @@ export const userEditorSwaggerDoc = {
 							properties: {
 								email: {
 									type: "string",
-									default: "your_email@yandex.ru",
+									default: defaultSwaggerValues.email,
 									description: "Почта пользователя",
 								},
 								role: {

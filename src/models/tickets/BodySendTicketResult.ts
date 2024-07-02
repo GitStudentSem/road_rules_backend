@@ -1,4 +1,5 @@
 import type { OpenAPIV3 } from "openapi-types";
+import { defaultSwaggerValues } from "../../assets/settings";
 
 export const BodySendTicketResultSwaggerDoc: OpenAPIV3.SchemaObject = {
 	type: "object",
@@ -6,17 +7,17 @@ export const BodySendTicketResultSwaggerDoc: OpenAPIV3.SchemaObject = {
 		ticketId: {
 			type: "string",
 			description: "id билета",
-			default: "1717918012771",
+			default: defaultSwaggerValues.ticketId,
 		},
 		questionId: {
 			type: "string",
 			description: "id вопроса",
-			default: "1717918012771",
+			default: defaultSwaggerValues.questionId,
 		},
 		answerId: {
 			type: "string",
 			description: "id ответа",
-			default: "17179180127710",
+			default: defaultSwaggerValues.answerId,
 		},
 	},
 };

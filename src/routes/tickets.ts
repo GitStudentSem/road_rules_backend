@@ -7,6 +7,7 @@ import { SendTicketsViewModelSwaggerDoc } from "../models/tickets/SendTicketsVie
 import { SendTicketViewModelSwaggerDoc } from "../models/tickets/SendTicketViewModel";
 import { BodySendTicketResultSwaggerDoc } from "../models/tickets/BodySendTicketResult";
 import { SendTicketResultViewModelModelSwaggerDoc } from "../models/tickets/SendTicketResultViewModel";
+import { defaultSwaggerValues } from "../assets/settings";
 
 export const ticketsSwaggerDoc = {
 	"/tickets": {
@@ -63,7 +64,7 @@ export const ticketsSwaggerDoc = {
 					in: "path",
 					description: "id билета",
 					required: true,
-					default: "1717841402302",
+					default: defaultSwaggerValues.ticketId,
 				},
 			],
 			responses: {

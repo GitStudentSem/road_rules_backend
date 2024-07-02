@@ -1,4 +1,5 @@
 import type { OpenAPIV3 } from "openapi-types";
+import { defaultSwaggerValues } from "../../assets/settings";
 
 export const QuestionViewModelSwaggerDoc: OpenAPIV3.SchemaObject = {
 	type: "object",
@@ -11,7 +12,7 @@ export const QuestionViewModelSwaggerDoc: OpenAPIV3.SchemaObject = {
 		questionId: {
 			type: "string",
 			description: "id вопроса",
-			default: "1717918012771",
+			default: defaultSwaggerValues.questionId,
 		},
 		question: {
 			type: "string",
