@@ -68,6 +68,6 @@ export const appointExam = async (
 			res.status(error.status).json({ message: error.message });
 			return;
 		}
-		sendError({ message: "Не удалось отправить билет", error, res });
+		sendError({ message: "Не удалось назначить экзамен", error, res });
 	}
 };

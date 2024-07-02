@@ -43,7 +43,7 @@ export const getQuestionsInTicket = async (
 			res.status(error.status).json({ message: error.message });
 			return;
 		}
-		sendError({ message: "Не удалось добавить вопрос", error, res });
+		sendError({ message: "Не удалось получить вопросы в билете", error, res });
 	}
 };
 
@@ -71,7 +71,7 @@ export const createQuestion = async (
 			res.status(error.status).json({ message: error.message });
 			return;
 		}
-		sendError({ message: "Не удалось добавить вопрос", error, res });
+		sendError({ message: "Не удалось создать вопрос", error, res });
 	}
 };
 export const editQuestion = async (
@@ -99,7 +99,7 @@ export const editQuestion = async (
 			res.status(error.status).json({ message: error.message });
 			return;
 		}
-		sendError({ message: "Не удалось добавить вопрос", error, res });
+		sendError({ message: "Не удалось изменить вопрос", error, res });
 	}
 };
 
@@ -140,6 +140,6 @@ export const deleteQuestion = async (
 			res.status(error.status).json({ message: error.message });
 			return;
 		}
-		sendError({ message: "Не удалось удалить влпрос", error, res });
+		sendError({ message: "Не удалось удалить вопрос", error, res });
 	}
 };

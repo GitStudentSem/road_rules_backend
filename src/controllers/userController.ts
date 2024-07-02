@@ -48,7 +48,7 @@ export const login = async (
 			res.status(error.status).json({ message: error.message });
 			return;
 		}
-		sendError({ message: "Не удалось зарегистрироваться", error, res });
+		sendError({ message: "Не удалось войти в систему", error, res });
 	}
 };
 export const adminLogin = async (
@@ -66,7 +66,7 @@ export const adminLogin = async (
 			res.status(error.status).json({ message: error.message });
 			return;
 		}
-		sendError({ message: "Не удалось зарегистрироваться", error, res });
+		sendError({ message: "Не удалось войти в систему", error, res });
 	}
 };
 

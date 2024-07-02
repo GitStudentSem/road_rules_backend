@@ -24,7 +24,7 @@ export const questionController = {
 				res.status(error.status).json({ message: error.message });
 				return;
 			}
-			sendError({ message: "Не удалось отправить билет", error, res });
+			sendError({ message: "Не удалось отправить вопрос", error, res });
 		}
 	},
 };

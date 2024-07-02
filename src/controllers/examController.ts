@@ -20,7 +20,7 @@ export const examController = {
 				res.status(error.status).json({ message: error.message });
 				return;
 			}
-			sendError({ message: "Не удалось отправить билет", error, res });
+			sendError({ message: "Не удалось отправить экзамен", error, res });
 		}
 	},
 
@@ -42,7 +42,11 @@ export const examController = {
 				res.status(error.status).json({ message: error.message });
 				return;
 			}
-			sendError({ message: "Не удалось отправить билет", error, res });
+			sendError({
+				message: "Не удалось отправить ответ на экзаменационный вопрос",
+				error,
+				res,
+			});
 		}
 	},
 
@@ -64,7 +68,11 @@ export const examController = {
 				res.status(error.status).json({ message: error.message });
 				return;
 			}
-			sendError({ message: "Не удалось отправить билет", error, res });
+			sendError({
+				message: "Не удалось отправить ответ на экзаменационный вопрос",
+				error,
+				res,
+			});
 		}
 	},
 
@@ -81,7 +89,11 @@ export const examController = {
 				res.status(error.status).json({ message: error.message });
 				return;
 			}
-			sendError({ message: "Не удалось отправить билет", error, res });
+			sendError({
+				message: "Не удалось получить результаты экзамена",
+				error,
+				res,
+			});
 		}
 	},
 
@@ -98,7 +110,11 @@ export const examController = {
 				res.status(error.status).json({ message: error.message });
 				return;
 			}
-			sendError({ message: "Не удалось отправить билет", error, res });
+			sendError({
+				message: "Не удалось получить результаты экзамена",
+				error,
+				res,
+			});
 		}
 	},
 };
