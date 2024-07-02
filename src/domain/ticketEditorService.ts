@@ -5,9 +5,9 @@ import type { DeleteQuestionBody } from "../models/ticketEditor/DeleteQuestionBo
 import { colors, resetStyle, styles } from "../assets/logStyles";
 import { crc32 } from "crc";
 import type { EditQuestionBody } from "../models/ticketEditor/EditQuestionBody";
+import AWS from "aws-sdk";
 import { DBError } from "../controllers/DBError";
 import { HTTP_STATUSES } from "../utils";
-import AWS from "aws-sdk";
 
 const calculateSizeInKB = (arrayBuffer: ArrayBuffer) => {
 	const bytes = arrayBuffer.byteLength;
@@ -30,7 +30,7 @@ const uploadFile = async (data: {
 	questionId: string;
 }) => {
 	const { img, ticketId, questionId } = data;
-	const bucketName = "ea8b9dd7-1fb48044-a9a0-4288-bfcc-6c73da005f5c";
+	const bucketName = process.env.BUCKET_NAME_FOR_S3 || "";
 	const key = `${ticketId}/${questionId}.jpg`;
 
 	const params = {
@@ -43,8 +43,11 @@ const uploadFile = async (data: {
 	return result.Location;
 };
 
-const deleteImage = async (ticketId: string, questionId: string) => {
-	const bucketName = "ea8b9dd7-1fb48044-a9a0-4288-bfcc-6c73da005f5c";
+const deleteImageFromQuestion = async (
+	ticketId: string,
+	questionId: string,
+) => {
+	const bucketName = process.env.BUCKET_NAME_FOR_S3 || "";
 	const key = `${ticketId}/${questionId}.jpg`;
 
 	const params = {
@@ -53,6 +56,52 @@ const deleteImage = async (ticketId: string, questionId: string) => {
 	};
 
 	await s3.deleteObject(params).promise();
+};
+
+const deleteAllImagesInFolderFolder = async (ticketId: string) => {
+	try {
+		type ListParams = {
+			Bucket: string;
+			Prefix: string;
+			Objects?: { Key: string }[];
+		};
+		// Получаем список объектов в папке
+		const listParams: ListParams = {
+			Bucket: process.env.BUCKET_NAME_FOR_S3 || "",
+			Prefix: ticketId,
+		};
+
+		const listedObjects = await s3.listObjectsV2(listParams).promise();
+
+		if (!listedObjects.Contents) return;
+
+		if (listedObjects.Contents.length === 0) return;
+
+		// Создаем массив объектов для удаления
+		const deleteParams = {
+			Bucket: process.env.BUCKET_NAME_FOR_S3 || "",
+			Delete: { Objects: [] },
+		};
+
+		for (const content of listedObjects.Contents) {
+			//@ts-ignore
+			deleteParams.Delete.Objects.push({ Key: content.Key });
+		}
+
+		// Удаляем объекты
+		await s3.deleteObjects(deleteParams).promise();
+
+		// Если есть еще объекты, повторяем процесс
+		if (listedObjects.IsTruncated) {
+			await deleteAllImagesInFolderFolder(ticketId);
+		}
+	} catch (err) {
+		console.error("Ошибка при удалении папки:", err);
+		throw new DBError(
+			"Ошибка при удалении папки изображений",
+			HTTP_STATUSES.BAD_REQUEST_400,
+		);
+	}
 };
 
 const saveImage = async ({
@@ -69,7 +118,7 @@ const saveImage = async ({
 	DBImageOriginalHash?: string;
 }) => {
 	if (!img) {
-		await deleteImage(ticketId, questionId);
+		await deleteImageFromQuestion(ticketId, questionId);
 		return { img: "", imageOriginalHash: "", imagePrcessedHash: "" };
 	}
 
@@ -216,16 +265,26 @@ export const ticketEditorService = {
 	},
 
 	async deleteTicket(ticketId: string, userId: string) {
-		await ticketEditorRepository.deleteTicket(ticketId, userId);
+		const isDeleted = await ticketEditorRepository.deleteTicket(
+			ticketId,
+			userId,
+		);
+		if (isDeleted) {
+			await deleteAllImagesInFolderFolder(ticketId);
+		}
 	},
 
 	async deleteQuestion(data: { userId: string } & DeleteQuestionBody) {
 		const { ticketId, questionId, userId } = data;
 
-		await ticketEditorRepository.deleteQuestion({
+		const isDeleted = await ticketEditorRepository.deleteQuestion({
 			ticketId,
 			questionId,
 			userId,
 		});
+
+		if (isDeleted) {
+			await deleteImageFromQuestion(ticketId, questionId);
+		}
 	},
 };

@@ -157,7 +157,11 @@ export const ticketEditorRepository = {
 
 		await findTicket(ticketId);
 
-		await ticketCollection.deleteOne({ ticketId });
+		const result = await ticketCollection.deleteOne({ ticketId });
+
+		if (result.deletedCount > 0) return true;
+
+		throw new DBError("Билет не был удален", HTTP_STATUSES.BAD_REQUEST_400);
 	},
 
 	async deleteQuestion(data: {
@@ -187,6 +191,10 @@ export const ticketEditorRepository = {
 			$pull: { questions: { questionId } },
 		};
 
-		await ticketCollection.updateOne({ ticketId }, update);
+		const result = await ticketCollection.updateOne({ ticketId }, update);
+
+		if (result.modifiedCount > 0) return true;
+
+		throw new DBError("Вопрос не был удален", HTTP_STATUSES.BAD_REQUEST_400);
 	},
 };
