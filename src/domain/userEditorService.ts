@@ -6,12 +6,11 @@ export const userEditorService = {
 	async getAllUsers(userId: string) {
 		const allUsers = await userEditorRepository.getAllUsers(userId);
 		const filterdUsersData = allUsers.map((user) => {
-			console.log("user", user);
 			return {
 				email: user.email,
 				firstName: user.firstName,
 				secondName: user.secondName,
-				examResults: user.results?.exam || { passAt: 0, result: [] },
+				examResults: user.results.exam,
 				role: user.role,
 				isAppointExam: user.isAppointExam,
 			};
