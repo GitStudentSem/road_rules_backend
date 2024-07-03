@@ -15,6 +15,7 @@ export const userEditorService = {
 				isAppointExam: user.isAppointExam,
 			};
 		});
+		console.log("", filterdUsersData);
 		return filterdUsersData;
 	},
 

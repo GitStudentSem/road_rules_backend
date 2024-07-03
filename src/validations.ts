@@ -18,6 +18,15 @@ const passwordLength = body("password", "Пароль должен быть ми
 		min: 6,
 	});
 
+const checkNullable = (fieldName: string) => {
+	return body(fieldName).custom((value) => {
+		if (value === null || value === false || value === "") {
+			throw new Error(`Неправильное значение поля: ${fieldName}`);
+		}
+		return true;
+	});
+};
+
 export const loginValidation = [
 	isEmailString,
 	emailLength,
@@ -50,6 +59,7 @@ export const registerValidation = [
 ];
 
 export const answerValidation = [
+	checkNullable("ticketId"),
 	body("ticketId", "id билета должен быть строкой").isString(),
 	body("questionId", "id вопроса должен быть строкой").isString(),
 	body("answerId", "id ответа пользователя должен быть строкой").isString(),

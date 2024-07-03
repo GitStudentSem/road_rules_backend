@@ -9,12 +9,12 @@ import type { BodyAppointExam } from "../models/exam/BodyAppointExam";
 
 export const getAllUsers = async (
 	req: Request,
-	res: Response<{ allUsers: GetAllUsersViewModel[] } | ErrorType>,
+	res: Response<GetAllUsersViewModel[] | ErrorType>,
 ) => {
 	try {
 		const allUsers = await userEditorService.getAllUsers(req.userId || "");
 
-		res.status(HTTP_STATUSES.OK_200).json({ allUsers });
+		res.status(HTTP_STATUSES.OK_200).json(allUsers);
 	} catch (error) {
 		if (error instanceof DBError) {
 			res.status(error.status).json({ message: error.message });
