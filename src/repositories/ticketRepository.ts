@@ -87,6 +87,15 @@ export const ticketRepository = {
 
 		const ticket = await isTicketExist(ticketId);
 
+		const ticketObjectName = `results.ticket_${ticketId}.passAt`;
+		const update = {
+			$set: {
+				[ticketObjectName]: Number(new Date()),
+			},
+		};
+
+		await userCollection.updateOne({ userId }, update, { upsert: true });
+
 		return ticket;
 	},
 
@@ -96,11 +105,6 @@ export const ticketRepository = {
 		questionId: string;
 		answerId: string;
 	}) {
-		/**
-		 * Сделать ставку ответов пользователя
-		 * Формат еще нужно будет доработать
-		 * Сейчас он создает только поле для вставки
-		 */
 		const { userId, ticketId, questionId, answerId } = data;
 		const user = await isUserExist(userId);
 		const question = await isQuestionExist(ticketId, questionId);
@@ -108,8 +112,8 @@ export const ticketRepository = {
 			question.answers.find((answer) => answer.isCorrect)?.answerId || "";
 		const isCorrect = correctAnswerId === answerId;
 
-		const ticketObjectName = `results.ticket_${ticketId}`;
-		let ticketResult = user.results[ticketObjectName];
+		const ticketObjectName = `results.ticket_${ticketId}.result`;
+		let ticketResult = user.results[ticketObjectName]?.result;
 
 		if (!ticketResult) ticketResult = [];
 		ticketResult.push({ ticketId, questionId, answerId, isCorrect });

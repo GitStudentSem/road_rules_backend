@@ -95,7 +95,7 @@ export const examRepository = {
 
 		const tickets: QuestionWithTicketId[] = [];
 
-		for (let i = 1; i <= 20; i++) {
+		while (tickets.length < 20) {
 			const ticketId = await getRandomTicketId();
 			const ticket = await isTicketExist(ticketId);
 			const randomIndex = randomInteger(0, ticket.questions.length - 1);
@@ -105,7 +105,13 @@ export const examRepository = {
 			}
 			tickets.push({ ...randomQuestion, ticketId });
 		}
+		const update = {
+			$set: {
+				"results.exam.passAt": Number(new Date()),
+			},
+		};
 
+		await userCollection.updateOne({ userId }, update, { upsert: true });
 		return tickets;
 	},
 
@@ -123,13 +129,13 @@ export const examRepository = {
 			question.answers.find((answer) => answer.isCorrect)?.answerId || "";
 		const isCorrect = correctAnswerId === answerId;
 
-		let examResult = user.results.exam;
+		let examResult = user.results.exam?.result;
 
 		if (!examResult) examResult = [];
 		examResult.push({ ticketId, questionId, answerId, isCorrect });
 		const update = {
 			$set: {
-				"results.exam": examResult,
+				"results.exam.result": examResult,
 			},
 		};
 
@@ -152,13 +158,13 @@ export const examRepository = {
 			question.answers.find((answer) => answer.isCorrect)?.answerId || "";
 		const isCorrect = correctAnswerId === answerId;
 
-		let examResult = user.results.training_exam;
+		let examResult = user.results.training_exam?.result;
 
 		if (!examResult) examResult = [];
 		examResult.push({ ticketId, questionId, answerId, isCorrect });
 		const update = {
 			$set: {
-				"results.training_exam": examResult,
+				"results.training_exam.result": examResult,
 			},
 		};
 

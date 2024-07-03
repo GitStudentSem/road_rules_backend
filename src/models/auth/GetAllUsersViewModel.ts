@@ -51,19 +51,20 @@ export const GetAllUsersViewModelSwaggerDoc = {
 			default: "false",
 			description: "Назначен ли экзамен для пользователя",
 		},
-		results: {
+		examResults: {
 			type: "object",
-			description: "Результаты билетов и экзамена пользователя",
+			description: "Результаты экзамена пользователя",
 			properties: {
 				exam: {
-					type: "array",
-					description: "Массив результатов экзамена",
-					items: ResultSwaggerDoc,
-				},
-				ticket_1: {
-					type: "array",
-					description: "Массив результатов билета 1",
-					items: ResultSwaggerDoc,
+					passAt: {
+						type: "number",
+						description: "Дата в мс когда был сдан экзамен",
+					},
+					result: {
+						type: "array",
+						description: "Массив результатов экзамена",
+						items: ResultSwaggerDoc,
+					},
 				},
 			},
 		},
@@ -76,5 +77,5 @@ export type GetAllUsersViewModel = {
 	secondName: string;
 	isAppointExam: boolean;
 	role: "superadmin" | "admin" | "user";
-	examResults?: Result[];
+	examResults?: { passAt: number; result: Result[] };
 };

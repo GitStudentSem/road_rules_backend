@@ -73,12 +73,12 @@ export const examService = {
 	},
 
 	async getExamResult(userId: string) {
-		const result = await examRepository.getExamResult(userId);
-		return result;
+		const examInfo = await examRepository.getExamResult(userId);
+		return examInfo.result;
 	},
 
 	async getTrainingExamResult(userId: string) {
-		const result = await examRepository.getTrainingExamResult(userId);
-		return result;
+		const trainingExamInfo = await examRepository.getTrainingExamResult(userId);
+		return trainingExamInfo.result;
 	},
 };
