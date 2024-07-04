@@ -167,6 +167,12 @@ const saveImage = async ({
 };
 
 export const ticketEditorService = {
+	async sendTickets(userId: string) {
+		const ticketsIds = await ticketEditorRepository.sendTickets(userId);
+
+		return ticketsIds;
+	},
+
 	async createTicket(userId: string) {
 		const ticketId = Number(new Date()).toString();
 		const createdAt = Number(new Date());

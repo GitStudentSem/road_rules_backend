@@ -13,25 +13,24 @@ export const ticketsSwaggerDoc = {
 	"/tickets": {
 		get: {
 			tags: ["Билеты"],
-			summary: "Получить список билетов для выбора",
+			summary: "Получить список билетов для выбора, без пустых билетов",
 			security: [{ bearerAuth: [] }],
 			responses: {
 				200: {
-					description: "Количество билетов упешно получено",
+					description: "Билеты упешно получены",
 					content: {
 						"application/json": {
 							schema: SendTicketsViewModelSwaggerDoc,
 						},
 					},
 				},
-				error: getErrorSwaggerDoc("Ошибка получения количества билетов"),
+				error: getErrorSwaggerDoc("Ошибка получения билетов"),
 			},
 		},
 		post: {
 			tags: ["Билеты"],
 			summary: "Отправить ответ на вопрос по билету",
 			security: [{ bearerAuth: [] }],
-
 			requestBody: {
 				content: {
 					"application/json": {

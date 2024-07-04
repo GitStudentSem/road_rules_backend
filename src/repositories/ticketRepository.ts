@@ -46,23 +46,17 @@ const isUserExist = async (userId: string) => {
 };
 
 const getTicketsIds = async () => {
-	const ticketsIds = await ticketCollection
-		.aggregate<{ ticketId: string }>([
-			// Сортируем документы по полю 'createdAt'
-			{ $sort: { createdAt: 1 } },
+	const query = { questions: { $ne: [] } };
+	const projection = { ticketId: 1 };
 
-			// Группируем по 'ticketId' и добавляем уникальные ticketId в массив
-			{ $group: { _id: "$ticketId", createdAt: { $first: "$createdAt" } } },
+	const cursor = await ticketCollection.find(query, { projection }).toArray();
 
-			// Проектируем только ticketId
-			{ $project: { _id: 0, ticketId: "$_id" } },
+	const ticketIds: { ticketId: string }[] = [];
+	for (const doc of cursor) {
+		ticketIds.push({ ticketId: doc.ticketId });
+	}
 
-			// Финальная сортировка по полю 'createdAt'
-			{ $sort: { createdAt: 1 } },
-		])
-		.toArray();
-
-	return ticketsIds;
+	return ticketIds;
 };
 
 const removePreviousAnswers = async (userId: string, ticketId: string) => {

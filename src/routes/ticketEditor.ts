@@ -1,5 +1,5 @@
 import express from "express";
-import * as ticketEditorController from "../controllers/ticketEditorController";
+import { ticketEditorController } from "../controllers/ticketEditorController";
 import { addQuestionValidation } from "../validations";
 import { checkAuth, handleValidationErrors } from "../midlewares";
 import { getErrorSwaggerDoc } from "../assets/getErrorSwaggerDoc";
@@ -9,6 +9,7 @@ import { DeleteQuestionlSwaggerDoc } from "../models/ticketEditor/DeleteQuestion
 import { EditQuestionBodySwaggerDoc } from "../models/ticketEditor/EditQuestionBody";
 import { QuestionViewModelSwaggerDoc } from "../models/ticketEditor/QuestionViewModel";
 import { defaultSwaggerValues } from "../assets/settings";
+import { SendTicketsViewModelSwaggerDoc } from "../models/tickets/SendTicketsViewModel";
 const upload = multer({ storage: multer.memoryStorage() });
 
 export const ticketEditorSwaggerDoc = {
@@ -180,11 +181,31 @@ export const ticketEditorSwaggerDoc = {
 			},
 		},
 	},
+
+	"/ticketEditor/tickets": {
+		get: {
+			tags: ["Редактор билетов"],
+			summary: "Получить список билетов для выбора, включая пустые",
+			security: [{ bearerAuth: [] }],
+			responses: {
+				200: {
+					description: "Билеты упешно получены",
+					content: {
+						"application/json": {
+							schema: SendTicketsViewModelSwaggerDoc,
+						},
+					},
+				},
+				error: getErrorSwaggerDoc("Ошибка получения билетов"),
+			},
+		},
+	},
 };
 
 export const ticketEditorRouter = () => {
 	const router = express.Router();
 
+	router.get("/tickets", checkAuth, ticketEditorController.sendTickets);
 	router.get("/createTicket", checkAuth, ticketEditorController.createTicket);
 	router.post(
 		"/getQuestions",
