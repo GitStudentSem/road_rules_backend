@@ -117,4 +117,26 @@ export const examController = {
 			});
 		}
 	},
+
+	async setAlwaysCompleteExam(
+		req: RequestWithBody<{ email: string; isAlwaysComplete: boolean }>,
+		res: Response<GetExamResult[] | ErrorType>,
+	) {
+		try {
+			const { email, isAlwaysComplete } = req.body;
+			await examService.setAlwaysCompleteExam({ email, isAlwaysComplete });
+
+			res.sendStatus(204);
+		} catch (error) {
+			if (error instanceof DBError) {
+				res.status(error.status).json({ message: error.message });
+				return;
+			}
+			sendError({
+				message: "Не удалось получить результаты экзамена",
+				error,
+				res,
+			});
+		}
+	},
 };

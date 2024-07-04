@@ -1,6 +1,10 @@
-import { examRepository } from "../repositories/examRepository";
+import {
+	examRepository,
+	getCorrectAnswer,
+} from "../repositories/examRepository";
 import type { QuestionWithTicketId } from "../repositories/examRepository";
 import type { Answer } from "../models/Answer";
+import { isUserExist } from "../repositories/authRepository";
 
 const shuffleAnswers = (answers: Answer[]) => {
 	return answers.sort(() => Math.random() - 0.5);
@@ -57,6 +61,7 @@ export const examService = {
 		answerId: string;
 	}) {
 		const { userId, ticketId, questionId, answerId } = data;
+
 		const dataFromDB = await examRepository.sendTrainingExamAnswer({
 			userId,
 			ticketId,
@@ -80,5 +85,16 @@ export const examService = {
 	async getTrainingExamResult(userId: string) {
 		const trainingExamInfo = await examRepository.getTrainingExamResult(userId);
 		return trainingExamInfo.result;
+	},
+
+	async setAlwaysCompleteExam(data: {
+		email: string;
+		isAlwaysComplete: boolean;
+	}) {
+		const { email, isAlwaysComplete } = data;
+		await examRepository.setAlwaysCompleteExam({
+			email,
+			isAlwaysComplete,
+		});
 	},
 };

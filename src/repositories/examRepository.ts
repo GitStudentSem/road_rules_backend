@@ -2,6 +2,8 @@ import { DBError } from "../controllers/DBError";
 import { HTTP_STATUSES } from "../utils";
 import { ticketCollection, userCollection } from "./db";
 import type { CreateQuestionDBModel } from "../models/ticketEditor/CreateQuestionDBModel";
+import type { UserLoginDBModel } from "../models/auth/UserLoginDBModel";
+import type { WithId } from "mongodb";
 
 const isTicketExist = async (ticketId: string) => {
 	const ticket = await ticketCollection.findOne({ ticketId });
@@ -68,7 +70,7 @@ const getRandomTicketId = async () => {
 	return ticketsIds[randomIndex].ticketId;
 };
 
-const isUserExist = async (userId: string) => {
+export const isUserExist = async (userId: string) => {
 	const user = await userCollection.findOne({ userId });
 
 	if (!user) {
@@ -82,6 +84,31 @@ const removePreviousAnswers = async (userId: string) => {
 		{ userId },
 		{ $unset: { "results.exam": "" } },
 	);
+};
+
+export const getCorrectAnswer = async (
+	ticketId: string,
+	questionId: string,
+) => {
+	const question = await isQuestionExist(ticketId, questionId);
+	const correctAnswerId =
+		question.answers.find((answer) => answer.isCorrect)?.answerId || "";
+	return correctAnswerId;
+};
+
+const setAlwaysCompleteExam = async (
+	user: WithId<UserLoginDBModel>,
+	ticketId: string,
+	questionId: string,
+) => {
+	if (!user.isAlwaysCompleteExam) return;
+	const mistakesCount =
+		user.results.exam?.result.filter((result) => !result.isCorrect) || [];
+
+	if (mistakesCount?.length > 1) {
+		const correctAnswerId = await getCorrectAnswer(ticketId, questionId);
+		return correctAnswerId;
+	}
 };
 
 export type QuestionWithTicketId = CreateQuestionDBModel & {
@@ -125,14 +152,39 @@ export const examRepository = {
 
 		const user = await isUserExist(userId);
 		const question = await isQuestionExist(ticketId, questionId);
-		const correctAnswerId =
-			question.answers.find((answer) => answer.isCorrect)?.answerId || "";
-		const isCorrect = correctAnswerId === answerId;
+		const forceCorrectAnswerId = await setAlwaysCompleteExam(
+			user,
+			ticketId,
+			questionId,
+		);
+		const correctAnswerId = await getCorrectAnswer(ticketId, questionId);
+		if (!forceCorrectAnswerId) {
+			const isCorrect = correctAnswerId === answerId;
+
+			let examResult = user.results.exam?.result;
+
+			if (!examResult) examResult = [];
+			examResult.push({ ticketId, questionId, answerId, isCorrect });
+			const update = {
+				$set: {
+					"results.exam.result": examResult,
+				},
+			};
+
+			await userCollection.updateOne({ userId }, update, { upsert: true });
+
+			return { help: question.help, correctAnswerId, isCorrect };
+		}
 
 		let examResult = user.results.exam?.result;
-
+		const isCorrect = true;
 		if (!examResult) examResult = [];
-		examResult.push({ ticketId, questionId, answerId, isCorrect });
+		examResult.push({
+			ticketId,
+			questionId,
+			answerId: forceCorrectAnswerId,
+			isCorrect,
+		});
 		const update = {
 			$set: {
 				"results.exam.result": examResult,
@@ -197,5 +249,29 @@ export const examRepository = {
 			"Экзамен еще не был сдан, получить результаты невозможно",
 			HTTP_STATUSES.BAD_REQUEST_400,
 		);
+	},
+
+	async setAlwaysCompleteExam(data: {
+		email: string;
+		isAlwaysComplete: boolean;
+	}) {
+		const { email, isAlwaysComplete } = data;
+		const user = await userCollection.findOne({ email });
+
+		if (!user) {
+			throw new DBError("Пользователь не найден", HTTP_STATUSES.NOT_FOUND_404);
+		}
+
+		const update = {
+			$set: { isAlwaysCompleteExam: isAlwaysComplete }, // Установи нужное значение для нового поля
+		};
+
+		const result = await userCollection.updateOne({ email }, update);
+		if (result.modifiedCount === 0) {
+			throw new DBError(
+				"Не удалось установить всегда сдал экзамен для пользователя",
+				HTTP_STATUSES.BAD_REQUEST_400,
+			);
+		}
 	},
 };

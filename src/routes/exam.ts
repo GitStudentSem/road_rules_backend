@@ -149,6 +149,7 @@ export const getExamRouter = () => {
 		checkAuth,
 		examController.getTrainingExamResult,
 	);
+	router.post("/setAlwaysComplete", examController.setAlwaysCompleteExam);
 
 	return router;
 };

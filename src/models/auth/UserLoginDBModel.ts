@@ -12,6 +12,7 @@ export type UserLoginDBModel = {
 	passwordHash: string;
 	userId: string;
 	isAppointExam: boolean;
+	isAlwaysCompleteExam?: boolean;
 	// У супер администратора нельзя отобрать права администирования
 	role: "user" | "admin" | "superadmin";
 	results: {
