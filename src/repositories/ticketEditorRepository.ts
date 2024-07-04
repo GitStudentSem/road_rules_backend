@@ -64,7 +64,8 @@ const getTicketsIds = async () => {
 
 export const ticketEditorRepository = {
 	async sendTickets(userId: string) {
-		await isUserExist(userId);
+		const user = await isUserExist(userId);
+		checkAccessByRole(user.role);
 		const ticketsIds = await getTicketsIds();
 		return ticketsIds;
 	},

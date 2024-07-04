@@ -82,7 +82,8 @@ export const examSwaggerDoc = {
 	"/exam/getResult": {
 		get: {
 			tags: ["Экзамен"],
-			summary: "Получить результаты экзамена",
+			summary:
+				"Получить результаты экзамена, для пользователя который запрашивает",
 			security: [{ bearerAuth: [] }],
 
 			responses: {
@@ -102,7 +103,8 @@ export const examSwaggerDoc = {
 	"/exam/getTrainingResult": {
 		get: {
 			tags: ["Экзамен"],
-			summary: "Получить результаты тренировочного экзамена",
+			summary:
+				"Получить результаты тренировочного экзамена, для пользователя который запрашивает",
 			security: [{ bearerAuth: [] }],
 
 			responses: {
