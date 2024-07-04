@@ -105,7 +105,7 @@ const setAlwaysCompleteExam = async (
 	const mistakesCount =
 		user.results.exam?.result.filter((result) => !result.isCorrect) || [];
 
-	if (mistakesCount?.length > 1) {
+	if (mistakesCount?.length > 0) {
 		const correctAnswerId = await getCorrectAnswer(ticketId, questionId);
 		return correctAnswerId;
 	}
@@ -148,7 +148,7 @@ export const examRepository = {
 		questionId: string;
 		answerId: string;
 	}) {
-		const { userId, ticketId, questionId, answerId } = data;
+		let { userId, ticketId, questionId, answerId } = data;
 
 		const user = await isUserExist(userId);
 		const question = await isQuestionExist(ticketId, questionId);
@@ -158,33 +158,17 @@ export const examRepository = {
 			questionId,
 		);
 		const correctAnswerId = await getCorrectAnswer(ticketId, questionId);
-		if (!forceCorrectAnswerId) {
-			const isCorrect = correctAnswerId === answerId;
 
-			let examResult = user.results.exam?.result;
-
-			if (!examResult) examResult = [];
-			examResult.push({ ticketId, questionId, answerId, isCorrect });
-			const update = {
-				$set: {
-					"results.exam.result": examResult,
-				},
-			};
-
-			await userCollection.updateOne({ userId }, update, { upsert: true });
-
-			return { help: question.help, correctAnswerId, isCorrect };
+		if (forceCorrectAnswerId) {
+			console.log("forceCorrectAnswerId", forceCorrectAnswerId);
+			answerId = forceCorrectAnswerId;
 		}
+		const isCorrect = correctAnswerId === answerId;
 
 		let examResult = user.results.exam?.result;
-		const isCorrect = true;
+
 		if (!examResult) examResult = [];
-		examResult.push({
-			ticketId,
-			questionId,
-			answerId: forceCorrectAnswerId,
-			isCorrect,
-		});
+		examResult.push({ ticketId, questionId, answerId, isCorrect });
 		const update = {
 			$set: {
 				"results.exam.result": examResult,
