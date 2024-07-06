@@ -70,9 +70,15 @@ export const adminLogin = async (
 	}
 };
 
-export const deleteUser = async (req: Request, res: Response<ErrorType>) => {
+export const deleteUser = async (
+	req: RequestWithBody<{ email: string }>,
+	res: Response<ErrorType>,
+) => {
 	try {
-		await authService.deleteUser({ userId: req.userId || "" });
+		await authService.deleteUser({
+			userId: req.userId || "",
+			email: req.body.email,
+		});
 
 		res.sendStatus(HTTP_STATUSES.NO_CONTENT_204);
 	} catch (error) {

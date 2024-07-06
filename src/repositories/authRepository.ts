@@ -87,9 +87,12 @@ export const authRepository = {
 		return user;
 	},
 
-	async deleteUser(data: { userId: string }) {
-		const { userId } = data;
-		await isUserExist(userId);
-		await userCollection.deleteOne({ userId });
+	async deleteUser(data: { userId: string; email: string }) {
+		const { userId, email } = data;
+		const user = await isUserExist(userId);
+		if (user.role === "user") {
+			throw new DBError("Доступ запрещен", HTTP_STATUSES.BAD_REQUEST_400);
+		}
+		await userCollection.deleteOne({ email });
 	},
 };

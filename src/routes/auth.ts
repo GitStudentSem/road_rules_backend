@@ -12,6 +12,7 @@ import { BodyRegisterModelSwaggerDoc } from "../models/auth/BodyRegisterModel";
 
 import { UserLoginViewModelSwaggerDoc } from "../models/auth/UserLoginViewModel";
 import { UserRegisterViewModelSwaggerDoc } from "../models/auth/UserRegisterViewModel";
+import { defaultSwaggerValues } from "../assets/settings";
 
 export const registerSwaggerDoc = {
 	"/auth/register": {
@@ -93,6 +94,22 @@ export const registerSwaggerDoc = {
 			tags: ["Авторизация"],
 			summary: "Удалить пользователя по почте",
 			security: [{ bearerAuth: [] }],
+			requestBody: {
+				content: {
+					"application/json": {
+						schema: {
+							type: "object",
+							properties: {
+								email: {
+									type: "string",
+									default: defaultSwaggerValues.email,
+									description: "Поста пользователя",
+								},
+							},
+						},
+					},
+				},
+			},
 			responses: {
 				204: {
 					description: "Пользователь удален",
