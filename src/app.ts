@@ -14,6 +14,13 @@ app.use(cors());
 
 app.use(express.json({}));
 
+app.use((req, res, next) => {
+	const path = req.path;
+	if (path.includes("swagger")) return;
+	console.log(`Запрос на роут ${path} с методом ${req.method}`);
+	next();
+});
+
 app.use("/auth", getAuthRouter());
 app.use("/tickets", getTicketsRouter());
 app.use("/question", questionRouter());
