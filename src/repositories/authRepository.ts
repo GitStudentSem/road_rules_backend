@@ -93,6 +93,19 @@ export const authRepository = {
 		if (user.role === "user") {
 			throw new DBError("Доступ запрещен", HTTP_STATUSES.BAD_REQUEST_400);
 		}
+		const userForDelete = await userCollection.findOne({ email });
+		if (!userForDelete) {
+			throw new DBError(
+				"Пользователь для удаления не найден",
+				HTTP_STATUSES.NOT_FOUND_404,
+			);
+		}
+		if (userForDelete.role === "superadmin") {
+			throw new DBError(
+				"Вы не можете удалить супер администратора",
+				HTTP_STATUSES.NOT_FOUND_404,
+			);
+		}
 		await userCollection.deleteOne({ email });
 	},
 };
