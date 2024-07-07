@@ -50,7 +50,7 @@ export const userEditorRepository = {
 
 		if (result.matchedCount === 0) {
 			throw new DBError(
-				"При обновлении роли произошло ошибка",
+				"При обновлении роли произошла ошибка",
 				HTTP_STATUSES.BAD_REQUEST_400,
 			);
 		}
