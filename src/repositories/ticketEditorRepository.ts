@@ -44,22 +44,23 @@ const checkAccessByRole = (role: string) => {
 
 const getTicketsIds = async () => {
 	const ticketsIds = await ticketCollection
-		.aggregate<{ ticketId: string }>([
+		.aggregate<{ ticketId: string; createdAt: Date }>([
 			// Сортируем документы по полю 'createdAt'
 			{ $sort: { createdAt: 1 } },
 
 			// Группируем по 'ticketId' и добавляем уникальные ticketId в массив
 			{ $group: { _id: "$ticketId", createdAt: { $first: "$createdAt" } } },
 
-			// Проектируем только ticketId
-			{ $project: { _id: 0, ticketId: "$_id" } },
+			// Проектируем ticketId и createdAt
+			{ $project: { _id: 0, ticketId: "$_id", createdAt: 1 } },
 
 			// Финальная сортировка по полю 'createdAt'
 			{ $sort: { createdAt: 1 } },
 		])
 		.toArray();
 
-	return ticketsIds;
+	const onlyTicketIds = ticketsIds.map(({ ticketId }) => ({ ticketId }));
+	return onlyTicketIds;
 };
 
 export const ticketEditorRepository = {

@@ -48,8 +48,10 @@ const isUserExist = async (userId: string) => {
 const getTicketsIds = async () => {
 	const query = { questions: { $ne: [] } };
 	const projection = { ticketId: 1 };
-
-	const cursor = await ticketCollection.find(query, { projection }).toArray();
+	const cursor = await ticketCollection
+		.find(query, { projection })
+		.sort({ createdAt: 1 })
+		.toArray();
 
 	const ticketIds: { ticketId: string }[] = [];
 	for (const doc of cursor) {
