@@ -67,7 +67,7 @@ export const registerSwaggerDoc = {
 	"/auth/adminLogin": {
 		post: {
 			tags: ["Авторизация"],
-			summary: "Логин администратора",
+			summary: "Логин для панели администратора, защищен проверкой на роль",
 			requestBody: {
 				content: {
 					"application/json": {
