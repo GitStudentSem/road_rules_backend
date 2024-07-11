@@ -17,9 +17,9 @@ app.use(express.json({}));
 
 app.use(logRoutes);
 
-app.use("/auth", getAuthRouter());
-app.use("/tickets", getTicketsRouter());
-app.use("/question", questionRouter());
-app.use("/exam", getExamRouter());
-app.use("/ticketEditor", ticketEditorRouter());
-app.use("/userEditor", userEditorRouter());
+app.use("/api/auth", getAuthRouter());
+app.use("/api/tickets", getTicketsRouter());
+app.use("/api/question", questionRouter());
+app.use("/api/exam", getExamRouter());
+app.use("/api/ticketEditor", ticketEditorRouter());
+app.use("/api/userEditor", userEditorRouter());

@@ -3,7 +3,7 @@ import { colors, resetStyle } from "./logStyles";
 export const logRoutes = (req, res, next) => {
 	const path = req.path;
 
-	if (path.includes("swagger")) return next();
+	if (!path.includes("api/")) return next();
 
 	const now = new Date();
 	const year = now.getFullYear();

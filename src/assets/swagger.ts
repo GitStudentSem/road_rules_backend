@@ -36,39 +36,42 @@ const options: swaggerJSDoc.Options = {
 			},
 		],
 		paths: {
-			"/auth/register": registerSwaggerDoc["/auth/register"],
-			"/auth/login": registerSwaggerDoc["/auth/login"],
-			"/auth/adminLogin": registerSwaggerDoc["/auth/adminLogin"],
-			"/auth/deleteUser": registerSwaggerDoc["/auth/deleteUser"],
+			"/api/auth/register": registerSwaggerDoc["/api/auth/register"],
+			"/api/auth/login": registerSwaggerDoc["/api/auth/login"],
+			"/api/auth/adminLogin": registerSwaggerDoc["/api/auth/adminLogin"],
+			"/api/auth/deleteUser": registerSwaggerDoc["/api/auth/deleteUser"],
 
-			"/userEditor/getAllUsers":
-				userEditorSwaggerDoc["/userEditor/getAllUsers"],
-			"/userEditor/role": userEditorSwaggerDoc["/userEditor/role"],
-			"/userEditor/appoint": userEditorSwaggerDoc["/userEditor/appoint"],
+			"/api/userEditor/getAllUsers":
+				userEditorSwaggerDoc["/api/userEditor/getAllUsers"],
+			"/api/userEditor/role": userEditorSwaggerDoc["/api/userEditor/role"],
+			"/api/userEditor/appoint":
+				userEditorSwaggerDoc["/api/userEditor/appoint"],
 
-			"/ticketEditor/createTicket":
-				ticketEditorSwaggerDoc["/ticketEditor/createTicket"],
-			"/ticketEditor/createQuestion":
-				ticketEditorSwaggerDoc["/ticketEditor/createQuestion"],
-			"/ticketEditor/getQuestions":
-				ticketEditorSwaggerDoc["/ticketEditor/getQuestions"],
-			"/ticketEditor/editQuestion":
-				ticketEditorSwaggerDoc["/ticketEditor/editQuestion"],
-			"/ticketEditor/deleteTicket":
-				ticketEditorSwaggerDoc["/ticketEditor/deleteTicket"],
-			"/ticketEditor/deleteQuestion":
-				ticketEditorSwaggerDoc["/ticketEditor/deleteQuestion"],
-			"/ticketEditor/tickets": ticketEditorSwaggerDoc["/ticketEditor/tickets"],
+			"/api/ticketEditor/createTicket":
+				ticketEditorSwaggerDoc["/api/ticketEditor/createTicket"],
+			"/api/ticketEditor/createQuestion":
+				ticketEditorSwaggerDoc["/api/ticketEditor/createQuestion"],
+			"/api/ticketEditor/getQuestions":
+				ticketEditorSwaggerDoc["/api/ticketEditor/getQuestions"],
+			"/api/ticketEditor/editQuestion":
+				ticketEditorSwaggerDoc["/api/ticketEditor/editQuestion"],
+			"/api/ticketEditor/deleteTicket":
+				ticketEditorSwaggerDoc["/api/ticketEditor/deleteTicket"],
+			"/api/ticketEditor/deleteQuestion":
+				ticketEditorSwaggerDoc["/api/ticketEditor/deleteQuestion"],
+			"/api/ticketEditor/tickets":
+				ticketEditorSwaggerDoc["/api/ticketEditor/tickets"],
 
-			"/exam": examSwaggerDoc["/exam"],
-			"/exam/training": examSwaggerDoc["/exam/training"],
-			"/exam/getResult": examSwaggerDoc["/exam/getResult"],
-			"/exam/getTrainingResult": examSwaggerDoc["/exam/getTrainingResult"],
+			"/api/exam": examSwaggerDoc["/api/exam"],
+			"/api/exam/training": examSwaggerDoc["/api/exam/training"],
+			"/api/exam/getResult": examSwaggerDoc["/api/exam/getResult"],
+			"/api/exam/getTrainingResult":
+				examSwaggerDoc["/api/exam/getTrainingResult"],
 
-			"/tickets": ticketsSwaggerDoc["/tickets"],
-			"/tickets/{ticketId}": ticketsSwaggerDoc["/tickets/{ticketId}"],
+			"/api/tickets": ticketsSwaggerDoc["/api/tickets"],
+			"/api/tickets/{ticketId}": ticketsSwaggerDoc["/api/tickets/{ticketId}"],
 
-			"/question": questionSwaggerDoc["/question"],
+			"/api/question": questionSwaggerDoc["/api/question"],
 		},
 	},
 	apis: ["./src/routes/*.ts", "./src/models/**/*.ts"],
@@ -77,11 +80,11 @@ const options: swaggerJSDoc.Options = {
 const swaggerSpec = swaggerJSDoc(options);
 const swaggerDocs = (app: Express, port: number) => {
 	// swagger page
-	app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+	app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 	//Docs is JSON format
 
-	app.get("/docs.json", (req: Request, res: Response) => {
+	app.get("/api/docs.json", (req: Request, res: Response) => {
 		res.setHeader("Content-Type", "application/json");
 		res.send(swaggerSpec);
 	});

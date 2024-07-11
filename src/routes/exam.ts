@@ -9,7 +9,7 @@ import { SendExamAnswerViewModelSwaggerDoc } from "../models/exam/SendExamAnswer
 import { GetExamResultViewModelSwaggerDoc } from "../models/exam/GetExamResult";
 
 export const examSwaggerDoc = {
-	"/exam": {
+	"/api/exam": {
 		get: {
 			tags: ["Экзамен"],
 			summary: "Получить вопросы по экзамену",
@@ -52,7 +52,7 @@ export const examSwaggerDoc = {
 		},
 	},
 
-	"/exam/training": {
+	"/api/exam/training": {
 		post: {
 			tags: ["Экзамен"],
 			summary: "Отправить ответ на вопрос по тренировочному экзамену",
@@ -79,7 +79,7 @@ export const examSwaggerDoc = {
 		},
 	},
 
-	"/exam/getResult": {
+	"/api/exam/getResult": {
 		get: {
 			tags: ["Экзамен"],
 			summary:
@@ -100,7 +100,7 @@ export const examSwaggerDoc = {
 		},
 	},
 
-	"/exam/getTrainingResult": {
+	"/api/exam/getTrainingResult": {
 		get: {
 			tags: ["Экзамен"],
 			summary:

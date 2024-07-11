@@ -10,7 +10,7 @@ import { SendTicketResultViewModelModelSwaggerDoc } from "../models/tickets/Send
 import { defaultSwaggerValues } from "../assets/settings";
 
 export const ticketsSwaggerDoc = {
-	"/tickets": {
+	"/api/tickets": {
 		get: {
 			tags: ["Билеты"],
 			summary: "Получить список билетов для выбора, без пустых билетов",
@@ -52,7 +52,7 @@ export const ticketsSwaggerDoc = {
 		},
 	},
 
-	"/tickets/{ticketId}": {
+	"/api/tickets/{ticketId}": {
 		get: {
 			tags: ["Билеты"],
 			summary: "Получить указанный билет",

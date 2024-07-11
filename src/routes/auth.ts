@@ -15,7 +15,7 @@ import { UserRegisterViewModelSwaggerDoc } from "../models/auth/UserRegisterView
 import { defaultSwaggerValues } from "../assets/settings";
 
 export const registerSwaggerDoc = {
-	"/auth/register": {
+	"/api/auth/register": {
 		post: {
 			tags: ["Авторизация"],
 			summary: "Регистрация нового пользователя",
@@ -40,7 +40,7 @@ export const registerSwaggerDoc = {
 		},
 	},
 
-	"/auth/login": {
+	"/api/auth/login": {
 		post: {
 			tags: ["Авторизация"],
 			summary: "Логин пользователя",
@@ -64,7 +64,7 @@ export const registerSwaggerDoc = {
 			},
 		},
 	},
-	"/auth/adminLogin": {
+	"/api/auth/adminLogin": {
 		post: {
 			tags: ["Авторизация"],
 			summary: "Логин для панели администратора, защищен проверкой на роль",
@@ -89,7 +89,7 @@ export const registerSwaggerDoc = {
 		},
 	},
 
-	"/auth/deleteUser": {
+	"/api/auth/deleteUser": {
 		delete: {
 			tags: ["Авторизация"],
 			summary: "Удалить пользователя по почте",

@@ -13,7 +13,7 @@ import { SendTicketsViewModelSwaggerDoc } from "../models/tickets/SendTicketsVie
 const upload = multer({ storage: multer.memoryStorage() });
 
 export const ticketEditorSwaggerDoc = {
-	"/ticketEditor/createTicket": {
+	"/api/ticketEditor/createTicket": {
 		get: {
 			tags: ["Редактор билетов"],
 			summary: "Создать пустой билет",
@@ -39,7 +39,7 @@ export const ticketEditorSwaggerDoc = {
 			},
 		},
 	},
-	"/ticketEditor/getQuestions": {
+	"/api/ticketEditor/getQuestions": {
 		post: {
 			tags: ["Редактор билетов"],
 			summary: "Получить вопросы в билете",
@@ -79,7 +79,7 @@ export const ticketEditorSwaggerDoc = {
 		},
 	},
 
-	"/ticketEditor/createQuestion": {
+	"/api/ticketEditor/createQuestion": {
 		post: {
 			tags: ["Редактор билетов"],
 			summary: "Добавить вопрос в билет",
@@ -106,7 +106,7 @@ export const ticketEditorSwaggerDoc = {
 		},
 	},
 
-	"/ticketEditor/editQuestion": {
+	"/api/ticketEditor/editQuestion": {
 		patch: {
 			tags: ["Редактор билетов"],
 			summary: "Изменить существующий вопрос",
@@ -133,7 +133,7 @@ export const ticketEditorSwaggerDoc = {
 		},
 	},
 
-	"/ticketEditor/deleteTicket": {
+	"/api/ticketEditor/deleteTicket": {
 		delete: {
 			tags: ["Редактор билетов"],
 			summary: "Удалить билет",
@@ -163,7 +163,7 @@ export const ticketEditorSwaggerDoc = {
 		},
 	},
 
-	"/ticketEditor/deleteQuestion": {
+	"/api/ticketEditor/deleteQuestion": {
 		delete: {
 			tags: ["Редактор билетов"],
 			summary: "Удалить вопрос из билета",
@@ -182,7 +182,7 @@ export const ticketEditorSwaggerDoc = {
 		},
 	},
 
-	"/ticketEditor/tickets": {
+	"/api/ticketEditor/tickets": {
 		get: {
 			tags: ["Редактор билетов"],
 			summary: "Получить список билетов для выбора, включая пустые",

@@ -8,7 +8,7 @@ import { BodyAppointExamSwaggerDoc } from "../models/exam/BodyAppointExam";
 import { defaultSwaggerValues } from "../assets/settings";
 
 export const userEditorSwaggerDoc = {
-	"/userEditor/role": {
+	"/api/userEditor/role": {
 		patch: {
 			tags: ["Редактор пользователей"],
 			summary: "Установить роль для пользователя",
@@ -42,7 +42,7 @@ export const userEditorSwaggerDoc = {
 			},
 		},
 	},
-	"/userEditor/getAllUsers": {
+	"/api/userEditor/getAllUsers": {
 		get: {
 			tags: ["Редактор пользователей"],
 			summary: "Получить всех пользователей",
@@ -63,7 +63,7 @@ export const userEditorSwaggerDoc = {
 			},
 		},
 	},
-	"/userEditor/appoint": {
+	"/api/userEditor/appoint": {
 		post: {
 			tags: ["Редактор пользователей"],
 			summary: "Назначить экзамен для пользователя",
