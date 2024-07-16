@@ -39,13 +39,14 @@ const options: swaggerJSDoc.Options = {
 			"/api/auth/register": registerSwaggerDoc["/api/auth/register"],
 			"/api/auth/login": registerSwaggerDoc["/api/auth/login"],
 			"/api/auth/adminLogin": registerSwaggerDoc["/api/auth/adminLogin"],
-			"/api/auth/deleteUser": registerSwaggerDoc["/api/auth/deleteUser"],
 
 			"/api/userEditor/getAllUsers":
 				userEditorSwaggerDoc["/api/userEditor/getAllUsers"],
 			"/api/userEditor/role": userEditorSwaggerDoc["/api/userEditor/role"],
 			"/api/userEditor/appoint":
 				userEditorSwaggerDoc["/api/userEditor/appoint"],
+			"/api/userEditor/deleteUser":
+				userEditorSwaggerDoc["/api/userEditor/deleteUser"],
 
 			"/api/ticketEditor/createTicket":
 				ticketEditorSwaggerDoc["/api/ticketEditor/createTicket"],

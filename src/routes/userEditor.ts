@@ -84,6 +84,36 @@ export const userEditorSwaggerDoc = {
 			},
 		},
 	},
+
+	"/api/userEditor/deleteUser": {
+		delete: {
+			tags: ["Редактор пользователей"],
+			summary: "Удалить пользователя по почте",
+			security: [{ bearerAuth: [] }],
+			requestBody: {
+				content: {
+					"application/json": {
+						schema: {
+							type: "object",
+							properties: {
+								email: {
+									type: "string",
+									default: defaultSwaggerValues.email,
+									description: "Поста пользователя",
+								},
+							},
+						},
+					},
+				},
+			},
+			responses: {
+				204: {
+					description: "Пользователь удален",
+				},
+				error: getErrorSwaggerDoc("Ошибка удаления пользователя"),
+			},
+		},
+	},
 };
 
 export const userEditorRouter = () => {
@@ -103,5 +133,6 @@ export const userEditorRouter = () => {
 		handleValidationErrors,
 		userEditorController.appointExam,
 	);
+	router.delete("/deleteUser", checkAuth, userEditorController.deleteUser);
 	return router;
 };

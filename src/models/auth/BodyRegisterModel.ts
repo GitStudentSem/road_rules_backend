@@ -24,8 +24,13 @@ export const BodyRegisterModelSwaggerDoc = {
 			description: "Фамилия пользователя",
 			default: "Иванов",
 		},
+		department: {
+			type: "string",
+			description: "Цех в котором работает пользователь",
+			default: "1",
+		},
 	},
-	required: ["email", "password", "firstName", "secondName"],
+	required: ["email", "password", "firstName", "secondName", "department"],
 };
 
 export type BodyRegisterModel = {
@@ -33,4 +38,5 @@ export type BodyRegisterModel = {
 	firstName: string;
 	secondName: string;
 	password: string;
+	department: string;
 };

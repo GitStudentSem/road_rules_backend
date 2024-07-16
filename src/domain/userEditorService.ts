@@ -13,6 +13,7 @@ export const userEditorService = {
 				examResults: user.results.exam,
 				role: user.role,
 				isAppointExam: user.isAppointExam,
+				department: user.department,
 			};
 		});
 		return filterdUsersData;
@@ -41,5 +42,11 @@ export const userEditorService = {
 		userId: string;
 	}) {
 		await userEditorRepository.appointExam(data);
+	},
+
+	async deleteUser(data: { userId: string; email: string }) {
+		const { userId, email } = data;
+
+		await userEditorRepository.deleteUser({ userId, email });
 	},
 };

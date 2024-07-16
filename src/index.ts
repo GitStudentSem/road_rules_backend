@@ -18,7 +18,7 @@ const startApp = async () => {
 		);
 
 		console.log(
-			`Адрес документации: ${colors.whiteblue}http://localhost:${port}/docs${resetStyle}`,
+			`Адрес документации: ${colors.whiteblue}http://localhost:${port}/api/docs${resetStyle}`,
 		);
 	});
 };

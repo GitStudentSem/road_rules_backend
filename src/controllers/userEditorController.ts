@@ -71,3 +71,23 @@ export const appointExam = async (
 		sendError({ message: "Не удалось назначить экзамен", error, res });
 	}
 };
+
+export const deleteUser = async (
+	req: RequestWithBody<{ email: string }>,
+	res: Response<ErrorType>,
+) => {
+	try {
+		await userEditorService.deleteUser({
+			userId: req.userId || "",
+			email: req.body.email,
+		});
+
+		res.sendStatus(HTTP_STATUSES.NO_CONTENT_204);
+	} catch (error) {
+		if (error instanceof DBError) {
+			res.status(error.status).json({ message: error.message });
+			return;
+		}
+		sendError({ message: "Не удалось удалить пользователя", error, res });
+	}
+};

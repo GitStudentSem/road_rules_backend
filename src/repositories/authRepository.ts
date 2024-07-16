@@ -17,8 +17,9 @@ export const authRepository = {
 		firstName: string;
 		secondName: string;
 		passwordHash: string;
+		department: string;
 	}) {
-		const { email, firstName, secondName, passwordHash } = data;
+		const { email, firstName, secondName, passwordHash, department } = data;
 
 		const isAlreadyExistUser = await userCollection.findOne({ email });
 
@@ -39,6 +40,7 @@ export const authRepository = {
 			userId,
 			isAppointExam: false,
 			role: "user",
+			department,
 			results: {},
 		});
 
@@ -85,27 +87,5 @@ export const authRepository = {
 		}
 
 		return user;
-	},
-
-	async deleteUser(data: { userId: string; email: string }) {
-		const { userId, email } = data;
-		const user = await isUserExist(userId);
-		if (user.role === "user") {
-			throw new DBError("Доступ запрещен", HTTP_STATUSES.BAD_REQUEST_400);
-		}
-		const userForDelete = await userCollection.findOne({ email });
-		if (!userForDelete) {
-			throw new DBError(
-				"Пользователь для удаления не найден",
-				HTTP_STATUSES.NOT_FOUND_404,
-			);
-		}
-		if (userForDelete.role === "superadmin") {
-			throw new DBError(
-				"Вы не можете удалить супер администратора",
-				HTTP_STATUSES.NOT_FOUND_404,
-			);
-		}
-		await userCollection.deleteOne({ email });
 	},
 };

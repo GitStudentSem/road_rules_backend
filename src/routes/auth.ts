@@ -1,10 +1,6 @@
 import express from "express";
-import {
-	isEmailValid,
-	loginValidation,
-	registerValidation,
-} from "../validations";
-import { checkAuth, handleValidationErrors } from "../midlewares";
+import { loginValidation, registerValidation } from "../validations";
+import { handleValidationErrors } from "../midlewares";
 import * as userController from "../controllers/userController";
 import { getErrorSwaggerDoc } from "../assets/getErrorSwaggerDoc";
 import { BodyLoginModelSwaggerDoc } from "../models/auth/BodyLoginModel";
@@ -12,7 +8,6 @@ import { BodyRegisterModelSwaggerDoc } from "../models/auth/BodyRegisterModel";
 
 import { UserLoginViewModelSwaggerDoc } from "../models/auth/UserLoginViewModel";
 import { UserRegisterViewModelSwaggerDoc } from "../models/auth/UserRegisterViewModel";
-import { defaultSwaggerValues } from "../assets/settings";
 
 export const registerSwaggerDoc = {
 	"/api/auth/register": {
@@ -64,6 +59,7 @@ export const registerSwaggerDoc = {
 			},
 		},
 	},
+
 	"/api/auth/adminLogin": {
 		post: {
 			tags: ["Авторизация"],
@@ -85,36 +81,6 @@ export const registerSwaggerDoc = {
 					},
 				},
 				error: getErrorSwaggerDoc("Ошибка логина"),
-			},
-		},
-	},
-
-	"/api/auth/deleteUser": {
-		delete: {
-			tags: ["Авторизация"],
-			summary: "Удалить пользователя по почте",
-			security: [{ bearerAuth: [] }],
-			requestBody: {
-				content: {
-					"application/json": {
-						schema: {
-							type: "object",
-							properties: {
-								email: {
-									type: "string",
-									default: defaultSwaggerValues.email,
-									description: "Поста пользователя",
-								},
-							},
-						},
-					},
-				},
-			},
-			responses: {
-				204: {
-					description: "Пользователь удален",
-				},
-				error: getErrorSwaggerDoc("Ошибка удаления пользователя"),
 			},
 		},
 	},
@@ -140,7 +106,6 @@ export const getAuthRouter = () => {
 		handleValidationErrors,
 		userController.adminLogin,
 	);
-	router.delete("/deleteUser", checkAuth, userController.deleteUser);
 
 	return router;
 };

@@ -45,11 +45,15 @@ export const GetAllUsersViewModelSwaggerDoc = {
 			default: "user",
 			description: "Роль пользователя",
 		},
-
 		isAppointExam: {
 			type: "boolean",
 			default: "false",
 			description: "Назначен ли экзамен для пользователя",
+		},
+		department: {
+			type: "string",
+			default: "1",
+			description: "Цех в котором работает пользователь",
 		},
 		examResults: {
 			type: "object",
@@ -77,5 +81,6 @@ export type GetAllUsersViewModel = {
 	secondName: string;
 	isAppointExam: boolean;
 	role: "superadmin" | "admin" | "user";
+	department: string;
 	examResults?: { passAt: number; result: Result[] };
 };

@@ -8,7 +8,7 @@ import { settings } from "../assets/settings";
 
 export const authService = {
 	async register(data: BodyRegisterModel) {
-		const { email, firstName, secondName, password } = data;
+		const { email, firstName, secondName, password, department } = data;
 		const salt = await bcrypt.genSalt(10);
 		const passwordHash = await bcrypt.hash(password, salt);
 
@@ -17,6 +17,7 @@ export const authService = {
 			firstName,
 			secondName,
 			passwordHash,
+			department,
 		});
 
 		jwt.sign({ userId: registerdUser.userId }, settings.JWT_SECRET, {
@@ -83,11 +84,5 @@ export const authService = {
 		});
 
 		return { firstName, secondName, token, isAppointExam };
-	},
-
-	async deleteUser(data: { userId: string; email: string }) {
-		const { userId, email } = data;
-
-		await authRepository.deleteUser({ userId, email });
 	},
 };

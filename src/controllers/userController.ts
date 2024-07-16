@@ -1,5 +1,5 @@
 import { sendError } from "../assets/requestAssets";
-import type { Request, Response } from "express";
+import type { Response } from "express";
 import type { ErrorType, RequestWithBody } from "../types";
 import type { BodyRegisterModel } from "../models/auth/BodyRegisterModel";
 import type { UserRegisterViewModel } from "../models/auth/UserRegisterViewModel";
@@ -14,13 +14,14 @@ export const register = async (
 	res: Response<UserRegisterViewModel | ErrorType>,
 ) => {
 	try {
-		const { email, firstName, secondName, password } = req.body;
+		const { email, firstName, secondName, password, department } = req.body;
 
 		const registerdUser = await authService.register({
 			email,
 			firstName,
 			secondName,
 			password,
+			department,
 		});
 
 		res.status(HTTP_STATUSES.OK_200).json(registerdUser);
@@ -67,25 +68,5 @@ export const adminLogin = async (
 			return;
 		}
 		sendError({ message: "Не удалось войти в систему", error, res });
-	}
-};
-
-export const deleteUser = async (
-	req: RequestWithBody<{ email: string }>,
-	res: Response<ErrorType>,
-) => {
-	try {
-		await authService.deleteUser({
-			userId: req.userId || "",
-			email: req.body.email,
-		});
-
-		res.sendStatus(HTTP_STATUSES.NO_CONTENT_204);
-	} catch (error) {
-		if (error instanceof DBError) {
-			res.status(error.status).json({ message: error.message });
-			return;
-		}
-		sendError({ message: "Не удалось удалить пользователя", error, res });
 	}
 };

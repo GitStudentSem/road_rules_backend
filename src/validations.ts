@@ -56,6 +56,9 @@ export const registerValidation = [
 		.isLength({
 			min: 2,
 		}),
+	body("department", "Номер цеха не должен быть пустым").trim().isLength({
+		min: 1,
+	}),
 ];
 
 export const answerValidation = [

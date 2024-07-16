@@ -16,6 +16,7 @@ export const testRegisterUser: BodyRegisterModel = {
 	secondName: "test secondName",
 	email: "test@email.com",
 	password: "123456",
+	department: "1",
 };
 export const testLoginnedUser: BodyLoginModel = {
 	email: "test@email.com",
