@@ -5,7 +5,7 @@ import type { ErrorType, RequestWithBody } from "../types";
 import { HTTP_STATUSES } from "../utils";
 import { DBError } from "./DBError";
 
-import { ticketEditorService } from "../domain/ticketEditorService";
+import { ticketEditorService } from "../services/ticketEditorService";
 import type { CreateQuestionBody } from "../models/ticketEditor/CreateQuestionBody";
 import type { DeleteQuestionBody } from "../models/ticketEditor/DeleteQuestionBody";
 import type { EditQuestionBody } from "../models/ticketEditor/EditQuestionBody";

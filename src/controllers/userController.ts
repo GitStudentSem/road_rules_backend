@@ -7,7 +7,7 @@ import type { BodyLoginModel } from "../models/auth/BodyLoginModel";
 import type { UserLoginViewModel } from "../models/auth/UserLoginViewModel";
 import { HTTP_STATUSES } from "../utils";
 import { DBError } from "./DBError";
-import { authService } from "../domain/authService";
+import { authService } from "../services/authService";
 
 export const register = async (
 	req: RequestWithBody<BodyRegisterModel>,

@@ -3,10 +3,10 @@ import { answerValidation } from "../validations";
 import { checkAuth, handleValidationErrors } from "../midlewares";
 import { examController } from "../controllers/examController";
 import { getErrorSwaggerDoc } from "../assets/getErrorSwaggerDoc";
-import { SendExamViewModelSwaggerDoc } from "../models/exam/SendExamViewModel";
-import { BodySendExamAnswerSwaggerDoc } from "../models/exam/BodySendExamAnswer";
-import { SendExamAnswerViewModelSwaggerDoc } from "../models/exam/SendExamAnswerViewModel";
-import { GetExamResultViewModelSwaggerDoc } from "../models/exam/GetExamResult";
+import { ViewSendExamSwaggerDoc } from "../types/controllers/examController";
+import { BodySendExamAnswerSwaggerDoc } from "../types/controllers/examController";
+import { ViewSendExamAnswerSwaggerDoc } from "../types/controllers/examController";
+import { ViewGetExamResultSwaggerDoc } from "../types/controllers/examController";
 
 export const examSwaggerDoc = {
 	"/api/exam": {
@@ -19,7 +19,7 @@ export const examSwaggerDoc = {
 					description: "Экзамен получен",
 					content: {
 						"application/json": {
-							schema: SendExamViewModelSwaggerDoc,
+							schema: ViewSendExamSwaggerDoc,
 						},
 					},
 				},
@@ -43,7 +43,7 @@ export const examSwaggerDoc = {
 					description: "Ответ успешно отправлен",
 					content: {
 						"application/json": {
-							schema: SendExamAnswerViewModelSwaggerDoc,
+							schema: ViewSendExamAnswerSwaggerDoc,
 						},
 					},
 				},
@@ -70,7 +70,7 @@ export const examSwaggerDoc = {
 					description: "Ответ успешно отправлен",
 					content: {
 						"application/json": {
-							schema: SendExamAnswerViewModelSwaggerDoc,
+							schema: ViewSendExamAnswerSwaggerDoc,
 						},
 					},
 				},
@@ -91,7 +91,7 @@ export const examSwaggerDoc = {
 					description: "Результат успешно отправлен",
 					content: {
 						"application/json": {
-							schema: GetExamResultViewModelSwaggerDoc,
+							schema: ViewGetExamResultSwaggerDoc,
 						},
 					},
 				},
@@ -112,7 +112,7 @@ export const examSwaggerDoc = {
 					description: "Результат успешно отправлен",
 					content: {
 						"application/json": {
-							schema: GetExamResultViewModelSwaggerDoc,
+							schema: ViewGetExamResultSwaggerDoc,
 						},
 					},
 				},

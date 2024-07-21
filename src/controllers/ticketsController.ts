@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import { sendError } from "../assets/requestAssets";
-import { ticketService } from "../domain/ticketService";
+import { ticketService } from "../services/ticketService";
 import type { BodySendTicketResult } from "../models/tickets/BodySendTicketResult";
 import type { SendTicketResultViewModel } from "../models/tickets/SendTicketResultViewModel";
 import type { SendTicketViewModel } from "../models/tickets/SendTicketViewModel";

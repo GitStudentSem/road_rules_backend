@@ -2,7 +2,7 @@ import type { Response } from "express";
 import { sendError } from "../assets/requestAssets";
 import type { ErrorType, RequestWithBody } from "../types";
 import { DBError } from "./DBError";
-import { questionService } from "../domain/questionService";
+import { questionService } from "../services/questionService";
 import type { CreateQuestionDBModel } from "../models/ticketEditor/CreateQuestionDBModel";
 import type { QuestionViewModel } from "../models/ticketEditor/QuestionViewModel";
 

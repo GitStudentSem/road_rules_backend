@@ -3,7 +3,7 @@ import type { Request, Response } from "express";
 import type { ErrorType, RequestWithBody } from "../types";
 import { HTTP_STATUSES } from "../utils";
 import { DBError } from "./DBError";
-import { userEditorService } from "../domain/userEditorService";
+import { userEditorService } from "../services/userEditorService";
 import type { GetAllUsersViewModel } from "../models/auth/GetAllUsersViewModel";
 import type { BodyAppointExam } from "../models/exam/BodyAppointExam";
 

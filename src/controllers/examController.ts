@@ -1,16 +1,18 @@
 import { sendError } from "../assets/requestAssets";
 import type { Request, Response } from "express";
 import type { ErrorType, RequestWithBody } from "../types";
-
-import type { SendExamViewModel } from "../models/exam/SendExamViewModel";
-import type { SendExamAnswerViewModel } from "../models/exam/SendExamAnswerViewModel";
-import type { BodySendExamAnswer } from "../models/exam/BodySendExamAnswer";
+import type {
+	BodySetAlwaysCompleteExam,
+	ViewSendExam,
+} from "../types/controllers/examController";
+import type { ViewSendExamAnswer } from "../types/controllers/examController";
+import type { BodySendExamAnswer } from "../types/controllers/examController";
 import { DBError } from "./DBError";
-import { examService } from "../domain/examService";
-import type { GetExamResult } from "../models/exam/GetExamResult";
+import { examService } from "../services/examService";
+import type { ViewGetExamResult } from "../types/controllers/examController";
 
 export const examController = {
-	async sendExam(req: Request, res: Response<SendExamViewModel[] | ErrorType>) {
+	async sendExam(req: Request, res: Response<ViewSendExam[] | ErrorType>) {
 		try {
 			const exam = await examService.sendExam(req.userId || "");
 
@@ -26,7 +28,7 @@ export const examController = {
 
 	async sendExamAnswer(
 		req: RequestWithBody<BodySendExamAnswer>,
-		res: Response<SendExamAnswerViewModel | ErrorType>,
+		res: Response<ViewSendExamAnswer | ErrorType>,
 	) {
 		try {
 			const result = await examService.sendExamAnswer({
@@ -52,7 +54,7 @@ export const examController = {
 
 	async sendTrainingExamAnswer(
 		req: RequestWithBody<BodySendExamAnswer>,
-		res: Response<SendExamAnswerViewModel | ErrorType>,
+		res: Response<ViewSendExamAnswer | ErrorType>,
 	) {
 		try {
 			const result = await examService.sendTrainingExamAnswer({
@@ -78,7 +80,7 @@ export const examController = {
 
 	async getExamResult(
 		req: Request,
-		res: Response<GetExamResult[] | ErrorType>,
+		res: Response<ViewGetExamResult[] | ErrorType>,
 	) {
 		try {
 			const result = await examService.getExamResult(req.userId || "");
@@ -99,7 +101,7 @@ export const examController = {
 
 	async getTrainingExamResult(
 		req: Request,
-		res: Response<GetExamResult[] | ErrorType>,
+		res: Response<ViewGetExamResult[] | ErrorType>,
 	) {
 		try {
 			const result = await examService.getTrainingExamResult(req.userId || "");
@@ -119,8 +121,8 @@ export const examController = {
 	},
 
 	async setAlwaysCompleteExam(
-		req: RequestWithBody<{ email: string; isAlwaysComplete: boolean }>,
-		res: Response<GetExamResult[] | ErrorType>,
+		req: RequestWithBody<BodySetAlwaysCompleteExam>,
+		res: Response<ViewGetExamResult[] | ErrorType>,
 	) {
 		try {
 			const { email, isAlwaysComplete } = req.body;
