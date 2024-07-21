@@ -32,7 +32,6 @@ export const CreateQuestionBodySwaggerDoc: OpenAPIV3.SchemaObject = {
 		answers: {
 			type: "array",
 			description: "Варианты ответов на вопрос",
-
 			items: {
 				type: "string",
 				default: "Только направо",
@@ -40,13 +39,13 @@ export const CreateQuestionBodySwaggerDoc: OpenAPIV3.SchemaObject = {
 			},
 		},
 	},
-	required: ["ticketId", "question", "help", "correctAnswer", "answers"],
+	required: ["ticketId", "question", "correctAnswer", "answers"],
 };
 export type CreateQuestionBody = {
 	img?: ArrayBuffer;
 	ticketId: string;
 	question: string;
-	help: string;
+	help?: string;
 	correctAnswer: number;
 	answers: string[];
 };

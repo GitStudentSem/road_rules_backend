@@ -203,7 +203,9 @@ export const ticketEditorService = {
 		return questionData;
 	},
 
-	async createQuestion(data: { userId: string } & CreateQuestionBody) {
+	async createQuestion(
+		data: CreateQuestionBody & { userId: string; help: string },
+	) {
 		const { img, ticketId, question, help, correctAnswer, answers, userId } =
 			data;
 
@@ -228,7 +230,9 @@ export const ticketEditorService = {
 		});
 	},
 
-	async editQuestion(data: { userId: string } & EditQuestionBody) {
+	async editQuestion(
+		data: EditQuestionBody & { userId: string; help: string },
+	) {
 		const {
 			img,
 			ticketId,

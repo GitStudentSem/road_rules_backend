@@ -45,21 +45,14 @@ export const EditQuestionBodySwaggerDoc: OpenAPIV3.SchemaObject = {
 			},
 		},
 	},
-	required: [
-		"ticketId",
-		"questionId",
-		"question",
-		"help",
-		"correctAnswer",
-		"answers",
-	],
+	required: ["ticketId", "questionId", "question", "correctAnswer", "answers"],
 };
 export type EditQuestionBody = {
 	img?: ArrayBuffer;
 	ticketId: string;
 	questionId: string;
 	question: string;
-	help: string;
+	help?: string;
 	correctAnswer: number;
 	answers: string[];
 };
