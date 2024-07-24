@@ -160,7 +160,6 @@ export const examRepository = {
 		const correctAnswerId = await getCorrectAnswer(ticketId, questionId);
 
 		if (forceCorrectAnswerId) {
-			console.log("forceCorrectAnswerId", forceCorrectAnswerId);
 			answerId = forceCorrectAnswerId;
 		}
 		const isCorrect = correctAnswerId === answerId;
@@ -214,12 +213,22 @@ export const examRepository = {
 
 		const result = user.results.exam;
 
-		if (result) return result;
+		if (!result) {
+			throw new DBError(
+				"Экзамен еще не был сдан, получить результаты невозможно",
+				HTTP_STATUSES.BAD_REQUEST_400,
+			);
+		}
 
-		throw new DBError(
-			"Экзамен еще не был сдан, получить результаты невозможно",
-			HTTP_STATUSES.BAD_REQUEST_400,
-		);
+		const update = {
+			$set: {
+				isAppointExam: false,
+			},
+		};
+
+		await userCollection.updateOne({ userId }, update, { upsert: true });
+
+		return result;
 	},
 
 	async getTrainingExamResult(userId: string) {

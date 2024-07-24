@@ -1,6 +1,30 @@
 import { userEditorRepository } from "../repositories/userEditorRepository";
 import { DBError } from "../controllers/DBError";
 import { HTTP_STATUSES } from "../utils";
+import type { CreateQuestionDBModel } from "../models/ticketEditor/CreateQuestionDBModel";
+import { ticketRepository } from "../repositories/ticketRepository";
+import type { Result } from "../models/auth/UserLoginDBModel";
+import type { ViewClearQuestionInfo } from "../types/controllers/userEditorController";
+
+const removeUnusedInfoFromQuestion = (
+	question: CreateQuestionDBModel,
+	result: Result,
+): ViewClearQuestionInfo => {
+	return {
+		userResultInfo: {
+			isCorrect: result.isCorrect,
+			ticketId: result.ticketId,
+			questionId: result.questionId,
+			answerId: result.answerId,
+		},
+		questionInfo: {
+			question: question.question,
+			img: question.imgInfo.img,
+			help: question.help,
+			answers: question.answers,
+		},
+	};
+};
 
 export const userEditorService = {
 	async getAllUsers(userId: string) {
@@ -48,5 +72,28 @@ export const userEditorService = {
 		const { userId, email } = data;
 
 		await userEditorRepository.deleteUser({ userId, email });
+	},
+
+	async getExamResult(data: {
+		email: string;
+		userId: string;
+	}) {
+		const examResult = await userEditorRepository.getExamResult({
+			email: data.email,
+			userId: data.userId,
+		});
+
+		const questions: ViewClearQuestionInfo[] = [];
+
+		for (const result of examResult) {
+			const question = await ticketRepository.getQuestionInTicket({
+				ticketId: result.ticketId,
+				questionId: result.questionId,
+			});
+
+			questions.push(removeUnusedInfoFromQuestion(question, result));
+		}
+
+		return questions;
 	},
 };

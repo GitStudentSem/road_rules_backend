@@ -47,6 +47,8 @@ const options: swaggerJSDoc.Options = {
 				userEditorSwaggerDoc["/api/userEditor/appoint"],
 			"/api/userEditor/deleteUser":
 				userEditorSwaggerDoc["/api/userEditor/deleteUser"],
+			"/api/userEditor/getExamResult":
+				userEditorSwaggerDoc["/api/userEditor/getExamResult"],
 
 			"/api/ticketEditor/createTicket":
 				ticketEditorSwaggerDoc["/api/ticketEditor/createTicket"],

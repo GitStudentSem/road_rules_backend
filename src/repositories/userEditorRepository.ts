@@ -97,4 +97,24 @@ export const userEditorRepository = {
 		}
 		await userCollection.deleteOne({ email });
 	},
+
+	async getExamResult(data: {
+		email: string;
+		userId: string;
+	}) {
+		const { email, userId } = data;
+		const user = await isUserExist(userId);
+		if (user.role === "user") {
+			throw new DBError("Доступ запрещен", HTTP_STATUSES.BAD_REQUEST_400);
+		}
+
+		const userForResultsExam = await userCollection.findOne({ email });
+		if (!userForResultsExam) {
+			throw new DBError(
+				"Пользователь с таким email не найден",
+				HTTP_STATUSES.NOT_FOUND_404,
+			);
+		}
+		return userForResultsExam.results.exam?.result || [];
+	},
 };

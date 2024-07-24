@@ -1,11 +1,12 @@
 import express from "express";
-import * as userEditorController from "../controllers/userEditorController";
+import { userEditorController } from "../controllers/userEditorController";
 import { appointExamValidation, isEmailValid } from "../validations";
 import { checkAuth, handleValidationErrors } from "../midlewares";
 import { getErrorSwaggerDoc } from "../assets/getErrorSwaggerDoc";
 import { GetAllUsersViewModelSwaggerDoc } from "../models/auth/GetAllUsersViewModel";
 import { BodyAppointExamSwaggerDoc } from "../models/exam/BodyAppointExam";
 import { defaultSwaggerValues } from "../assets/settings";
+import { ViewClearQuestionInfoSwaggerDoc } from "../types/controllers/userEditorController";
 
 export const userEditorSwaggerDoc = {
 	"/api/userEditor/role": {
@@ -99,7 +100,7 @@ export const userEditorSwaggerDoc = {
 								email: {
 									type: "string",
 									default: defaultSwaggerValues.email,
-									description: "Поста пользователя",
+									description: "Почта пользователя",
 								},
 							},
 						},
@@ -111,6 +112,44 @@ export const userEditorSwaggerDoc = {
 					description: "Пользователь удален",
 				},
 				error: getErrorSwaggerDoc("Ошибка удаления пользователя"),
+			},
+		},
+	},
+	"/api/userEditor/getExamResult": {
+		post: {
+			tags: ["Редактор пользователей"],
+			summary: "Получить результаты экзамена пользователя",
+			security: [{ bearerAuth: [] }],
+			requestBody: {
+				content: {
+					"application/json": {
+						schema: {
+							type: "object",
+							properties: {
+								email: {
+									type: "string",
+									default: defaultSwaggerValues.email,
+									description: "Почта пользователя",
+								},
+							},
+						},
+					},
+				},
+			},
+			responses: {
+				200: {
+					description: "Результаты экзамена успешно получены",
+					content: {
+						"application/json": {
+							schema: {
+								type: "array",
+								description: "Результаты экзамена пользователя",
+								items: ViewClearQuestionInfoSwaggerDoc,
+							},
+						},
+					},
+				},
+				error: getErrorSwaggerDoc("Ошибка получения результатов"),
 			},
 		},
 	},
@@ -132,6 +171,13 @@ export const userEditorRouter = () => {
 		appointExamValidation,
 		handleValidationErrors,
 		userEditorController.appointExam,
+	);
+	router.post(
+		"/getExamResult",
+		checkAuth,
+		isEmailValid,
+		handleValidationErrors,
+		userEditorController.getExamResult,
 	);
 	router.delete("/deleteUser", checkAuth, userEditorController.deleteUser);
 	return router;

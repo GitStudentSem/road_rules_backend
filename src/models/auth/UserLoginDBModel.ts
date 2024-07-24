@@ -1,4 +1,4 @@
-type Result = {
+export type Result = {
 	isCorrect: boolean;
 	ticketId: string;
 	questionId: string;

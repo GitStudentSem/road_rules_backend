@@ -123,4 +123,13 @@ export const ticketRepository = {
 
 		return question;
 	},
+
+	async getQuestionInTicket(data: {
+		ticketId: string;
+		questionId: string;
+	}) {
+		const { ticketId, questionId } = data;
+		const question = isQuestionExist(ticketId, questionId);
+		return question;
+	},
 };
