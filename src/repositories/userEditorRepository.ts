@@ -115,6 +115,13 @@ export const userEditorRepository = {
 				HTTP_STATUSES.NOT_FOUND_404,
 			);
 		}
-		return userForResultsExam.results.exam?.result || [];
+		const result = userForResultsExam.results.exam?.result;
+		if (!result) {
+			throw new DBError(
+				"Экзамен еще не был сдан, получить результаты невозможно",
+				HTTP_STATUSES.NOT_FOUND_404,
+			);
+		}
+		return result;
 	},
 };
