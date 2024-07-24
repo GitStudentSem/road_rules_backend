@@ -91,7 +91,11 @@ export const examSwaggerDoc = {
 					description: "Результат успешно отправлен",
 					content: {
 						"application/json": {
-							schema: ViewGetExamResultSwaggerDoc,
+							schema: {
+								type: "array",
+								description: "Результаты экзамена",
+								items: ViewGetExamResultSwaggerDoc,
+							},
 						},
 					},
 				},
@@ -112,7 +116,11 @@ export const examSwaggerDoc = {
 					description: "Результат успешно отправлен",
 					content: {
 						"application/json": {
-							schema: ViewGetExamResultSwaggerDoc,
+							schema: {
+								type: "array",
+								description: "Результаты экзамена",
+								items: ViewGetExamResultSwaggerDoc,
+							},
 						},
 					},
 				},
