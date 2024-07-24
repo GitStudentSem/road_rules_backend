@@ -211,7 +211,7 @@ export const examRepository = {
 	async getExamResult(userId: string) {
 		const user = await isUserExist(userId);
 
-		const result = user.results.exam;
+		const result = user.results.exam?.result;
 
 		if (!result) {
 			throw new DBError(
@@ -234,7 +234,7 @@ export const examRepository = {
 	async getTrainingExamResult(userId: string) {
 		const user = await isUserExist(userId);
 
-		const result = user.results.training_exam;
+		const result = user.results.training_exam?.result;
 
 		if (result) return result;
 

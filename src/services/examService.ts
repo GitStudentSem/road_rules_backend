@@ -79,12 +79,12 @@ export const examService = {
 
 	async getExamResult(userId: string) {
 		const examInfo = await examRepository.getExamResult(userId);
-		return examInfo.result;
+		return examInfo;
 	},
 
 	async getTrainingExamResult(userId: string) {
 		const trainingExamInfo = await examRepository.getTrainingExamResult(userId);
-		return trainingExamInfo.result;
+		return trainingExamInfo;
 	},
 
 	async setAlwaysCompleteExam(data: {
