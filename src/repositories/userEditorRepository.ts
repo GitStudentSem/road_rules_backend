@@ -24,6 +24,14 @@ export const userEditorRepository = {
 		checkAccessByRole(user.role);
 		return allUsers;
 	},
+	async getUsersWithExam(userId: string) {
+		const allUsers = await userCollection
+			.find({ isAppointExam: true })
+			.toArray();
+		const user = await isUserExist(userId);
+		checkAccessByRole(user.role);
+		return allUsers;
+	},
 
 	async setRole(data: {
 		userId: string;

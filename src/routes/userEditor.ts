@@ -64,6 +64,29 @@ export const userEditorSwaggerDoc = {
 			},
 		},
 	},
+	"/api/userEditor/getUsersWithExam": {
+		get: {
+			tags: ["Редактор пользователей"],
+			summary: "Получить всех пользователей у которых назначен экзамен",
+			security: [{ bearerAuth: [] }],
+			responses: {
+				200: {
+					description: "Все пользователи с назначенным экзаменом получены",
+					content: {
+						"application/json": {
+							schema: {
+								type: "array",
+								items: GetAllUsersViewModelSwaggerDoc,
+							},
+						},
+					},
+				},
+				error: getErrorSwaggerDoc(
+					"Ошибка получения всех пользователей с назначенным экзаменом",
+				),
+			},
+		},
+	},
 	"/api/userEditor/appoint": {
 		post: {
 			tags: ["Редактор пользователей"],
@@ -158,6 +181,11 @@ export const userEditorSwaggerDoc = {
 export const userEditorRouter = () => {
 	const router = express.Router();
 	router.get("/getAllUsers", checkAuth, userEditorController.getAllUsers);
+	router.get(
+		"/getUsersWithExam",
+		checkAuth,
+		userEditorController.getUsersWithExam,
+	);
 	router.patch(
 		"/role",
 		checkAuth,

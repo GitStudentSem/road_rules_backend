@@ -43,6 +43,22 @@ export const userEditorService = {
 		return filterdUsersData;
 	},
 
+	async getUsersWithExam(userId: string) {
+		const allUsers = await userEditorRepository.getUsersWithExam(userId);
+		const filterdUsersData = allUsers.map((user) => {
+			return {
+				email: user.email,
+				firstName: user.firstName,
+				secondName: user.secondName,
+				examResults: user.results.exam,
+				role: user.role,
+				isAppointExam: user.isAppointExam,
+				department: user.department,
+			};
+		});
+		return filterdUsersData;
+	},
+
 	async setRole(data: {
 		userId: string;
 		email: string;

@@ -30,6 +30,29 @@ export const userEditorController = {
 		}
 	},
 
+	async getUsersWithExam(
+		req: Request,
+		res: Response<GetAllUsersViewModel[] | ErrorType>,
+	) {
+		try {
+			const allUsers = await userEditorService.getUsersWithExam(
+				req.userId || "",
+			);
+
+			res.status(HTTP_STATUSES.OK_200).json(allUsers);
+		} catch (error) {
+			if (error instanceof DBError) {
+				res.status(error.status).json({ message: error.message });
+				return;
+			}
+			sendError({
+				message: "Не удалось получить пользователей с экзаменом",
+				error,
+				res,
+			});
+		}
+	},
+
 	async setRole(
 		req: RequestWithBody<{ email: string; role: "user" | "admin" }>,
 		res: Response<ErrorType>,
@@ -114,7 +137,11 @@ export const userEditorController = {
 				res.status(error.status).json({ message: error.message });
 				return;
 			}
-			sendError({ message: "Не удалось удалить пользователя", error, res });
+			sendError({
+				message: "Не удалось получить результаты экзамена для пользователя",
+				error,
+				res,
+			});
 		}
 	},
 };
