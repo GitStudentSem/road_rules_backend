@@ -1,7 +1,7 @@
 import express from "express";
 import { loginValidation, registerValidation } from "../validations";
 import { handleValidationErrors } from "../midlewares";
-import * as userController from "../controllers/userController";
+import { authController } from "../controllers/authController";
 import { getErrorSwaggerDoc } from "../assets/getErrorSwaggerDoc";
 import { BodyLoginModelSwaggerDoc } from "../models/auth/BodyLoginModel";
 import { BodyRegisterModelSwaggerDoc } from "../models/auth/BodyRegisterModel";
@@ -92,19 +92,19 @@ export const getAuthRouter = () => {
 		"/register",
 		registerValidation,
 		handleValidationErrors,
-		userController.register,
+		authController.register,
 	);
 	router.post(
 		"/login",
 		loginValidation,
 		handleValidationErrors,
-		userController.login,
+		authController.login,
 	);
 	router.post(
 		"/adminLogin",
 		loginValidation,
 		handleValidationErrors,
-		userController.adminLogin,
+		authController.adminLogin,
 	);
 
 	return router;
