@@ -18,27 +18,6 @@ import { BodyAppointExamSwaggerDoc } from "../types/controllers/userEditorContro
 import { ViewClearQuestionInfoSwaggerDoc } from "../types/controllers/userEditorController";
 
 export const userEditorSwaggerDoc = {
-	"/api/userEditor/role": {
-		patch: {
-			tags: ["Редактор пользователей"],
-			summary: "Установить роль для пользователя",
-			security: [{ bearerAuth: [] }],
-			requestBody: {
-				content: {
-					"application/json": {
-						schema: BodySetRoleSwaggerDoc,
-					},
-				},
-			},
-			responses: {
-				204: {
-					description: "Пользователь удален",
-				},
-				error: getErrorSwaggerDoc("Ошибка удаления пользователя"),
-			},
-		},
-	},
-
 	"/api/userEditor/getAllUsers": {
 		get: {
 			tags: ["Редактор пользователей"],
@@ -106,27 +85,6 @@ export const userEditorSwaggerDoc = {
 		},
 	},
 
-	"/api/userEditor/deleteUser": {
-		delete: {
-			tags: ["Редактор пользователей"],
-			summary: "Удалить пользователя по почте",
-			security: [{ bearerAuth: [] }],
-			requestBody: {
-				content: {
-					"application/json": {
-						schema: BodyDeleteUserSwaggerDoc,
-					},
-				},
-			},
-			responses: {
-				204: {
-					description: "Пользователь удален",
-				},
-				error: getErrorSwaggerDoc("Ошибка удаления пользователя"),
-			},
-		},
-	},
-
 	"/api/userEditor/getExamResult": {
 		post: {
 			tags: ["Редактор пользователей"],
@@ -188,6 +146,48 @@ export const userEditorSwaggerDoc = {
 			},
 		},
 	},
+
+	"/api/userEditor/deleteUser": {
+		delete: {
+			tags: ["Редактор пользователей"],
+			summary: "Удалить пользователя по почте",
+			security: [{ bearerAuth: [] }],
+			requestBody: {
+				content: {
+					"application/json": {
+						schema: BodyDeleteUserSwaggerDoc,
+					},
+				},
+			},
+			responses: {
+				204: {
+					description: "Пользователь удален",
+				},
+				error: getErrorSwaggerDoc("Ошибка удаления пользователя"),
+			},
+		},
+	},
+
+	"/api/userEditor/role": {
+		patch: {
+			tags: ["Редактор пользователей"],
+			summary: "Установить роль для пользователя",
+			security: [{ bearerAuth: [] }],
+			requestBody: {
+				content: {
+					"application/json": {
+						schema: BodySetRoleSwaggerDoc,
+					},
+				},
+			},
+			responses: {
+				204: {
+					description: "Пользователь удален",
+				},
+				error: getErrorSwaggerDoc("Ошибка удаления пользователя"),
+			},
+		},
+	},
 };
 
 export const userEditorRouter = () => {
@@ -205,13 +205,6 @@ export const userEditorRouter = () => {
 		handleValidationErrors,
 		userEditorController.getUsersWithResultExam,
 	);
-	router.patch(
-		"/role",
-		checkAuth,
-		isEmailValid,
-		handleValidationErrors,
-		userEditorController.setRole,
-	);
 	router.post(
 		"/appoint",
 		checkAuth,
@@ -226,6 +219,14 @@ export const userEditorRouter = () => {
 		handleValidationErrors,
 		userEditorController.getExamResult,
 	);
+	router.patch(
+		"/role",
+		checkAuth,
+		isEmailValid,
+		handleValidationErrors,
+		userEditorController.setRole,
+	);
+
 	router.delete("/deleteUser", checkAuth, userEditorController.deleteUser);
 	return router;
 };

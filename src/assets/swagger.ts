@@ -36,49 +36,12 @@ const options: swaggerJSDoc.Options = {
 			},
 		],
 		paths: {
-			"/api/auth/register": registerSwaggerDoc["/api/auth/register"],
-			"/api/auth/login": registerSwaggerDoc["/api/auth/login"],
-			"/api/auth/adminLogin": registerSwaggerDoc["/api/auth/adminLogin"],
-
-			"/api/userEditor/getAllUsers":
-				userEditorSwaggerDoc["/api/userEditor/getAllUsers"],
-			"/api/userEditor/getUsersWithAppointExam":
-				userEditorSwaggerDoc["/api/userEditor/getUsersWithAppointExam"],
-			"/api/userEditor/getUsersWithResultExam":
-				userEditorSwaggerDoc["/api/userEditor/getUsersWithResultExam"],
-			"/api/userEditor/role": userEditorSwaggerDoc["/api/userEditor/role"],
-			"/api/userEditor/appoint":
-				userEditorSwaggerDoc["/api/userEditor/appoint"],
-			"/api/userEditor/deleteUser":
-				userEditorSwaggerDoc["/api/userEditor/deleteUser"],
-			"/api/userEditor/getExamResult":
-				userEditorSwaggerDoc["/api/userEditor/getExamResult"],
-
-			"/api/ticketEditor/createTicket":
-				ticketEditorSwaggerDoc["/api/ticketEditor/createTicket"],
-			"/api/ticketEditor/createQuestion":
-				ticketEditorSwaggerDoc["/api/ticketEditor/createQuestion"],
-			"/api/ticketEditor/getQuestions":
-				ticketEditorSwaggerDoc["/api/ticketEditor/getQuestions"],
-			"/api/ticketEditor/editQuestion":
-				ticketEditorSwaggerDoc["/api/ticketEditor/editQuestion"],
-			"/api/ticketEditor/deleteTicket":
-				ticketEditorSwaggerDoc["/api/ticketEditor/deleteTicket"],
-			"/api/ticketEditor/deleteQuestion":
-				ticketEditorSwaggerDoc["/api/ticketEditor/deleteQuestion"],
-			"/api/ticketEditor/tickets":
-				ticketEditorSwaggerDoc["/api/ticketEditor/tickets"],
-
-			"/api/exam": examSwaggerDoc["/api/exam"],
-			"/api/exam/training": examSwaggerDoc["/api/exam/training"],
-			"/api/exam/getResult": examSwaggerDoc["/api/exam/getResult"],
-			"/api/exam/getTrainingResult":
-				examSwaggerDoc["/api/exam/getTrainingResult"],
-
-			"/api/tickets": ticketsSwaggerDoc["/api/tickets"],
-			"/api/tickets/{ticketId}": ticketsSwaggerDoc["/api/tickets/{ticketId}"],
-
-			"/api/question": questionSwaggerDoc["/api/question"],
+			...registerSwaggerDoc,
+			...userEditorSwaggerDoc,
+			...ticketEditorSwaggerDoc,
+			...examSwaggerDoc,
+			...ticketsSwaggerDoc,
+			...questionSwaggerDoc,
 		},
 	},
 	apis: ["./src/routes/*.ts", "./src/models/**/*.ts"],

@@ -80,6 +80,7 @@ export type ViewClearQuestionInfo = {
 	};
 };
 //===========================================//
+
 export const ViewUserInfoSwaggerDoc = {
 	type: "object",
 	properties: {
@@ -124,6 +125,7 @@ export type ViewUserInfo = {
 	department: string;
 };
 //===========================================//
+
 export const ViewUserInfoResultExamSwaggerDoc = {
 	type: "object",
 	properties: {
@@ -174,6 +176,7 @@ export type ViewUserInfoResultExam = {
 	passAt: number;
 };
 //===========================================//
+
 export const BodyGetUsersWithResultExamSwaggerDoc: OpenAPIV3.SchemaObject = {
 	type: "object",
 	properties: {
@@ -187,6 +190,7 @@ export const BodyGetUsersWithResultExamSwaggerDoc: OpenAPIV3.SchemaObject = {
 };
 export type BodyGetUsersWithResultExam = { isPassExam: boolean };
 //===========================================//
+
 export const BodyAppointExamSwaggerDoc: OpenAPIV3.SchemaObject = {
 	type: "object",
 	properties: {
@@ -205,6 +209,7 @@ export const BodyAppointExamSwaggerDoc: OpenAPIV3.SchemaObject = {
 };
 export type BodyAppointExam = { isAppoint: boolean; email: string };
 //===========================================//
+
 export const BodyDeleteUserSwaggerDoc: OpenAPIV3.SchemaObject = {
 	type: "object",
 	properties: {
@@ -218,6 +223,7 @@ export const BodyDeleteUserSwaggerDoc: OpenAPIV3.SchemaObject = {
 };
 export type BodyDeleteUser = { email: string };
 //===========================================//
+
 export const BodyGetExamResultSwaggerDoc: OpenAPIV3.SchemaObject = {
 	type: "object",
 	properties: {
@@ -231,6 +237,7 @@ export const BodyGetExamResultSwaggerDoc: OpenAPIV3.SchemaObject = {
 };
 export type BodyGetExamResult = { email: string };
 //===========================================//
+
 export const BodySetRoleSwaggerDoc: OpenAPIV3.SchemaObject = {
 	type: "object",
 	properties: {
