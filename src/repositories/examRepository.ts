@@ -35,11 +35,12 @@ const isQuestionExist = async (
 		])
 		.toArray();
 
-	if (!question)
+	if (question.length === 0) {
 		throw new DBError(
 			"Указанный билет или вопрос не найден",
 			HTTP_STATUSES.NOT_FOUND_404,
 		);
+	}
 	//@ts-ignore
 	return question[0];
 };
@@ -91,6 +92,7 @@ export const getCorrectAnswer = async (
 	questionId: string,
 ) => {
 	const question = await isQuestionExist(ticketId, questionId);
+	console.log("question", question);
 	const correctAnswerId =
 		question.answers.find((answer) => answer.isCorrect)?.answerId || "";
 	return correctAnswerId;
@@ -127,7 +129,7 @@ export const examRepository = {
 			const ticket = await isTicketExist(ticketId);
 			const randomIndex = randomInteger(0, ticket.questions.length - 1);
 			const randomQuestion = ticket.questions[randomIndex];
-			if (!randomQuestion?.answers.length) {
+			if (!randomQuestion || !randomQuestion.answers.length) {
 				continue;
 			}
 			tickets.push({ ...randomQuestion, ticketId });

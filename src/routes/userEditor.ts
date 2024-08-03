@@ -68,7 +68,7 @@ export const userEditorSwaggerDoc = {
 			},
 		},
 	},
-	"/api/userEditor/getUsersWithExam": {
+	"/api/userEditor/getUsersWithAppointExam": {
 		get: {
 			tags: ["Редактор пользователей"],
 			summary: "Получить всех пользователей у которых назначен экзамен",
