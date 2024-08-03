@@ -1,6 +1,10 @@
 import express from "express";
 import { userEditorController } from "../controllers/userEditorController";
-import { appointExamValidation, isEmailValid } from "../validations";
+import {
+	appointExamValidation,
+	checkIsPassExam,
+	isEmailValid,
+} from "../validations";
 import { checkAuth, handleValidationErrors } from "../midlewares";
 import { getErrorSwaggerDoc } from "../assets/getErrorSwaggerDoc";
 import { GetAllUsersViewModelSwaggerDoc } from "../models/auth/GetAllUsersViewModel";
@@ -230,6 +234,8 @@ export const userEditorRouter = () => {
 	router.post(
 		"/getUsersWithResultExam",
 		checkAuth,
+		checkIsPassExam,
+		handleValidationErrors,
 		userEditorController.getUsersWithResultExam,
 	);
 	router.patch(

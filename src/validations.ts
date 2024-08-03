@@ -8,6 +8,11 @@ const emailLength = body("email", "Длина почты должна быть �
 	});
 export const isEmailValid = body("email", "Неверный формат почты").isEmail();
 
+export const checkIsPassExam = body(
+	"isPassExam",
+	"Неверный формат фильтра",
+).isBoolean();
+
 const isPasswordString = body(
 	"password",
 	"Пароль должен быть строкой",
