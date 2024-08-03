@@ -43,8 +43,8 @@ export const userEditorService = {
 		return filterdUsersData;
 	},
 
-	async getUsersWithExam(userId: string) {
-		const allUsers = await userEditorRepository.getUsersWithExam(userId);
+	async getUsersWithAppointExam(userId: string) {
+		const allUsers = await userEditorRepository.getUsersWithAppointExam(userId);
 		const filterdUsersData = allUsers.map((user) => {
 			return {
 				email: user.email,
@@ -54,6 +54,32 @@ export const userEditorService = {
 				role: user.role,
 				isAppointExam: user.isAppointExam,
 				department: user.department,
+			};
+		});
+		return filterdUsersData;
+	},
+
+	async getUsersWithResultExam(userId: string, isPassExam: boolean) {
+		const allUsers = await userEditorRepository.getAllUsers(userId);
+		const filterdUsers = allUsers.filter((user) => {
+			const results = user.results.exam?.result;
+			if (!results) return false;
+			const correctAnswers = results.filter((result) => result.isCorrect) || [];
+			return isPassExam
+				? correctAnswers.length >= 18
+				: correctAnswers.length < 18;
+		});
+
+		const filterdUsersData = filterdUsers.map((user) => {
+			return {
+				email: user.email,
+				firstName: user.firstName,
+				secondName: user.secondName,
+				// examResults: user.results.exam,
+				role: user.role,
+				isAppointExam: user.isAppointExam,
+				department: user.department,
+				passAt: user.results.exam?.passAt || 0,
 			};
 		});
 		return filterdUsersData;

@@ -19,17 +19,21 @@ const checkAccessByRole = (role: string) => {
 
 export const userEditorRepository = {
 	async getAllUsers(userId: string) {
-		const allUsers = await userCollection.find({}).toArray();
 		const user = await isUserExist(userId);
 		checkAccessByRole(user.role);
+
+		const allUsers = await userCollection.find({}).toArray();
 		return allUsers;
 	},
-	async getUsersWithExam(userId: string) {
+
+	async getUsersWithAppointExam(userId: string) {
+		const user = await isUserExist(userId);
+		checkAccessByRole(user.role);
+
 		const allUsers = await userCollection
 			.find({ isAppointExam: true })
 			.toArray();
-		const user = await isUserExist(userId);
-		checkAccessByRole(user.role);
+
 		return allUsers;
 	},
 
@@ -87,9 +91,8 @@ export const userEditorRepository = {
 	async deleteUser(data: { userId: string; email: string }) {
 		const { userId, email } = data;
 		const user = await isUserExist(userId);
-		if (user.role === "user") {
-			throw new DBError("Доступ запрещен", HTTP_STATUSES.BAD_REQUEST_400);
-		}
+		checkAccessByRole(user.role);
+
 		const userForDelete = await userCollection.findOne({ email });
 		if (!userForDelete) {
 			throw new DBError(
@@ -97,6 +100,7 @@ export const userEditorRepository = {
 				HTTP_STATUSES.NOT_FOUND_404,
 			);
 		}
+
 		if (userForDelete.role === "superadmin") {
 			throw new DBError(
 				"Вы не можете удалить супер администратора",
@@ -112,9 +116,7 @@ export const userEditorRepository = {
 	}) {
 		const { email, userId } = data;
 		const user = await isUserExist(userId);
-		if (user.role === "user") {
-			throw new DBError("Доступ запрещен", HTTP_STATUSES.BAD_REQUEST_400);
-		}
+		checkAccessByRole(user.role);
 
 		const userForResultsExam = await userCollection.findOne({ email });
 		if (!userForResultsExam) {

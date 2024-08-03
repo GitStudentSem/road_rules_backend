@@ -176,15 +176,61 @@ export const userEditorSwaggerDoc = {
 			},
 		},
 	},
+	"/api/userEditor/getUsersWithResultExam": {
+		post: {
+			tags: ["Редактор пользователей"],
+			summary: "Получить пользователей который сдали или не сдали экзамен",
+			security: [{ bearerAuth: [] }],
+			requestBody: {
+				content: {
+					"application/json": {
+						schema: {
+							type: "object",
+							properties: {
+								isPassExam: {
+									type: "boolean",
+									default: true,
+									description:
+										"Пользователи которые сдали или не сдали экзамен",
+								},
+							},
+						},
+					},
+				},
+			},
+			responses: {
+				200: {
+					description: "Пользователи успешно получены",
+					content: {
+						"application/json": {
+							schema: {
+								type: "array",
+								description: "Пользователи которые сдали или не сдали экзамен",
+								items: GetAllUsersViewModelSwaggerDoc,
+							},
+						},
+					},
+				},
+				error: getErrorSwaggerDoc(
+					"Ошибка получения пользователей по результатам экзамена",
+				),
+			},
+		},
+	},
 };
 
 export const userEditorRouter = () => {
 	const router = express.Router();
 	router.get("/getAllUsers", checkAuth, userEditorController.getAllUsers);
 	router.get(
-		"/getUsersWithExam",
+		"/getUsersWithAppointExam",
 		checkAuth,
-		userEditorController.getUsersWithExam,
+		userEditorController.getUsersWithAppointExam,
+	);
+	router.post(
+		"/getUsersWithResultExam",
+		checkAuth,
+		userEditorController.getUsersWithResultExam,
 	);
 	router.patch(
 		"/role",

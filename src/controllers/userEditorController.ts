@@ -8,6 +8,24 @@ import type { ViewClearQuestionInfo } from "../types/controllers/userEditorContr
 import type { GetAllUsersViewModel } from "../models/auth/GetAllUsersViewModel";
 import type { BodyAppointExam } from "../models/exam/BodyAppointExam";
 
+const catchError = (errorInfo: {
+	error: unknown;
+	res: Response;
+	userMessage: string;
+}) => {
+	const { error, res, userMessage } = errorInfo;
+
+	if (error instanceof DBError) {
+		res.status(error.status).json({ message: error.message });
+		return;
+	}
+	sendError({
+		message: userMessage,
+		error,
+		res,
+	});
+};
+
 export const userEditorController = {
 	async getAllUsers(
 		req: Request,
@@ -18,37 +36,50 @@ export const userEditorController = {
 
 			res.status(HTTP_STATUSES.OK_200).json(allUsers);
 		} catch (error) {
-			if (error instanceof DBError) {
-				res.status(error.status).json({ message: error.message });
-				return;
-			}
-			sendError({
-				message: "Не удалось получить всех пользователей",
+			catchError({
 				error,
 				res,
+				userMessage: "Не удалось получить всех пользователей",
 			});
 		}
 	},
 
-	async getUsersWithExam(
+	async getUsersWithAppointExam(
 		req: Request,
 		res: Response<GetAllUsersViewModel[] | ErrorType>,
 	) {
 		try {
-			const allUsers = await userEditorService.getUsersWithExam(
+			const allUsers = await userEditorService.getUsersWithAppointExam(
 				req.userId || "",
 			);
 
 			res.status(HTTP_STATUSES.OK_200).json(allUsers);
 		} catch (error) {
-			if (error instanceof DBError) {
-				res.status(error.status).json({ message: error.message });
-				return;
-			}
-			sendError({
-				message: "Не удалось получить пользователей с экзаменом",
+			catchError({
 				error,
 				res,
+				userMessage:
+					"Не удалось получить пользователей с назначенным экзаменом",
+			});
+		}
+	},
+
+	async getUsersWithResultExam(
+		req: RequestWithBody<{ isPassExam: boolean }>,
+		res: Response<GetAllUsersViewModel[] | ErrorType>,
+	) {
+		try {
+			const allUsers = await userEditorService.getUsersWithResultExam(
+				req.userId || "",
+				req.body.isPassExam,
+			);
+
+			res.status(HTTP_STATUSES.OK_200).json(allUsers);
+		} catch (error) {
+			catchError({
+				error,
+				res,
+				userMessage: "Не удалось получить пользователей и их статус экзамена",
 			});
 		}
 	},
@@ -68,14 +99,10 @@ export const userEditorController = {
 
 			res.sendStatus(HTTP_STATUSES.NO_CONTENT_204);
 		} catch (error) {
-			if (error instanceof DBError) {
-				res.status(error.status).json({ message: error.message });
-				return;
-			}
-			sendError({
-				message: "Не удалось установить роль пользователя",
+			catchError({
 				error,
 				res,
+				userMessage: "Не удалось установить роль пользователя",
 			});
 		}
 	},
@@ -93,11 +120,11 @@ export const userEditorController = {
 
 			res.sendStatus(HTTP_STATUSES.NO_CONTENT_204);
 		} catch (error) {
-			if (error instanceof DBError) {
-				res.status(error.status).json({ message: error.message });
-				return;
-			}
-			sendError({ message: "Не удалось назначить экзамен", error, res });
+			catchError({
+				error,
+				res,
+				userMessage: "Не удалось назначить экзамен",
+			});
 		}
 	},
 
@@ -113,11 +140,11 @@ export const userEditorController = {
 
 			res.sendStatus(HTTP_STATUSES.NO_CONTENT_204);
 		} catch (error) {
-			if (error instanceof DBError) {
-				res.status(error.status).json({ message: error.message });
-				return;
-			}
-			sendError({ message: "Не удалось удалить пользователя", error, res });
+			catchError({
+				error,
+				res,
+				userMessage: "Не удалось удалить пользователя",
+			});
 		}
 	},
 
@@ -133,14 +160,10 @@ export const userEditorController = {
 
 			res.send(examResut);
 		} catch (error) {
-			if (error instanceof DBError) {
-				res.status(error.status).json({ message: error.message });
-				return;
-			}
-			sendError({
-				message: "Не удалось получить результаты экзамена для пользователя",
+			catchError({
 				error,
 				res,
+				userMessage: "Не удалось получить результаты экзамена для пользователя",
 			});
 		}
 	},

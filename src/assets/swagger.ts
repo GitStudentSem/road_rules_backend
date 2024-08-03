@@ -42,8 +42,10 @@ const options: swaggerJSDoc.Options = {
 
 			"/api/userEditor/getAllUsers":
 				userEditorSwaggerDoc["/api/userEditor/getAllUsers"],
-			"/api/userEditor/getUsersWithExam":
-				userEditorSwaggerDoc["/api/userEditor/getUsersWithExam"],
+			"/api/userEditor/getUsersWithAppointExam":
+				userEditorSwaggerDoc["/api/userEditor/getUsersWithAppointExam"],
+			"/api/userEditor/getUsersWithResultExam":
+				userEditorSwaggerDoc["/api/userEditor/getUsersWithResultExam"],
 			"/api/userEditor/role": userEditorSwaggerDoc["/api/userEditor/role"],
 			"/api/userEditor/appoint":
 				userEditorSwaggerDoc["/api/userEditor/appoint"],
