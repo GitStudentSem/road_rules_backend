@@ -92,7 +92,7 @@ export const getCorrectAnswer = async (
 	questionId: string,
 ) => {
 	const question = await isQuestionExist(ticketId, questionId);
-	console.log("question", question);
+
 	const correctAnswerId =
 		question.answers.find((answer) => answer.isCorrect)?.answerId || "";
 	return correctAnswerId;
