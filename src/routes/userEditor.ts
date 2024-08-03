@@ -7,9 +7,14 @@ import {
 } from "../validations";
 import { checkAuth, handleValidationErrors } from "../midlewares";
 import { getErrorSwaggerDoc } from "../assets/getErrorSwaggerDoc";
-import { GetAllUsersViewModelSwaggerDoc } from "../models/auth/GetAllUsersViewModel";
-import { BodyAppointExamSwaggerDoc } from "../models/exam/BodyAppointExam";
-import { defaultSwaggerValues } from "../assets/settings";
+import {
+	BodyDeleteUserSwaggerDoc,
+	BodyGetExamResultSwaggerDoc,
+	BodyGetUsersWithResultExamSwaggerDoc,
+	BodySetRoleSwaggerDoc,
+	ViewUserInfoSwaggerDoc,
+} from "../types/controllers/userEditorController";
+import { BodyAppointExamSwaggerDoc } from "../types/controllers/userEditorController";
 import { ViewClearQuestionInfoSwaggerDoc } from "../types/controllers/userEditorController";
 
 export const userEditorSwaggerDoc = {
@@ -21,21 +26,7 @@ export const userEditorSwaggerDoc = {
 			requestBody: {
 				content: {
 					"application/json": {
-						schema: {
-							type: "object",
-							properties: {
-								email: {
-									type: "string",
-									default: defaultSwaggerValues.email,
-									description: "Почта пользователя",
-								},
-								role: {
-									type: "admin | user",
-									default: "user",
-									description: "Роль пользователя",
-								},
-							},
-						},
+						schema: BodySetRoleSwaggerDoc,
 					},
 				},
 			},
@@ -47,6 +38,7 @@ export const userEditorSwaggerDoc = {
 			},
 		},
 	},
+
 	"/api/userEditor/getAllUsers": {
 		get: {
 			tags: ["Редактор пользователей"],
@@ -59,7 +51,7 @@ export const userEditorSwaggerDoc = {
 						"application/json": {
 							schema: {
 								type: "array",
-								items: GetAllUsersViewModelSwaggerDoc,
+								items: ViewUserInfoSwaggerDoc,
 							},
 						},
 					},
@@ -68,6 +60,7 @@ export const userEditorSwaggerDoc = {
 			},
 		},
 	},
+
 	"/api/userEditor/getUsersWithAppointExam": {
 		get: {
 			tags: ["Редактор пользователей"],
@@ -80,7 +73,7 @@ export const userEditorSwaggerDoc = {
 						"application/json": {
 							schema: {
 								type: "array",
-								items: GetAllUsersViewModelSwaggerDoc,
+								items: ViewUserInfoSwaggerDoc,
 							},
 						},
 					},
@@ -91,12 +84,12 @@ export const userEditorSwaggerDoc = {
 			},
 		},
 	},
+
 	"/api/userEditor/appoint": {
 		post: {
 			tags: ["Редактор пользователей"],
 			summary: "Назначить экзамен для пользователя",
 			security: [{ bearerAuth: [] }],
-
 			requestBody: {
 				content: {
 					"application/json": {
@@ -121,16 +114,7 @@ export const userEditorSwaggerDoc = {
 			requestBody: {
 				content: {
 					"application/json": {
-						schema: {
-							type: "object",
-							properties: {
-								email: {
-									type: "string",
-									default: defaultSwaggerValues.email,
-									description: "Почта пользователя",
-								},
-							},
-						},
+						schema: BodyDeleteUserSwaggerDoc,
 					},
 				},
 			},
@@ -142,6 +126,7 @@ export const userEditorSwaggerDoc = {
 			},
 		},
 	},
+
 	"/api/userEditor/getExamResult": {
 		post: {
 			tags: ["Редактор пользователей"],
@@ -150,16 +135,7 @@ export const userEditorSwaggerDoc = {
 			requestBody: {
 				content: {
 					"application/json": {
-						schema: {
-							type: "object",
-							properties: {
-								email: {
-									type: "string",
-									default: defaultSwaggerValues.email,
-									description: "Почта пользователя",
-								},
-							},
-						},
+						schema: BodyGetExamResultSwaggerDoc,
 					},
 				},
 			},
@@ -180,6 +156,7 @@ export const userEditorSwaggerDoc = {
 			},
 		},
 	},
+
 	"/api/userEditor/getUsersWithResultExam": {
 		post: {
 			tags: ["Редактор пользователей"],
@@ -188,17 +165,7 @@ export const userEditorSwaggerDoc = {
 			requestBody: {
 				content: {
 					"application/json": {
-						schema: {
-							type: "object",
-							properties: {
-								isPassExam: {
-									type: "boolean",
-									default: true,
-									description:
-										"Пользователи которые сдали или не сдали экзамен",
-								},
-							},
-						},
+						schema: BodyGetUsersWithResultExamSwaggerDoc,
 					},
 				},
 			},
@@ -210,7 +177,7 @@ export const userEditorSwaggerDoc = {
 							schema: {
 								type: "array",
 								description: "Пользователи которые сдали или не сдали экзамен",
-								items: GetAllUsersViewModelSwaggerDoc,
+								items: ViewUserInfoSwaggerDoc,
 							},
 						},
 					},

@@ -4,9 +4,16 @@ import type { ErrorType, RequestWithBody } from "../types";
 import { HTTP_STATUSES } from "../utils";
 import { DBError } from "./DBError";
 import { userEditorService } from "../services/userEditorService";
-import type { ViewClearQuestionInfo } from "../types/controllers/userEditorController";
-import type { GetAllUsersViewModel } from "../models/auth/GetAllUsersViewModel";
-import type { BodyAppointExam } from "../models/exam/BodyAppointExam";
+import type {
+	BodyDeleteUser,
+	BodyGetExamResult,
+	BodyGetUsersWithResultExam,
+	BodySetRole,
+	ViewClearQuestionInfo,
+	ViewUserInfoResultExam,
+} from "../types/controllers/userEditorController";
+import type { ViewUserInfo } from "../types/controllers/userEditorController";
+import type { BodyAppointExam } from "../types/controllers/userEditorController";
 
 const catchError = (errorInfo: {
 	error: unknown;
@@ -27,10 +34,7 @@ const catchError = (errorInfo: {
 };
 
 export const userEditorController = {
-	async getAllUsers(
-		req: Request,
-		res: Response<GetAllUsersViewModel[] | ErrorType>,
-	) {
+	async getAllUsers(req: Request, res: Response<ViewUserInfo[] | ErrorType>) {
 		try {
 			const allUsers = await userEditorService.getAllUsers(req.userId || "");
 
@@ -46,7 +50,7 @@ export const userEditorController = {
 
 	async getUsersWithAppointExam(
 		req: Request,
-		res: Response<GetAllUsersViewModel[] | ErrorType>,
+		res: Response<ViewUserInfo[] | ErrorType>,
 	) {
 		try {
 			const allUsers = await userEditorService.getUsersWithAppointExam(
@@ -65,8 +69,8 @@ export const userEditorController = {
 	},
 
 	async getUsersWithResultExam(
-		req: RequestWithBody<{ isPassExam: boolean }>,
-		res: Response<GetAllUsersViewModel[] | ErrorType>,
+		req: RequestWithBody<BodyGetUsersWithResultExam>,
+		res: Response<ViewUserInfoResultExam[] | ErrorType>,
 	) {
 		try {
 			const allUsers = await userEditorService.getUsersWithResultExam(
@@ -84,10 +88,7 @@ export const userEditorController = {
 		}
 	},
 
-	async setRole(
-		req: RequestWithBody<{ email: string; role: "user" | "admin" }>,
-		res: Response<ErrorType>,
-	) {
+	async setRole(req: RequestWithBody<BodySetRole>, res: Response<ErrorType>) {
 		try {
 			const { email, role } = req.body;
 
@@ -129,7 +130,7 @@ export const userEditorController = {
 	},
 
 	async deleteUser(
-		req: RequestWithBody<{ email: string }>,
+		req: RequestWithBody<BodyDeleteUser>,
 		res: Response<ErrorType>,
 	) {
 		try {
@@ -149,7 +150,7 @@ export const userEditorController = {
 	},
 
 	async getExamResult(
-		req: RequestWithBody<{ email: string }>,
+		req: RequestWithBody<BodyGetExamResult>,
 		res: Response<ViewClearQuestionInfo[] | ErrorType>,
 	) {
 		try {

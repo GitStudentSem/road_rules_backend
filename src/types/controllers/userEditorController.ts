@@ -2,6 +2,7 @@ import type { Answer } from "../../models/Answer";
 import type { OpenAPIV3 } from "openapi-types";
 import { defaultSwaggerValues } from "../../assets/settings";
 
+//===========================================//
 export const ViewClearQuestionInfoSwaggerDoc: OpenAPIV3.SchemaObject = {
 	type: "object",
 	properties: {
@@ -63,7 +64,6 @@ export const ViewClearQuestionInfoSwaggerDoc: OpenAPIV3.SchemaObject = {
 		},
 	},
 };
-
 export type ViewClearQuestionInfo = {
 	userResultInfo: {
 		isCorrect: boolean;
@@ -79,3 +79,173 @@ export type ViewClearQuestionInfo = {
 		answers: Answer[];
 	};
 };
+//===========================================//
+export const ViewUserInfoSwaggerDoc = {
+	type: "object",
+	properties: {
+		email: {
+			type: "string",
+			default: defaultSwaggerValues.email,
+			description: "Почта пользователя",
+		},
+		firstName: {
+			type: "string",
+			default: "Иван",
+			description: "Имя пользователя",
+		},
+		secondName: {
+			type: "string",
+			default: "Иванов",
+			description: "Фамилия пользователя",
+		},
+		role: {
+			type: "string",
+			default: "user",
+			description: "Роль пользователя",
+		},
+		isAppointExam: {
+			type: "boolean",
+			default: "false",
+			description: "Назначен ли экзамен для пользователя",
+		},
+		department: {
+			type: "string",
+			default: "1",
+			description: "Цех в котором работает пользователь",
+		},
+	},
+};
+export type ViewUserInfo = {
+	email: string;
+	firstName: string;
+	secondName: string;
+	isAppointExam: boolean;
+	role: "superadmin" | "admin" | "user";
+	department: string;
+};
+//===========================================//
+export const ViewUserInfoResultExamSwaggerDoc = {
+	type: "object",
+	properties: {
+		email: {
+			type: "string",
+			default: defaultSwaggerValues.email,
+			description: "Почта пользователя",
+		},
+		firstName: {
+			type: "string",
+			default: "Иван",
+			description: "Имя пользователя",
+		},
+		secondName: {
+			type: "string",
+			default: "Иванов",
+			description: "Фамилия пользователя",
+		},
+		role: {
+			type: "string",
+			default: "user",
+			description: "Роль пользователя",
+		},
+		isAppointExam: {
+			type: "boolean",
+			default: "false",
+			description: "Назначен ли экзамен для пользователя",
+		},
+		department: {
+			type: "string",
+			default: "1",
+			description: "Цех в котором работает пользователь",
+		},
+		passAt: {
+			type: "string",
+			default: 869674968368,
+			description: "Дата сдачи экзамена",
+		},
+	},
+};
+export type ViewUserInfoResultExam = {
+	email: string;
+	firstName: string;
+	secondName: string;
+	isAppointExam: boolean;
+	role: "superadmin" | "admin" | "user";
+	department: string;
+	passAt: number;
+};
+//===========================================//
+export const BodyGetUsersWithResultExamSwaggerDoc: OpenAPIV3.SchemaObject = {
+	type: "object",
+	properties: {
+		isPassExam: {
+			type: "boolean",
+			default: true,
+			description: "Пользователи которые сдали или не сдали экзамен",
+		},
+	},
+	required: ["isPassExam"],
+};
+export type BodyGetUsersWithResultExam = { isPassExam: boolean };
+//===========================================//
+export const BodyAppointExamSwaggerDoc: OpenAPIV3.SchemaObject = {
+	type: "object",
+	properties: {
+		isAppoint: {
+			type: "boolean",
+			description: "Назначен ли экзамен для пользователя",
+			default: "true",
+		},
+		email: {
+			type: "string",
+			description: "Почта пользователя для которого нужно назначить экзамен",
+			default: defaultSwaggerValues.email,
+		},
+	},
+	required: ["isAppoint", "email"],
+};
+export type BodyAppointExam = { isAppoint: boolean; email: string };
+//===========================================//
+export const BodyDeleteUserSwaggerDoc: OpenAPIV3.SchemaObject = {
+	type: "object",
+	properties: {
+		email: {
+			type: "string",
+			description: "Почта пользователя для которого нужно назначить экзамен",
+			default: defaultSwaggerValues.email,
+		},
+	},
+	required: ["email"],
+};
+export type BodyDeleteUser = { email: string };
+//===========================================//
+export const BodyGetExamResultSwaggerDoc: OpenAPIV3.SchemaObject = {
+	type: "object",
+	properties: {
+		email: {
+			type: "string",
+			description: "Почта пользователя для которого нужно назначить экзамен",
+			default: defaultSwaggerValues.email,
+		},
+	},
+	required: ["email"],
+};
+export type BodyGetExamResult = { email: string };
+//===========================================//
+export const BodySetRoleSwaggerDoc: OpenAPIV3.SchemaObject = {
+	type: "object",
+	properties: {
+		email: {
+			type: "string",
+			default: defaultSwaggerValues.email,
+			description: "Почта пользователя",
+		},
+		role: {
+			type: "string",
+			default: "user",
+			description: "Роль пользователя 'user' или 'admin'",
+		},
+	},
+	required: ["email", "role"],
+};
+export type BodySetRole = { email: string; role: "user" | "admin" };
+//===========================================//
