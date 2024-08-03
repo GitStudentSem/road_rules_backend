@@ -1,10 +1,10 @@
 import sharp from "sharp";
 import { ticketEditorRepository } from "../repositories/ticketEditorRepository";
-import type { CreateQuestionBody } from "../models/ticketEditor/CreateQuestionBody";
-import type { DeleteQuestionBody } from "../models/ticketEditor/DeleteQuestionBody";
+import type { BodyCreateQuestion } from "../types/controllers/ticketEditorController";
+import type { BodyDeleteQuestion } from "../types/controllers/ticketEditorController";
 import { colors, resetStyle, styles } from "../assets/logStyles";
 import { crc32 } from "crc";
-import type { EditQuestionBody } from "../models/ticketEditor/EditQuestionBody";
+import type { BodyEditQuestion } from "../types/controllers/ticketEditorController";
 import AWS from "aws-sdk";
 import { DBError } from "../controllers/DBError";
 import { HTTP_STATUSES } from "../utils";
@@ -204,7 +204,7 @@ export const ticketEditorService = {
 	},
 
 	async createQuestion(
-		data: CreateQuestionBody & { userId: string; help: string },
+		data: BodyCreateQuestion & { userId: string; help: string },
 	) {
 		const { img, ticketId, question, help, correctAnswer, answers, userId } =
 			data;
@@ -231,7 +231,7 @@ export const ticketEditorService = {
 	},
 
 	async editQuestion(
-		data: EditQuestionBody & { userId: string; help: string },
+		data: BodyEditQuestion & { userId: string; help: string },
 	) {
 		const {
 			img,
@@ -284,7 +284,7 @@ export const ticketEditorService = {
 		}
 	},
 
-	async deleteQuestion(data: { userId: string } & DeleteQuestionBody) {
+	async deleteQuestion(data: { userId: string } & BodyDeleteQuestion) {
 		const { ticketId, questionId, userId } = data;
 
 		const isDeleted = await ticketEditorRepository.deleteQuestion({

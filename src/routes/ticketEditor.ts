@@ -4,15 +4,38 @@ import { addQuestionValidation } from "../validations";
 import { checkAuth, handleValidationErrors } from "../midlewares";
 import { getErrorSwaggerDoc } from "../assets/getErrorSwaggerDoc";
 import multer from "multer";
-import { CreateQuestionBodySwaggerDoc } from "../models/ticketEditor/CreateQuestionBody";
-import { DeleteQuestionlSwaggerDoc } from "../models/ticketEditor/DeleteQuestionBody";
-import { EditQuestionBodySwaggerDoc } from "../models/ticketEditor/EditQuestionBody";
-import { QuestionViewModelSwaggerDoc } from "../models/ticketEditor/QuestionViewModel";
-import { defaultSwaggerValues } from "../assets/settings";
-import { SendTicketsViewModelSwaggerDoc } from "../models/tickets/SendTicketsViewModel";
+import {
+	BodyGetQuestionsInTicketSwaggerDoc,
+	BodyCreateQuestionSwaggerDoc,
+	BodyEditQuestionSwaggerDoc,
+	ViewSendTicketsSwaggerDoc,
+	BodyDeleteTicketSwaggerDoc,
+	BodyDeleteQuestionSwaggerDoc,
+	ViewGetQuestionsInTicketSwaggerDoc,
+	ViewCreateTicketSwaggerDoc,
+} from "../types/controllers/ticketEditorController";
 const upload = multer({ storage: multer.memoryStorage() });
 
 export const ticketEditorSwaggerDoc = {
+	"/api/ticketEditor/tickets": {
+		get: {
+			tags: ["Редактор билетов"],
+			summary: "Получить список билетов для выбора, включая пустые",
+			security: [{ bearerAuth: [] }],
+			responses: {
+				200: {
+					description: "Билеты упешно получены",
+					content: {
+						"application/json": {
+							schema: ViewSendTicketsSwaggerDoc,
+						},
+					},
+				},
+				error: getErrorSwaggerDoc("Ошибка получения билетов"),
+			},
+		},
+	},
+
 	"/api/ticketEditor/createTicket": {
 		get: {
 			tags: ["Редактор билетов"],
@@ -23,15 +46,7 @@ export const ticketEditorSwaggerDoc = {
 					description: "Билет успешно создан",
 					content: {
 						"application/json": {
-							schema: {
-								type: "object",
-								properties: {
-									ticketId: {
-										type: "string",
-										description: "id созданного билета",
-									},
-								},
-							},
+							schema: ViewCreateTicketSwaggerDoc,
 						},
 					},
 				},
@@ -39,6 +54,7 @@ export const ticketEditorSwaggerDoc = {
 			},
 		},
 	},
+
 	"/api/ticketEditor/getQuestions": {
 		post: {
 			tags: ["Редактор билетов"],
@@ -47,17 +63,7 @@ export const ticketEditorSwaggerDoc = {
 			requestBody: {
 				content: {
 					"application/json": {
-						schema: {
-							type: "object",
-							properties: {
-								ticketId: {
-									type: "string",
-									description: "id билета",
-									default: defaultSwaggerValues.ticketId,
-								},
-							},
-							required: ["ticketId"],
-						},
+						schema: BodyGetQuestionsInTicketSwaggerDoc,
 					},
 				},
 			},
@@ -69,7 +75,7 @@ export const ticketEditorSwaggerDoc = {
 						"application/json": {
 							schema: {
 								type: "array",
-								items: QuestionViewModelSwaggerDoc,
+								items: ViewGetQuestionsInTicketSwaggerDoc,
 							},
 						},
 					},
@@ -87,7 +93,7 @@ export const ticketEditorSwaggerDoc = {
 			requestBody: {
 				content: {
 					"multipart/form-data": {
-						schema: CreateQuestionBodySwaggerDoc,
+						schema: BodyCreateQuestionSwaggerDoc,
 						encoding: {
 							answers: {
 								style: "form",
@@ -114,7 +120,7 @@ export const ticketEditorSwaggerDoc = {
 			requestBody: {
 				content: {
 					"multipart/form-data": {
-						schema: EditQuestionBodySwaggerDoc,
+						schema: BodyEditQuestionSwaggerDoc,
 						encoding: {
 							answers: {
 								style: "form",
@@ -141,16 +147,7 @@ export const ticketEditorSwaggerDoc = {
 			requestBody: {
 				content: {
 					"application/json": {
-						schema: {
-							type: "object",
-							properties: {
-								ticketId: {
-									type: "string",
-									default: defaultSwaggerValues.ticketId,
-									description: "id удаляемого билета",
-								},
-							},
-						},
+						schema: BodyDeleteTicketSwaggerDoc,
 					},
 				},
 			},
@@ -170,7 +167,7 @@ export const ticketEditorSwaggerDoc = {
 			security: [{ bearerAuth: [] }],
 			requestBody: {
 				content: {
-					"application/json": { schema: DeleteQuestionlSwaggerDoc },
+					"application/json": { schema: BodyDeleteQuestionSwaggerDoc },
 				},
 			},
 			responses: {
@@ -178,25 +175,6 @@ export const ticketEditorSwaggerDoc = {
 					description: "Вопрос успешно удален",
 				},
 				error: getErrorSwaggerDoc("Ошибка удаления вопроса"),
-			},
-		},
-	},
-
-	"/api/ticketEditor/tickets": {
-		get: {
-			tags: ["Редактор билетов"],
-			summary: "Получить список билетов для выбора, включая пустые",
-			security: [{ bearerAuth: [] }],
-			responses: {
-				200: {
-					description: "Билеты упешно получены",
-					content: {
-						"application/json": {
-							schema: SendTicketsViewModelSwaggerDoc,
-						},
-					},
-				},
-				error: getErrorSwaggerDoc("Ошибка получения билетов"),
 			},
 		},
 	},

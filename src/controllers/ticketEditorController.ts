@@ -1,21 +1,25 @@
 import { sendError } from "../assets/requestAssets";
 import type { Request, Response } from "express";
 import type { ErrorType, RequestWithBody } from "../types";
-
 import { HTTP_STATUSES } from "../utils";
 import { DBError } from "./DBError";
-
 import { ticketEditorService } from "../services/ticketEditorService";
-import type { CreateQuestionBody } from "../models/ticketEditor/CreateQuestionBody";
-import type { DeleteQuestionBody } from "../models/ticketEditor/DeleteQuestionBody";
-import type { EditQuestionBody } from "../models/ticketEditor/EditQuestionBody";
-import type { QuestionViewModel } from "../models/ticketEditor/QuestionViewModel";
-import type { SendTicketsViewModel } from "../models/tickets/SendTicketsViewModel";
+
+import type {
+	BodyGetQuestionsInTicket,
+	ViewCreateTicket,
+	ViewSendTickets,
+	BodyCreateQuestion,
+	ViewGetQuestionsInTicket,
+	BodyEditQuestion,
+	BodyDeleteTicket,
+	BodyDeleteQuestion,
+} from "../types/controllers/ticketEditorController";
 
 export const ticketEditorController = {
 	async sendTickets(
 		req: Request,
-		res: Response<SendTicketsViewModel | ErrorType>,
+		res: Response<ViewSendTickets[] | ErrorType>,
 	) {
 		try {
 			const tickets = await ticketEditorService.sendTickets(req.userId || "");
@@ -32,7 +36,7 @@ export const ticketEditorController = {
 
 	async createTicket(
 		req: Request,
-		res: Response<{ ticketId: string } | ErrorType>,
+		res: Response<ViewCreateTicket | ErrorType>,
 	) {
 		try {
 			const ticketId = await ticketEditorService.createTicket(req.userId || "");
@@ -47,8 +51,8 @@ export const ticketEditorController = {
 	},
 
 	async getQuestionsInTicket(
-		req: RequestWithBody<{ ticketId: string }>,
-		res: Response<QuestionViewModel[] | ErrorType>,
+		req: RequestWithBody<BodyGetQuestionsInTicket>,
+		res: Response<ViewGetQuestionsInTicket[] | ErrorType>,
 	) {
 		try {
 			const { ticketId } = req.body;
@@ -71,7 +75,7 @@ export const ticketEditorController = {
 	},
 
 	async createQuestion(
-		req: RequestWithBody<CreateQuestionBody>,
+		req: RequestWithBody<BodyCreateQuestion>,
 		res: Response<ErrorType>,
 	) {
 		try {
@@ -99,7 +103,7 @@ export const ticketEditorController = {
 	},
 
 	async editQuestion(
-		req: RequestWithBody<EditQuestionBody>,
+		req: RequestWithBody<BodyEditQuestion>,
 		res: Response<ErrorType>,
 	) {
 		try {
@@ -128,7 +132,7 @@ export const ticketEditorController = {
 	},
 
 	async deleteTicket(
-		req: RequestWithBody<{ ticketId: string }>,
+		req: RequestWithBody<BodyDeleteTicket>,
 		res: Response<ErrorType>,
 	) {
 		try {
@@ -145,8 +149,9 @@ export const ticketEditorController = {
 			sendError({ message: "Не удалось удалить билет", error, res });
 		}
 	},
+
 	async deleteQuestion(
-		req: RequestWithBody<DeleteQuestionBody>,
+		req: RequestWithBody<BodyDeleteQuestion>,
 		res: Response<ErrorType>,
 	) {
 		try {

@@ -1,6 +1,7 @@
 import { defaultSwaggerValues } from "../../assets/settings";
 import type { OpenAPIV3 } from "openapi-types";
 
+//===========================================//
 export const ViewSendExamSwaggerDoc: OpenAPIV3.SchemaObject = {
 	type: "object",
 	properties: {
@@ -51,6 +52,7 @@ export type ViewSendExam = {
 		answerId: string;
 	}[];
 };
+//===========================================//
 
 export const BodySendExamAnswerSwaggerDoc: OpenAPIV3.SchemaObject = {
 	type: "object",
@@ -79,6 +81,7 @@ export type BodySendExamAnswer = {
 	questionId: string;
 	answerId: string;
 };
+//===========================================//
 
 export const ViewSendExamAnswerSwaggerDoc: OpenAPIV3.SchemaObject = {
 	type: "object",
@@ -105,6 +108,7 @@ export type ViewSendExamAnswer = {
 	correctAnswer: string;
 	help: string;
 };
+//===========================================//
 
 export const BodyAppointExamSwaggerDoc: OpenAPIV3.SchemaObject = {
 	type: "object",
@@ -122,8 +126,8 @@ export const BodyAppointExamSwaggerDoc: OpenAPIV3.SchemaObject = {
 	},
 	required: ["isAppoint", "email"],
 };
-
 export type BodyAppointExam = { isAppoint: boolean; email: string };
+//===========================================//
 
 export const ViewGetExamResultSwaggerDoc: OpenAPIV3.SchemaObject = {
 	type: "object",
@@ -157,6 +161,7 @@ export type ViewGetExamResult = {
 	answerId: string;
 	isCorrect: boolean;
 };
+//===========================================//
 
 export type BodySetAlwaysCompleteExam = {
 	email: string;

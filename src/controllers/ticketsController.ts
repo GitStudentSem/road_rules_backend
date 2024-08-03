@@ -4,14 +4,14 @@ import { ticketService } from "../services/ticketService";
 import type { BodySendTicketResult } from "../models/tickets/BodySendTicketResult";
 import type { SendTicketResultViewModel } from "../models/tickets/SendTicketResultViewModel";
 import type { SendTicketViewModel } from "../models/tickets/SendTicketViewModel";
-import type { SendTicketsViewModel } from "../models/tickets/SendTicketsViewModel";
+import type { ViewSendTickets } from "../types/controllers/ticketEditorController";
 import type { ErrorType, RequestWithBody, RequestWithParams } from "../types";
 import { DBError } from "./DBError";
 
 export const ticketsController = {
 	async sendTickets(
 		req: Request,
-		res: Response<SendTicketsViewModel | ErrorType>,
+		res: Response<ViewSendTickets[] | ErrorType>,
 	) {
 		try {
 			const tickets = await ticketService.sendTickets(req.userId || "");

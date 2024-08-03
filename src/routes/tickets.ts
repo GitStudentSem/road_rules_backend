@@ -3,7 +3,7 @@ import { answerValidation } from "../validations";
 import { checkAuth, handleValidationErrors } from "../midlewares";
 import { ticketsController } from "../controllers/ticketsController";
 import { getErrorSwaggerDoc } from "../assets/getErrorSwaggerDoc";
-import { SendTicketsViewModelSwaggerDoc } from "../models/tickets/SendTicketsViewModel";
+import { ViewSendTicketsSwaggerDoc } from "../types/controllers/ticketEditorController";
 import { SendTicketViewModelSwaggerDoc } from "../models/tickets/SendTicketViewModel";
 import { BodySendTicketResultSwaggerDoc } from "../models/tickets/BodySendTicketResult";
 import { SendTicketResultViewModelModelSwaggerDoc } from "../models/tickets/SendTicketResultViewModel";
@@ -20,7 +20,7 @@ export const ticketsSwaggerDoc = {
 					description: "Билеты упешно получены",
 					content: {
 						"application/json": {
-							schema: SendTicketsViewModelSwaggerDoc,
+							schema: ViewSendTicketsSwaggerDoc,
 						},
 					},
 				},

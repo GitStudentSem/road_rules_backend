@@ -8,7 +8,7 @@ import { defaultSwaggerValues } from "../assets/settings";
 export const questionSwaggerDoc = {
 	"/question": {
 		post: {
-			tags: ["Билеты", "Экзамен", "Редактор билетов"],
+			tags: ["Скорее всего под удаление"],
 			summary: "Получить конкретный вопрос",
 			security: [{ bearerAuth: [] }],
 

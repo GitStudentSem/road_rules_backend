@@ -147,15 +147,15 @@ export const userEditorSwaggerDoc = {
 		},
 	},
 
-	"/api/userEditor/deleteUser": {
-		delete: {
+	"/api/userEditor/role": {
+		patch: {
 			tags: ["Редактор пользователей"],
-			summary: "Удалить пользователя по почте",
+			summary: "Установить роль для пользователя",
 			security: [{ bearerAuth: [] }],
 			requestBody: {
 				content: {
 					"application/json": {
-						schema: BodyDeleteUserSwaggerDoc,
+						schema: BodySetRoleSwaggerDoc,
 					},
 				},
 			},
@@ -168,15 +168,15 @@ export const userEditorSwaggerDoc = {
 		},
 	},
 
-	"/api/userEditor/role": {
-		patch: {
+	"/api/userEditor/deleteUser": {
+		delete: {
 			tags: ["Редактор пользователей"],
-			summary: "Установить роль для пользователя",
+			summary: "Удалить пользователя по почте",
 			security: [{ bearerAuth: [] }],
 			requestBody: {
 				content: {
 					"application/json": {
-						schema: BodySetRoleSwaggerDoc,
+						schema: BodyDeleteUserSwaggerDoc,
 					},
 				},
 			},

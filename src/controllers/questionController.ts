@@ -4,12 +4,12 @@ import type { ErrorType, RequestWithBody } from "../types";
 import { DBError } from "./DBError";
 import { questionService } from "../services/questionService";
 import type { CreateQuestionDBModel } from "../models/ticketEditor/CreateQuestionDBModel";
-import type { QuestionViewModel } from "../models/ticketEditor/QuestionViewModel";
+import type { ViewGetQuestionsInTicket } from "../types/controllers/ticketEditorController";
 
 export const questionController = {
 	async sendQuestion(
 		req: RequestWithBody<{ ticketId: string; questionId: "string" }>,
-		res: Response<QuestionViewModel | ErrorType>,
+		res: Response<ViewGetQuestionsInTicket | ErrorType>,
 	) {
 		try {
 			const question = await questionService.sendQuestion({
