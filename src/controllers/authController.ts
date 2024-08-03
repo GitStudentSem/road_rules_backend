@@ -1,18 +1,20 @@
 import { sendError } from "../assets/requestAssets";
 import type { Response } from "express";
 import type { ErrorType, RequestWithBody } from "../types";
-import type { BodyRegisterModel } from "../models/auth/BodyRegisterModel";
-import type { UserRegisterViewModel } from "../models/auth/UserRegisterViewModel";
-import type { BodyLoginModel } from "../models/auth/BodyLoginModel";
-import type { UserLoginViewModel } from "../models/auth/UserLoginViewModel";
 import { HTTP_STATUSES } from "../utils";
 import { DBError } from "./DBError";
 import { authService } from "../services/authService";
+import type {
+	BodyLogin,
+	BodyRegister,
+	ViewLogin,
+	ViewRegister,
+} from "../types/controllers/authController";
 
 export const authController = {
 	async register(
-		req: RequestWithBody<BodyRegisterModel>,
-		res: Response<UserRegisterViewModel | ErrorType>,
+		req: RequestWithBody<BodyRegister>,
+		res: Response<ViewRegister | ErrorType>,
 	) {
 		try {
 			const { email, firstName, secondName, password, department } = req.body;
@@ -36,8 +38,8 @@ export const authController = {
 	},
 
 	async login(
-		req: RequestWithBody<BodyLoginModel>,
-		res: Response<UserLoginViewModel | ErrorType>,
+		req: RequestWithBody<BodyLogin>,
+		res: Response<ViewLogin | ErrorType>,
 	) {
 		try {
 			const { email, password } = req.body;
@@ -55,8 +57,8 @@ export const authController = {
 	},
 
 	async adminLogin(
-		req: RequestWithBody<BodyLoginModel>,
-		res: Response<UserLoginViewModel | ErrorType>,
+		req: RequestWithBody<BodyLogin>,
+		res: Response<ViewLogin | ErrorType>,
 	) {
 		try {
 			const { email, password } = req.body;

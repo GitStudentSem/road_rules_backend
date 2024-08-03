@@ -1,5 +1,7 @@
-import type { BodyLoginModel } from "./models/auth/BodyLoginModel";
-import type { BodyRegisterModel } from "./models/auth/BodyRegisterModel";
+import type {
+	BodyLogin,
+	BodyRegister,
+} from "./types/controllers/authController";
 
 export const HTTP_STATUSES = {
 	OK_200: 200,
@@ -11,14 +13,14 @@ export const HTTP_STATUSES = {
 	NOT_FOUND_404: 404,
 };
 
-export const testRegisterUser: BodyRegisterModel = {
+export const testRegisterUser: BodyRegister = {
 	firstName: "test firstName",
 	secondName: "test secondName",
 	email: "test@email.com",
 	password: "123456",
 	department: "1",
 };
-export const testLoginnedUser: BodyLoginModel = {
+export const testLoginnedUser: BodyLogin = {
 	email: "test@email.com",
 	password: "123456",
 };

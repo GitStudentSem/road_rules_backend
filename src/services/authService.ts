@@ -1,13 +1,13 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { authRepository } from "../repositories/authRepository";
-import type { BodyRegisterModel } from "../models/auth/BodyRegisterModel";
 import { HTTP_STATUSES } from "../utils";
 import { DBError } from "../controllers/DBError";
 import { settings } from "../assets/settings";
+import type { BodyRegister } from "../types/controllers/authController";
 
 export const authService = {
-	async register(data: BodyRegisterModel) {
+	async register(data: BodyRegister) {
 		const { email, firstName, secondName, password, department } = data;
 		const salt = await bcrypt.genSalt(10);
 		const passwordHash = await bcrypt.hash(password, salt);

@@ -3,11 +3,13 @@ import { loginValidation, registerValidation } from "../validations";
 import { handleValidationErrors } from "../midlewares";
 import { authController } from "../controllers/authController";
 import { getErrorSwaggerDoc } from "../assets/getErrorSwaggerDoc";
-import { BodyLoginModelSwaggerDoc } from "../models/auth/BodyLoginModel";
-import { BodyRegisterModelSwaggerDoc } from "../models/auth/BodyRegisterModel";
 
-import { UserLoginViewModelSwaggerDoc } from "../models/auth/UserLoginViewModel";
-import { UserRegisterViewModelSwaggerDoc } from "../models/auth/UserRegisterViewModel";
+import {
+	BodyLoginSwaggerDoc,
+	BodyRegisterSwaggerDoc,
+	ViewLoginSwaggerDoc,
+	ViewRegisterSwaggerDoc,
+} from "../types/controllers/authController";
 
 export const registerSwaggerDoc = {
 	"/api/auth/register": {
@@ -17,7 +19,7 @@ export const registerSwaggerDoc = {
 			requestBody: {
 				content: {
 					"application/json": {
-						schema: BodyRegisterModelSwaggerDoc,
+						schema: BodyRegisterSwaggerDoc,
 					},
 				},
 			},
@@ -26,7 +28,7 @@ export const registerSwaggerDoc = {
 					description: "Успешная регистрация",
 					content: {
 						"application/json": {
-							schema: UserRegisterViewModelSwaggerDoc,
+							schema: ViewRegisterSwaggerDoc,
 						},
 					},
 				},
@@ -42,7 +44,7 @@ export const registerSwaggerDoc = {
 			requestBody: {
 				content: {
 					"application/json": {
-						schema: BodyLoginModelSwaggerDoc,
+						schema: BodyLoginSwaggerDoc,
 					},
 				},
 			},
@@ -51,7 +53,7 @@ export const registerSwaggerDoc = {
 					description: "Успешный логин",
 					content: {
 						"application/json": {
-							schema: UserLoginViewModelSwaggerDoc,
+							schema: ViewLoginSwaggerDoc,
 						},
 					},
 				},
@@ -67,7 +69,7 @@ export const registerSwaggerDoc = {
 			requestBody: {
 				content: {
 					"application/json": {
-						schema: BodyLoginModelSwaggerDoc,
+						schema: BodyLoginSwaggerDoc,
 					},
 				},
 			},
@@ -76,7 +78,7 @@ export const registerSwaggerDoc = {
 					description: "Успешный логин",
 					content: {
 						"application/json": {
-							schema: UserLoginViewModelSwaggerDoc,
+							schema: ViewLoginSwaggerDoc,
 						},
 					},
 				},
