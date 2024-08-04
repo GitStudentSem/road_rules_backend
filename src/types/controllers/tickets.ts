@@ -81,6 +81,7 @@ export type ViewSendTicket = {
 	}[];
 };
 //===========================================//
+
 export const BodySendTicketResultSwaggerDoc: OpenAPIV3.SchemaObject = {
 	type: "object",
 	properties: {

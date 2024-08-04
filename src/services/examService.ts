@@ -1,16 +1,16 @@
-import {
-	examRepository,
-	getCorrectAnswer,
-} from "../repositories/examRepository";
-import type { QuestionWithTicketId } from "../repositories/examRepository";
+import { examRepository } from "../repositories/examRepository";
 import type { Answer } from "../models/Answer";
-import { isUserExist } from "../repositories/authRepository";
+import type {
+	SendExamAnswer,
+	SetAlwaysCompleteExam,
+	QuestionWithTicketId,
+} from "../types/services/examService";
 
 const shuffleAnswers = (answers: Answer[]) => {
 	return answers.sort(() => Math.random() - 0.5);
 };
 
-const removeCorrectAnswersFromTicket1 = (questions: QuestionWithTicketId[]) => {
+const removeCorrectAnswersFromTicket = (questions: QuestionWithTicketId[]) => {
 	return questions.map((question) => {
 		return {
 			question: question.question,
@@ -27,17 +27,12 @@ const removeCorrectAnswersFromTicket1 = (questions: QuestionWithTicketId[]) => {
 export const examService = {
 	async sendExam(userId: string) {
 		const exam = await examRepository.sendExam(userId);
-		const questionWithoutCorrectAnswers = removeCorrectAnswersFromTicket1(exam);
+		const questionWithoutCorrectAnswers = removeCorrectAnswersFromTicket(exam);
 
 		return questionWithoutCorrectAnswers;
 	},
 
-	async sendExamAnswer(data: {
-		userId: string;
-		ticketId: string;
-		questionId: string;
-		answerId: string;
-	}) {
+	async sendExamAnswer(data: SendExamAnswer) {
 		const { userId, ticketId, questionId, answerId } = data;
 		const dataFromDB = await examRepository.sendExamAnswer({
 			userId,
@@ -54,12 +49,7 @@ export const examService = {
 		return result;
 	},
 
-	async sendTrainingExamAnswer(data: {
-		userId: string;
-		ticketId: string;
-		questionId: string;
-		answerId: string;
-	}) {
+	async sendTrainingExamAnswer(data: SendExamAnswer) {
 		const { userId, ticketId, questionId, answerId } = data;
 
 		const dataFromDB = await examRepository.sendTrainingExamAnswer({
@@ -87,10 +77,7 @@ export const examService = {
 		return trainingExamInfo;
 	},
 
-	async setAlwaysCompleteExam(data: {
-		email: string;
-		isAlwaysComplete: boolean;
-	}) {
+	async setAlwaysCompleteExam(data: SetAlwaysCompleteExam) {
 		const { email, isAlwaysComplete } = data;
 		await examRepository.setAlwaysCompleteExam({
 			email,

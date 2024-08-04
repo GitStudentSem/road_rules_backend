@@ -113,7 +113,7 @@ const setAlwaysCompleteExam = async (
 	}
 };
 
-export type QuestionWithTicketId = CreateQuestionDBModel & {
+type QuestionWithTicketId = CreateQuestionDBModel & {
 	ticketId: string;
 };
 
