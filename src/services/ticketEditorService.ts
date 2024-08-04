@@ -12,7 +12,7 @@ import type {
 	ListParams,
 	SaveImage,
 	UploadFile,
-} from "../types/services/ticketEditor";
+} from "../types/services/ticketEditorService";
 
 const calculateSizeInKB = (arrayBuffer: ArrayBuffer) => {
 	const bytes = arrayBuffer.byteLength;

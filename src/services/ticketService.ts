@@ -1,6 +1,7 @@
 import { ticketRepository } from "../repositories/ticketRepository";
 import type { WithId } from "mongodb";
 import type { TicketsDBModel } from "../models/ticketEditor/TicketsDBModel";
+import type { SendTicketResult } from "../types/services/ticketsSevice";
 
 const removeCorrectAnswersFromTicket = (ticket: WithId<TicketsDBModel>) => {
 	return ticket.questions.map((question) => {
@@ -32,12 +33,7 @@ export const ticketService = {
 		});
 	},
 
-	async sendTicketResult(data: {
-		userId: string;
-		ticketId: string;
-		questionId: string;
-		answerId: string;
-	}) {
+	async sendTicketResult(data: SendTicketResult) {
 		const foundedQuestion = await ticketRepository.sendTicketResult(data);
 		const correctAnswerId =
 			foundedQuestion.answers.find((answer) => answer.isCorrect)?.answerId ||
