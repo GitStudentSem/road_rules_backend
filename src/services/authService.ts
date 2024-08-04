@@ -4,10 +4,10 @@ import { authRepository } from "../repositories/authRepository";
 import { HTTP_STATUSES } from "../utils";
 import { DBError } from "../controllers/DBError";
 import { settings } from "../assets/settings";
-import type { BodyRegister } from "../types/controllers/authController";
+import type { Login, Register } from "../types/services/authService";
 
 export const authService = {
-	async register(data: BodyRegister) {
+	async register(data: Register) {
 		const { email, firstName, secondName, password, department } = data;
 		const salt = await bcrypt.genSalt(10);
 		const passwordHash = await bcrypt.hash(password, salt);
@@ -34,7 +34,7 @@ export const authService = {
 		return userWithoutPasswordHash;
 	},
 
-	async login(data: { email: string; password: string }) {
+	async login(data: Login) {
 		const { email, password } = data;
 
 		const loginnedUser = await authRepository.login({ email });
@@ -60,7 +60,7 @@ export const authService = {
 		return { firstName, secondName, token, isAppointExam };
 	},
 
-	async adminLogin(data: { email: string; password: string }) {
+	async adminLogin(data: Login) {
 		const { email, password } = data;
 
 		const loginnedUser = await authRepository.adminLogin({ email });
