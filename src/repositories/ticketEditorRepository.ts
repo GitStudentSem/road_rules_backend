@@ -27,8 +27,10 @@ const isUserExist = async (userId: string) => {
 	return user;
 };
 
-const checkAccessByRole = (role: string) => {
-	if (role === "user") {
+const checkAccessByRole = async (userId: string) => {
+	const user = await isUserExist(userId);
+
+	if (user.role === "user") {
 		throw new DBError("У вас нет прав доступа", HTTP_STATUSES.BAD_REQUEST_400);
 	}
 };
@@ -56,16 +58,14 @@ const getTicketsIds = async () => {
 
 export const ticketEditorRepository = {
 	async sendTickets(userId: string) {
-		const user = await isUserExist(userId);
-		checkAccessByRole(user.role);
+		await checkAccessByRole(userId);
 		const ticketsIds = await getTicketsIds();
 		return ticketsIds;
 	},
 
 	async createTicket(data: CreateTicket) {
 		const { createdAt, ticketId, userId } = data;
-		const user = await isUserExist(userId);
-		checkAccessByRole(user.role);
+		await checkAccessByRole(userId);
 		await ticketCollection.insertOne({ createdAt, ticketId, questions: [] });
 	},
 
@@ -83,8 +83,7 @@ export const ticketEditorRepository = {
 	async createQuestion(data: CreateQuestion) {
 		const { imgInfo, questionId, ticketId, question, help, answers, userId } =
 			data;
-		const user = await isUserExist(userId);
-		checkAccessByRole(user.role);
+		await checkAccessByRole(userId);
 
 		await ticketCollection.updateOne(
 			{ ticketId },
@@ -95,8 +94,7 @@ export const ticketEditorRepository = {
 	},
 
 	async getQuestionsInTicket(ticketId: string, userId: string) {
-		const user = await isUserExist(userId);
-		checkAccessByRole(user.role);
+		await checkAccessByRole(userId);
 
 		const ticket = await findTicket(ticketId);
 		return ticket.questions;
@@ -105,8 +103,7 @@ export const ticketEditorRepository = {
 	async editQuestion(data: CreateQuestion) {
 		const { imgInfo, questionId, ticketId, question, help, answers, userId } =
 			data;
-		const user = await isUserExist(userId);
-		checkAccessByRole(user.role);
+		await checkAccessByRole(userId);
 
 		const query = {
 			ticketId: ticketId,
@@ -137,8 +134,7 @@ export const ticketEditorRepository = {
 		// Поиск документа с использованием $elemMatch
 		const { ticketId, questionId, userId } = data;
 
-		const user = await isUserExist(userId);
-		checkAccessByRole(user.role);
+		await checkAccessByRole(userId);
 
 		const query = {
 			ticketId,
@@ -164,8 +160,7 @@ export const ticketEditorRepository = {
 	},
 
 	async deleteTicket(ticketId: string, userId: string) {
-		const user = await isUserExist(userId);
-		checkAccessByRole(user.role);
+		await checkAccessByRole(userId);
 
 		await findTicket(ticketId);
 
@@ -178,8 +173,7 @@ export const ticketEditorRepository = {
 
 	async deleteQuestion(data: DeleteQuestion) {
 		const { ticketId, questionId, userId } = data;
-		const user = await isUserExist(userId);
-		checkAccessByRole(user.role);
+		await checkAccessByRole(userId);
 
 		await findTicket(ticketId);
 

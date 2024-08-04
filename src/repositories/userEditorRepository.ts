@@ -1,4 +1,10 @@
 import { DBError } from "../controllers/DBError";
+import type {
+	AppointExam,
+	DeleteUser,
+	GetExamResult,
+	SetRole,
+} from "../types/repositories/userEditorRepository";
 import { HTTP_STATUSES } from "../utils";
 import { userCollection } from "./db";
 
@@ -11,24 +17,24 @@ const isUserExist = async (userId: string) => {
 	return user;
 };
 
-const checkAccessByRole = (role: string) => {
-	if (role === "user") {
+const checkAccessByRole = async (userId: string) => {
+	const user = await isUserExist(userId);
+
+	if (user.role === "user") {
 		throw new DBError("У вас нет прав доступа", HTTP_STATUSES.BAD_REQUEST_400);
 	}
 };
 
 export const userEditorRepository = {
 	async getAllUsers(userId: string) {
-		const user = await isUserExist(userId);
-		checkAccessByRole(user.role);
+		await checkAccessByRole(userId);
 
 		const allUsers = await userCollection.find({}).toArray();
 		return allUsers;
 	},
 
 	async getUsersWithAppointExam(userId: string) {
-		const user = await isUserExist(userId);
-		checkAccessByRole(user.role);
+		await checkAccessByRole(userId);
 
 		const allUsers = await userCollection
 			.find({ isAppointExam: true })
@@ -37,16 +43,12 @@ export const userEditorRepository = {
 		return allUsers;
 	},
 
-	async setRole(data: {
-		userId: string;
-		email: string;
-		role: "user" | "admin";
-	}) {
+	async setRole(data: SetRole) {
 		const { userId, email, role } = data;
 
 		const user = await isUserExist(userId);
 
-		checkAccessByRole(user.role);
+		await checkAccessByRole(userId);
 
 		if (user.role === "superadmin") {
 			throw new DBError(
@@ -68,16 +70,10 @@ export const userEditorRepository = {
 		}
 	},
 
-	async appointExam(data: {
-		isAppoint: boolean;
-		email: string;
-		userId: string;
-	}) {
+	async appointExam(data: AppointExam) {
 		const { userId, isAppoint, email } = data;
 
-		const user = await isUserExist(userId);
-
-		checkAccessByRole(user.role);
+		await checkAccessByRole(userId);
 
 		const update = {
 			$set: {
@@ -88,10 +84,9 @@ export const userEditorRepository = {
 		await userCollection.updateOne({ email }, update, { upsert: true });
 	},
 
-	async deleteUser(data: { userId: string; email: string }) {
+	async deleteUser(data: DeleteUser) {
 		const { userId, email } = data;
-		const user = await isUserExist(userId);
-		checkAccessByRole(user.role);
+		await checkAccessByRole(userId);
 
 		const userForDelete = await userCollection.findOne({ email });
 		if (!userForDelete) {
@@ -110,13 +105,10 @@ export const userEditorRepository = {
 		await userCollection.deleteOne({ email });
 	},
 
-	async getExamResult(data: {
-		email: string;
-		userId: string;
-	}) {
+	async getExamResult(data: GetExamResult) {
 		const { email, userId } = data;
-		const user = await isUserExist(userId);
-		checkAccessByRole(user.role);
+
+		await checkAccessByRole(userId);
 
 		const userForResultsExam = await userCollection.findOne({ email });
 		if (!userForResultsExam) {
@@ -125,6 +117,7 @@ export const userEditorRepository = {
 				HTTP_STATUSES.NOT_FOUND_404,
 			);
 		}
+
 		const result = userForResultsExam.results.exam?.result;
 		if (!result) {
 			throw new DBError(
