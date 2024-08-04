@@ -1,13 +1,18 @@
 import sharp from "sharp";
 import { ticketEditorRepository } from "../repositories/ticketEditorRepository";
-import type { BodyCreateQuestion } from "../types/controllers/ticketEditorController";
-import type { BodyDeleteQuestion } from "../types/controllers/ticketEditorController";
 import { colors, resetStyle, styles } from "../assets/logStyles";
 import { crc32 } from "crc";
-import type { BodyEditQuestion } from "../types/controllers/ticketEditorController";
 import AWS from "aws-sdk";
 import { DBError } from "../controllers/DBError";
 import { HTTP_STATUSES } from "../utils";
+import type {
+	CreateQuestion,
+	DeleteQuestion,
+	EditQuestion,
+	ListParams,
+	SaveImage,
+	UploadFile,
+} from "../types/services/ticketEditor";
 
 const calculateSizeInKB = (arrayBuffer: ArrayBuffer) => {
 	const bytes = arrayBuffer.byteLength;
@@ -24,11 +29,7 @@ const s3 = new AWS.S3({
 });
 
 // Функция для загрузки файла
-const uploadFile = async (data: {
-	img: Buffer;
-	ticketId: string;
-	questionId: string;
-}) => {
+const uploadFile = async (data: UploadFile) => {
 	const { img, ticketId, questionId } = data;
 	const bucketName = process.env.BUCKET_NAME_FOR_S3 || "";
 	const key = `${ticketId}/${questionId}.jpg`;
@@ -60,11 +61,6 @@ const deleteImageFromQuestion = async (
 
 const deleteAllImagesInFolderFolder = async (ticketId: string) => {
 	try {
-		type ListParams = {
-			Bucket: string;
-			Prefix: string;
-			Objects?: { Key: string }[];
-		};
 		// Получаем список объектов в папке
 		const listParams: ListParams = {
 			Bucket: process.env.BUCKET_NAME_FOR_S3 || "",
@@ -110,13 +106,7 @@ const saveImage = async ({
 	questionId,
 	imageInDB,
 	DBImageOriginalHash,
-}: {
-	img?: ArrayBuffer;
-	ticketId: string;
-	questionId: string;
-	imageInDB?: string;
-	DBImageOriginalHash?: string;
-}) => {
+}: SaveImage) => {
 	if (!img) {
 		await deleteImageFromQuestion(ticketId, questionId);
 		return { img: "", imageOriginalHash: "", imagePrcessedHash: "" };
@@ -203,9 +193,7 @@ export const ticketEditorService = {
 		return questionData;
 	},
 
-	async createQuestion(
-		data: BodyCreateQuestion & { userId: string; help: string },
-	) {
+	async createQuestion(data: CreateQuestion) {
 		const { img, ticketId, question, help, correctAnswer, answers, userId } =
 			data;
 
@@ -230,9 +218,7 @@ export const ticketEditorService = {
 		});
 	},
 
-	async editQuestion(
-		data: BodyEditQuestion & { userId: string; help: string },
-	) {
+	async editQuestion(data: EditQuestion) {
 		const {
 			img,
 			ticketId,
@@ -284,7 +270,7 @@ export const ticketEditorService = {
 		}
 	},
 
-	async deleteQuestion(data: { userId: string } & BodyDeleteQuestion) {
+	async deleteQuestion(data: DeleteQuestion) {
 		const { ticketId, questionId, userId } = data;
 
 		const isDeleted = await ticketEditorRepository.deleteQuestion({
