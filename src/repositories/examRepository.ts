@@ -4,6 +4,11 @@ import { ticketCollection, userCollection } from "./db";
 import type { CreateQuestionDBModel } from "../models/ticketEditor/CreateQuestionDBModel";
 import type { UserLoginDBModel } from "../models/auth/UserLoginDBModel";
 import type { WithId } from "mongodb";
+import type {
+	QuestionWithTicketId,
+	SendExamAnswer,
+	SetAlwaysCompleteExam,
+} from "../types/repositories/examRepository";
 
 const isTicketExist = async (ticketId: string) => {
 	const ticket = await ticketCollection.findOne({ ticketId });
@@ -113,10 +118,6 @@ const setAlwaysCompleteExam = async (
 	}
 };
 
-type QuestionWithTicketId = CreateQuestionDBModel & {
-	ticketId: string;
-};
-
 export const examRepository = {
 	async sendExam(userId: string) {
 		await isUserExist(userId);
@@ -144,12 +145,7 @@ export const examRepository = {
 		return tickets;
 	},
 
-	async sendExamAnswer(data: {
-		userId: string;
-		ticketId: string;
-		questionId: string;
-		answerId: string;
-	}) {
+	async sendExamAnswer(data: SendExamAnswer) {
 		let { userId, ticketId, questionId, answerId } = data;
 
 		const user = await isUserExist(userId);
@@ -181,12 +177,7 @@ export const examRepository = {
 		return { help: question.help, correctAnswerId, isCorrect };
 	},
 
-	async sendTrainingExamAnswer(data: {
-		userId: string;
-		ticketId: string;
-		questionId: string;
-		answerId: string;
-	}) {
+	async sendTrainingExamAnswer(data: SendExamAnswer) {
 		const { userId, ticketId, questionId, answerId } = data;
 
 		const user = await isUserExist(userId);
@@ -246,10 +237,7 @@ export const examRepository = {
 		);
 	},
 
-	async setAlwaysCompleteExam(data: {
-		email: string;
-		isAlwaysComplete: boolean;
-	}) {
+	async setAlwaysCompleteExam(data: SetAlwaysCompleteExam) {
 		const { email, isAlwaysComplete } = data;
 		const user = await userCollection.findOne({ email });
 
