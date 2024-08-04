@@ -1,6 +1,7 @@
 import { HTTP_STATUSES } from "../utils";
 import { DBError } from "../controllers/DBError";
 import { userCollection } from "./db";
+import type { Login, Register } from "../types/repositories/authRepository";
 
 export const isUserExist = async (userId: string) => {
 	const filter = { userId };
@@ -12,13 +13,7 @@ export const isUserExist = async (userId: string) => {
 };
 
 export const authRepository = {
-	async register(data: {
-		email: string;
-		firstName: string;
-		secondName: string;
-		passwordHash: string;
-		department: string;
-	}) {
+	async register(data: Register) {
 		const { email, firstName, secondName, passwordHash, department } = data;
 
 		const isAlreadyExistUser = await userCollection.findOne({ email });
@@ -56,7 +51,7 @@ export const authRepository = {
 		return user;
 	},
 
-	async login(data: { email: string }) {
+	async login(data: Login) {
 		const { email } = data;
 
 		const user = await userCollection.findOne({ email });
@@ -70,7 +65,7 @@ export const authRepository = {
 		return user;
 	},
 
-	async adminLogin(data: { email: string }) {
+	async adminLogin(data: Login) {
 		const { email } = data;
 
 		const user = await userCollection.findOne({ email });
