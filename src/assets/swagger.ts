@@ -7,7 +7,6 @@ import { ticketEditorSwaggerDoc } from "../routes/ticketEditor";
 import { examSwaggerDoc } from "../routes/exam";
 import { ticketsSwaggerDoc } from "../routes/tickets";
 import { userEditorSwaggerDoc } from "../routes/userEditor";
-import { questionSwaggerDoc } from "../routes/question";
 import { defaultSwaggerValues } from "./settings";
 
 const options: swaggerJSDoc.Options = {
@@ -41,7 +40,6 @@ const options: swaggerJSDoc.Options = {
 			...ticketEditorSwaggerDoc,
 			...examSwaggerDoc,
 			...ticketsSwaggerDoc,
-			...questionSwaggerDoc,
 		},
 	},
 	apis: ["./src/routes/*.ts", "./src/models/**/*.ts"],
