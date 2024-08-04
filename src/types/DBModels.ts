@@ -1,6 +1,4 @@
-import { defaultSwaggerValues } from "../assets/settings";
-
-export type Result = {
+type Result = {
 	isCorrect: boolean;
 	ticketId: string;
 	questionId: string;
@@ -35,37 +33,15 @@ export type CreateQuestionDBModel = {
 	questionId: string;
 	question: string;
 	help: string;
-	answers: Answer[];
+	answers: {
+		answerText: string;
+		answerId: string;
+		isCorrect: boolean;
+	}[];
 };
 
 export type TicketsDBModel = {
 	ticketId: string;
 	createdAt: number;
 	questions: CreateQuestionDBModel[];
-};
-
-export const AnswerSwaggerDoc = {
-	type: "object",
-	properties: {
-		answerText: {
-			type: "string",
-			description: "Текст варианта ответа",
-			default: "Только направо",
-		},
-		answerId: {
-			type: "string",
-			description: "id варианта ответа",
-			default: defaultSwaggerValues.answerId,
-		},
-		isCorrect: {
-			type: "boolean",
-			description: "правильный ли ответ",
-			default: "true",
-		},
-	},
-};
-export type Answer = {
-	answerText: string;
-	answerId: string;
-	isCorrect: boolean;
 };

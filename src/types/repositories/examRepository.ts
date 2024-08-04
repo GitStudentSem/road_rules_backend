@@ -1,5 +1,3 @@
-import type { Answer } from "../DBModels";
-
 export type QuestionWithTicketId = {
 	imgInfo: {
 		img: string;
@@ -9,7 +7,11 @@ export type QuestionWithTicketId = {
 	questionId: string;
 	question: string;
 	help: string;
-	answers: Answer[];
+	answers: {
+		answerText: string;
+		answerId: string;
+		isCorrect: boolean;
+	}[];
 	ticketId: string;
 };
 

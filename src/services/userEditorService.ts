@@ -3,15 +3,14 @@ import { DBError } from "../controllers/DBError";
 import { HTTP_STATUSES } from "../utils";
 import type { CreateQuestionDBModel } from "../types/DBModels";
 import { ticketRepository } from "../repositories/ticketRepository";
-
 import type {
 	AppointExam,
 	DeleteUser,
 	GetExamResult,
 	ExamResult,
 	SetRole,
+	Result,
 } from "../types/services/userEditorService";
-import type { Result } from "../types/DBModels";
 
 const removeUnusedInfoFromQuestion = (
 	question: CreateQuestionDBModel,

@@ -1,9 +1,9 @@
 import { examRepository } from "../repositories/examRepository";
-import type { Answer } from "../types/DBModels";
 import type {
 	SendExamAnswer,
 	SetAlwaysCompleteExam,
 	QuestionWithTicketId,
+	Answer,
 } from "../types/services/examService";
 
 const shuffleAnswers = (answers: Answer[]) => {

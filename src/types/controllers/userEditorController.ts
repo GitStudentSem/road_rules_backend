@@ -1,6 +1,6 @@
 import type { OpenAPIV3 } from "openapi-types";
 import { defaultSwaggerValues } from "../../assets/settings";
-import type { Answer } from "../DBModels";
+// import type { Answer } from "../DBModels";
 
 //===========================================//
 export const ViewClearQuestionInfoSwaggerDoc: OpenAPIV3.SchemaObject = {
@@ -55,9 +55,24 @@ export const ViewClearQuestionInfoSwaggerDoc: OpenAPIV3.SchemaObject = {
 					type: "array",
 					description: "Варианты ответов на вопрос",
 					items: {
-						type: "string",
-						default: "Только направо",
-						description: "Текст варианта ответа на вопрос",
+						type: "object",
+						properties: {
+							answerText: {
+								type: "string",
+								description: "Текст варианта ответа",
+								default: "Только направо",
+							},
+							answerId: {
+								type: "string",
+								description: "id варианта ответа",
+								default: defaultSwaggerValues.answerId,
+							},
+							isCorrect: {
+								type: "boolean",
+								description: "правильный ли ответ",
+								default: "true",
+							},
+						},
 					},
 				},
 			},
@@ -76,7 +91,11 @@ export type ViewClearQuestionInfo = {
 		question: string;
 		img: string;
 		help: string;
-		answers: Answer[];
+		answers: {
+			answerText: string;
+			answerId: string;
+			isCorrect: boolean;
+		}[];
 	};
 };
 //===========================================//

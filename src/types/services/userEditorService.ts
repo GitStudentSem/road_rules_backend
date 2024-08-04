@@ -1,5 +1,3 @@
-import type { Answer } from "../DBModels";
-
 export type ExamResult = {
 	userResultInfo: {
 		isCorrect: boolean;
@@ -12,8 +10,19 @@ export type ExamResult = {
 		question: string;
 		img: string;
 		help: string;
-		answers: Answer[];
+		answers: {
+			answerText: string;
+			answerId: string;
+			isCorrect: boolean;
+		}[];
 	};
+};
+
+export type Result = {
+	isCorrect: boolean;
+	ticketId: string;
+	questionId: string;
+	answerId: string;
 };
 
 export type SetRole = {

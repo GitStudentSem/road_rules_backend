@@ -1,5 +1,3 @@
-import type { Answer } from "../DBModels";
-
 export type CreateQuestion = {
 	imgInfo: {
 		img: string;
@@ -10,7 +8,11 @@ export type CreateQuestion = {
 	ticketId: string;
 	question: string;
 	help: string;
-	answers: Answer[];
+	answers: {
+		answerText: string;
+		answerId: string;
+		isCorrect: boolean;
+	}[];
 	userId: string;
 };
 

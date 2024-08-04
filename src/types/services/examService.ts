@@ -15,3 +15,9 @@ export type SetAlwaysCompleteExam = {
 export type QuestionWithTicketId = CreateQuestionDBModel & {
 	ticketId: string;
 };
+
+export type Answer = {
+	answerText: string;
+	answerId: string;
+	isCorrect: boolean;
+};
