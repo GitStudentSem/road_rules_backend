@@ -1,21 +1,12 @@
 import { DBError } from "../controllers/DBError";
-import type { Answer } from "../models/Answer";
+import type {
+	CreateQuestion,
+	CreateTicket,
+	DeleteQuestion,
+	FindQuestion,
+} from "../types/repositories/ticketEditorRepository";
 import { HTTP_STATUSES } from "../utils";
 import { ticketCollection, userCollection } from "./db";
-
-type CreateQuestion = {
-	imgInfo: {
-		img: string;
-		imageOriginalHash: string;
-		imagePrcessedHash: string;
-	};
-	questionId: string;
-	ticketId: string;
-	question: string;
-	help: string;
-	answers: Answer[];
-	userId: string;
-};
 
 const findTicket = async (ticketId: string) => {
 	const ticket = await ticketCollection.findOne({ ticketId });
@@ -71,11 +62,7 @@ export const ticketEditorRepository = {
 		return ticketsIds;
 	},
 
-	async createTicket(data: {
-		ticketId: string;
-		createdAt: number;
-		userId: string;
-	}) {
+	async createTicket(data: CreateTicket) {
 		const { createdAt, ticketId, userId } = data;
 		const user = await isUserExist(userId);
 		checkAccessByRole(user.role);
@@ -106,6 +93,7 @@ export const ticketEditorRepository = {
 			},
 		);
 	},
+
 	async getQuestionsInTicket(ticketId: string, userId: string) {
 		const user = await isUserExist(userId);
 		checkAccessByRole(user.role);
@@ -145,11 +133,7 @@ export const ticketEditorRepository = {
 		);
 	},
 
-	async findQuestion(data: {
-		ticketId: string;
-		questionId: string;
-		userId: string;
-	}) {
+	async findQuestion(data: FindQuestion) {
 		// Поиск документа с использованием $elemMatch
 		const { ticketId, questionId, userId } = data;
 
@@ -192,11 +176,7 @@ export const ticketEditorRepository = {
 		throw new DBError("Билет не был удален", HTTP_STATUSES.BAD_REQUEST_400);
 	},
 
-	async deleteQuestion(data: {
-		ticketId: string;
-		questionId: string;
-		userId: string;
-	}) {
+	async deleteQuestion(data: DeleteQuestion) {
 		const { ticketId, questionId, userId } = data;
 		const user = await isUserExist(userId);
 		checkAccessByRole(user.role);
