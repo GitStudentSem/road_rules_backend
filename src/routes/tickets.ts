@@ -4,12 +4,33 @@ import { checkAuth, handleValidationErrors } from "../midlewares";
 import { ticketsController } from "../controllers/ticketsController";
 import { getErrorSwaggerDoc } from "../assets/getErrorSwaggerDoc";
 import { ViewSendTicketsSwaggerDoc } from "../types/controllers/ticketEditorController";
-import { SendTicketViewModelSwaggerDoc } from "../models/tickets/SendTicketViewModel";
-import { BodySendTicketResultSwaggerDoc } from "../models/tickets/BodySendTicketResult";
-import { SendTicketResultViewModelModelSwaggerDoc } from "../models/tickets/SendTicketResultViewModel";
-import { defaultSwaggerValues } from "../assets/settings";
+import {
+	ParamsSendTicketSwaggerDoc,
+	ViewSendTicketSwaggerDoc,
+	BodySendTicketResultSwaggerDoc,
+	ViewSendTicketResultSwaggerDoc,
+} from "../types/controllers/tickets";
 
 export const ticketsSwaggerDoc = {
+	"/api/tickets/{ticketId}": {
+		get: {
+			tags: ["Билеты"],
+			summary: "Получить указанный билет",
+			security: [{ bearerAuth: [] }],
+			parameters: [ParamsSendTicketSwaggerDoc],
+			responses: {
+				200: {
+					description: "Билет успешно получен",
+					content: {
+						"application/json": {
+							schema: ViewSendTicketSwaggerDoc,
+						},
+					},
+				},
+				error: getErrorSwaggerDoc("Ошибка получения билета"),
+			},
+		},
+	},
 	"/api/tickets": {
 		get: {
 			tags: ["Билеты"],
@@ -43,39 +64,11 @@ export const ticketsSwaggerDoc = {
 					description: "Ответ успешно отправлен",
 					content: {
 						"application/json": {
-							schema: SendTicketResultViewModelModelSwaggerDoc,
+							schema: ViewSendTicketResultSwaggerDoc,
 						},
 					},
 				},
 				error: getErrorSwaggerDoc("Ошибка отправки ответа"),
-			},
-		},
-	},
-
-	"/api/tickets/{ticketId}": {
-		get: {
-			tags: ["Билеты"],
-			summary: "Получить указанный билет",
-			security: [{ bearerAuth: [] }],
-			parameters: [
-				{
-					name: "ticketId",
-					in: "path",
-					description: "id билета",
-					required: true,
-					default: defaultSwaggerValues.ticketId,
-				},
-			],
-			responses: {
-				200: {
-					description: "Билет успешно получен",
-					content: {
-						"application/json": {
-							schema: SendTicketViewModelSwaggerDoc,
-						},
-					},
-				},
-				error: getErrorSwaggerDoc("Ошибка получения билета"),
 			},
 		},
 	},

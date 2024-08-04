@@ -1,10 +1,13 @@
 import type { Request, Response } from "express";
 import { sendError } from "../assets/requestAssets";
 import { ticketService } from "../services/ticketService";
-import type { BodySendTicketResult } from "../models/tickets/BodySendTicketResult";
-import type { SendTicketResultViewModel } from "../models/tickets/SendTicketResultViewModel";
-import type { SendTicketViewModel } from "../models/tickets/SendTicketViewModel";
-import type { ViewSendTickets } from "../types/controllers/ticketEditorController";
+import type {
+	ParamsSendTicket,
+	ViewSendTicket,
+	ViewSendTickets,
+	BodySendTicketResult,
+	ViewSendTicketResult,
+} from "../types/controllers/tickets";
 import type { ErrorType, RequestWithBody, RequestWithParams } from "../types";
 import { DBError } from "./DBError";
 
@@ -25,9 +28,10 @@ export const ticketsController = {
 			sendError({ message: "Не удалось отправить билеты", error, res });
 		}
 	},
+
 	async sendTicket(
-		req: RequestWithParams<{ ticketId: string }>,
-		res: Response<SendTicketViewModel[] | ErrorType>,
+		req: RequestWithParams<ParamsSendTicket>,
+		res: Response<ViewSendTicket[] | ErrorType>,
 	) {
 		try {
 			const ticket = await ticketService.sendTicket(
@@ -46,7 +50,7 @@ export const ticketsController = {
 	},
 	async sendTicketResult(
 		req: RequestWithBody<BodySendTicketResult>,
-		res: Response<SendTicketResultViewModel | ErrorType>,
+		res: Response<ViewSendTicketResult | ErrorType>,
 	) {
 		try {
 			const result = await ticketService.sendTicketResult({
