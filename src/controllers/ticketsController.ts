@@ -7,7 +7,7 @@ import type {
 	ViewSendTickets,
 	BodySendTicketResult,
 	ViewSendTicketResult,
-} from "../types/controllers/tickets";
+} from "../types/controllers/ticketsController";
 import type { ErrorType, RequestWithBody, RequestWithParams } from "../types";
 import { DBError } from "./DBError";
 

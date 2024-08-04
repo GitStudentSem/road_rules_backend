@@ -9,7 +9,7 @@ import {
 	ViewSendTicketSwaggerDoc,
 	BodySendTicketResultSwaggerDoc,
 	ViewSendTicketResultSwaggerDoc,
-} from "../types/controllers/tickets";
+} from "../types/controllers/ticketsController";
 
 export const ticketsSwaggerDoc = {
 	"/api/tickets/{ticketId}": {

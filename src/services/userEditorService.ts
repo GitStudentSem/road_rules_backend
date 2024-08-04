@@ -4,12 +4,18 @@ import { HTTP_STATUSES } from "../utils";
 import type { CreateQuestionDBModel } from "../models/ticketEditor/CreateQuestionDBModel";
 import { ticketRepository } from "../repositories/ticketRepository";
 import type { Result } from "../models/auth/UserLoginDBModel";
-import type { ViewClearQuestionInfo } from "../types/controllers/userEditorController";
+import type {
+	AppointExam,
+	DeleteUser,
+	GetExamResult,
+	ExamResult,
+	SetRole,
+} from "../types/services/userEditorService";
 
 const removeUnusedInfoFromQuestion = (
 	question: CreateQuestionDBModel,
 	result: Result,
-): ViewClearQuestionInfo => {
+): ExamResult => {
 	return {
 		userResultInfo: {
 			isCorrect: result.isCorrect,
@@ -82,11 +88,7 @@ export const userEditorService = {
 		return filterdUsersData;
 	},
 
-	async setRole(data: {
-		userId: string;
-		email: string;
-		role: "user" | "admin";
-	}) {
+	async setRole(data: SetRole) {
 		const { userId, email, role } = data;
 
 		if (role !== "admin" && role !== "user") {
@@ -99,30 +101,23 @@ export const userEditorService = {
 		await userEditorRepository.setRole({ userId, email, role });
 	},
 
-	async appointExam(data: {
-		isAppoint: boolean;
-		email: string;
-		userId: string;
-	}) {
+	async appointExam(data: AppointExam) {
 		await userEditorRepository.appointExam(data);
 	},
 
-	async deleteUser(data: { userId: string; email: string }) {
+	async deleteUser(data: DeleteUser) {
 		const { userId, email } = data;
 
 		await userEditorRepository.deleteUser({ userId, email });
 	},
 
-	async getExamResult(data: {
-		email: string;
-		userId: string;
-	}) {
+	async getExamResult(data: GetExamResult) {
 		const examResult = await userEditorRepository.getExamResult({
 			email: data.email,
 			userId: data.userId,
 		});
 
-		const questions: ViewClearQuestionInfo[] = [];
+		const questions: ExamResult[] = [];
 
 		for (const result of examResult) {
 			const question = await ticketRepository.getQuestionInTicket({
