@@ -9,6 +9,56 @@ import { ViewSendExamAnswerSwaggerDoc } from "../types/controllers/examControlle
 import { ViewGetExamResultSwaggerDoc } from "../types/controllers/examController";
 
 export const examSwaggerDoc = {
+	"/api/exam/getResult": {
+		get: {
+			tags: ["Экзамен"],
+			summary:
+				"Получить результаты экзамена, для пользователя который запрашивает",
+			security: [{ bearerAuth: [] }],
+
+			responses: {
+				200: {
+					description: "Результат успешно отправлен",
+					content: {
+						"application/json": {
+							schema: {
+								type: "array",
+								description: "Результаты экзамена",
+								items: ViewGetExamResultSwaggerDoc,
+							},
+						},
+					},
+				},
+				error: getErrorSwaggerDoc("Ошибка отправки результата"),
+			},
+		},
+	},
+
+	"/api/exam/getTrainingResult": {
+		get: {
+			tags: ["Экзамен"],
+			summary:
+				"Получить результаты тренировочного экзамена, для пользователя который запрашивает",
+			security: [{ bearerAuth: [] }],
+
+			responses: {
+				200: {
+					description: "Результат успешно отправлен",
+					content: {
+						"application/json": {
+							schema: {
+								type: "array",
+								description: "Результаты экзамена",
+								items: ViewGetExamResultSwaggerDoc,
+							},
+						},
+					},
+				},
+				error: getErrorSwaggerDoc("Ошибка отправки результата"),
+			},
+		},
+	},
+
 	"/api/exam": {
 		get: {
 			tags: ["Экзамен"],
@@ -75,56 +125,6 @@ export const examSwaggerDoc = {
 					},
 				},
 				error: getErrorSwaggerDoc("Ошибка отправки ответа"),
-			},
-		},
-	},
-
-	"/api/exam/getResult": {
-		get: {
-			tags: ["Экзамен"],
-			summary:
-				"Получить результаты экзамена, для пользователя который запрашивает",
-			security: [{ bearerAuth: [] }],
-
-			responses: {
-				200: {
-					description: "Результат успешно отправлен",
-					content: {
-						"application/json": {
-							schema: {
-								type: "array",
-								description: "Результаты экзамена",
-								items: ViewGetExamResultSwaggerDoc,
-							},
-						},
-					},
-				},
-				error: getErrorSwaggerDoc("Ошибка отправки результата"),
-			},
-		},
-	},
-
-	"/api/exam/getTrainingResult": {
-		get: {
-			tags: ["Экзамен"],
-			summary:
-				"Получить результаты тренировочного экзамена, для пользователя который запрашивает",
-			security: [{ bearerAuth: [] }],
-
-			responses: {
-				200: {
-					description: "Результат успешно отправлен",
-					content: {
-						"application/json": {
-							schema: {
-								type: "array",
-								description: "Результаты экзамена",
-								items: ViewGetExamResultSwaggerDoc,
-							},
-						},
-					},
-				},
-				error: getErrorSwaggerDoc("Ошибка отправки результата"),
 			},
 		},
 	},
