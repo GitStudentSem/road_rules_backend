@@ -1,4 +1,4 @@
-import type { CreateQuestionDBModel } from "../../models/ticketEditor/CreateQuestionDBModel";
+import type { CreateQuestionDBModel } from "../DBModels";
 
 export type SendExamAnswer = {
 	userId: string;

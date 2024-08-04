@@ -1,7 +1,7 @@
 import { ticketRepository } from "../repositories/ticketRepository";
 import type { WithId } from "mongodb";
-import type { TicketsDBModel } from "../models/ticketEditor/TicketsDBModel";
 import type { SendTicketResult } from "../types/services/ticketsSevice";
+import type { TicketsDBModel } from "../types/DBModels";
 
 const removeCorrectAnswersFromTicket = (ticket: WithId<TicketsDBModel>) => {
 	return ticket.questions.map((question) => {

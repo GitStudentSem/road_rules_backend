@@ -1,5 +1,5 @@
 import { DBError } from "../controllers/DBError";
-import type { CreateQuestionDBModel } from "../models/ticketEditor/CreateQuestionDBModel";
+import type { CreateQuestionDBModel } from "../types/DBModels";
 import type {
 	GetQuestionInTicket,
 	SendTicketResult,

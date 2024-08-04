@@ -1,8 +1,11 @@
 import { DBError } from "../controllers/DBError";
 import { HTTP_STATUSES } from "../utils";
 import { ticketCollection, userCollection } from "./db";
-import type { CreateQuestionDBModel } from "../models/ticketEditor/CreateQuestionDBModel";
-import type { UserLoginDBModel } from "../models/auth/UserLoginDBModel";
+
+import type {
+	CreateQuestionDBModel,
+	UserLoginDBModel,
+} from "../types/DBModels";
 import type { WithId } from "mongodb";
 import type {
 	QuestionWithTicketId,

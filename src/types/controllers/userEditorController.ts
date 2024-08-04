@@ -1,6 +1,6 @@
-import type { Answer } from "../../models/Answer";
 import type { OpenAPIV3 } from "openapi-types";
 import { defaultSwaggerValues } from "../../assets/settings";
+import type { Answer } from "../DBModels";
 
 //===========================================//
 export const ViewClearQuestionInfoSwaggerDoc: OpenAPIV3.SchemaObject = {

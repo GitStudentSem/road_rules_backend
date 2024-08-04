@@ -1,4 +1,4 @@
-import type { Answer } from "../../models/Answer";
+import type { Answer } from "../DBModels";
 
 export type QuestionWithTicketId = {
 	imgInfo: {

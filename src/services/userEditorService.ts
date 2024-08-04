@@ -1,9 +1,9 @@
 import { userEditorRepository } from "../repositories/userEditorRepository";
 import { DBError } from "../controllers/DBError";
 import { HTTP_STATUSES } from "../utils";
-import type { CreateQuestionDBModel } from "../models/ticketEditor/CreateQuestionDBModel";
+import type { CreateQuestionDBModel } from "../types/DBModels";
 import { ticketRepository } from "../repositories/ticketRepository";
-import type { Result } from "../models/auth/UserLoginDBModel";
+
 import type {
 	AppointExam,
 	DeleteUser,
@@ -11,6 +11,7 @@ import type {
 	ExamResult,
 	SetRole,
 } from "../types/services/userEditorService";
+import type { Result } from "../types/DBModels";
 
 const removeUnusedInfoFromQuestion = (
 	question: CreateQuestionDBModel,
