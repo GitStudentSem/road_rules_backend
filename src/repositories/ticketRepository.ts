@@ -1,5 +1,9 @@
 import { DBError } from "../controllers/DBError";
 import type { CreateQuestionDBModel } from "../models/ticketEditor/CreateQuestionDBModel";
+import type {
+	GetQuestionInTicket,
+	SendTicketResult,
+} from "../types/repositories/ticketsRepository";
 import { HTTP_STATUSES } from "../utils";
 import { ticketCollection, userCollection } from "./db";
 
@@ -95,13 +99,9 @@ export const ticketRepository = {
 		return ticket;
 	},
 
-	async sendTicketResult(data: {
-		userId: string;
-		ticketId: string;
-		questionId: string;
-		answerId: string;
-	}) {
+	async sendTicketResult(data: SendTicketResult) {
 		const { userId, ticketId, questionId, answerId } = data;
+
 		const user = await isUserExist(userId);
 		const question = await isQuestionExist(ticketId, questionId);
 		const correctAnswerId =
@@ -124,10 +124,7 @@ export const ticketRepository = {
 		return question;
 	},
 
-	async getQuestionInTicket(data: {
-		ticketId: string;
-		questionId: string;
-	}) {
+	async getQuestionInTicket(data: GetQuestionInTicket) {
 		const { ticketId, questionId } = data;
 		const question = isQuestionExist(ticketId, questionId);
 		return question;
