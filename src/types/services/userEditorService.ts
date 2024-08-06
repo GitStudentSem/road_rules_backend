@@ -1,21 +1,13 @@
 export type ExamResult = {
-	userResultInfo: {
-		isCorrect: boolean;
-		ticketId: string;
-		questionId: string;
+	question: string;
+	img: string;
+	help: string;
+	userAnswerId: string;
+	answers: {
+		answerText: string;
 		answerId: string;
-	};
-
-	questionInfo: {
-		question: string;
-		img: string;
-		help: string;
-		answers: {
-			answerText: string;
-			answerId: string;
-			isCorrect: boolean;
-		}[];
-	};
+		isCorrect: boolean;
+	}[];
 };
 
 export type Result = {

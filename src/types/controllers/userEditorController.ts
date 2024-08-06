@@ -6,73 +6,46 @@ import { defaultSwaggerValues } from "../../assets/settings";
 export const ViewClearQuestionInfoSwaggerDoc: OpenAPIV3.SchemaObject = {
 	type: "object",
 	properties: {
-		userResultInfo: {
-			type: "object",
-			description: "Информация об ответах пользователя",
-			properties: {
-				isCorrect: {
-					type: "boolean",
-					description: "Правильный ответ или нет",
-					default: "true",
-				},
-				ticketId: {
-					type: "string",
-					default: defaultSwaggerValues.ticketId,
-					description: "id билета",
-				},
-				questionId: {
-					type: "string",
-					description: "id вопроса который нужно удалить",
-					default: defaultSwaggerValues.questionId,
-				},
-				answerId: {
-					type: "string",
-					description: "id варианта ответа",
-					default: defaultSwaggerValues.answerId,
-				},
-			},
+		question: {
+			type: "string",
+			default: "В каком направлении разрешен поворот?",
+			description: "Текст вопроса",
 		},
-		questionInfo: {
-			type: "object",
-			description: "Информация о вопросе экзамена",
-			properties: {
-				question: {
-					type: "string",
-					default: "В каком направлении разрешен поворот?",
-					description: "Текст вопроса",
-				},
-				img: {
-					type: "string",
-					format: "binary",
-					description: "Картинка в виде ArrayBuffer",
-				},
-				help: {
-					type: "string",
-					default: "В направлении движения по полосам",
-					description: "Текст помощи по вопросу",
-				},
-				answers: {
-					type: "array",
-					description: "Варианты ответов на вопрос",
-					items: {
-						type: "object",
-						properties: {
-							answerText: {
-								type: "string",
-								description: "Текст варианта ответа",
-								default: "Только направо",
-							},
-							answerId: {
-								type: "string",
-								description: "id варианта ответа",
-								default: defaultSwaggerValues.answerId,
-							},
-							isCorrect: {
-								type: "boolean",
-								description: "правильный ли ответ",
-								default: "true",
-							},
-						},
+		img: {
+			type: "string",
+			format: "binary",
+			description: "Картинка в виде ArrayBuffer",
+		},
+		help: {
+			type: "string",
+			default: "В направлении движения по полосам",
+			description: "Текст помощи по вопросу",
+		},
+		userAnswerId: {
+			type: "string",
+			description: "id варианта ответа который дал пользователь",
+			default: defaultSwaggerValues.answerId,
+		},
+		answers: {
+			type: "array",
+			description: "Варианты ответов на вопрос",
+			items: {
+				type: "object",
+				properties: {
+					answerText: {
+						type: "string",
+						description: "Текст варианта ответа",
+						default: "Только направо",
+					},
+					answerId: {
+						type: "string",
+						description: "id варианта ответа",
+						default: defaultSwaggerValues.answerId,
+					},
+					isCorrect: {
+						type: "boolean",
+						description: "правильный ли ответ",
+						default: "true",
 					},
 				},
 			},
@@ -80,23 +53,15 @@ export const ViewClearQuestionInfoSwaggerDoc: OpenAPIV3.SchemaObject = {
 	},
 };
 export type ViewClearQuestionInfo = {
-	userResultInfo: {
-		isCorrect: boolean;
-		ticketId: string;
-		questionId: string;
+	question: string;
+	img: string;
+	help: string;
+	userAnswerId: string;
+	answers: {
+		answerText: string;
 		answerId: string;
-	};
-
-	questionInfo: {
-		question: string;
-		img: string;
-		help: string;
-		answers: {
-			answerText: string;
-			answerId: string;
-			isCorrect: boolean;
-		}[];
-	};
+		isCorrect: boolean;
+	}[];
 };
 //===========================================//
 

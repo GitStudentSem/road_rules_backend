@@ -17,18 +17,11 @@ const removeUnusedInfoFromQuestion = (
 	result: Result,
 ): ExamResult => {
 	return {
-		userResultInfo: {
-			isCorrect: result.isCorrect,
-			ticketId: result.ticketId,
-			questionId: result.questionId,
-			answerId: result.answerId,
-		},
-		questionInfo: {
-			question: question.question,
-			img: question.imgInfo.img,
-			help: question.help,
-			answers: question.answers,
-		},
+		question: question.question,
+		img: question.imgInfo.img,
+		help: question.help,
+		answers: question.answers,
+		userAnswerId: result.answerId,
 	};
 };
 
