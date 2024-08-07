@@ -21,6 +21,11 @@ export const ViewClearQuestionInfoSwaggerDoc: OpenAPIV3.SchemaObject = {
 			default: "В направлении движения по полосам",
 			description: "Текст помощи по вопросу",
 		},
+		questionId: {
+			type: "string",
+			description: "id варианта вопроса",
+			default: defaultSwaggerValues.questionId,
+		},
 		userAnswerId: {
 			type: "string",
 			description: "id варианта ответа который дал пользователь",
@@ -56,6 +61,7 @@ export type ViewClearQuestionInfo = {
 	question: string;
 	img: string;
 	help: string;
+	questionId: string;
 	userAnswerId: string;
 	answers: {
 		answerText: string;

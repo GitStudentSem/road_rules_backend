@@ -21,6 +21,7 @@ const removeUnusedInfoFromQuestion = (
 		img: question.imgInfo.img,
 		help: question.help,
 		answers: question.answers,
+		questionId: result.questionId,
 		userAnswerId: result.answerId,
 	};
 };

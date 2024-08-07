@@ -3,6 +3,7 @@ export type ExamResult = {
 	img: string;
 	help: string;
 	userAnswerId: string;
+	questionId: string;
 	answers: {
 		answerText: string;
 		answerId: string;
