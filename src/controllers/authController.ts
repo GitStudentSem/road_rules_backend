@@ -43,7 +43,7 @@ export const authController = {
 	) {
 		try {
 			const { email, password } = req.body;
-
+			console.log(!"d".toLowerCase());
 			const loginnedUser = await authService.login({ email, password });
 
 			res.status(HTTP_STATUSES.OK_200).json(loginnedUser);
