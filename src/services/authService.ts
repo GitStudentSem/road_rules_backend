@@ -20,15 +20,20 @@ export const authService = {
 			department,
 		});
 
-		jwt.sign({ userId: registerdUser.userId }, settings.JWT_SECRET, {
-			expiresIn: "30d",
-		});
+		const token: string = jwt.sign(
+			{ userId: registerdUser.userId },
+			settings.JWT_SECRET,
+			{
+				expiresIn: "30d",
+			},
+		);
 
 		const userWithoutPasswordHash = {
 			email: registerdUser.email,
 			firstName: registerdUser.firstName,
 			secondName: registerdUser.secondName,
 			userId: registerdUser.userId,
+			token,
 		};
 
 		return userWithoutPasswordHash;

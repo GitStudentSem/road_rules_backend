@@ -65,6 +65,11 @@ export const ViewRegisterSwaggerDoc: OpenAPIV3.SchemaObject = {
 			description: "id пользователя пользователя",
 			default: "1717440741304",
 		},
+		token: {
+			type: "string",
+			default: defaultSwaggerValues.authToken,
+			description: "Токен авторизации",
+		},
 	},
 };
 export type ViewRegister = {
@@ -72,6 +77,7 @@ export type ViewRegister = {
 	firstName: string;
 	secondName: string;
 	userId: string;
+	token: string;
 };
 //===========================================//
 
@@ -117,8 +123,7 @@ export const ViewLoginSwaggerDoc: OpenAPIV3.SchemaObject = {
 		},
 		token: {
 			type: "string",
-			default:
-				"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE3MTc0NDA3NDEzMDQiLCJpYXQiOjE3MTc0NDI1MjAsImV4cCI6MTcyMDAzNDUyMH0.imiX_CYuKDB1u58elXLfQfE8_oNpO8rvh3Uk2fkWEsU",
+			default: defaultSwaggerValues.authToken,
 			description: "Токен авторизации",
 		},
 	},
