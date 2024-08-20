@@ -18,7 +18,7 @@ function logMessage({
 	error,
 }: { message: string; error: any }) {
 	const timestamp = new Date().toISOString();
-	const logEntry = `[${timestamp}] ${message}\n${error.stack}\n`;
+	const logEntry = `[${timestamp}] ${message}\n${error?.stack}\n`;
 
 	// Запись в файл
 	fs.appendFile(logFilePath, logEntry, (err) => {
