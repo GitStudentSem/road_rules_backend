@@ -3,7 +3,7 @@ import { answerValidation } from "../validations";
 import { checkAuth, handleValidationErrors } from "../midlewares";
 import { ticketsController } from "../controllers/ticketsController";
 import { getErrorSwaggerDoc } from "../assets/getErrorSwaggerDoc";
-import { ViewSendTicketsSwaggerDoc } from "../types/controllers/ticketEditorController";
+import { ViewSendTicketsSwaggerDoc } from "../types/controllers/ticketsController";
 import {
 	ParamsSendTicketSwaggerDoc,
 	ViewSendTicketSwaggerDoc,

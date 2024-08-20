@@ -52,7 +52,7 @@ const getTicketsIds = async () => {
 		])
 		.toArray();
 
-	const onlyTicketIds = ticketsIds.map(({ ticketId }) => ({ ticketId }));
+	const onlyTicketIds = ticketsIds.map(({ ticketId }) => ticketId);
 	return onlyTicketIds;
 };
 

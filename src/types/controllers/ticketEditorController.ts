@@ -2,17 +2,14 @@ import { defaultSwaggerValues } from "../../assets/settings";
 import type { OpenAPIV3 } from "openapi-types";
 
 export const ViewSendTicketsSwaggerDoc: OpenAPIV3.SchemaObject = {
-	type: "object",
-	properties: {
-		ticketId: {
-			type: "string",
-			description: "id билета",
-			default: defaultSwaggerValues.ticketId,
-		},
+	type: "array",
+	description: "id билетов доступных для выбора, включая пустые билеты",
+	items: {
+		type: "string",
+		description: "id билета",
+		default: defaultSwaggerValues.ticketId,
 	},
-	required: ["ticketId"],
 };
-export type ViewSendTickets = { ticketId: string };
 //===========================================//
 
 export const ViewCreateTicketSwaggerDoc: OpenAPIV3.SchemaObject = {

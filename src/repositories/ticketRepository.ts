@@ -57,9 +57,9 @@ const getTicketsIds = async () => {
 		.sort({ createdAt: 1 })
 		.toArray();
 
-	const ticketIds: { ticketId: string }[] = [];
+	const ticketIds: string[] = [];
 	for (const doc of cursor) {
-		ticketIds.push({ ticketId: doc.ticketId });
+		ticketIds.push(doc.ticketId);
 	}
 
 	return ticketIds;

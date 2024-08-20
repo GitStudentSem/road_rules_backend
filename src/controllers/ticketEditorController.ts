@@ -8,7 +8,6 @@ import { ticketEditorService } from "../services/ticketEditorService";
 import type {
 	BodyGetQuestionsInTicket,
 	ViewCreateTicket,
-	ViewSendTickets,
 	BodyCreateQuestion,
 	ViewGetQuestionsInTicket,
 	BodyEditQuestion,
@@ -17,10 +16,7 @@ import type {
 } from "../types/controllers/ticketEditorController";
 
 export const ticketEditorController = {
-	async sendTickets(
-		req: Request,
-		res: Response<ViewSendTickets[] | ErrorType>,
-	) {
+	async sendTickets(req: Request, res: Response<string[] | ErrorType>) {
 		try {
 			const tickets = await ticketEditorService.sendTickets(req.userId || "");
 

@@ -4,7 +4,6 @@ import { ticketService } from "../services/ticketService";
 import type {
 	ParamsSendTicket,
 	ViewSendTicket,
-	ViewSendTickets,
 	BodySendTicketResult,
 	ViewSendTicketResult,
 } from "../types/controllers/ticketsController";
@@ -12,10 +11,7 @@ import type { ErrorType, RequestWithBody, RequestWithParams } from "../types";
 import { DBError } from "./DBError";
 
 export const ticketsController = {
-	async sendTickets(
-		req: Request,
-		res: Response<ViewSendTickets[] | ErrorType>,
-	) {
+	async sendTickets(req: Request, res: Response<string[] | ErrorType>) {
 		try {
 			const tickets = await ticketService.sendTickets(req.userId || "");
 
