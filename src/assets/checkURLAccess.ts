@@ -54,7 +54,7 @@ export const checkURLAccess = (
 		sendError({
 			status: HTTP_STATUSES.FORRIBDEN_403,
 			res,
-			message: `Срок оплаты сервера истек ${formattedDate}, вы можете оплатить его снова и вернуть себе доступ, попробуйте обратиться к администратору ${tgLink}`,
+			message: `Срок оплаты сервера для этого адреса: ${referer} истек ${formattedDate}, вы можете оплатить его снова и вернуть себе доступ, попробуйте обратиться к администратору ${tgLink}`,
 		});
 		return;
 	}
