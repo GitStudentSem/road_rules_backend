@@ -22,7 +22,7 @@ export const examController = {
 				res.status(error.status).json({ message: error.message });
 				return;
 			}
-			sendError({ message: "Не удалось отправить экзамен", error, res });
+			sendError({ message: "Не удалось отправить экзамен", error, res, req });
 		}
 	},
 
@@ -48,6 +48,7 @@ export const examController = {
 				message: "Не удалось отправить ответ на экзаменационный вопрос",
 				error,
 				res,
+				req,
 			});
 		}
 	},
@@ -74,6 +75,7 @@ export const examController = {
 				message: "Не удалось отправить ответ на экзаменационный вопрос",
 				error,
 				res,
+				req,
 			});
 		}
 	},
@@ -95,6 +97,7 @@ export const examController = {
 				message: "Не удалось получить результаты экзамена",
 				error,
 				res,
+				req,
 			});
 		}
 	},
@@ -116,6 +119,7 @@ export const examController = {
 				message: "Не удалось получить результаты экзамена",
 				error,
 				res,
+				req,
 			});
 		}
 	},
@@ -138,6 +142,7 @@ export const examController = {
 				message: "Не удалось получить результаты экзамена",
 				error,
 				res,
+				req,
 			});
 		}
 	},

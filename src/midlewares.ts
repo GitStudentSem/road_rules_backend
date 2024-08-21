@@ -21,6 +21,7 @@ export const checkAuth = (req: Request, res: Response, next: NextFunction) => {
 				message: "Токен доступа неверен или истек",
 				error,
 				res,
+				req,
 			});
 		}
 	} else {

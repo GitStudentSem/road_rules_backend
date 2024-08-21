@@ -26,7 +26,7 @@ export const ticketEditorController = {
 				res.status(error.status).json({ message: error.message });
 				return;
 			}
-			sendError({ message: "Не удалось отправить билеты", error, res });
+			sendError({ message: "Не удалось отправить билеты", error, res, req });
 		}
 	},
 
@@ -42,7 +42,7 @@ export const ticketEditorController = {
 				res.status(error.status).json({ message: error.message });
 				return;
 			}
-			sendError({ message: "Не удалось создать билет", error, res });
+			sendError({ message: "Не удалось создать билет", error, res, req });
 		}
 	},
 
@@ -66,6 +66,7 @@ export const ticketEditorController = {
 				message: "Не удалось получить вопросы в билете",
 				error,
 				res,
+				req,
 			});
 		}
 	},
@@ -94,7 +95,7 @@ export const ticketEditorController = {
 				res.status(error.status).json({ message: error.message });
 				return;
 			}
-			sendError({ message: "Не удалось создать вопрос", error, res });
+			sendError({ message: "Не удалось создать вопрос", error, res, req });
 		}
 	},
 
@@ -123,7 +124,7 @@ export const ticketEditorController = {
 				res.status(error.status).json({ message: error.message });
 				return;
 			}
-			sendError({ message: "Не удалось изменить вопрос", error, res });
+			sendError({ message: "Не удалось изменить вопрос", error, res, req });
 		}
 	},
 
@@ -142,7 +143,7 @@ export const ticketEditorController = {
 				res.status(error.status).json({ message: error.message });
 				return;
 			}
-			sendError({ message: "Не удалось удалить билет", error, res });
+			sendError({ message: "Не удалось удалить билет", error, res, req });
 		}
 	},
 
@@ -165,7 +166,7 @@ export const ticketEditorController = {
 				res.status(error.status).json({ message: error.message });
 				return;
 			}
-			sendError({ message: "Не удалось удалить вопрос", error, res });
+			sendError({ message: "Не удалось удалить вопрос", error, res, req });
 		}
 	},
 };

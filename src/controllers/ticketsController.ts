@@ -21,7 +21,7 @@ export const ticketsController = {
 				res.status(error.status).json({ message: error.message });
 				return;
 			}
-			sendError({ message: "Не удалось отправить билеты", error, res });
+			sendError({ message: "Не удалось отправить билеты", error, res, req });
 		}
 	},
 
@@ -41,7 +41,7 @@ export const ticketsController = {
 				res.status(error.status).json({ message: error.message });
 				return;
 			}
-			sendError({ message: "Не удалось отправить билет", error, res });
+			sendError({ message: "Не удалось отправить билет", error, res, req });
 		}
 	},
 	async sendTicketResult(
@@ -66,6 +66,7 @@ export const ticketsController = {
 				message: "Не удалось отправить ответ на вопрос",
 				error,
 				res,
+				req,
 			});
 		}
 	},

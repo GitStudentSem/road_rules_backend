@@ -1,4 +1,4 @@
-import type { Response } from "express";
+import type { Request, Response } from "express";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -9,6 +9,7 @@ type TypeError = {
 	status?: number;
 	message?: string;
 	error?: any;
+	req: Request;
 	res: Response;
 };
 
@@ -16,9 +17,17 @@ type TypeError = {
 function logMessage({
 	message = "Неизвестная ошибка",
 	error,
-}: { message: string; error: any }) {
-	const timestamp = new Date().toISOString();
-	const logEntry = `[${timestamp}] ${message}\n${error?.stack}\n`;
+	req,
+}: { message: string; error: any; req: Request }) {
+	const dateOptions: Intl.DateTimeFormatOptions = {
+		day: "2-digit",
+		month: "2-digit",
+		year: "numeric",
+	};
+	const formattedDate = new Date().toLocaleDateString("ru-RU", dateOptions);
+	const referer = req.get("Referer");
+
+	const logEntry = `[${formattedDate}] ${message}\n Адрес: ${referer}\n${error?.stack}\n`;
 
 	// Запись в файл
 	fs.appendFile(logFilePath, logEntry, (err) => {
@@ -34,9 +43,10 @@ export const sendError = ({
 	status = 500,
 	message = "Неизвестная ошибка",
 	error,
+	req,
 	res,
 }: TypeError) => {
-	logMessage({ message, error });
+	logMessage({ message, error, req });
 	error && console.log(message, error);
 	return res.status(status).send({ message });
 };

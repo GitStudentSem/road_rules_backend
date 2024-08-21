@@ -33,7 +33,7 @@ export const authController = {
 				res.status(error.status).json({ message: error.message });
 				return;
 			}
-			sendError({ message: "Не удалось зарегистрироваться", error, res });
+			sendError({ message: "Не удалось зарегистрироваться", error, res, req });
 		}
 	},
 
@@ -52,7 +52,7 @@ export const authController = {
 				res.status(error.status).json({ message: error.message });
 				return;
 			}
-			sendError({ message: "Не удалось войти в систему", error, res });
+			sendError({ message: "Не удалось войти в систему", error, res, req });
 		}
 	},
 
@@ -71,7 +71,7 @@ export const authController = {
 				res.status(error.status).json({ message: error.message });
 				return;
 			}
-			sendError({ message: "Не удалось войти в систему", error, res });
+			sendError({ message: "Не удалось войти в систему", error, res, req });
 		}
 	},
 };

@@ -15,24 +15,6 @@ import type {
 import type { ViewUserInfo } from "../types/controllers/userEditorController";
 import type { BodyAppointExam } from "../types/controllers/userEditorController";
 
-const catchError = (errorInfo: {
-	error: unknown;
-	res: Response;
-	userMessage: string;
-}) => {
-	const { error, res, userMessage } = errorInfo;
-
-	if (error instanceof DBError) {
-		res.status(error.status).json({ message: error.message });
-		return;
-	}
-	sendError({
-		message: userMessage,
-		error,
-		res,
-	});
-};
-
 export const userEditorController = {
 	async getAllUsers(req: Request, res: Response<ViewUserInfo[] | ErrorType>) {
 		try {
@@ -40,10 +22,11 @@ export const userEditorController = {
 
 			res.status(HTTP_STATUSES.OK_200).json(allUsers);
 		} catch (error) {
-			catchError({
+			sendError({
 				error,
 				res,
-				userMessage: "Не удалось получить всех пользователей",
+				req,
+				message: "Не удалось получить всех пользователей",
 			});
 		}
 	},
@@ -59,11 +42,11 @@ export const userEditorController = {
 
 			res.status(HTTP_STATUSES.OK_200).json(allUsers);
 		} catch (error) {
-			catchError({
+			sendError({
 				error,
 				res,
-				userMessage:
-					"Не удалось получить пользователей с назначенным экзаменом",
+				req,
+				message: "Не удалось получить пользователей с назначенным экзаменом",
 			});
 		}
 	},
@@ -80,10 +63,11 @@ export const userEditorController = {
 
 			res.status(HTTP_STATUSES.OK_200).json(allUsers);
 		} catch (error) {
-			catchError({
+			sendError({
 				error,
 				res,
-				userMessage: "Не удалось получить пользователей и их статус экзамена",
+				req,
+				message: "Не удалось получить пользователей и их статус экзамена",
 			});
 		}
 	},
@@ -100,10 +84,11 @@ export const userEditorController = {
 
 			res.sendStatus(HTTP_STATUSES.NO_CONTENT_204);
 		} catch (error) {
-			catchError({
+			sendError({
 				error,
 				res,
-				userMessage: "Не удалось установить роль пользователя",
+				req,
+				message: "Не удалось установить роль пользователя",
 			});
 		}
 	},
@@ -121,10 +106,11 @@ export const userEditorController = {
 
 			res.sendStatus(HTTP_STATUSES.NO_CONTENT_204);
 		} catch (error) {
-			catchError({
+			sendError({
 				error,
 				res,
-				userMessage: "Не удалось назначить экзамен",
+				req,
+				message: "Не удалось назначить экзамен",
 			});
 		}
 	},
@@ -141,10 +127,11 @@ export const userEditorController = {
 
 			res.sendStatus(HTTP_STATUSES.NO_CONTENT_204);
 		} catch (error) {
-			catchError({
+			sendError({
 				error,
 				res,
-				userMessage: "Не удалось удалить пользователя",
+				req,
+				message: "Не удалось удалить пользователя",
 			});
 		}
 	},
@@ -161,10 +148,11 @@ export const userEditorController = {
 
 			res.send(examResut);
 		} catch (error) {
-			catchError({
+			sendError({
 				error,
 				res,
-				userMessage: "Не удалось получить результаты экзамена для пользователя",
+				req,
+				message: "Не удалось получить результаты экзамена для пользователя",
 			});
 		}
 	},
