@@ -33,8 +33,6 @@ function logMessage({
 	fs.appendFile(logFilePath, logEntry, (err) => {
 		if (err) {
 			console.error("Ошибка при записи в лог-файл:", err);
-		} else {
-			console.log("Сообщение добавлено в лог.");
 		}
 	});
 }

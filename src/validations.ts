@@ -48,7 +48,7 @@ export const registerValidation = [
 
 	isPasswordString,
 	passwordLength,
-	body("firstName", "имя должно быть строкой").isString(),
+	body("firstName", "Имя должно быть строкой").isString(),
 	body("firstName", "Длина имени должна быть больше 2 символов")
 		.trim()
 		.isLength({
@@ -61,7 +61,7 @@ export const registerValidation = [
 		.isLength({
 			min: 2,
 		}),
-	body("department", "Номер цеха не должен быть пустым").trim().isLength({
+	body("department", "Имя автошколы не должено быть пустым").trim().isLength({
 		min: 1,
 	}),
 ];
