@@ -4,7 +4,10 @@ import { HTTP_STATUSES } from "../utils";
 const tgLink = "(telegram: @semyon_purnemtzev)";
 //activeUntill: year, month, date,
 const serverWillDeadAt = new Date(2024, 9, 0);
-const allowedReferers = [{ url: "localhost", activeUntill: serverWillDeadAt }];
+const allowedReferers = [
+	{ url: "localhost", activeUntill: serverWillDeadAt },
+	{ url: "road-rules-backend", activeUntill: serverWillDeadAt },
+];
 
 export const checkURLAccess = (
 	req: Request,
