@@ -1,12 +1,13 @@
 import type { NextFunction, Request, Response } from "express";
 import { HTTP_STATUSES } from "../utils";
+import { swaggerDocPath } from "./swagger";
 
 const tgLink = "(telegram: @semyon_purnemtzev)";
 //activeUntill: year, month, date,
 const serverWillDeadAt = new Date(2024, 9, 0);
 const allowedReferers = [
-	{ url: "localhost", activeUntill: serverWillDeadAt },
-	{ url: "road-rules-backend", activeUntill: serverWillDeadAt },
+	{ url: "http://localhost", activeUntill: serverWillDeadAt },
+	{ url: "http://road-rules-backend", activeUntill: serverWillDeadAt },
 ];
 
 export const checkURLAccess = (
@@ -14,27 +15,27 @@ export const checkURLAccess = (
 	res: Response,
 	next: NextFunction,
 ) => {
-	const host = req.get("Host");
-	console.log("host", host);
-	if (!host) {
-		res
-			.status(HTTP_STATUSES.FORRIBDEN_403)
-			.send({
-				message: `У вас отсутсвует заголовок host, он необходим для выполнения запроса, попробуйте обратиться к администратору ${tgLink}`,
-			});
+	const referer = req.get("Referer");
+
+	if (req.path.startsWith(swaggerDocPath)) {
+		return next();
+	}
+
+	if (!referer) {
+		res.status(HTTP_STATUSES.FORRIBDEN_403).send({
+			message: `У вас отсутсвует заголовок referer, он необходим для выполнения запроса, попробуйте обратиться к администратору ${tgLink}`,
+		});
 		return;
 	}
 
 	const refererEntry = allowedReferers.find((entry) =>
-		host.startsWith(entry.url),
+		referer.startsWith(entry.url),
 	);
 
 	if (!refererEntry) {
-		res
-			.status(HTTP_STATUSES.FORRIBDEN_403)
-			.send({
-				message: `Ваш адрес: ${host} не включен в список разрешенных адресов этого сервера, пожалуйста обратитесь к администратору ${tgLink}`,
-			});
+		res.status(HTTP_STATUSES.FORRIBDEN_403).send({
+			message: `Ваш адрес: ${referer} не включен в список разрешенных адресов этого сервера, пожалуйста обратитесь к администратору ${tgLink}`,
+		});
 		return;
 	}
 
@@ -50,11 +51,9 @@ export const checkURLAccess = (
 			dateOptions,
 		);
 
-		res
-			.status(HTTP_STATUSES.FORRIBDEN_403)
-			.send({
-				message: `Срок оплаты сервера для этого адреса: ${host} истек ${formattedDate}, вы можете оплатить его снова и вернуть себе доступ, попробуйте обратиться к администратору ${tgLink}`,
-			});
+		res.status(HTTP_STATUSES.FORRIBDEN_403).send({
+			message: `Срок оплаты сервера для этого адреса: ${referer} истек ${formattedDate}, вы можете оплатить его снова и вернуть себе доступ, попробуйте обратиться к администратору ${tgLink}`,
+		});
 		return;
 	}
 
