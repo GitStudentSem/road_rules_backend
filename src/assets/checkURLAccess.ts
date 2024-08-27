@@ -8,6 +8,7 @@ const serverWillDeadAt = new Date(2024, 9, 0);
 const allowedReferers = [
 	{ url: "http://localhost", activeUntill: serverWillDeadAt },
 	{ url: "http://road-rules-backend", activeUntill: serverWillDeadAt },
+	{ url: "http://127.0.0.1", activeUntill: serverWillDeadAt },
 ];
 
 export const checkURLAccess = (
