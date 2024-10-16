@@ -4,7 +4,7 @@ import { swaggerDocPath } from "./swagger";
 
 const tgLink = "(telegram: @semyon_purnemtzev)";
 //activeUntill: year, month, date,
-const serverWillDeadAt = new Date(2024, 9, 0);
+const serverWillDeadAt = new Date(2024, 11, 0);
 const allowedReferers = [
 	{ url: "http://localhost", activeUntill: serverWillDeadAt },
 	{ url: "http://road-rules-backend", activeUntill: serverWillDeadAt },
