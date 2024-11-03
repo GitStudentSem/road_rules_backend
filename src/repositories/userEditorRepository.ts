@@ -46,11 +46,17 @@ export const userEditorRepository = {
 	async setRole(data: SetRole) {
 		const { userId, email, role } = data;
 
-		const user = await isUserExist(userId);
-
+		await isUserExist(userId);
 		await checkAccessByRole(userId);
 
-		if (user.role === "superadmin") {
+		const userForupdateRole = await userCollection.findOne({ email });
+		if (!userForupdateRole) {
+			throw new DBError(
+				"Пользователь для обновления роли не найден",
+				HTTP_STATUSES.NOT_FOUND_404,
+			);
+		}
+		if (userForupdateRole.role === "superadmin") {
 			throw new DBError(
 				"Вы не можете менять роль для супер администратора",
 				HTTP_STATUSES.BAD_REQUEST_400,

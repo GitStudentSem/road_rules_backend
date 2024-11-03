@@ -22,6 +22,10 @@ export const userEditorController = {
 
 			res.status(HTTP_STATUSES.OK_200).json(allUsers);
 		} catch (error) {
+			if (error instanceof DBError) {
+				res.status(error.status).json({ message: error.message });
+				return;
+			}
 			sendError({
 				error,
 				res,
@@ -42,6 +46,10 @@ export const userEditorController = {
 
 			res.status(HTTP_STATUSES.OK_200).json(allUsers);
 		} catch (error) {
+			if (error instanceof DBError) {
+				res.status(error.status).json({ message: error.message });
+				return;
+			}
 			sendError({
 				error,
 				res,
@@ -63,6 +71,10 @@ export const userEditorController = {
 
 			res.status(HTTP_STATUSES.OK_200).json(allUsers);
 		} catch (error) {
+			if (error instanceof DBError) {
+				res.status(error.status).json({ message: error.message });
+				return;
+			}
 			sendError({
 				error,
 				res,
@@ -84,6 +96,10 @@ export const userEditorController = {
 
 			res.sendStatus(HTTP_STATUSES.NO_CONTENT_204);
 		} catch (error) {
+			if (error instanceof DBError) {
+				res.status(error.status).json({ message: error.message });
+				return;
+			}
 			sendError({
 				error,
 				res,
@@ -106,6 +122,10 @@ export const userEditorController = {
 
 			res.sendStatus(HTTP_STATUSES.NO_CONTENT_204);
 		} catch (error) {
+			if (error instanceof DBError) {
+				res.status(error.status).json({ message: error.message });
+				return;
+			}
 			sendError({
 				error,
 				res,
@@ -127,6 +147,10 @@ export const userEditorController = {
 
 			res.sendStatus(HTTP_STATUSES.NO_CONTENT_204);
 		} catch (error) {
+			if (error instanceof DBError) {
+				res.status(error.status).json({ message: error.message });
+				return;
+			}
 			sendError({
 				error,
 				res,
@@ -148,6 +172,10 @@ export const userEditorController = {
 
 			res.send(examResut);
 		} catch (error) {
+			if (error instanceof DBError) {
+				res.status(error.status).json({ message: error.message });
+				return;
+			}
 			sendError({
 				error,
 				res,

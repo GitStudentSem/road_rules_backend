@@ -161,9 +161,9 @@ export const userEditorSwaggerDoc = {
 			},
 			responses: {
 				204: {
-					description: "Пользователь удален",
+					description: "роль пользователя обновлена",
 				},
-				error: getErrorSwaggerDoc("Ошибка удаления пользователя"),
+				error: getErrorSwaggerDoc("Ошибка установки роли для пользователя"),
 			},
 		},
 	},
