@@ -8,25 +8,12 @@ import type {
 } from "../types/DBModels";
 import type { WithId } from "mongodb";
 import type {
-	QuestionWithTicketId,
 	SendExamAnswer,
 	SetAlwaysCompleteExam,
 } from "../types/repositories/examRepository";
-
-const isTicketExist = async (ticketId: string) => {
-	const ticket = await ticketCollection.findOne({ ticketId });
-	if (!ticket) {
-		throw new DBError("Билет не найден", HTTP_STATUSES.NOT_FOUND_404);
-	}
-
-	return ticket;
-};
-
-const randomInteger = (min: number, max: number) => {
-	// случайное число от min до (max+1)
-	const rand = min + Math.random() * (max + 1 - min);
-	return Math.floor(rand);
-};
+import { ticketRepository } from "./ticketRepository";
+import { ticketService } from "../services/ticketService";
+import type { ViewSendTicket } from "../types/controllers/ticketsController";
 
 const isQuestionExist = async (
 	ticketId: string,
@@ -51,32 +38,6 @@ const isQuestionExist = async (
 	}
 	//@ts-ignore
 	return question[0];
-};
-
-const getTicketsIds = async () => {
-	const ticketsIds = await ticketCollection
-		.aggregate<{ ticketId: string }>([
-			// Сортируем документы по полю 'createdAt'
-			{ $sort: { createdAt: 1 } },
-
-			// Группируем по 'ticketId' и добавляем уникальные ticketId в массив
-			{ $group: { _id: "$ticketId", createdAt: { $first: "$createdAt" } } },
-
-			// Проектируем только ticketId
-			{ $project: { _id: 0, ticketId: "$_id" } },
-
-			// Финальная сортировка по полю 'createdAt'
-			{ $sort: { createdAt: 1 } },
-		])
-		.toArray();
-
-	return ticketsIds;
-};
-
-const getRandomTicketId = async () => {
-	const ticketsIds = await getTicketsIds();
-	const randomIndex = randomInteger(0, ticketsIds.length - 1);
-	return ticketsIds[randomIndex].ticketId;
 };
 
 export const isUserExist = async (userId: string) => {
@@ -126,19 +87,26 @@ export const examRepository = {
 		await isUserExist(userId);
 		await removePreviousAnswers(userId);
 
-		const tickets: QuestionWithTicketId[] = [];
+		const ticketsIds = await ticketRepository.sendTickets(userId);
+		const allQuestions: ViewSendTicket[] = [];
 
-		let i = 0;
-		while (tickets.length < 20) {
-			const ticketId = await getRandomTicketId();
-			const ticket = await isTicketExist(ticketId);
-			const question = ticket.questions[i];
-			if (!question || !question.answers.length) {
-				continue;
+		for (let i = 0; i < ticketsIds.length; i++) {
+			const ticketId = ticketsIds[i];
+			const questions = await ticketService.sendTicket(userId, ticketId);
+			if (questions && questions.length > 0) {
+				allQuestions.push(...questions);
 			}
-			tickets.push({ ...question, ticketId });
-			i++;
 		}
+		if (allQuestions.length === 0) {
+			throw new DBError(
+				"Нет вопросов для составления экзамена",
+				HTTP_STATUSES.BAD_REQUEST_400,
+			);
+		}
+		const shuffledQuestions = allQuestions.sort(() => 0.5 - Math.random());
+		if (shuffledQuestions.length < 20) return shuffledQuestions;
+
+		const selectedQuestions = shuffledQuestions.slice(0, 20);
 
 		const update = {
 			$set: {
@@ -147,7 +115,7 @@ export const examRepository = {
 		};
 
 		await userCollection.updateOne({ userId }, update, { upsert: true });
-		return tickets;
+		return selectedQuestions;
 	},
 
 	async sendExamAnswer(data: SendExamAnswer) {

@@ -2,34 +2,12 @@ import { examRepository } from "../repositories/examRepository";
 import type {
 	SendExamAnswer,
 	SetAlwaysCompleteExam,
-	QuestionWithTicketId,
-	Answer,
 } from "../types/services/examService";
-
-const shuffleAnswers = (answers: Answer[]) => {
-	return answers.sort(() => Math.random() - 0.5);
-};
-
-const removeCorrectAnswersFromTicket = (questions: QuestionWithTicketId[]) => {
-	return questions.map((question) => {
-		return {
-			question: question.question,
-			img: question.imgInfo.img,
-			questionId: question.questionId,
-			ticketId: question.ticketId,
-			answers: shuffleAnswers(question.answers).map((answer) => {
-				return { answerText: answer.answerText, answerId: answer.answerId };
-			}),
-		};
-	});
-};
 
 export const examService = {
 	async sendExam(userId: string) {
 		const exam = await examRepository.sendExam(userId);
-		const questionWithoutCorrectAnswers = removeCorrectAnswersFromTicket(exam);
-
-		return questionWithoutCorrectAnswers;
+		return exam;
 	},
 
 	async sendExamAnswer(data: SendExamAnswer) {
