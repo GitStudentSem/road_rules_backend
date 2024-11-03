@@ -44,7 +44,7 @@ export const sendError = ({
 	req,
 	res,
 }: TypeError) => {
-	logMessage({ message, error, req });
+	// logMessage({ message, error, req });
 	error && console.log(message, error);
 	return res.status(status).send({ message });
 };
