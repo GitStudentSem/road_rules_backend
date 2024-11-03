@@ -128,16 +128,18 @@ export const examRepository = {
 
 		const tickets: QuestionWithTicketId[] = [];
 
+		let i = 0;
 		while (tickets.length < 20) {
 			const ticketId = await getRandomTicketId();
 			const ticket = await isTicketExist(ticketId);
-			const randomIndex = randomInteger(0, ticket.questions.length - 1);
-			const randomQuestion = ticket.questions[randomIndex];
-			if (!randomQuestion || !randomQuestion.answers.length) {
+			const question = ticket.questions[i];
+			if (!question || !question.answers.length) {
 				continue;
 			}
-			tickets.push({ ...randomQuestion, ticketId });
+			tickets.push({ ...question, ticketId });
+			i++;
 		}
+
 		const update = {
 			$set: {
 				"results.exam.passAt": Number(new Date()),
