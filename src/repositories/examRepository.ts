@@ -82,31 +82,65 @@ const setAlwaysCompleteExam = async (
 	}
 };
 
+function randomInteger(max: number) {
+	// случайное число от min до (max+1)
+	const rand = Math.random() * (max + 1);
+	return Math.floor(rand);
+}
+
+async function getAllQuestions(userId: string) {
+	const ticketsIds = await ticketRepository.sendTickets(userId);
+	const allTickets: ViewSendTicket[][] = [];
+
+	for (let i = 0; i < ticketsIds.length; i++) {
+		const ticketId = ticketsIds[i];
+		const questions = await ticketService.sendTicket(userId, ticketId);
+		if (questions && questions.length > 0) {
+			allTickets.push(questions);
+		}
+	}
+
+	return allTickets;
+}
+
 export const examRepository = {
 	async sendExam(userId: string) {
 		await isUserExist(userId);
 		await removePreviousAnswers(userId);
 
-		const ticketsIds = await ticketRepository.sendTickets(userId);
-		const allQuestions: ViewSendTicket[] = [];
+		const allQuestions = await getAllQuestions(userId);
 
-		for (let i = 0; i < ticketsIds.length; i++) {
-			const ticketId = ticketsIds[i];
-			const questions = await ticketService.sendTicket(userId, ticketId);
-			if (questions && questions.length > 0) {
-				allQuestions.push(...questions);
+		const maxTicketArrayLength = allQuestions.reduce(
+			(maxLength, currentArray) => {
+				return Math.max(maxLength, currentArray.length);
+			},
+			0,
+		);
+
+		const totalQuestionsCount = allQuestions.reduce((sum, currentArray) => {
+			return sum + currentArray.length;
+		}, 0);
+
+		const maxQuestionsInExam = Math.min(20, totalQuestionsCount);
+
+		const exam: Set<ViewSendTicket> = new Set();
+
+		let lastQuestionIndex = 0;
+
+		while (exam.size < maxQuestionsInExam) {
+			const randomTicketIndex = randomInteger(allQuestions.length - 1);
+			const ticket = allQuestions[randomTicketIndex];
+
+			if (lastQuestionIndex >= maxTicketArrayLength) {
+				lastQuestionIndex = 0;
 			}
-		}
-		if (allQuestions.length === 0) {
-			throw new DBError(
-				"Нет вопросов для составления экзамена",
-				HTTP_STATUSES.BAD_REQUEST_400,
-			);
-		}
-		const shuffledQuestions = allQuestions.sort(() => 0.5 - Math.random());
-		if (shuffledQuestions.length < 20) return shuffledQuestions;
 
-		const selectedQuestions = shuffledQuestions.slice(0, 20);
+			const question = ticket[lastQuestionIndex];
+			if (!question) continue;
+			exam.add(question);
+
+			lastQuestionIndex++;
+		}
 
 		const update = {
 			$set: {
@@ -115,7 +149,7 @@ export const examRepository = {
 		};
 
 		await userCollection.updateOne({ userId }, update, { upsert: true });
-		return selectedQuestions;
+		return [...exam];
 	},
 
 	async sendExamAnswer(data: SendExamAnswer) {
