@@ -137,6 +137,7 @@ export const examRepository = {
 
 			const question = ticket[lastQuestionIndex];
 			if (!question) continue;
+
 			exam.add(question);
 
 			lastQuestionIndex++;

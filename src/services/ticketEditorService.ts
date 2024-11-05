@@ -197,7 +197,7 @@ export const ticketEditorService = {
 		const { img, ticketId, question, help, correctAnswer, answers, userId } =
 			data;
 
-		ticketEditorRepository.checkMaxCountQuestions(ticketId);
+		await ticketEditorRepository.checkMaxCountQuestions(ticketId);
 
 		const questionId = Number(new Date()).toString();
 		const savedImageInfo = await saveImage({ img, ticketId, questionId });

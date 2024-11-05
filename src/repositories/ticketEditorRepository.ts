@@ -70,11 +70,12 @@ export const ticketEditorRepository = {
 	},
 
 	async checkMaxCountQuestions(ticketId: string) {
+		const MAX_QUESTIONS_IN_TICKET = 20;
 		const ticket = await findTicket(ticketId);
 
-		if (ticket.questions.length >= 20) {
+		if (ticket.questions.length >= MAX_QUESTIONS_IN_TICKET) {
 			throw new DBError(
-				"Максимальное количество вопросов в балете 20",
+				`Максимальное количество вопросов в билете ${MAX_QUESTIONS_IN_TICKET}`,
 				HTTP_STATUSES.BAD_REQUEST_400,
 			);
 		}
