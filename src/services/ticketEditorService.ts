@@ -21,7 +21,7 @@ const calculateSizeInKB = (arrayBuffer: ArrayBuffer) => {
 };
 
 const s3 = new AWS.S3({
-	endpoint: "https://s3.timeweb.cloud",
+	endpoint: process.env.ENTRY_POINT_FOR_S3 || "",
 	accessKeyId: process.env.ACCESS_KEY_ID_FOR_S3 || "",
 	secretAccessKey: process.env.SECRET_ACCESS_KEY_FOR_S3 || "",
 	// s3ForcePathStyle: true, // Включи это, если требуется

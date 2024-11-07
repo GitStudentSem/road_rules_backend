@@ -4,6 +4,13 @@
 
 - Установите зависимости `npm i`
 
+## Необходимые env перменные:
+- URL_CLOUD_DB - ссылка на базу данных mongodb
+- ENTRY_POINT_FOR_S3 - ссылка на s3 хранилище
+- ACCESS_KEY_ID_FOR_S3
+- SECRET_ACCESS_KEY_FOR_S3 
+- BUCKET_NAME_FOR_S3
+
 ## Для режима разработчика (наблюдение за изменениями)
 - `npm run ts-w` - Запускает сборку TypeScript в режиме наблюдения за изменениями
 - `npm run build-w`- Запускает сборку JavaScript в режиме наблюдения за изменениями
@@ -36,6 +43,6 @@
 - Запустить команду `./mongod --dbpath ./data/db`
 
 ## Документация API расположена по адресу:
-  http://localhost:3333/docs
+  http://localhost:3333/api/docs
 
 
