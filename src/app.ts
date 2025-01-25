@@ -7,15 +7,12 @@ import { getExamRouter } from "./routes/exam";
 import { ticketEditorRouter } from "./routes/ticketEditor";
 import { userEditorRouter } from "./routes/userEditor";
 import { logRoutes } from "./assets/logRoutes";
-import { checkURLAccess } from "./assets/checkURLAccess";
 
 export const app = express();
 
 app.use(cors());
 
 app.use(express.json({}));
-
-app.use(checkURLAccess);
 
 app.use(logRoutes);
 
