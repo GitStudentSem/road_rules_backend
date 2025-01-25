@@ -121,7 +121,7 @@ export const examRepository = {
 			return sum + currentArray.length;
 		}, 0);
 
-		const maxQuestionsInExam = Math.min(20, totalQuestionsCount);
+		const maxQuestionsInExam = Math.min(30, totalQuestionsCount);
 
 		const exam: Set<ViewSendTicket> = new Set();
 
