@@ -88,58 +88,132 @@ function randomInteger(max: number) {
 	return Math.floor(rand);
 }
 
-async function getAllQuestions(userId: string) {
-	const ticketsIds = await ticketRepository.sendTickets(userId);
-	const allTickets: ViewSendTicket[][] = [];
+// async function getAllQuestions_1(userId: string) {
+// 	const ticketsIds = await ticketRepository.sendTickets(userId);
+// 	const allTickets: ViewSendTicket[][] = [];
 
-	for (let i = 0; i < ticketsIds.length; i++) {
-		const ticketId = ticketsIds[i];
-		const questions = await ticketService.sendTicket(userId, ticketId);
-		if (questions && questions.length > 0) {
-			allTickets.push(questions);
-		}
-	}
+// 	for (let i = 0; i < ticketsIds.length; i++) {
+// 		const ticketId = ticketsIds[i];
+// 		const questions = await ticketService.sendTicket(userId, ticketId);
+// 		if (questions && questions.length > 0) {
+// 			allTickets.push(questions);
+// 		}
+// 	}
 
-	return allTickets;
+// 	return allTickets;
+// }
+
+async function getAllQuestionsIds(ticketId: string) {
+	const result = await ticketCollection
+		.aggregate([
+			{ $match: { ticketId } },
+			{ $unwind: "$questions" },
+			{ $project: { questionId: "$questions.questionId" } },
+		])
+		.toArray();
+	const questionsIds: string[] = result.map((question) => question.questionId);
+
+	return questionsIds;
 }
 
 export const examRepository = {
+	// async sendExam_1(userId: string) {
+	// 	await isUserExist(userId);
+	// 	await removePreviousAnswers(userId);
+
+	// 	const allQuestions = await getAllQuestions_1(userId);
+
+	// 	const maxTicketArrayLength = allQuestions.reduce(
+	// 		(maxLength, currentArray) => {
+	// 			return Math.max(maxLength, currentArray.length);
+	// 		},
+	// 		0,
+	// 	);
+
+	// 	const totalQuestionsCount = allQuestions.reduce((sum, currentArray) => {
+	// 		return sum + currentArray.length;
+	// 	}, 0);
+
+	// 	const maxQuestionsInExam = Math.min(30, totalQuestionsCount);
+
+	// 	const exam: Set<ViewSendTicket> = new Set();
+
+	// 	let lastQuestionIndex = 0;
+
+	// 	while (exam.size < maxQuestionsInExam) {
+	// 		const randomTicketIndex = randomInteger(allQuestions.length - 1);
+	// 		const ticket = allQuestions[randomTicketIndex];
+
+	// 		if (lastQuestionIndex >= maxTicketArrayLength) {
+	// 			lastQuestionIndex = 0;
+	// 		}
+
+	// 		const question = ticket[lastQuestionIndex];
+	// 		if (!question) continue;
+
+	// 		exam.add(question);
+
+	// 		lastQuestionIndex++;
+	// 	}
+
+	// 	const update = {
+	// 		$set: {
+	// 			"results.exam.passAt": Number(new Date()),
+	// 		},
+	// 	};
+
+	// 	await userCollection.updateOne({ userId }, update, { upsert: true });
+	// 	return [...exam];
+	// },
+
 	async sendExam(userId: string) {
 		await isUserExist(userId);
 		await removePreviousAnswers(userId);
 
-		const allQuestions = await getAllQuestions(userId);
+		const allTicketIds = await ticketRepository.sendTickets(userId);
+		const allQuestions: { ticketId: string; questionIds: string[] }[] = [];
+
+		for (const ticketId of allTicketIds) {
+			const questionsIdInTicket = await getAllQuestionsIds(ticketId);
+			allQuestions.push({ ticketId, questionIds: questionsIdInTicket });
+		}
 
 		const maxTicketArrayLength = allQuestions.reduce(
 			(maxLength, currentArray) => {
-				return Math.max(maxLength, currentArray.length);
+				return Math.max(maxLength, currentArray.questionIds.length);
 			},
 			0,
 		);
 
 		const totalQuestionsCount = allQuestions.reduce((sum, currentArray) => {
-			return sum + currentArray.length;
+			return sum + currentArray.questionIds.length;
 		}, 0);
 
 		const maxQuestionsInExam = Math.min(30, totalQuestionsCount);
 
-		const exam: Set<ViewSendTicket> = new Set();
-
+		const exam: ViewSendTicket[] = [];
 		let lastQuestionIndex = 0;
 
-		while (exam.size < maxQuestionsInExam) {
+		while (exam.length < maxQuestionsInExam) {
 			const randomTicketIndex = randomInteger(allQuestions.length - 1);
 			const ticket = allQuestions[randomTicketIndex];
-
 			if (lastQuestionIndex >= maxTicketArrayLength) {
 				lastQuestionIndex = 0;
 			}
+			const questionId = ticket.questionIds[lastQuestionIndex];
 
-			const question = ticket[lastQuestionIndex];
-			if (!question) continue;
+			const question = await ticketRepository.getQuestionInTicket({
+				ticketId: ticket.ticketId,
+				questionId,
+			});
 
-			exam.add(question);
-
+			exam.push({
+				question: question.question,
+				ticketId: ticket.ticketId,
+				questionId: question.questionId,
+				img: question.imgInfo.img,
+				answers: question.answers,
+			});
 			lastQuestionIndex++;
 		}
 
@@ -150,7 +224,7 @@ export const examRepository = {
 		};
 
 		await userCollection.updateOne({ userId }, update, { upsert: true });
-		return [...exam];
+		return exam;
 	},
 
 	async sendExamAnswer(data: SendExamAnswer) {
