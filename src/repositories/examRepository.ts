@@ -202,6 +202,8 @@ export const examRepository = {
 			}
 			const questionId = ticket.questionIds[lastQuestionIndex];
 
+			if (!questionId) continue;
+
 			const question = await ticketRepository.getQuestionInTicket({
 				ticketId: ticket.ticketId,
 				questionId,

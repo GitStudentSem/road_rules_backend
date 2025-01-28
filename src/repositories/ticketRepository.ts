@@ -126,7 +126,7 @@ export const ticketRepository = {
 
 	async getQuestionInTicket(data: GetQuestionInTicket) {
 		const { ticketId, questionId } = data;
-		const question = isQuestionExist(ticketId, questionId);
+		const question = await isQuestionExist(ticketId, questionId);
 		return question;
 	},
 };
