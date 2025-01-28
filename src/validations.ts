@@ -79,12 +79,6 @@ export const addQuestionValidation = [
 	body("ticketId", "id билета должно быть строкой").isString(),
 	body("ticketId", "id не может быть пустым").trim().isLength({ min: 1 }),
 
-	body("question", "Минимальное число сивмолов для вопроса: 1")
-		.trim()
-		.isLength({
-			min: 1,
-		}),
-
 	body("help", "Помощь по вопросу должна быть строкой").isString(),
 	body("help", "Минимальное число сивмолов для подсказки: 1").trim().isLength({
 		min: 1,
