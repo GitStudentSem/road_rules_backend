@@ -250,6 +250,11 @@ export const examRepository = {
 
 		if (!examResult) examResult = [];
 		examResult.push({ ticketId, questionId, answerId, isCorrect });
+
+		if (examResult.length > 20) {
+			examResult = [];
+		}
+
 		const update = {
 			$set: {
 				"results.exam.result": examResult,
@@ -274,6 +279,11 @@ export const examRepository = {
 
 		if (!examResult) examResult = [];
 		examResult.push({ ticketId, questionId, answerId, isCorrect });
+
+		if (examResult.length > 20) {
+			examResult = [];
+		}
+
 		const update = {
 			$set: {
 				"results.training_exam.result": examResult,
