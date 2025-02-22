@@ -70,4 +70,28 @@ export const ticketsController = {
 			});
 		}
 	},
+
+	async sendFailedQuestions(
+		req: Request,
+		res: Response<ViewSendTicket[] | ErrorType>,
+	) {
+		try {
+			const questions = await ticketService.sendFailedQuestions(
+				req.userId || "",
+			);
+
+			res.json(questions);
+		} catch (error) {
+			if (error instanceof DBError) {
+				res.status(error.status).json({ message: error.message });
+				return;
+			}
+			sendError({
+				message: "Не удалось получить вопросы с ошибками",
+				error,
+				res,
+				req,
+			});
+		}
+	},
 };

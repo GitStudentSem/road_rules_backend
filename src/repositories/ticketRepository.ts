@@ -124,6 +124,51 @@ export const ticketRepository = {
 		return question;
 	},
 
+	async sendFailedQuestions(data: { userId: string }) {
+		const { userId } = data;
+		await isUserExist(userId);
+
+		interface IResult {
+			result: {
+				ticketId: string;
+				questionId: string;
+				answerId: string;
+				isCorrect: boolean;
+			};
+		}
+		//@ts-ignore
+		const result: Promise<IResult[]> = await userCollection
+			.aggregate([
+				{
+					$project: {
+						resultsArray: { $objectToArray: "$results" }, // Преобразуем объект results в массив
+					},
+				},
+				{
+					$unwind: "$resultsArray", // Разворачиваем массив результатов по каждому билету
+				},
+				{
+					$unwind: "$resultsArray.v.result", // Разворачиваем массив result внутри каждого билета
+				},
+				{
+					$match: {
+						"resultsArray.v.result.isCorrect": false, // Фильтруем только те результаты, где isCorrect == false
+					},
+				},
+				{
+					$project: {
+						_id: 0,
+						// ticketId: "$resultsArray.k", // ID билета (ключ объекта)
+						// passAt: "$resultsArray.v.passAt", // Время прохождения
+						result: "$resultsArray.v.result", // Результат вопроса
+					},
+				},
+			])
+			.toArray();
+
+		return result;
+	},
+
 	async getQuestionInTicket(data: GetQuestionInTicket) {
 		const { ticketId, questionId } = data;
 		const question = await isQuestionExist(ticketId, questionId);

@@ -31,6 +31,24 @@ export const ticketsSwaggerDoc = {
 			},
 		},
 	},
+	"/api/tickets/failedQuestions": {
+		get: {
+			tags: ["Билеты"],
+			summary: "Получить вопросы с ошибками",
+			security: [{ bearerAuth: [] }],
+			responses: {
+				200: {
+					description: "Вопросы успешно получены",
+					content: {
+						"application/json": {
+							schema: ViewSendTicketSwaggerDoc,
+						},
+					},
+				},
+				error: getErrorSwaggerDoc("Ошибка получения вопросов"),
+			},
+		},
+	},
 	"/api/tickets": {
 		get: {
 			tags: ["Билеты"],
@@ -78,6 +96,12 @@ export const getTicketsRouter = () => {
 	const router = express.Router();
 
 	router.get("/", checkAuth, ticketsController.sendTickets);
+
+	router.get(
+		"/failedQuestions",
+		checkAuth,
+		ticketsController.sendFailedQuestions,
+	);
 
 	router.get("/:ticketId", checkAuth, ticketsController.sendTicket);
 
