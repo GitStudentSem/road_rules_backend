@@ -23,7 +23,11 @@ export const ticketsSwaggerDoc = {
 					description: "Билет успешно получен",
 					content: {
 						"application/json": {
-							schema: ViewSendTicketSwaggerDoc,
+							schema: {
+								type: "array",
+								description: "Билет с вопросами",
+								items: ViewSendTicketSwaggerDoc,
+							},
 						},
 					},
 				},
@@ -41,7 +45,11 @@ export const ticketsSwaggerDoc = {
 					description: "Вопросы успешно получены",
 					content: {
 						"application/json": {
-							schema: ViewSendTicketSwaggerDoc,
+							schema: {
+								type: "array",
+								description: "Вопросы с ошибками",
+								items: ViewSendTicketSwaggerDoc,
+							},
 						},
 					},
 				},
