@@ -167,6 +167,16 @@ export const ticketEditorRepository = {
 
 		const result = await ticketCollection.deleteOne({ ticketId });
 
+		// Удалить результаты юзера при удалении билета
+		await userCollection.updateMany(
+			{}, // Пустой фильтр — применяем ко всем документам
+			{
+				$unset: {
+					[`results.ticket_${ticketId}`]: "", // Удаляем указанный тикет
+				},
+			},
+		);
+
 		if (result.deletedCount > 0) return true;
 
 		throw new DBError("Билет не был удален", HTTP_STATUSES.BAD_REQUEST_400);
@@ -195,6 +205,16 @@ export const ticketEditorRepository = {
 		};
 
 		const result = await ticketCollection.updateOne({ ticketId }, update);
+
+		// удалить все ответы юзеров для всех вопросов
+		await userCollection.updateMany(
+			{}, // Пустой фильтр — применяем ко всем документам
+			{
+				$pull: {
+					[`results.ticket_${ticketId}.result`]: { questionId }, // Удаляем запись с указанным questionId
+				},
+			},
+		);
 
 		if (result.modifiedCount > 0) return true;
 
