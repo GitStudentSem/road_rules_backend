@@ -87,15 +87,6 @@ export const ticketRepository = {
 
 		const ticket = await isTicketExist(ticketId);
 
-		const ticketObjectName = `results.ticket_${ticketId}.passAt`;
-		const update = {
-			$set: {
-				[ticketObjectName]: Number(new Date()),
-			},
-		};
-
-		await userCollection.updateOne({ userId }, update, { upsert: true });
-
 		return ticket;
 	},
 
@@ -108,11 +99,32 @@ export const ticketRepository = {
 			question.answers.find((answer) => answer.isCorrect)?.answerId || "";
 		const isCorrect = correctAnswerId === answerId;
 
-		const ticketObjectName = `results.ticket_${ticketId}.result`;
-		let ticketResult = user.results[ticketObjectName]?.result;
+		const result = await userCollection.findOne(
+			{ userId }, // Фильтр по userId
+			{
+				projection: {
+					[`results.ticket_${ticketId}.result`]: 1, // Включаем только нужное поле
+					_id: 0, // Исключаем `_id`, если он не нужен
+				},
+			},
+		);
+		let ticketResult = result?.results[`ticket_${ticketId}`]?.result;
 
-		if (!ticketResult) ticketResult = [];
-		ticketResult.push({ ticketId, questionId, answerId, isCorrect });
+		if (!ticketResult || ticketResult.length === 0) {
+			ticketResult = [];
+		}
+		let questionAnswer = ticketResult.find((answer) => {
+			return answer.questionId === questionId;
+		});
+
+		if (!questionAnswer) {
+			ticketResult.push({ ticketId, questionId, answerId, isCorrect });
+		} else {
+			questionAnswer = { ticketId, questionId, answerId, isCorrect };
+		}
+
+		const ticketObjectName = `results.ticket_${ticketId}.result`;
+
 		const update = {
 			$set: {
 				[ticketObjectName]: ticketResult,
