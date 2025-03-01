@@ -22,14 +22,3 @@ app.use("/api/tickets", getTicketsRouter());
 app.use("/api/exam", getExamRouter());
 app.use("/api/ticketEditor", ticketEditorRouter());
 app.use("/api/userEditor", userEditorRouter());
-app.use("/test", async () => {
-	const result = await ticketCollection
-		.aggregate([
-			{ $match: { ticketId: "1737832002257" } },
-			{ $unwind: "$questions" },
-			{ $project: { questionId: "$questions.questionId" } },
-		])
-		.toArray();
-	const result2 = result.map((question) => question.questionId);
-	console.log("result", result2);
-});
