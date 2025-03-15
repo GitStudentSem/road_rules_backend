@@ -6,7 +6,9 @@ import { Server } from "socket.io";
 import http from "node:http";
 import { commentsRouter } from "./routes/comments";
 import jwt from "jsonwebtoken";
-import { settings } from "./assets/settings";
+import { defaultSwaggerValues, settings } from "./assets/settings";
+import { getErrorSwaggerDoc } from "./assets/getErrorSwaggerDoc";
+import { BodySendCommentSwaggerDoc } from "./types/controllers/commentsController";
 
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -36,6 +38,46 @@ commentsNamespace.use(async (socket, next) => {
 	}
 });
 
+export const commentsConnectSwaggerDoc = {
+	"/api/comments": {
+		post: {
+			tags: ["Комментарии"],
+			summary: " Подключение к сокету комментариев",
+			security: [{ bearerAuth: [] }],
+			description:
+				"Клиент отправляет комментарий через событие io(http://localhost:3333/api/comments, {[options]})",
+			requestBody: {
+				content: {
+					"application/json": {
+						schema: {
+							type: "object",
+							properties: {
+								query: {
+									type: "object",
+									properties: {
+										token: {
+											type: "string",
+											default: defaultSwaggerValues.authToken,
+											description: "Токен авторизации",
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			responses: {
+				200: {
+					description: "Клиент успешно подключен к комментариям",
+				},
+				error: getErrorSwaggerDoc(
+					"Ошибка подключения к сокету через ('connect_error')",
+				),
+			},
+		},
+	},
+};
 // Подключаем маршруты сокета
 commentsNamespace.on("connection", (socket) => {
 	console.log("Клиент подключился для комментариев:", socket.id);

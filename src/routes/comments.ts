@@ -37,7 +37,9 @@ export const commentsSwaggerDoc = {
 						},
 					},
 				},
-				error: getErrorSwaggerDoc("Ошибка отправки комментария"),
+				error: getErrorSwaggerDoc(
+					"Ошибка отправки комментария через on('error')",
+				),
 			},
 		},
 	},
@@ -70,7 +72,9 @@ export const commentsSwaggerDoc = {
 						},
 					},
 				},
-				error: getErrorSwaggerDoc("Ошибка отправки комментария"),
+				error: getErrorSwaggerDoc(
+					"Ошибка отправки комментариев через on('error')",
+				),
 			},
 		},
 	},

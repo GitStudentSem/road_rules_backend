@@ -9,6 +9,7 @@ import { ticketsSwaggerDoc } from "../routes/tickets";
 import { userEditorSwaggerDoc } from "../routes/userEditor";
 import { defaultSwaggerValues } from "./settings";
 import { commentsSwaggerDoc } from "../routes/comments";
+import { commentsConnectSwaggerDoc } from "..";
 
 const options: swaggerJSDoc.Options = {
 	swaggerDefinition: {
@@ -36,6 +37,7 @@ const options: swaggerJSDoc.Options = {
 			},
 		],
 		paths: {
+			...commentsConnectSwaggerDoc,
 			...registerSwaggerDoc,
 			...userEditorSwaggerDoc,
 			...ticketEditorSwaggerDoc,
