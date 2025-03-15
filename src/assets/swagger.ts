@@ -8,8 +8,10 @@ import { examSwaggerDoc } from "../routes/exam";
 import { ticketsSwaggerDoc } from "../routes/tickets";
 import { userEditorSwaggerDoc } from "../routes/userEditor";
 import { defaultSwaggerValues } from "./settings";
-import { commentsSwaggerDoc } from "../routes/comments";
-import { commentsConnectSwaggerDoc } from "..";
+import {
+	commentsConnectSwaggerDoc,
+	commentsSwaggerDoc,
+} from "../routes/comments";
 
 const options: swaggerJSDoc.Options = {
 	swaggerDefinition: {
@@ -37,13 +39,13 @@ const options: swaggerJSDoc.Options = {
 			},
 		],
 		paths: {
-			...commentsConnectSwaggerDoc,
 			...registerSwaggerDoc,
 			...userEditorSwaggerDoc,
 			...ticketEditorSwaggerDoc,
 			...examSwaggerDoc,
 			...ticketsSwaggerDoc,
 			...commentsSwaggerDoc,
+			...commentsConnectSwaggerDoc,
 		},
 	},
 	apis: ["./src/routes/*.ts", "./src/models/**/*.ts"],
