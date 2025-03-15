@@ -26,6 +26,11 @@ export const ticketCollection = client
 	.db(DB_NAME)
 	.collection<TicketsDBModel>(TICKETS_COLLECTION_NAME);
 
+const COMMENTS_COLLECTIOM_NAME = "comments";
+export const commentsCollection = client
+	.db(DB_NAME)
+	.collection(COMMENTS_COLLECTIOM_NAME);
+
 export const runDb = async () => {
 	try {
 		await client.connect();

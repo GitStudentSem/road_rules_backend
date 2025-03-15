@@ -29,3 +29,26 @@ interface IuserInfo {
 		};
 	};
 }
+
+interface IAnswers {
+	answerText: string;
+	isCorrect: boolean;
+	answerId: string;
+}
+
+interface IQuestion {
+	imgInfo: {
+		img: string;
+		imageOriginalHash: string;
+		imageProcessedHash: string;
+	};
+	questionId: string;
+	question: string;
+	help: string;
+	answers: IAnswers[];
+}
+
+interface ITicket {
+	ticketId: string;
+	questions: IQuestion[];
+}

@@ -7,7 +7,6 @@ import { getExamRouter } from "./routes/exam";
 import { ticketEditorRouter } from "./routes/ticketEditor";
 import { userEditorRouter } from "./routes/userEditor";
 import { logRoutes } from "./assets/logRoutes";
-import { ticketCollection } from "./repositories/db";
 
 export const app = express();
 

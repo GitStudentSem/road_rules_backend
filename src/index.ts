@@ -4,27 +4,42 @@ import { runDb } from "./repositories/db";
 import swaggerDocs from "./assets/swagger";
 import { Server } from "socket.io";
 import http from "node:http";
+import { commentsRouter } from "./routes/comments";
+import jwt from "jsonwebtoken";
+import { settings } from "./assets/settings";
 
 const server = http.createServer(app);
 const io = new Server(server, {
 	cors: {
-		origin: "*", // Разрешаем все источники (или укажите конкретные домены)
+		origin: "*",
 		methods: ["GET", "POST"],
 	},
 });
-const ticketCommentsNamespace = io.of("/api/tickets/comments");
-// Обработка подключения клиента
-ticketCommentsNamespace.on("connection", (socket) => {
-	console.log("Пользователь подключился:", socket.id);
+const commentsNamespace = io.of("/api/comments");
+// Middleware для проверки токена
+commentsNamespace.use(async (socket, next) => {
+	const token = socket.handshake.query.token;
+	try {
+		if (!token) {
+			return next(new Error("Токен не был передан"));
+		}
 
-	socket.on("send-comment", (data) => {
-		console.log("Новый комментарий:", data);
-		ticketCommentsNamespace.emit("new-comment", data);
-	});
+		// Проверка токена
+		const decoded = jwt.verify(token, settings.JWT_SECRET);
 
-	socket.on("disconnect", () => {
-		console.log("Пользователь отключился:", socket.id);
-	});
+		socket.userId = decoded.userId;
+		next();
+	} catch (error) {
+		if (error instanceof Error) {
+			return next(new Error("Токен не валиден или истек"));
+		}
+	}
+});
+
+// Подключаем маршруты сокета
+commentsNamespace.on("connection", (socket) => {
+	console.log("Клиент подключился для комментариев:", socket.id);
+	commentsRouter(socket, commentsNamespace);
 });
 
 const port = process.env.PORT || 3333;
