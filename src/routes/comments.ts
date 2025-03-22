@@ -4,6 +4,7 @@ import { commentsService } from "../services/commentsService";
 import { DBError } from "../controllers/DBError";
 import { getErrorSwaggerDoc } from "../assets/getErrorSwaggerDoc";
 import {
+	type BodyDeleteComment,
 	type BodySendAllComments,
 	BodySendAllCommentsSwaggerDoc,
 	type BodySendComment,
@@ -122,9 +123,16 @@ export const commentsSwaggerDoc = {
 	},
 };
 
+enum Events {
+	error = "error",
+	send_comment = '"send_comment"',
+	get_all_comments = "get_all_comments",
+	delete_comment = "delete_comment",
+}
+
 const catchError = (socket: Socket, error: unknown) => {
 	if (error instanceof DBError) {
-		socket.emit("error", {
+		socket.emit(Events.error, {
 			message: error.message,
 			status: error.status,
 		});
@@ -132,7 +140,7 @@ const catchError = (socket: Socket, error: unknown) => {
 	}
 
 	if (error instanceof Error) {
-		socket.emit("error", {
+		socket.emit(Events.error, {
 			message: error.message,
 			status: 500,
 		});
@@ -145,22 +153,31 @@ export const commentsRouter = (socket: Socket, commentsNamespace) => {
 	if (!userId) return;
 
 	// Клиент отправляет сообщение
-	socket.on("send_comment", async (data: BodySendComment) => {
+	socket.on(Events.send_comment, async (data: BodySendComment) => {
 		try {
 			const savedMessage = await commentsService.sendMessage(userId, data);
-			commentsNamespace.emit("send_comment", savedMessage);
+			commentsNamespace.emit(Events.send_comment, savedMessage);
 		} catch (error) {
-			console.log("send_comment", error);
+			console.log(Events.send_comment, error);
 			catchError(socket, error);
 		}
 	});
 
-	socket.on("get_all_comments", async (data: BodySendAllComments) => {
+	socket.on(Events.get_all_comments, async (data: BodySendAllComments) => {
 		try {
 			const messages = await commentsService.getAllComments(data);
-			socket.emit("get_all_comments", messages);
+			socket.emit(Events.get_all_comments, messages);
 		} catch (error) {
-			console.log("get_all_comments", error);
+			console.log(Events.get_all_comments, error);
+			catchError(socket, error);
+		}
+	});
+	socket.on(Events.delete_comment, async (data: BodyDeleteComment) => {
+		try {
+			await commentsService.deletedComment(data);
+			socket.emit(Events.delete_comment);
+		} catch (error) {
+			console.log(Events.delete_comment, error);
 			catchError(socket, error);
 		}
 	});

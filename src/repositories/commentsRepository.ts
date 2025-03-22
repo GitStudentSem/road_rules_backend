@@ -1,5 +1,6 @@
 import { DBError } from "../controllers/DBError";
 import type {
+	DeleteComment,
 	GetAllComments,
 	SendComment,
 } from "../types/repositories/commentsRepository";
@@ -66,5 +67,11 @@ export const commentsRepository = {
 				projection: { _id: 0 },
 			})
 			.toArray();
+	},
+
+	async deleteComment(data: DeleteComment) {
+		await findQuestion(data.ticketId, data.questionId);
+
+		await commentsCollection.findOneAndDelete(data);
 	},
 };

@@ -128,3 +128,25 @@ export type ViewSendAllComments = {
 	firstName: string;
 	secondName: string;
 };
+
+//===========================================//
+export const BodyDeleteCommentSwaggerDoc: OpenAPIV3.SchemaObject = {
+	type: "object",
+	properties: {
+		ticketId: {
+			type: "string",
+			default: defaultSwaggerValues.ticketId,
+			description: "ID билета",
+		},
+		questionId: {
+			type: "string",
+			default: defaultSwaggerValues.questionId,
+			description: "ID вопроса",
+		},
+	},
+	required: ["ticketId", "questionId"],
+};
+export type BodyDeleteComment = {
+	ticketId: string;
+	questionId: string;
+};
