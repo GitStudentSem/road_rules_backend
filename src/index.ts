@@ -20,7 +20,9 @@ const io = new Server(server, {
 const commentsNamespace = io.of("/api/comments");
 // Middleware для проверки токена
 commentsNamespace.use(async (socket, next) => {
-	const token = socket.handshake.query.token;
+	const token = null;
+	// const token = socket.handshake.query.token;
+
 	try {
 		if (!token) {
 			return next(new Error("Токен не был передан"));
