@@ -11,7 +11,7 @@ export const commentsService = {
 	async sendComment(userId: string, data: SendComment) {
 		if (data.text.trim() === "") {
 			throw new DBError(
-				"Сообщение не должно быть пустым",
+				"Комментарий не должен быть пустым",
 				HTTP_STATUSES.BAD_REQUEST_400,
 			);
 		}
@@ -25,7 +25,7 @@ export const commentsService = {
 	async deletedComment(userId: string, data: DeleteComment) {
 		if (data.commentId.trim() === "") {
 			throw new DBError(
-				"ID сообщения не должно быть пустым",
+				"ID клмментария не должно быть пустым",
 				HTTP_STATUSES.BAD_REQUEST_400,
 			);
 		}
