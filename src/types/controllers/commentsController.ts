@@ -1,3 +1,4 @@
+import type { ObjectId } from "mongodb";
 import { defaultSwaggerValues } from "../../assets/settings";
 import type { OpenAPIV3 } from "openapi-types";
 
@@ -68,7 +69,7 @@ export const ViewSendCommentSwaggerDoc: OpenAPIV3.SchemaObject = {
 export type ViewSendComment = {
 	ticketId: string;
 	questionId: string;
-	commentId: string;
+	commentId: ObjectId;
 	text: string;
 	firstName: string;
 	secondName: string;
@@ -135,7 +136,7 @@ export const ViewSendAllCommentsSwaggerDoc: OpenAPIV3.SchemaObject = {
 export type ViewSendAllComments = {
 	ticketId: string;
 	questionId: string;
-	commentId: string;
+	commentId: ObjectId;
 	text: string;
 	firstName: string;
 	secondName: string;
@@ -194,10 +195,10 @@ export const ViewDeleteCommentSwaggerDoc: OpenAPIV3.SchemaObject = {
 		},
 	},
 };
-export type ViewDeleteCommentSwaggerDoc = {
+export type ViewDeleteComment = {
 	ticketId: string;
 	questionId: string;
-	commentId: string;
+	commentId: ObjectId;
 	text: string;
 	firstName: string;
 	secondName: string;

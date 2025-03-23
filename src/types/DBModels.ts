@@ -13,6 +13,7 @@ export type UserLoginDBModel = {
 	userId: string;
 	isAppointExam: boolean;
 	isAlwaysCompleteExam?: boolean;
+	isBannedForChat: boolean;
 	// У супер администратора нельзя отобрать права администирования
 	role: "user" | "admin" | "superadmin";
 	department: string;
@@ -44,4 +45,11 @@ export type TicketsDBModel = {
 	ticketId: string;
 	createdAt: number;
 	questions: CreateQuestionDBModel[];
+};
+
+export type CommentsDBModel = {
+	ticketId: string;
+	questionId: string;
+	text: string;
+	userId: string;
 };

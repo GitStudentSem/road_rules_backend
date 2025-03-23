@@ -37,6 +37,7 @@ export const authRepository = {
 			role: "user",
 			department,
 			results: {},
+			isBannedForChat: false,
 		});
 
 		const user = await userCollection.findOne({ email });

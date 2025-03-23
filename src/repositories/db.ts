@@ -1,6 +1,10 @@
 import { MongoClient, ServerApiVersion } from "mongodb";
 import { colors, resetStyle, styles } from "../assets/logStyles";
-import type { TicketsDBModel, UserLoginDBModel } from "../types/DBModels";
+import type {
+	CommentsDBModel,
+	TicketsDBModel,
+	UserLoginDBModel,
+} from "../types/DBModels";
 require("dotenv").config();
 
 const URL_LOCAL_DB = "mongodb://0.0.0.0:27017";
@@ -29,7 +33,7 @@ export const ticketCollection = client
 const COMMENTS_COLLECTIOM_NAME = "comments";
 export const commentsCollection = client
 	.db(DB_NAME)
-	.collection(COMMENTS_COLLECTIOM_NAME);
+	.collection<CommentsDBModel>(COMMENTS_COLLECTIOM_NAME);
 
 export const runDb = async () => {
 	try {

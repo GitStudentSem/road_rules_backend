@@ -6,15 +6,15 @@ import type {
 } from "../types/services/commentsService";
 
 export const commentsService = {
-	async sendMessage(userId: string, data: SendComment) {
+	async sendComment(userId: string, data: SendComment) {
 		return await commentsRepository.sendMessage(userId, data);
 	},
 
-	async getAllComments(filterData: GetAllComments) {
-		return await commentsRepository.getAllComments(filterData);
+	async getAllComments(userId: string, filterData: GetAllComments) {
+		return await commentsRepository.getAllComments(userId, filterData);
 	},
 
-	async deletedComment(data: DeleteComment) {
-		return await commentsRepository.deleteComment(data);
+	async deletedComment(userId: string, data: DeleteComment) {
+		return await commentsRepository.deleteComment(userId, data);
 	},
 };

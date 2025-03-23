@@ -4,16 +4,22 @@ import { commentsService } from "../services/commentsService";
 import { DBError } from "../controllers/DBError";
 import { getErrorSwaggerDoc } from "../assets/getErrorSwaggerDoc";
 import {
-	type BodyDeleteComment,
 	BodyDeleteCommentSwaggerDoc,
-	type BodySendAllComments,
 	BodySendAllCommentsSwaggerDoc,
-	type BodySendComment,
 	BodySendCommentSwaggerDoc,
 	ViewDeleteCommentSwaggerDoc,
 	ViewSendAllCommentsSwaggerDoc,
 	ViewSendCommentSwaggerDoc,
 } from "../types/controllers/commentsController";
+import type {
+	BodyDeleteComment,
+	BodySendAllComments,
+	BodySendComment,
+	ViewDeleteComment,
+	ViewSendAllComments,
+	ViewSendComment,
+} from "../types/controllers/commentsController";
+
 import { defaultSwaggerValues } from "../assets/settings";
 
 enum Events {
@@ -182,9 +188,11 @@ export const commentsRouter = (socket: Socket, commentsNamespace) => {
 	// Клиент отправляет сообщение
 	socket.on(Events.send_comment, async (data: BodySendComment) => {
 		try {
-			console.log(Events.send_comment, data);
-			const savedMessage = await commentsService.sendMessage(userId, data);
-			commentsNamespace.emit(Events.send_comment, savedMessage);
+			const savedComment: ViewSendComment = await commentsService.sendComment(
+				userId,
+				data,
+			);
+			commentsNamespace.emit(Events.send_comment, savedComment);
 		} catch (error) {
 			catchError(socket, error);
 		}
@@ -192,15 +200,17 @@ export const commentsRouter = (socket: Socket, commentsNamespace) => {
 
 	socket.on(Events.get_all_comments, async (data: BodySendAllComments) => {
 		try {
-			const messages = await commentsService.getAllComments(data);
-			socket.emit(Events.get_all_comments, messages);
+			const comments: ViewSendAllComments[] =
+				await commentsService.getAllComments(userId, data);
+			socket.emit(Events.get_all_comments, comments);
 		} catch (error) {
 			catchError(socket, error);
 		}
 	});
 	socket.on(Events.delete_comment, async (data: BodyDeleteComment) => {
 		try {
-			const deletedComment = await commentsService.deletedComment(data);
+			const deletedComment: ViewDeleteComment =
+				await commentsService.deletedComment(userId, data);
 			socket.emit(Events.delete_comment, deletedComment);
 		} catch (error) {
 			catchError(socket, error);
