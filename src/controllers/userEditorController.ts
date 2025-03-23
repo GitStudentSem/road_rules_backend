@@ -8,6 +8,7 @@ import type {
 	BodyDeleteUser,
 	BodyGetExamResult,
 	BodyGetUsersWithResultExam,
+	BodyIsBannedForChat,
 	BodySetRole,
 	ViewClearQuestionInfo,
 	ViewUserInfoResultExam,
@@ -181,6 +182,32 @@ export const userEditorController = {
 				res,
 				req,
 				message: "Не удалось получить результаты экзамена для пользователя",
+			});
+		}
+	},
+
+	async setIsBannedForChat(
+		req: RequestWithBody<BodyIsBannedForChat>,
+		res: Response<ErrorType>,
+	) {
+		try {
+			await userEditorService.setIsBannedForChat({
+				isBannedForChat: req.body.isBannedForChat,
+				email: req.body.email,
+				userId: req.userId || "",
+			});
+
+			res.sendStatus(HTTP_STATUSES.NO_CONTENT_204);
+		} catch (error) {
+			if (error instanceof DBError) {
+				res.status(error.status).json({ message: error.message });
+				return;
+			}
+			sendError({
+				error,
+				res,
+				req,
+				message: "Не удалось назначить экзамен",
 			});
 		}
 	},

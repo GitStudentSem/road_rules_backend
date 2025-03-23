@@ -11,6 +11,7 @@ import {
 	BodyDeleteUserSwaggerDoc,
 	BodyGetExamResultSwaggerDoc,
 	BodyGetUsersWithResultExamSwaggerDoc,
+	BodyIsBannedForChatSwaggerDoc,
 	BodySetRoleSwaggerDoc,
 	ViewUserInfoSwaggerDoc,
 } from "../types/controllers/userEditorController";
@@ -168,6 +169,27 @@ export const userEditorSwaggerDoc = {
 		},
 	},
 
+	"/api/userEditor/blockChat": {
+		patch: {
+			tags: ["Редактор пользователей"],
+			summary: "Заблокировать или разблокировать чат для пользователя",
+			security: [{ bearerAuth: [] }],
+			requestBody: {
+				content: {
+					"application/json": {
+						schema: BodyIsBannedForChatSwaggerDoc,
+					},
+				},
+			},
+			responses: {
+				204: {
+					description: "Чат заблокирован или разблокирован",
+				},
+				error: getErrorSwaggerDoc("Ошибка блокировки или разблокировки чата"),
+			},
+		},
+	},
+
 	"/api/userEditor/deleteUser": {
 		delete: {
 			tags: ["Редактор пользователей"],
@@ -225,6 +247,11 @@ export const userEditorRouter = () => {
 		isEmailValid,
 		handleValidationErrors,
 		userEditorController.setRole,
+	);
+	router.patch(
+		"/blockChat",
+		checkAuth,
+		userEditorController.setIsBannedForChat,
 	);
 
 	router.delete("/deleteUser", checkAuth, userEditorController.deleteUser);

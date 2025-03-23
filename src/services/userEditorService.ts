@@ -10,6 +10,7 @@ import type {
 	ExamResult,
 	SetRole,
 	Result,
+	IsBannedForChat,
 } from "../types/services/userEditorService";
 
 const removeUnusedInfoFromQuestion = (
@@ -97,6 +98,10 @@ export const userEditorService = {
 
 	async appointExam(data: AppointExam) {
 		await userEditorRepository.appointExam(data);
+	},
+
+	async setIsBannedForChat(data: IsBannedForChat) {
+		await userEditorRepository.setIsBannedForChat(data);
 	},
 
 	async deleteUser(data: DeleteUser) {

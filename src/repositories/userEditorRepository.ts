@@ -3,6 +3,7 @@ import type {
 	AppointExam,
 	DeleteUser,
 	GetExamResult,
+	IsBannedForChat,
 	SetRole,
 } from "../types/repositories/userEditorRepository";
 import { HTTP_STATUSES } from "../utils";
@@ -84,6 +85,20 @@ export const userEditorRepository = {
 		const update = {
 			$set: {
 				isAppointExam: isAppoint,
+			},
+		};
+
+		await userCollection.updateOne({ email }, update, { upsert: true });
+	},
+
+	async setIsBannedForChat(data: IsBannedForChat) {
+		const { userId, isBannedForChat, email } = data;
+
+		await checkAccessByRole(userId);
+
+		const update = {
+			$set: {
+				isBannedForChat,
 			},
 		};
 

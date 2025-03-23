@@ -200,6 +200,25 @@ export const BodyAppointExamSwaggerDoc: OpenAPIV3.SchemaObject = {
 export type BodyAppointExam = { isAppoint: boolean; email: string };
 //===========================================//
 
+export const BodyIsBannedForChatSwaggerDoc: OpenAPIV3.SchemaObject = {
+	type: "object",
+	properties: {
+		isBannedForChat: {
+			type: "boolean",
+			description: "Заблокирован ли чат для пользователя",
+			default: "false",
+		},
+		email: {
+			type: "string",
+			description: "Почта пользователя для которого нужно назначить экзамен",
+			default: defaultSwaggerValues.email,
+		},
+	},
+	required: ["isBannedForChat", "email"],
+};
+export type BodyIsBannedForChat = { isBannedForChat: boolean; email: string };
+//===========================================//
+
 export const BodyDeleteUserSwaggerDoc: OpenAPIV3.SchemaObject = {
 	type: "object",
 	properties: {
