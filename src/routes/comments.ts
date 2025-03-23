@@ -16,6 +16,13 @@ import {
 } from "../types/controllers/commentsController";
 import { defaultSwaggerValues } from "../assets/settings";
 
+enum Events {
+	error = "error",
+	send_comment = "send_comment",
+	get_all_comments = "get_all_comments",
+	delete_comment = "delete_comment",
+}
+
 export const commentsConnectSwaggerDoc = {
 	"/api/comments": {
 		post: {
@@ -58,13 +65,12 @@ export const commentsConnectSwaggerDoc = {
 };
 
 export const commentsSwaggerDoc = {
-	"/api/comments/send_comment": {
+	[`/api/comments/${Events.send_comment}`]: {
 		post: {
 			tags: ["Комментарии"],
 			summary: "Отправка комментария",
 			security: [{ bearerAuth: [] }],
-			description:
-				"Клиент отправляет комментарий через событие emit(send_comment)",
+			description: `Клиент отправляет комментарий через событие emit('${Events.send_comment}')`,
 			requestBody: {
 				content: {
 					"application/json": {
@@ -74,8 +80,7 @@ export const commentsSwaggerDoc = {
 			},
 			responses: {
 				200: {
-					description:
-						"Клиент получает комментарий через событие on(send_comment)",
+					description: `Клиент получает комментарий через событие on('${Events.send_comment}')`,
 					content: {
 						"application/json": {
 							schema: ViewSendCommentSwaggerDoc,
@@ -83,19 +88,18 @@ export const commentsSwaggerDoc = {
 					},
 				},
 				error: getErrorSwaggerDoc(
-					"Ошибка отправки комментария через on('error')",
+					`Ошибка отправки комментария через on('${Events.error}')`,
 				),
 			},
 		},
 	},
 
-	"/api/comments/get_all_comments": {
+	[`/api/comments/${Events.get_all_comments}`]: {
 		post: {
 			tags: ["Комментарии"],
 			summary: "Получить все комментарии",
 			security: [{ bearerAuth: [] }],
-			description:
-				"Клиент отправляет комментарий через событие emit(get_all_comments)",
+			description: `Клиент отправляет комментарий через событие emit('${Events.get_all_comments}')`,
 			requestBody: {
 				content: {
 					"application/json": {
@@ -105,8 +109,7 @@ export const commentsSwaggerDoc = {
 			},
 			responses: {
 				200: {
-					description:
-						"Клиент получает комментарий через событие on(get_all_comments)",
+					description: `Клиент получает комментарий через событие on('${Events.get_all_comments}')`,
 					content: {
 						"application/json": {
 							schema: {
@@ -118,18 +121,17 @@ export const commentsSwaggerDoc = {
 					},
 				},
 				error: getErrorSwaggerDoc(
-					"Ошибка отправки комментариев через on('error')",
+					`Ошибка отправки комментариев через on('${Events.error}')`,
 				),
 			},
 		},
 	},
-	"/api/comments/delete_comment": {
+	[`/api/comments/${Events.delete_comment}`]: {
 		post: {
 			tags: ["Комментарии"],
 			summary: "Удалить комментарий",
 			security: [{ bearerAuth: [] }],
-			description:
-				"Клиент отправляет комментарий через событие emit(delete_comment)",
+			description: `Клиент отправляет комментарий через событие emit('${Events.delete_comment}')`,
 			requestBody: {
 				content: {
 					"application/json": {
@@ -139,8 +141,7 @@ export const commentsSwaggerDoc = {
 			},
 			responses: {
 				200: {
-					description:
-						"Клиент получает удаленный комментарий через событие on(delete_comment)",
+					description: `Клиент получает удаленный комментарий через событие on('${Events.delete_comment}')`,
 					content: {
 						"application/json": {
 							schema: ViewDeleteCommentSwaggerDoc,
@@ -148,19 +149,12 @@ export const commentsSwaggerDoc = {
 					},
 				},
 				error: getErrorSwaggerDoc(
-					"Ошибка удаления комментария через on('error')",
+					`Ошибка удаления комментария через on('${Events.error}')`,
 				),
 			},
 		},
 	},
 };
-
-enum Events {
-	error = "error",
-	send_comment = "send_comment",
-	get_all_comments = "get_all_comments",
-	delete_comment = "delete_comment",
-}
 
 const catchError = (socket: Socket, error: unknown) => {
 	if (error instanceof DBError) {
