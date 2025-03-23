@@ -13,6 +13,7 @@ import type {
 	SaveImage,
 	UploadFile,
 } from "../types/services/ticketEditorService";
+import { commentsRepository } from "../repositories/commentsRepository";
 
 const calculateSizeInKB = (arrayBuffer: ArrayBuffer) => {
 	const bytes = arrayBuffer.byteLength;
@@ -267,6 +268,7 @@ export const ticketEditorService = {
 		);
 		if (isDeleted) {
 			await deleteAllImagesInFolderFolder(ticketId);
+			await commentsRepository.deleteAllCommentsForTicketId(ticketId);
 		}
 	},
 
@@ -281,6 +283,7 @@ export const ticketEditorService = {
 
 		if (isDeleted) {
 			await deleteImageFromQuestion(ticketId, questionId);
+			await commentsRepository.deleteAllCommentsForQuestionId(data.questionId);
 		}
 	},
 };

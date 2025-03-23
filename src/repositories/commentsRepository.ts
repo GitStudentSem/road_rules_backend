@@ -93,4 +93,12 @@ export const commentsRepository = {
 			...rest,
 		};
 	},
+
+	async deleteAllCommentsForQuestionId(questionId: string) {
+		await commentsCollection.deleteMany({ questionId });
+	},
+
+	async deleteAllCommentsForTicketId(ticketId: string) {
+		await commentsCollection.deleteMany({ ticketId });
+	},
 };
