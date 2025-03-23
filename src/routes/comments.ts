@@ -5,10 +5,12 @@ import { DBError } from "../controllers/DBError";
 import { getErrorSwaggerDoc } from "../assets/getErrorSwaggerDoc";
 import {
 	type BodyDeleteComment,
+	BodyDeleteCommentSwaggerDoc,
 	type BodySendAllComments,
 	BodySendAllCommentsSwaggerDoc,
 	type BodySendComment,
 	BodySendCommentSwaggerDoc,
+	ViewDeleteCommentSwaggerDoc,
 	ViewSendAllCommentsSwaggerDoc,
 	ViewSendCommentSwaggerDoc,
 } from "../types/controllers/commentsController";
@@ -121,11 +123,41 @@ export const commentsSwaggerDoc = {
 			},
 		},
 	},
+	"/api/comments/delete_comment": {
+		post: {
+			tags: ["Комментарии"],
+			summary: "Удалить комментарий",
+			security: [{ bearerAuth: [] }],
+			description:
+				"Клиент отправляет комментарий через событие emit(delete_comment)",
+			requestBody: {
+				content: {
+					"application/json": {
+						schema: BodyDeleteCommentSwaggerDoc,
+					},
+				},
+			},
+			responses: {
+				200: {
+					description:
+						"Клиент получает удаленный комментарий через событие on(delete_comment)",
+					content: {
+						"application/json": {
+							schema: ViewDeleteCommentSwaggerDoc,
+						},
+					},
+				},
+				error: getErrorSwaggerDoc(
+					"Ошибка удаления комментария через on('error')",
+				),
+			},
+		},
+	},
 };
 
 enum Events {
 	error = "error",
-	send_comment = '"send_comment"',
+	send_comment = "send_comment",
 	get_all_comments = "get_all_comments",
 	delete_comment = "delete_comment",
 }
@@ -140,6 +172,7 @@ const catchError = (socket: Socket, error: unknown) => {
 	}
 
 	if (error instanceof Error) {
+		console.log(error);
 		socket.emit(Events.error, {
 			message: error.message,
 			status: 500,
@@ -155,10 +188,10 @@ export const commentsRouter = (socket: Socket, commentsNamespace) => {
 	// Клиент отправляет сообщение
 	socket.on(Events.send_comment, async (data: BodySendComment) => {
 		try {
+			console.log(Events.send_comment, data);
 			const savedMessage = await commentsService.sendMessage(userId, data);
 			commentsNamespace.emit(Events.send_comment, savedMessage);
 		} catch (error) {
-			console.log(Events.send_comment, error);
 			catchError(socket, error);
 		}
 	});
@@ -168,16 +201,14 @@ export const commentsRouter = (socket: Socket, commentsNamespace) => {
 			const messages = await commentsService.getAllComments(data);
 			socket.emit(Events.get_all_comments, messages);
 		} catch (error) {
-			console.log(Events.get_all_comments, error);
 			catchError(socket, error);
 		}
 	});
 	socket.on(Events.delete_comment, async (data: BodyDeleteComment) => {
 		try {
-			await commentsService.deletedComment(data);
-			socket.emit(Events.delete_comment);
+			const deletedComment = await commentsService.deletedComment(data);
+			socket.emit(Events.delete_comment, deletedComment);
 		} catch (error) {
-			console.log(Events.delete_comment, error);
 			catchError(socket, error);
 		}
 	});

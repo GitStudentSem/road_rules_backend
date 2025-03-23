@@ -43,6 +43,11 @@ export const ViewSendCommentSwaggerDoc: OpenAPIV3.SchemaObject = {
 			default: defaultSwaggerValues.questionId,
 			description: "ID вопроса",
 		},
+		commentId: {
+			type: "string",
+			default: "67dfedd2805cdebd10d86ff7",
+			description: "ID комментария",
+		},
 		text: {
 			type: "string",
 			default: "Текст комментария",
@@ -63,6 +68,7 @@ export const ViewSendCommentSwaggerDoc: OpenAPIV3.SchemaObject = {
 export type ViewSendComment = {
 	ticketId: string;
 	questionId: string;
+	commentId: string;
 	text: string;
 	firstName: string;
 	secondName: string;
@@ -104,6 +110,11 @@ export const ViewSendAllCommentsSwaggerDoc: OpenAPIV3.SchemaObject = {
 			default: defaultSwaggerValues.questionId,
 			description: "ID вопроса",
 		},
+		commentId: {
+			type: "string",
+			default: "67dfedd2805cdebd10d86ff7",
+			description: "ID сообщения",
+		},
 		text: {
 			type: "string",
 			default: "Текст комментария",
@@ -124,6 +135,7 @@ export const ViewSendAllCommentsSwaggerDoc: OpenAPIV3.SchemaObject = {
 export type ViewSendAllComments = {
 	ticketId: string;
 	questionId: string;
+	commentId: string;
 	text: string;
 	firstName: string;
 	secondName: string;
@@ -131,6 +143,23 @@ export type ViewSendAllComments = {
 
 //===========================================//
 export const BodyDeleteCommentSwaggerDoc: OpenAPIV3.SchemaObject = {
+	type: "object",
+	properties: {
+		commentId: {
+			type: "string",
+			default: "67dfedd2805cdebd10d86ff7",
+			description: "ID комментария",
+		},
+	},
+	required: ["commentId"],
+};
+export type BodyDeleteComment = {
+	commentId: string;
+};
+
+//===========================================//
+
+export const ViewDeleteCommentSwaggerDoc: OpenAPIV3.SchemaObject = {
 	type: "object",
 	properties: {
 		ticketId: {
@@ -143,10 +172,33 @@ export const BodyDeleteCommentSwaggerDoc: OpenAPIV3.SchemaObject = {
 			default: defaultSwaggerValues.questionId,
 			description: "ID вопроса",
 		},
+		commentId: {
+			type: "string",
+			default: "67dfedd2805cdebd10d86ff7",
+			description: "ID комментария",
+		},
+		text: {
+			type: "string",
+			default: "Текст комментария",
+			description: "Текст комментария",
+		},
+		firstName: {
+			type: "string",
+			default: "Иван",
+			description: "Имя пользователя",
+		},
+		secondName: {
+			type: "string",
+			default: "Иванов",
+			description: "Фамилия пользователя",
+		},
 	},
-	required: ["ticketId", "questionId"],
 };
-export type BodyDeleteComment = {
+export type ViewDeleteCommentSwaggerDoc = {
 	ticketId: string;
 	questionId: string;
+	commentId: string;
+	text: string;
+	firstName: string;
+	secondName: string;
 };

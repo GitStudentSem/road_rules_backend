@@ -6,6 +6,7 @@ import type {
 } from "../types/repositories/commentsRepository";
 import { HTTP_STATUSES } from "../utils";
 import { commentsCollection, ticketCollection, userCollection } from "./db";
+import { Db, ObjectId } from "mongodb";
 
 const isUserExist = async (userId: string) => {
 	const user = await userCollection.findOne({ userId });
@@ -48,30 +49,48 @@ export const commentsRepository = {
 			firstName: user.firstName,
 			secondName: user.secondName,
 		});
-		const savedMessage = await commentsCollection.findOne(insertedId, {
-			projection: { _id: 0 },
-		});
+		const savedMessage = await commentsCollection.findOne(insertedId);
 
 		if (!savedMessage) {
 			throw new DBError("Вопрос не найден", HTTP_STATUSES.NOT_FOUND_404);
 		}
 
-		return savedMessage;
+		const { _id, ...rest } = savedMessage;
+		return {
+			commentId: _id,
+			...rest,
+		};
 	},
 
 	async getAllComments(questionInfo: GetAllComments) {
 		await findQuestion(questionInfo.ticketId, questionInfo.questionId);
 
-		return await commentsCollection
-			.find(questionInfo, {
-				projection: { _id: 0 },
-			})
-			.toArray();
+		const comments = await commentsCollection.find(questionInfo).toArray();
+
+		const formattedComments = comments.map((comment) => {
+			const { _id, ...rest } = comment;
+			return {
+				commentId: _id,
+				...rest,
+			};
+		});
+
+		return formattedComments;
 	},
 
 	async deleteComment(data: DeleteComment) {
-		await findQuestion(data.ticketId, data.questionId);
+		const deletedComment = await commentsCollection.findOneAndDelete({
+			_id: new ObjectId(data.commentId),
+		});
 
-		await commentsCollection.findOneAndDelete(data);
+		if (!deletedComment) {
+			throw new DBError("Комментарий не найден", HTTP_STATUSES.NOT_FOUND_404);
+		}
+
+		const { _id, ...rest } = deletedComment;
+		return {
+			commentId: _id,
+			...rest,
+		};
 	},
 };

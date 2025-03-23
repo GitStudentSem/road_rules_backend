@@ -10,6 +10,5 @@ export type GetAllComments = {
 };
 
 export type DeleteComment = {
-	ticketId: string;
-	questionId: string;
+	commentId: string;
 };

@@ -11,18 +11,10 @@ export const commentsService = {
 	},
 
 	async getAllComments(filterData: GetAllComments) {
-		try {
-			return await commentsRepository.getAllComments(filterData);
-		} catch (error) {
-			throw new Error("Failed to fetch messages");
-		}
+		return await commentsRepository.getAllComments(filterData);
 	},
 
 	async deletedComment(data: DeleteComment) {
-		try {
-			return await commentsRepository.deleteComment(data);
-		} catch (error) {
-			throw new Error("Failed to fetch messages");
-		}
+		return await commentsRepository.deleteComment(data);
 	},
 };
