@@ -6,9 +6,7 @@ import { Server } from "socket.io";
 import http from "node:http";
 import { commentsRouter } from "./routes/comments";
 import jwt from "jsonwebtoken";
-import { defaultSwaggerValues, settings } from "./assets/settings";
-import { getErrorSwaggerDoc } from "./assets/getErrorSwaggerDoc";
-import { BodySendCommentSwaggerDoc } from "./types/controllers/commentsController";
+import { settings } from "./assets/settings";
 
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -17,7 +15,7 @@ const io = new Server(server, {
 		methods: ["GET", "POST"],
 	},
 });
-const commentsNamespace = io.of("/api/comments");
+export const commentsNamespace = io.of("/api/comments");
 // Middleware для проверки токена
 commentsNamespace.use(async (socket, next) => {
 	// const token = null;
@@ -43,7 +41,7 @@ commentsNamespace.use(async (socket, next) => {
 // Подключаем маршруты сокета
 commentsNamespace.on("connection", (socket) => {
 	console.log("Клиент подключился для комментариев:", socket.id);
-	commentsRouter(socket, commentsNamespace);
+	commentsRouter(socket);
 });
 
 const port = process.env.PORT || 3333;

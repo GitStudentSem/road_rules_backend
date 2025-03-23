@@ -1,6 +1,4 @@
-import type { Socket, Server } from "socket.io";
-
-import { commentsService } from "../services/commentsService";
+import type { Socket } from "socket.io";
 import { DBError } from "../controllers/DBError";
 import { getErrorSwaggerDoc } from "../assets/getErrorSwaggerDoc";
 import {
@@ -15,14 +13,11 @@ import type {
 	BodyDeleteComment,
 	BodySendAllComments,
 	BodySendComment,
-	ViewDeleteComment,
-	ViewSendAllComments,
-	ViewSendComment,
 } from "../types/controllers/commentsController";
-
 import { defaultSwaggerValues } from "../assets/settings";
+import { commentsController } from "../controllers/commentsController";
 
-enum Events {
+export enum Events {
 	error = "error",
 	send_comment = "send_comment",
 	get_all_comments = "get_all_comments",
@@ -162,63 +157,24 @@ export const commentsSwaggerDoc = {
 	},
 };
 
-const catchError = (socket: Socket, error: unknown) => {
-	if (error instanceof DBError) {
-		socket.emit(Events.error, {
-			message: error.message,
-			status: error.status,
-		});
-		return;
-	}
-
-	if (error instanceof Error) {
-		console.log(error);
-		socket.emit(Events.error, {
-			message: error.message,
-			status: 500,
-		});
-		return;
-	}
-};
-
-export const commentsRouter = (socket: Socket, commentsNamespace) => {
+export const commentsRouter = (socket: Socket) => {
 	const { userId } = socket;
 	if (!userId) return;
 
 	// Клиент отправляет сообщение
 	socket.on(Events.send_comment, async (data: BodySendComment) => {
-		try {
-			const savedComment: ViewSendComment = await commentsService.sendComment(
-				userId,
-				data,
-			);
-			commentsNamespace.emit(Events.send_comment, savedComment);
-		} catch (error) {
-			catchError(socket, error);
-		}
+		await commentsController.sendComment(socket, userId, data);
 	});
 
 	socket.on(Events.get_all_comments, async (data: BodySendAllComments) => {
-		try {
-			const comments: ViewSendAllComments[] =
-				await commentsService.getAllComments(userId, data);
-			socket.emit(Events.get_all_comments, comments);
-		} catch (error) {
-			catchError(socket, error);
-		}
-	});
-	socket.on(Events.delete_comment, async (data: BodyDeleteComment) => {
-		try {
-			const deletedComment: ViewDeleteComment =
-				await commentsService.deletedComment(userId, data);
-			socket.emit(Events.delete_comment, deletedComment);
-		} catch (error) {
-			catchError(socket, error);
-		}
+		await commentsController.getAllComments(socket, userId, data);
 	});
 
-	// Обработка отключения клиента
+	socket.on(Events.delete_comment, async (data: BodyDeleteComment) => {
+		await commentsController.deleteComment(socket, userId, data);
+	});
+
 	socket.on("disconnect", () => {
-		console.log("A client disconnected:", socket.id);
+		console.log("Клиент отключился:", socket.id);
 	});
 };

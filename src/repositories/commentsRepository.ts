@@ -55,18 +55,19 @@ export const commentsRepository = {
 			...data,
 			userId,
 		});
-		const savedMessage = await commentsCollection.findOne(insertedId);
 
-		if (!savedMessage) {
-			throw new DBError("Вопрос не найден", HTTP_STATUSES.NOT_FOUND_404);
+		if (!insertedId) {
+			throw new DBError(
+				"Комментарий не был добавлен",
+				HTTP_STATUSES.NOT_FOUND_404,
+			);
 		}
 
-		const { _id, ...rest } = savedMessage;
 		return {
-			commentId: _id,
+			commentId: insertedId,
 			firstName: user.firstName,
 			secondName: user.secondName,
-			...rest,
+			...data,
 		};
 	},
 
@@ -100,10 +101,6 @@ export const commentsRepository = {
 			);
 		}
 
-		const comment = await commentsCollection.findOne({
-			_id: new ObjectId(data.commentId),
-		});
-
 		if (user.role === "user" && user.userId !== userId) {
 			throw new DBError(
 				"У вас недостаточно прав для удаления комментария",
@@ -111,15 +108,15 @@ export const commentsRepository = {
 			);
 		}
 
-		if (!comment) {
+		const deletedComment = await commentsCollection.findOneAndDelete({
+			_id: new ObjectId(data.commentId),
+		});
+
+		if (!deletedComment) {
 			throw new DBError("Комментарий не найден", HTTP_STATUSES.NOT_FOUND_404);
 		}
 
-		await commentsCollection.findOneAndDelete({
-			_id: comment._id,
-		});
-
-		const { _id, ...rest } = comment;
+		const { _id, ...rest } = deletedComment;
 		return {
 			commentId: _id,
 			firstName: user.firstName,
