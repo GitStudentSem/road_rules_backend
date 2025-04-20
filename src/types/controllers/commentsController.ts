@@ -69,6 +69,11 @@ export const ViewSendCommentSwaggerDoc: OpenAPIV3.SchemaObject = {
 			default: "2025-04-19T12:17:16.683Z",
 			description: "Время отправки комментария в ISO формате",
 		},
+		userId: {
+			type: "string",
+			description: "id пользователя пользователя",
+			default: "1717440741304",
+		},
 	},
 };
 export type ViewSendComment = {
@@ -79,6 +84,7 @@ export type ViewSendComment = {
 	firstName: string;
 	secondName: string;
 	time: string;
+	userId: string;
 };
 
 //===========================================//
@@ -142,6 +148,11 @@ export const ViewSendAllCommentsSwaggerDoc: OpenAPIV3.SchemaObject = {
 			default: "2025-04-19T12:17:16.683Z",
 			description: "Время отправки комментария в ISO формате",
 		},
+		userId: {
+			type: "string",
+			description: "id пользователя пользователя",
+			default: "1717440741304",
+		},
 	},
 };
 export type ViewSendAllComments = {
@@ -152,6 +163,7 @@ export type ViewSendAllComments = {
 	firstName: string;
 	secondName: string;
 	time: string;
+	userId: string;
 };
 
 //===========================================//
@@ -205,6 +217,11 @@ export const ViewDeleteCommentSwaggerDoc: OpenAPIV3.SchemaObject = {
 			default: "Иванов",
 			description: "Фамилия пользователя",
 		},
+		userId: {
+			type: "string",
+			description: "id пользователя пользователя",
+			default: "1717440741304",
+		},
 	},
 };
 export type ViewDeleteComment = {
@@ -214,4 +231,5 @@ export type ViewDeleteComment = {
 	text: string;
 	firstName: string;
 	secondName: string;
+	userId: string;
 };

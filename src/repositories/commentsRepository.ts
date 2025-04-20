@@ -67,6 +67,7 @@ export const commentsRepository = {
 			commentId: insertedId,
 			firstName: user.firstName,
 			secondName: user.secondName,
+			userId,
 			...data,
 		};
 	},
