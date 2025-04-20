@@ -53,4 +53,6 @@ export type CommentsDBModel = {
 	text: string;
 	userId: string;
 	time: string;
+	likes: string[];
+	dislikes: string[];
 };

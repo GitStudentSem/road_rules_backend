@@ -74,6 +74,24 @@ export const ViewSendCommentSwaggerDoc: OpenAPIV3.SchemaObject = {
 			description: "id пользователя пользователя",
 			default: "1717440741304",
 		},
+		likes: {
+			type: "array",
+			description: "Массив userId которые лайкнули комментарий",
+			items: {
+				type: "string",
+				default: "1717440741304",
+				description: "userId пользователя который лайкнул комментарий",
+			},
+		},
+		dislikes: {
+			type: "array",
+			description: "Массив userId которые дизлайкнули комментарий",
+			items: {
+				type: "string",
+				default: "1717440741304",
+				description: "userId пользователя который дизлайкнул комментарий",
+			},
+		},
 	},
 };
 export type ViewSendComment = {
@@ -85,6 +103,8 @@ export type ViewSendComment = {
 	secondName: string;
 	time: string;
 	userId: string;
+	likes: string[];
+	dislikes: string[];
 };
 
 //===========================================//
@@ -153,6 +173,24 @@ export const ViewSendAllCommentsSwaggerDoc: OpenAPIV3.SchemaObject = {
 			description: "id пользователя пользователя",
 			default: "1717440741304",
 		},
+		likes: {
+			type: "array",
+			description: "Массив userId которые лайкнули комментарий",
+			items: {
+				type: "string",
+				default: "1717440741304",
+				description: "userId пользователя который лайкнул комментарий",
+			},
+		},
+		dislikes: {
+			type: "array",
+			description: "Массив userId которые дизлайкнули комментарий",
+			items: {
+				type: "string",
+				default: "1717440741304",
+				description: "userId пользователя который дизлайкнул комментарий",
+			},
+		},
 	},
 };
 export type ViewSendAllComments = {
@@ -164,6 +202,8 @@ export type ViewSendAllComments = {
 	secondName: string;
 	time: string;
 	userId: string;
+	likes: string[];
+	dislikes: string[];
 };
 
 //===========================================//
@@ -222,6 +262,24 @@ export const ViewDeleteCommentSwaggerDoc: OpenAPIV3.SchemaObject = {
 			description: "id пользователя пользователя",
 			default: "1717440741304",
 		},
+		likes: {
+			type: "array",
+			description: "Массив userId которые лайкнули комментарий",
+			items: {
+				type: "string",
+				default: "1717440741304",
+				description: "userId пользователя который лайкнул комментарий",
+			},
+		},
+		dislikes: {
+			type: "array",
+			description: "Массив userId которые дизлайкнули комментарий",
+			items: {
+				type: "string",
+				default: "1717440741304",
+				description: "userId пользователя который дизлайкнул комментарий",
+			},
+		},
 	},
 };
 export type ViewDeleteComment = {
@@ -232,4 +290,6 @@ export type ViewDeleteComment = {
 	firstName: string;
 	secondName: string;
 	userId: string;
+	likes: string[];
+	dislikes: string[];
 };

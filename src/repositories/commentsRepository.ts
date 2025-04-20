@@ -51,8 +51,12 @@ export const commentsRepository = {
 
 		await findQuestion(data.ticketId, data.questionId);
 
+		const likes = [];
+		const dislikes = [];
 		const { insertedId } = await commentsCollection.insertOne({
 			...data,
+			likes,
+			dislikes,
 			userId,
 		});
 
@@ -68,6 +72,8 @@ export const commentsRepository = {
 			firstName: user.firstName,
 			secondName: user.secondName,
 			userId,
+			likes,
+			dislikes,
 			...data,
 		};
 	},
