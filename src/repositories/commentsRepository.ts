@@ -58,6 +58,8 @@ export const commentsRepository = {
 			likes,
 			dislikes,
 			userId,
+			firstName: user.firstName,
+			secondName: user.secondName,
 		});
 
 		if (!insertedId) {
@@ -87,10 +89,9 @@ export const commentsRepository = {
 
 		const formattedComments = comments.map((comment) => {
 			const { _id, ...rest } = comment;
+
 			return {
 				commentId: _id,
-				firstName: user.firstName,
-				secondName: user.secondName,
 				...rest,
 			};
 		});
@@ -126,8 +127,6 @@ export const commentsRepository = {
 		const { _id, ...rest } = deletedComment;
 		return {
 			commentId: _id,
-			firstName: user.firstName,
-			secondName: user.secondName,
 			...rest,
 		};
 	},

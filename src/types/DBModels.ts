@@ -51,6 +51,8 @@ export type CommentsDBModel = {
 	ticketId: string;
 	questionId: string;
 	text: string;
+	firstName: string;
+	secondName: string;
 	userId: string;
 	time: string;
 	likes: string[];
