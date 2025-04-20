@@ -62,7 +62,7 @@ export const authService = {
 			expiresIn: "30d",
 		});
 
-		return { firstName, secondName, token, isAppointExam };
+		return { firstName, secondName, token, isAppointExam, userId };
 	},
 
 	async adminLogin(data: Login) {
@@ -88,6 +88,6 @@ export const authService = {
 			expiresIn: "30d",
 		});
 
-		return { firstName, secondName, token, isAppointExam };
+		return { firstName, secondName, token, isAppointExam, userId };
 	},
 };

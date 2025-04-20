@@ -126,12 +126,18 @@ export const ViewLoginSwaggerDoc: OpenAPIV3.SchemaObject = {
 			default: defaultSwaggerValues.authToken,
 			description: "Токен авторизации",
 		},
+		userId: {
+			type: "string",
+			description: "id пользователя пользователя",
+			default: "1717440741304",
+		},
 	},
 };
 export type ViewLogin = {
 	token: string;
 	firstName: string;
 	secondName: string;
+	userId: string;
 	isAppointExam: boolean;
 };
 //===========================================//
