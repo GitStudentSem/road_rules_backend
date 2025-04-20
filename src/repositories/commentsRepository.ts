@@ -109,9 +109,25 @@ export const commentsRepository = {
 			);
 		}
 
-		if (user.role === "user" && user.userId !== userId) {
+		const foundedComment = await commentsCollection.findOne({
+			_id: new ObjectId(data.commentId),
+		});
+		if (!foundedComment) {
+			throw new DBError("Комментарий не найден", HTTP_STATUSES.NOT_FOUND_404);
+		}
+
+		if (user.role === "user") {
 			throw new DBError(
 				"У вас недостаточно прав для удаления комментария",
+				HTTP_STATUSES.FORRIBDEN_403,
+			);
+		}
+
+		if (foundedComment.userId !== userId) {
+			console.log("foundedComment.userId", foundedComment.userId);
+			console.log("userId", userId);
+			throw new DBError(
+				"Это не ваш комментарий, вы не можете его удалить",
 				HTTP_STATUSES.FORRIBDEN_403,
 			);
 		}
