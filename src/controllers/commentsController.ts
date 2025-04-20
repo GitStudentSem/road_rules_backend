@@ -38,7 +38,9 @@ export const commentsController = {
 				userId,
 				data,
 			);
-			commentsNamespace.emit(Events.send_comment, savedComment);
+			commentsNamespace
+				.to(socket.currentRoom)
+				.emit(Events.send_comment, savedComment);
 		} catch (error) {
 			catchError(socket, error);
 		}
@@ -52,7 +54,9 @@ export const commentsController = {
 		try {
 			const comments: ViewSendAllComments[] =
 				await commentsService.getAllComments(userId, data);
-			socket.emit(Events.get_all_comments, comments);
+			commentsNamespace
+				.to(socket.currentRoom)
+				.emit(Events.get_all_comments, comments);
 		} catch (error) {
 			catchError(socket, error);
 		}
@@ -62,7 +66,9 @@ export const commentsController = {
 		try {
 			const deletedComment: ViewDeleteComment =
 				await commentsService.deletedComment(userId, data);
-			socket.emit(Events.delete_comment, deletedComment);
+			commentsNamespace
+				.to(socket.currentRoom)
+				.emit(Events.delete_comment, deletedComment);
 		} catch (error) {
 			catchError(socket, error);
 		}

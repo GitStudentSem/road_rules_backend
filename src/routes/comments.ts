@@ -3,6 +3,7 @@ import { DBError } from "../controllers/DBError";
 import { getErrorSwaggerDoc } from "../assets/getErrorSwaggerDoc";
 import {
 	BodyDeleteCommentSwaggerDoc,
+	BodyJoinRoomSwaggerDoc,
 	BodySendAllCommentsSwaggerDoc,
 	BodySendCommentSwaggerDoc,
 	ViewDeleteCommentSwaggerDoc,
@@ -11,14 +12,17 @@ import {
 } from "../types/controllers/commentsController";
 import type {
 	BodyDeleteComment,
+	BodyJoinRoom,
 	BodySendAllComments,
 	BodySendComment,
 } from "../types/controllers/commentsController";
 import { defaultSwaggerValues } from "../assets/settings";
 import { commentsController } from "../controllers/commentsController";
+import { commentsNamespace } from "..";
 
 export enum Events {
 	error = "error",
+	join_room = "join_room",
 	send_comment = "send_comment",
 	get_all_comments = "get_all_comments",
 	delete_comment = "delete_comment",
@@ -66,6 +70,22 @@ export const commentsConnectSwaggerDoc = {
 };
 
 export const commentsSwaggerDoc = {
+	[`/api/comments/${Events.join_room}`]: {
+		post: {
+			tags: ["Комментарии"],
+			summary: "Подключится к комнате для комментариев",
+			security: [{ bearerAuth: [] }],
+			description: `Клиент подключатся к комнате через событие emit('${Events.join_room}')`,
+			requestBody: {
+				content: {
+					"application/json": {
+						schema: BodyJoinRoomSwaggerDoc,
+					},
+				},
+			},
+		},
+	},
+
 	[`/api/comments/${Events.send_comment}`]: {
 		post: {
 			tags: ["Комментарии"],
@@ -157,11 +177,26 @@ export const commentsSwaggerDoc = {
 	},
 };
 
+const getRoomId = (data: BodyJoinRoom) => {
+	return `${data.ticketId}_${data.questionId}`;
+};
+
 export const commentsRouter = (socket: Socket) => {
 	const { userId } = socket;
 	if (!userId) return;
 
-	// Клиент отправляет сообщение
+	socket.on(Events.join_room, (data: BodyJoinRoom) => {
+		const roomId = getRoomId(data);
+		if (socket.currentRoom) {
+			console.log("Клиент покинул комнату: ", roomId);
+			socket.leave(socket.currentRoom);
+		}
+		console.log("Клиент подключился к комнате: ", roomId);
+		socket.join(roomId);
+		socket.currentRoom = roomId;
+		commentsNamespace.to(socket.currentRoom).emit(Events.join_room, { roomId });
+	});
+
 	socket.on(Events.send_comment, async (data: BodySendComment) => {
 		await commentsController.sendComment(socket, userId, data);
 	});
@@ -173,8 +208,10 @@ export const commentsRouter = (socket: Socket) => {
 	socket.on(Events.delete_comment, async (data: BodyDeleteComment) => {
 		await commentsController.deleteComment(socket, userId, data);
 	});
-
+	//
 	socket.on("disconnect", () => {
 		console.log("Клиент отключился:", socket.id);
+		socket.leave(socket.currentRoom);
+		socket.currentRoom = "";
 	});
 };

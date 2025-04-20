@@ -3,6 +3,28 @@ import { defaultSwaggerValues } from "../../assets/settings";
 import type { OpenAPIV3 } from "openapi-types";
 
 //===========================================//
+export const BodyJoinRoomSwaggerDoc: OpenAPIV3.SchemaObject = {
+	type: "object",
+	properties: {
+		ticketId: {
+			type: "string",
+			default: defaultSwaggerValues.ticketId,
+			description: "ID билета",
+		},
+		questionId: {
+			type: "string",
+			default: defaultSwaggerValues.questionId,
+			description: "ID вопроса",
+		},
+	},
+	required: ["ticketId", "questionId"],
+};
+export type BodyJoinRoom = {
+	ticketId: string;
+	questionId: string;
+};
+
+//===========================================//
 export const BodySendCommentSwaggerDoc: OpenAPIV3.SchemaObject = {
 	type: "object",
 	properties: {
@@ -210,6 +232,16 @@ export type ViewSendAllComments = {
 export const BodyDeleteCommentSwaggerDoc: OpenAPIV3.SchemaObject = {
 	type: "object",
 	properties: {
+		ticketId: {
+			type: "string",
+			default: defaultSwaggerValues.ticketId,
+			description: "ID билета",
+		},
+		questionId: {
+			type: "string",
+			default: defaultSwaggerValues.questionId,
+			description: "ID вопроса",
+		},
 		commentId: {
 			type: "string",
 			default: "67dfedd2805cdebd10d86ff7",
@@ -219,6 +251,8 @@ export const BodyDeleteCommentSwaggerDoc: OpenAPIV3.SchemaObject = {
 	required: ["commentId"],
 };
 export type BodyDeleteComment = {
+	ticketId: string;
+	questionId: string;
 	commentId: string;
 };
 

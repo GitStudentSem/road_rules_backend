@@ -16,5 +16,6 @@ declare module "socket.io" {
 		SocketData = any,
 	> {
 		userId?: string; // Добавляем поле userId
+		currentRoom: string;
 	}
 }
