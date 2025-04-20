@@ -16,11 +16,11 @@ export const commentsService = {
 			);
 		}
 
-		const messageTime = new Date().toISOString();
+		const time = new Date().toISOString();
 
 		return await commentsRepository.sendMessage(userId, {
 			...data,
-			messageTime,
+			time,
 		});
 	},
 

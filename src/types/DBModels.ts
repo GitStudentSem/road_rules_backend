@@ -52,5 +52,5 @@ export type CommentsDBModel = {
 	questionId: string;
 	text: string;
 	userId: string;
-	messageTime: string;
+	time: string;
 };
