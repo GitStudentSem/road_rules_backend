@@ -15,7 +15,13 @@ export const commentsService = {
 				HTTP_STATUSES.BAD_REQUEST_400,
 			);
 		}
-		return await commentsRepository.sendMessage(userId, data);
+
+		const messageTime = new Date().toISOString();
+
+		return await commentsRepository.sendMessage(userId, {
+			...data,
+			messageTime,
+		});
 	},
 
 	async getAllComments(userId: string, filterData: GetAllComments) {

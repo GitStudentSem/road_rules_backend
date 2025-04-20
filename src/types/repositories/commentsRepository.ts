@@ -2,6 +2,7 @@ export type SendComment = {
 	ticketId: string;
 	questionId: string;
 	text: string;
+	messageTime: string;
 };
 
 export type GetAllComments = {
