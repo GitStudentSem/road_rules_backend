@@ -12,3 +12,15 @@ export type GetAllComments = {
 export type DeleteComment = {
 	commentId: string;
 };
+
+export type LikeComment = {
+	ticketId: string;
+	questionId: string;
+	commentId: string;
+};
+
+export type DislikeComment = {
+	ticketId: string;
+	questionId: string;
+	commentId: string;
+};

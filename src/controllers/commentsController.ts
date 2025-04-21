@@ -3,9 +3,13 @@ import { commentsService } from "../services/commentsService";
 import { DBError } from "../controllers/DBError";
 import type {
 	BodyDeleteComment,
+	BodyDislikeComment,
+	BodyLikeComment,
 	BodySendAllComments,
 	BodySendComment,
 	ViewDeleteComment,
+	ViewDislikeComment,
+	ViewLikeComment,
 	ViewSendAllComments,
 	ViewSendComment,
 } from "../types/controllers/commentsController";
@@ -69,6 +73,38 @@ export const commentsController = {
 			commentsNamespace
 				.to(socket.currentRoom)
 				.emit(Events.delete_comment, deletedComment);
+		} catch (error) {
+			catchError(socket, error);
+		}
+	},
+
+	async likeComment(socket: Socket, userId: string, data: BodyLikeComment) {
+		try {
+			const reactedComment: ViewLikeComment = await commentsService.likeComment(
+				userId,
+				data,
+			);
+
+			commentsNamespace
+				.to(socket.currentRoom)
+				.emit(Events.like_comment, reactedComment);
+		} catch (error) {
+			catchError(socket, error);
+		}
+	},
+
+	async dislikeComment(
+		socket: Socket,
+		userId: string,
+		data: BodyDislikeComment,
+	) {
+		try {
+			const reactedComment: ViewDislikeComment =
+				await commentsService.dislikeComment(userId, data);
+
+			commentsNamespace
+				.to(socket.currentRoom)
+				.emit(Events.like_comment, reactedComment);
 		} catch (error) {
 			catchError(socket, error);
 		}

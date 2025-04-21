@@ -3,16 +3,21 @@ import { DBError } from "../controllers/DBError";
 import { getErrorSwaggerDoc } from "../assets/getErrorSwaggerDoc";
 import {
 	BodyDeleteCommentSwaggerDoc,
+	BodyDislikeCommentSwaggerDoc,
 	BodyJoinRoomSwaggerDoc,
+	BodyLikeCommentSwaggerDoc,
 	BodySendAllCommentsSwaggerDoc,
 	BodySendCommentSwaggerDoc,
 	ViewDeleteCommentSwaggerDoc,
+	ViewDislikeCommentSwaggerDoc,
+	ViewLikeCommentSwaggerDoc,
 	ViewSendAllCommentsSwaggerDoc,
 	ViewSendCommentSwaggerDoc,
 } from "../types/controllers/commentsController";
 import type {
 	BodyDeleteComment,
 	BodyJoinRoom,
+	BodyLikeComment,
 	BodySendAllComments,
 	BodySendComment,
 } from "../types/controllers/commentsController";
@@ -26,6 +31,8 @@ export enum Events {
 	send_comment = "send_comment",
 	get_all_comments = "get_all_comments",
 	delete_comment = "delete_comment",
+	like_comment = "like_comment",
+	dislike_comment = "dislike_comment",
 }
 
 export const commentsConnectSwaggerDoc = {
@@ -142,7 +149,7 @@ export const commentsSwaggerDoc = {
 					},
 				},
 				error: getErrorSwaggerDoc(
-					`Ошибка отправки комментариев через on('${Events.error}')`,
+					`Ошибка отправки всех комментариев через on('${Events.error}')`,
 				),
 			},
 		},
@@ -175,6 +182,63 @@ export const commentsSwaggerDoc = {
 			},
 		},
 	},
+	[`/api/comments/${Events.like_comment}`]: {
+		post: {
+			tags: ["Комментарии"],
+			summary: "Лайкнуть комментарий",
+			security: [{ bearerAuth: [] }],
+			description: `Клиент отправляет лайк через событие emit('${Events.like_comment}')`,
+			requestBody: {
+				content: {
+					"application/json": {
+						schema: BodyLikeCommentSwaggerDoc,
+					},
+				},
+			},
+			responses: {
+				200: {
+					description: `Клиент получает лайки через событие on('${Events.like_comment}')`,
+					content: {
+						"application/json": {
+							schema: ViewLikeCommentSwaggerDoc,
+						},
+					},
+				},
+				error: getErrorSwaggerDoc(
+					`Ошибка лайка комментария через on('${Events.error}')`,
+				),
+			},
+		},
+	},
+
+	[`/api/comments/${Events.dislike_comment}`]: {
+		post: {
+			tags: ["Комментарии"],
+			summary: "Дизлайкнуть комментарий",
+			security: [{ bearerAuth: [] }],
+			description: `Клиент отправляет дизлайк через событие emit('${Events.dislike_comment}')`,
+			requestBody: {
+				content: {
+					"application/json": {
+						schema: BodyDislikeCommentSwaggerDoc,
+					},
+				},
+			},
+			responses: {
+				200: {
+					description: `Клиент получает дизлайки через событие on('${Events.dislike_comment}')`,
+					content: {
+						"application/json": {
+							schema: ViewDislikeCommentSwaggerDoc,
+						},
+					},
+				},
+				error: getErrorSwaggerDoc(
+					`Ошибка дизлайка комментария через on('${Events.error}')`,
+				),
+			},
+		},
+	},
 };
 
 const getRoomId = (data: BodyJoinRoom) => {
@@ -198,17 +262,25 @@ export const commentsRouter = (socket: Socket) => {
 	});
 
 	socket.on(Events.send_comment, async (data: BodySendComment) => {
+		console.log(Events.send_comment);
 		await commentsController.sendComment(socket, userId, data);
 	});
 
 	socket.on(Events.get_all_comments, async (data: BodySendAllComments) => {
+		console.log(Events.get_all_comments);
 		await commentsController.getAllComments(socket, userId, data);
 	});
 
 	socket.on(Events.delete_comment, async (data: BodyDeleteComment) => {
+		console.log(Events.delete_comment);
 		await commentsController.deleteComment(socket, userId, data);
 	});
-	//
+
+	socket.on(Events.like_comment, async (data: BodyLikeComment) => {
+		console.log(Events.like_comment);
+		await commentsController.likeComment(socket, userId, data);
+	});
+
 	socket.on("disconnect", () => {
 		console.log("Клиент отключился:", socket.id);
 		socket.leave(socket.currentRoom);

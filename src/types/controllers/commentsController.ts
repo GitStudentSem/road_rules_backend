@@ -2,6 +2,32 @@ import type { ObjectId } from "mongodb";
 import { defaultSwaggerValues } from "../../assets/settings";
 import type { OpenAPIV3 } from "openapi-types";
 
+export type CommentReaction = {
+	firstName: string;
+	secondName: string;
+	userId: string;
+};
+const LikeSwaggerDoc: OpenAPIV3.SchemaObject = {
+	type: "object",
+	properties: {
+		firstName: {
+			type: "string",
+			default: "Иван",
+			description: "Имя пользователя",
+		},
+		secondName: {
+			type: "string",
+			default: "Иванов",
+			description: "Фамилия пользователя",
+		},
+		userId: {
+			type: "string",
+			description: "id пользователя пользователя",
+			default: "1717440741304",
+		},
+	},
+};
+
 //===========================================//
 export const BodyJoinRoomSwaggerDoc: OpenAPIV3.SchemaObject = {
 	type: "object",
@@ -98,12 +124,8 @@ export const ViewSendCommentSwaggerDoc: OpenAPIV3.SchemaObject = {
 		},
 		likes: {
 			type: "array",
-			description: "Массив userId которые лайкнули комментарий",
-			items: {
-				type: "string",
-				default: "1717440741304",
-				description: "userId пользователя который лайкнул комментарий",
-			},
+			description: "Список пользователей который лайкнули комментарий",
+			items: LikeSwaggerDoc,
 		},
 		dislikes: {
 			type: "array",
@@ -125,8 +147,8 @@ export type ViewSendComment = {
 	secondName: string;
 	time: string;
 	userId: string;
-	likes: string[];
-	dislikes: string[];
+	likes: CommentReaction[];
+	dislikes: CommentReaction[];
 };
 
 //===========================================//
@@ -197,12 +219,8 @@ export const ViewSendAllCommentsSwaggerDoc: OpenAPIV3.SchemaObject = {
 		},
 		likes: {
 			type: "array",
-			description: "Массив userId которые лайкнули комментарий",
-			items: {
-				type: "string",
-				default: "1717440741304",
-				description: "userId пользователя который лайкнул комментарий",
-			},
+			description: "Список пользователей который лайкнули комментарий",
+			items: LikeSwaggerDoc,
 		},
 		dislikes: {
 			type: "array",
@@ -224,8 +242,8 @@ export type ViewSendAllComments = {
 	secondName: string;
 	time: string;
 	userId: string;
-	likes: string[];
-	dislikes: string[];
+	likes: CommentReaction[];
+	dislikes: CommentReaction[];
 };
 
 //===========================================//
@@ -298,12 +316,8 @@ export const ViewDeleteCommentSwaggerDoc: OpenAPIV3.SchemaObject = {
 		},
 		likes: {
 			type: "array",
-			description: "Массив userId которые лайкнули комментарий",
-			items: {
-				type: "string",
-				default: "1717440741304",
-				description: "userId пользователя который лайкнул комментарий",
-			},
+			description: "Список пользователей который лайкнули комментарий",
+			items: LikeSwaggerDoc,
 		},
 		dislikes: {
 			type: "array",
@@ -324,6 +338,106 @@ export type ViewDeleteComment = {
 	firstName: string;
 	secondName: string;
 	userId: string;
-	likes: string[];
-	dislikes: string[];
+	likes: CommentReaction[];
+	dislikes: CommentReaction[];
 };
+
+//===========================================//
+export const ViewLikeCommentSwaggerDoc: OpenAPIV3.SchemaObject = {
+	type: "object",
+	properties: {
+		commentId: {
+			type: "string",
+			default: "67dfedd2805cdebd10d86ff7",
+			description: "ID комментария",
+		},
+		likes: {
+			type: "array",
+			description: "Список пользователей который лайкнули комментарий",
+			items: LikeSwaggerDoc,
+		},
+	},
+};
+export type ViewLikeComment = {
+	commentId: ObjectId;
+	likes: CommentReaction[];
+};
+
+//===========================================//
+
+export const BodyLikeCommentSwaggerDoc: OpenAPIV3.SchemaObject = {
+	type: "object",
+	properties: {
+		ticketId: {
+			type: "string",
+			default: defaultSwaggerValues.ticketId,
+			description: "ID билета",
+		},
+		questionId: {
+			type: "string",
+			default: defaultSwaggerValues.questionId,
+			description: "ID вопроса",
+		},
+		commentId: {
+			type: "string",
+			default: "67dfedd2805cdebd10d86ff7",
+			description: "ID комментария",
+		},
+	},
+};
+export type BodyLikeComment = {
+	ticketId: string;
+	questionId: string;
+	commentId: string;
+};
+
+//===========================================//
+
+export const BodyDislikeCommentSwaggerDoc: OpenAPIV3.SchemaObject = {
+	type: "object",
+	properties: {
+		ticketId: {
+			type: "string",
+			default: defaultSwaggerValues.ticketId,
+			description: "ID билета",
+		},
+		questionId: {
+			type: "string",
+			default: defaultSwaggerValues.questionId,
+			description: "ID вопроса",
+		},
+		commentId: {
+			type: "string",
+			default: "67dfedd2805cdebd10d86ff7",
+			description: "ID комментария",
+		},
+	},
+};
+export type BodyDislikeComment = {
+	ticketId: string;
+	questionId: string;
+	commentId: string;
+};
+
+//===========================================//
+export const ViewDislikeCommentSwaggerDoc: OpenAPIV3.SchemaObject = {
+	type: "object",
+	properties: {
+		commentId: {
+			type: "string",
+			default: "67dfedd2805cdebd10d86ff7",
+			description: "ID комментария",
+		},
+		dislikes: {
+			type: "array",
+			description: "Список пользователей который лайкнули комментарий",
+			items: LikeSwaggerDoc,
+		},
+	},
+};
+export type ViewDislikeComment = {
+	commentId: ObjectId;
+	dislikes: CommentReaction[];
+};
+
+//===========================================//

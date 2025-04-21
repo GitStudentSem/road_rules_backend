@@ -55,6 +55,6 @@ export type CommentsDBModel = {
 	secondName: string;
 	userId: string;
 	time: string;
-	likes: string[];
-	dislikes: string[];
+	likes: { firstName: string; secondName: string; userId: string }[];
+	dislikes: { firstName: string; secondName: string; userId: string }[];
 };

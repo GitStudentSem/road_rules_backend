@@ -1,7 +1,9 @@
 import { DBError } from "../controllers/DBError";
 import type {
 	DeleteComment,
+	DisikeComment,
 	GetAllComments,
+	LikeComment,
 	SendComment,
 } from "../types/repositories/commentsRepository";
 import { HTTP_STATUSES } from "../utils";
@@ -144,6 +146,112 @@ export const commentsRepository = {
 		return {
 			commentId: _id,
 			...rest,
+		};
+	},
+
+	async likeComment(userId: string, data: LikeComment) {
+		const foundedComment = await commentsCollection.findOne({
+			_id: new ObjectId(data.commentId),
+		});
+		if (!foundedComment) {
+			throw new DBError("Комментарий не найден", HTTP_STATUSES.NOT_FOUND_404);
+		}
+
+		const user = await isUserExist(userId);
+
+		const alreadyHasLike = foundedComment.likes.find((like) => {
+			return like.userId === userId;
+		});
+
+		if (alreadyHasLike) {
+			const updatedComment = await commentsCollection.findOneAndUpdate(
+				{ _id: new ObjectId(data.commentId) },
+				{ $pull: { likes: { userId } } },
+				{ returnDocument: "after" },
+			);
+
+			if (!updatedComment) {
+				throw new DBError("Комментарий не найден", HTTP_STATUSES.NOT_FOUND_404);
+			}
+
+			return {
+				commentId: new ObjectId(data.commentId),
+				likes: updatedComment.likes,
+			};
+		}
+
+		const updatedComment = await commentsCollection.findOneAndUpdate(
+			{ _id: new ObjectId(data.commentId) },
+			{
+				$addToSet: {
+					likes: {
+						firstName: user.firstName,
+						secondName: user.secondName,
+						userId,
+					},
+				},
+			},
+			{ returnDocument: "after" },
+		);
+		if (!updatedComment) {
+			throw new DBError("Комментарий не найден", HTTP_STATUSES.NOT_FOUND_404);
+		}
+		return {
+			commentId: new ObjectId(data.commentId),
+			likes: updatedComment.likes,
+		};
+	},
+
+	async dislikeComment(userId: string, data: DisikeComment) {
+		const foundedComment = await commentsCollection.findOne({
+			_id: new ObjectId(data.commentId),
+		});
+		if (!foundedComment) {
+			throw new DBError("Комментарий не найден", HTTP_STATUSES.NOT_FOUND_404);
+		}
+
+		const user = await isUserExist(userId);
+
+		const alreadyHasLike = foundedComment.likes.find((like) => {
+			return like.userId === userId;
+		});
+
+		if (alreadyHasLike) {
+			const updatedComment = await commentsCollection.findOneAndUpdate(
+				{ _id: new ObjectId(data.commentId) },
+				{ $pull: { dislikes: { userId } } },
+				{ returnDocument: "after" },
+			);
+
+			if (!updatedComment) {
+				throw new DBError("Комментарий не найден", HTTP_STATUSES.NOT_FOUND_404);
+			}
+
+			return {
+				commentId: new ObjectId(data.commentId),
+				dislikes: updatedComment.dislikes,
+			};
+		}
+
+		const updatedComment = await commentsCollection.findOneAndUpdate(
+			{ _id: new ObjectId(data.commentId) },
+			{
+				$addToSet: {
+					dislikes: {
+						firstName: user.firstName,
+						secondName: user.secondName,
+						userId,
+					},
+				},
+			},
+			{ returnDocument: "after" },
+		);
+		if (!updatedComment) {
+			throw new DBError("Комментарий не найден", HTTP_STATUSES.NOT_FOUND_404);
+		}
+		return {
+			commentId: new ObjectId(data.commentId),
+			dislikes: updatedComment.dislikes,
 		};
 	},
 
