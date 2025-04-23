@@ -104,7 +104,7 @@ export const commentsController = {
 
 			commentsNamespace
 				.to(socket.currentRoom)
-				.emit(Events.like_comment, reactedComment);
+				.emit(Events.dislike_comment, reactedComment);
 		} catch (error) {
 			catchError(socket, error);
 		}
