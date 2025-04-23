@@ -16,6 +16,7 @@ import {
 } from "../types/controllers/commentsController";
 import type {
 	BodyDeleteComment,
+	BodyDislikeComment,
 	BodyJoinRoom,
 	BodyLikeComment,
 	BodySendAllComments,
@@ -279,6 +280,11 @@ export const commentsRouter = (socket: Socket) => {
 	socket.on(Events.like_comment, async (data: BodyLikeComment) => {
 		console.log(Events.like_comment);
 		await commentsController.likeComment(socket, userId, data);
+	});
+
+	socket.on(Events.dislike_comment, async (data: BodyDislikeComment) => {
+		console.log(Events.dislike_comment);
+		await commentsController.dislikeComment(socket, userId, data);
 	});
 
 	socket.on("disconnect", () => {
