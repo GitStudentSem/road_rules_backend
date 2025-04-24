@@ -474,3 +474,41 @@ export type ViewDislikeComment = {
 };
 
 //===========================================//
+
+export const BodyCommentsCountSwaggerDoc: OpenAPIV3.SchemaObject = {
+	type: "object",
+	properties: {
+		ticketId: {
+			type: "string",
+			default: defaultSwaggerValues.ticketId,
+			description: "ID билета",
+		},
+		questionId: {
+			type: "string",
+			default: defaultSwaggerValues.questionId,
+			description: "ID вопроса",
+		},
+	},
+};
+export type BodyCommentsCount = {
+	ticketId: string;
+	questionId: string;
+};
+
+//===========================================//
+
+export const ViewCommentsCountSwaggerDoc: OpenAPIV3.SchemaObject = {
+	type: "object",
+	properties: {
+		count: {
+			type: "number",
+			default: "67dfedd2805cdebd10d86ff7",
+			description: "Количество комментариев",
+		},
+	},
+};
+export type ViewCommentsCount = {
+	count: number;
+};
+
+//===========================================//

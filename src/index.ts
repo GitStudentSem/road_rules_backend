@@ -4,7 +4,7 @@ import { runDb } from "./repositories/db";
 import swaggerDocs from "./assets/swagger";
 import { Server } from "socket.io";
 import http from "node:http";
-import { commentsRouter } from "./routes/comments";
+import { commentsSocket } from "./routes/comments";
 import jwt from "jsonwebtoken";
 import { settings } from "./assets/settings";
 
@@ -41,7 +41,7 @@ commentsNamespace.use(async (socket, next) => {
 // Подключаем маршруты сокета
 commentsNamespace.on("connection", (socket) => {
 	console.log("Клиент подключился для комментариев:", socket.id);
-	commentsRouter(socket);
+	commentsSocket(socket);
 });
 
 const port = process.env.PORT || 3333;

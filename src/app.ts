@@ -10,6 +10,7 @@ import { logRoutes } from "./assets/logRoutes";
 import { userCollection } from "./repositories/db";
 import multer from "multer";
 import AWS from "aws-sdk";
+import { commentsRouter } from "./routes/comments";
 
 export const app = express();
 export const upload = multer({ storage: multer.memoryStorage() });
@@ -31,14 +32,10 @@ app.use("/api/tickets", getTicketsRouter());
 app.use("/api/exam", getExamRouter());
 app.use("/api/ticketEditor", ticketEditorRouter());
 app.use("/api/userEditor", userEditorRouter());
-
+app.use("/api/comments", commentsRouter());
 // app.use("/api/devTest", devTestRouter());
 app.get("/api/devTest", async (req, res) => {
 	console.log("/api/devTest");
 
-	await userCollection.updateMany(
-		{}, // Фильтр: пустой объект означает "все документы"
-		{ $set: { isBannedForChat: false } }, // Обновление: добавление нового поля
-	);
 	res.status(200);
 });

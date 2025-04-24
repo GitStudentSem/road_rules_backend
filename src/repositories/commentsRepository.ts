@@ -315,6 +315,14 @@ export const commentsRepository = {
 		};
 	},
 
+	async getCommentsCount(ticketId: string, questionId: string) {
+		const allComments = await commentsCollection
+			.find({ ticketId, questionId })
+			.toArray();
+
+		return allComments.length;
+	},
+
 	async deleteAllCommentsForQuestionId(questionId: string) {
 		await commentsCollection.deleteMany({ questionId });
 	},

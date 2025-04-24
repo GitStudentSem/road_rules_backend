@@ -2,12 +2,14 @@ import type { Socket } from "socket.io";
 import { DBError } from "../controllers/DBError";
 import { getErrorSwaggerDoc } from "../assets/getErrorSwaggerDoc";
 import {
+	BodyCommentsCountSwaggerDoc,
 	BodyDeleteCommentSwaggerDoc,
 	BodyDislikeCommentSwaggerDoc,
 	BodyJoinRoomSwaggerDoc,
 	BodyLikeCommentSwaggerDoc,
 	BodySendAllCommentsSwaggerDoc,
 	BodySendCommentSwaggerDoc,
+	ViewCommentsCountSwaggerDoc,
 	ViewDeleteCommentSwaggerDoc,
 	ViewDislikeCommentSwaggerDoc,
 	ViewLikeCommentSwaggerDoc,
@@ -25,6 +27,8 @@ import type {
 import { defaultSwaggerValues } from "../assets/settings";
 import { commentsController } from "../controllers/commentsController";
 import { commentsNamespace } from "..";
+import express from "express";
+import { checkAuth } from "../midlewares";
 
 export enum Events {
 	error = "error",
@@ -38,7 +42,7 @@ export enum Events {
 }
 
 export const commentsConnectSwaggerDoc = {
-	"/api/comments": {
+	"/api/comments (socket)": {
 		post: {
 			tags: ["Комментарии"],
 			summary: " Подключение к сокету комментариев",
@@ -79,7 +83,7 @@ export const commentsConnectSwaggerDoc = {
 };
 
 export const commentsSwaggerDoc = {
-	[`/api/comments/${Events.join_room}`]: {
+	[`/api/comments/${Events.join_room} (socket)`]: {
 		post: {
 			tags: ["Комментарии"],
 			summary: "Подключится к комнате для комментариев",
@@ -95,7 +99,7 @@ export const commentsSwaggerDoc = {
 		},
 	},
 
-	[`/api/comments/${Events.send_comment}`]: {
+	[`/api/comments/${Events.send_comment} (socket)`]: {
 		post: {
 			tags: ["Комментарии"],
 			summary: "Отправка комментария",
@@ -124,7 +128,7 @@ export const commentsSwaggerDoc = {
 		},
 	},
 
-	[`/api/comments/${Events.get_all_comments}`]: {
+	[`/api/comments/${Events.get_all_comments} (socket)`]: {
 		post: {
 			tags: ["Комментарии"],
 			summary: "Получить все комментарии",
@@ -156,7 +160,7 @@ export const commentsSwaggerDoc = {
 			},
 		},
 	},
-	[`/api/comments/${Events.delete_comment}`]: {
+	[`/api/comments/${Events.delete_comment} (socket)`]: {
 		post: {
 			tags: ["Комментарии"],
 			summary: "Удалить комментарий",
@@ -184,7 +188,7 @@ export const commentsSwaggerDoc = {
 			},
 		},
 	},
-	[`/api/comments/${Events.like_comment}`]: {
+	[`/api/comments/${Events.like_comment} (socket)`]: {
 		post: {
 			tags: ["Комментарии"],
 			summary: "Лайкнуть комментарий",
@@ -213,7 +217,7 @@ export const commentsSwaggerDoc = {
 		},
 	},
 
-	[`/api/comments/${Events.dislike_comment}`]: {
+	[`/api/comments/${Events.dislike_comment} (socket)`]: {
 		post: {
 			tags: ["Комментарии"],
 			summary: "Дизлайкнуть комментарий",
@@ -241,13 +245,39 @@ export const commentsSwaggerDoc = {
 			},
 		},
 	},
+
+	"/api/comments/count": {
+		post: {
+			tags: ["Комментарии"],
+			security: [{ bearerAuth: [] }],
+			description: "Получить количество комментариев",
+			requestBody: {
+				content: {
+					"application/json": {
+						schema: BodyCommentsCountSwaggerDoc,
+					},
+				},
+			},
+			responses: {
+				200: {
+					description: "Количесво комментариев успешно получено",
+					content: {
+						"application/json": {
+							schema: ViewCommentsCountSwaggerDoc,
+						},
+					},
+				},
+				error: getErrorSwaggerDoc("Ошибка получения количества комментариев"),
+			},
+		},
+	},
 };
 
 const getRoomId = (data: BodyJoinRoom) => {
 	return `${data.ticketId}_${data.questionId}`;
 };
 
-export const commentsRouter = (socket: Socket) => {
+export const commentsSocket = (socket: Socket) => {
 	const { userId } = socket;
 	if (!userId) return;
 
@@ -298,4 +328,10 @@ export const commentsRouter = (socket: Socket) => {
 		socket.leave(socket.currentRoom);
 		socket.currentRoom = "";
 	});
+};
+
+export const commentsRouter = () => {
+	const router = express.Router();
+	router.post("/count", checkAuth, commentsController.getCommentsCount);
+	return router;
 };

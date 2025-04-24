@@ -2,11 +2,13 @@ import type { Socket } from "socket.io";
 import { commentsService } from "../services/commentsService";
 import { DBError } from "../controllers/DBError";
 import type {
+	BodyCommentsCount,
 	BodyDeleteComment,
 	BodyDislikeComment,
 	BodyLikeComment,
 	BodySendAllComments,
 	BodySendComment,
+	ViewCommentsCount,
 	ViewDeleteComment,
 	ViewDislikeComment,
 	ViewLikeComment,
@@ -15,6 +17,9 @@ import type {
 } from "../types/controllers/commentsController";
 import { Events } from "../routes/comments";
 import { commentsNamespace } from "..";
+import type { ErrorType, RequestWithBody } from "../types";
+import type { Request, Response } from "express";
+import { sendError } from "../assets/requestAssets";
 
 const catchError = (socket: Socket, error: unknown) => {
 	if (error instanceof DBError) {
@@ -123,6 +128,31 @@ export const commentsController = {
 				.emit(Events.dislike_comment, reactedComment);
 		} catch (error) {
 			catchError(socket, error);
+		}
+	},
+
+	async getCommentsCount(
+		req: RequestWithBody<BodyCommentsCount>,
+		res: Response<ViewCommentsCount | ErrorType>,
+	) {
+		try {
+			const commentsCount = await commentsService.getCommentsCount(
+				req.body.ticketId,
+				req.body.questionId,
+			);
+			res.json({ count: commentsCount });
+			return commentsCount;
+		} catch (error) {
+			if (error instanceof DBError) {
+				res.status(error.status).json({ message: error.message });
+				return;
+			}
+			sendError({
+				message: "Не удалось получить количество комментариев",
+				error,
+				res,
+				req,
+			});
 		}
 	},
 };

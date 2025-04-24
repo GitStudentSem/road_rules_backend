@@ -76,4 +76,13 @@ export const commentsService = {
 		}
 		return await commentsRepository.dislikeComment(userId, data);
 	},
+
+	async getCommentsCount(ticketId: string, questionId: string) {
+		const commentsCount = commentsRepository.getCommentsCount(
+			ticketId,
+			questionId,
+		);
+
+		return commentsCount;
+	},
 };
