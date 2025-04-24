@@ -30,6 +30,7 @@ export enum Events {
 	error = "error",
 	join_room = "join_room",
 	send_comment = "send_comment",
+	send_reply_for_comment = "send_reply_to_comment",
 	get_all_comments = "get_all_comments",
 	delete_comment = "delete_comment",
 	like_comment = "like_comment",
@@ -265,6 +266,11 @@ export const commentsRouter = (socket: Socket) => {
 	socket.on(Events.send_comment, async (data: BodySendComment) => {
 		console.log(Events.send_comment);
 		await commentsController.sendComment(socket, userId, data);
+	});
+
+	socket.on(Events.send_reply_for_comment, async (data: BodySendComment) => {
+		console.log(Events.send_reply_for_comment);
+		await commentsController.sendReplyToComment(socket, userId, data);
 	});
 
 	socket.on(Events.get_all_comments, async (data: BodySendAllComments) => {

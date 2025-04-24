@@ -4,6 +4,16 @@ export type SendComment = {
 	text: string;
 };
 
+export type SendReplyToComment = {
+	ticketId: string;
+	questionId: string;
+	text: string;
+	/** Корневое сообщение ответов, откуда строится топик */
+	rootMessageId: string;
+	/** Сообщение кому отправляется ответ */
+	replyToMessageId: string;
+};
+
 export type GetAllComments = {
 	ticketId: string;
 	questionId: string;

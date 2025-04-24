@@ -6,12 +6,12 @@ import type {
 	GetAllComments,
 	LikeComment,
 	SendComment,
+	SendReplyToComment,
 } from "../types/services/commentsService";
 import { HTTP_STATUSES } from "../utils";
 
 export const commentsService = {
 	async sendComment(userId: string, data: SendComment) {
-		console.log("1", 1);
 		if (data.text.trim() === "") {
 			throw new DBError(
 				"Комментарий не должен быть пустым",
@@ -22,6 +22,22 @@ export const commentsService = {
 		const time = new Date().toISOString();
 
 		return await commentsRepository.sendMessage(userId, {
+			...data,
+			time,
+		});
+	},
+
+	async sendReplyToComment(userId: string, data: SendReplyToComment) {
+		if (data.text.trim() === "") {
+			throw new DBError(
+				"Комментарий не должен быть пустым",
+				HTTP_STATUSES.BAD_REQUEST_400,
+			);
+		}
+
+		const time = new Date().toISOString();
+
+		return await commentsRepository.sendReplyToComment(userId, {
 			...data,
 			time,
 		});

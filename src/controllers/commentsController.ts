@@ -50,6 +50,22 @@ export const commentsController = {
 		}
 	},
 
+	async sendReplyToComment(
+		socket: Socket,
+		userId: string,
+		data: BodySendComment,
+	) {
+		try {
+			const savedComment: ViewSendComment =
+				await commentsService.sendReplyToComment(userId, data);
+			commentsNamespace
+				.to(socket.currentRoom)
+				.emit(Events.send_comment, savedComment);
+		} catch (error) {
+			catchError(socket, error);
+		}
+	},
+
 	async getAllComments(
 		socket: Socket,
 		userId: string,

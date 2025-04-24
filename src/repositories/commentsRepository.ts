@@ -5,6 +5,7 @@ import type {
 	GetAllComments,
 	LikeComment,
 	SendComment,
+	SendReplyToComment,
 } from "../types/repositories/commentsRepository";
 import { HTTP_STATUSES } from "../utils";
 import { commentsCollection, ticketCollection, userCollection } from "./db";
@@ -62,6 +63,7 @@ export const commentsRepository = {
 			userId,
 			firstName: user.firstName,
 			secondName: user.secondName,
+			replies: [],
 		});
 
 		if (!insertedId) {
@@ -81,6 +83,58 @@ export const commentsRepository = {
 			...data,
 		};
 	},
+
+	async sendReplyToComment(userId: string, data: SendReplyToComment) {
+		const user = await isUserExist(userId);
+
+		if (user.isBannedForChat) {
+			throw new DBError(
+				"Вы не можете отправлять сообщения, так как были заблокированы",
+				HTTP_STATUSES.FORRIBDEN_403,
+			);
+		}
+
+		await findQuestion(data.ticketId, data.questionId);
+
+		const likes = [];
+		const dislikes = [];
+
+		const { insertedId } = await commentsCollection.insertOne({
+			...data,
+			likes,
+			dislikes,
+			userId,
+			firstName: user.firstName,
+			secondName: user.secondName,
+			replies: [],
+		});
+
+		if (!insertedId) {
+			throw new DBError(
+				"Комментарий не был добавлен",
+				HTTP_STATUSES.NOT_FOUND_404,
+			);
+		}
+
+		await commentsCollection.updateOne(
+			{
+				_id: new ObjectId(data.rootMessageId),
+			},
+			{ $push: { replies: insertedId.toHexString() } },
+		);
+
+		return {
+			commentId: insertedId,
+			firstName: user.firstName,
+			secondName: user.secondName,
+			userId,
+			likes,
+			dislikes,
+			...data,
+		};
+	},
+
+	async addReply(userId: string, data: SendReplyToComment) {},
 
 	async getAllComments(userId: string, questionInfo: GetAllComments) {
 		const user = await isUserExist(userId);
