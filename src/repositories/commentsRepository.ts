@@ -210,11 +210,11 @@ export const commentsRepository = {
 
 		const user = await isUserExist(userId);
 
-		const alreadyHasLike = foundedComment.dislikes.find((dislike) => {
+		const alreadyHasDislike = foundedComment.dislikes.find((dislike) => {
 			return dislike.userId === userId;
 		});
 
-		if (alreadyHasLike) {
+		if (alreadyHasDislike) {
 			const updatedComment = await commentsCollection.findOneAndUpdate(
 				{ _id: new ObjectId(data.commentId) },
 				{ $pull: { dislikes: { userId } } },
