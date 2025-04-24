@@ -134,13 +134,21 @@ export const commentsRepository = {
 		}
 
 		return {
-			commentId: insertedId,
+			commentId: insertedId.toHexString(),
 			firstName: user.firstName,
 			secondName: user.secondName,
 			userId,
 			likes,
 			dislikes,
-			...data,
+			time: data.time,
+			ticketId: data.ticketId,
+			questionId: data.questionId,
+			text: data.text,
+			replyInfo: {
+				rootMessageId: data.rootMessageId,
+				replyToMessageId: data.replyToMessageId,
+				replyToUserId: replyToMessage.userId,
+			},
 		};
 	},
 

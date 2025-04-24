@@ -8,12 +8,14 @@ import type {
 	BodyLikeComment,
 	BodySendAllComments,
 	BodySendComment,
+	BodySendReplyToComment,
 	ViewCommentsCount,
 	ViewDeleteComment,
 	ViewDislikeComment,
 	ViewLikeComment,
 	ViewSendAllComments,
 	ViewSendComment,
+	ViewSendReplyToComment,
 } from "../types/controllers/commentsController";
 import { Events } from "../routes/comments";
 import { commentsNamespace } from "..";
@@ -58,14 +60,14 @@ export const commentsController = {
 	async sendReplyToComment(
 		socket: Socket,
 		userId: string,
-		data: BodySendComment,
+		data: BodySendReplyToComment,
 	) {
 		try {
-			const savedComment: ViewSendComment =
+			const savedComment: ViewSendReplyToComment =
 				await commentsService.sendReplyToComment(userId, data);
 			commentsNamespace
 				.to(socket.currentRoom)
-				.emit(Events.send_comment, savedComment);
+				.emit(Events.send_reply_for_comment, savedComment);
 		} catch (error) {
 			catchError(socket, error);
 		}

@@ -109,6 +109,50 @@ export type BodySendReplyToComment = {
 	ticketId: string;
 	questionId: string;
 	text: string;
+	/** Корневое сообщение ответов, откуда строится топик */
+	rootMessageId: string;
+	/** Сообщение кому отправляется ответ */
+	replyToMessageId: string;
+};
+//===========================================//
+
+export const ViewSendReplyToCommentSwaggerDoc: OpenAPIV3.SchemaObject = {
+	type: "object",
+	properties: {
+		ticketId: {
+			type: "string",
+			default: defaultSwaggerValues.ticketId,
+			description: "ID билета",
+		},
+		questionId: {
+			type: "string",
+			default: defaultSwaggerValues.questionId,
+			description: "ID вопроса",
+		},
+		text: {
+			type: "string",
+			default: "Текст комментария",
+			description: "Текст комментария",
+		},
+	},
+	required: ["ticketId", "questionId", "text"],
+};
+export type ViewSendReplyToComment = {
+	commentId: string;
+	firstName: string;
+	secondName: string;
+	userId: string;
+	likes: CommentReaction[];
+	dislikes: CommentReaction[];
+	time: string;
+	ticketId: string;
+	questionId: string;
+	text: string;
+	replyInfo: {
+		rootMessageId: string;
+		replyToMessageId: string;
+		replyToUserId: string;
+	};
 };
 //===========================================//
 
@@ -453,6 +497,7 @@ export type BodyDislikeComment = {
 };
 
 //===========================================//
+
 export const ViewDislikeCommentSwaggerDoc: OpenAPIV3.SchemaObject = {
 	type: "object",
 	properties: {
