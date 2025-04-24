@@ -7,8 +7,10 @@ import { getErrorSwaggerDoc } from "../assets/getErrorSwaggerDoc";
 import {
 	BodyLoginSwaggerDoc,
 	BodyRegisterSwaggerDoc,
+	BodySetAvatarSwaggerDoc,
 	ViewLoginSwaggerDoc,
 	ViewRegisterSwaggerDoc,
+	ViewSetAvatarSwaggerDoc,
 } from "../types/controllers/authController";
 import { upload } from "../app";
 
@@ -84,6 +86,38 @@ export const registerSwaggerDoc = {
 					},
 				},
 				error: getErrorSwaggerDoc("Ошибка логина"),
+			},
+		},
+	},
+
+	"/api/auth/avatar": {
+		post: {
+			tags: ["Авторизация"],
+			summary: "Аватар пользователя",
+			security: [{ bearerAuth: [] }],
+			requestBody: {
+				content: {
+					"multipart/form-data": {
+						schema: BodySetAvatarSwaggerDoc,
+						encoding: {
+							answers: {
+								style: "form",
+								explode: true,
+							},
+						},
+					},
+				},
+			},
+			responses: {
+				200: {
+					description: "Аватар успешно установлен",
+					content: {
+						"application/json": {
+							schema: ViewSetAvatarSwaggerDoc,
+						},
+					},
+				},
+				error: getErrorSwaggerDoc("Ошибка установки аватара"),
 			},
 		},
 	},

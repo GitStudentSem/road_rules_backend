@@ -93,6 +93,7 @@ export const authService = {
 			firstName: registerdUser.firstName,
 			secondName: registerdUser.secondName,
 			userId: registerdUser.userId,
+			avatar: registerdUser.avatar,
 			token,
 		};
 

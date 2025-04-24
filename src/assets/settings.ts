@@ -5,7 +5,7 @@ export const settings = {
 
 export const defaultSwaggerValues = {
 	authToken:
-		"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxNzQyMDM3MDUyODAzIiwiaWF0IjoxNzQyNzQwODA3LCJleHAiOjE3NDUzMzI4MDd9.m1bQX0skKRJevISXZWFLMzC3S1L27tiC-Uqk7chMdx4",
+		"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxNzQyMDM3MDUyODAzIiwiaWF0IjoxNzQ1NTA3MDk1LCJleHAiOjE3NDgwOTkwOTV9.N9t7QONkP7qnue2dWox-jksVh5-4OOq8pdWnkCW189Y",
 	ticketId: "1722254296932",
 	questionId: "1722674857532",
 	answerId: "17226748575851",

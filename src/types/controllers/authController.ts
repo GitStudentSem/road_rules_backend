@@ -60,6 +60,7 @@ export const ViewRegisterSwaggerDoc: OpenAPIV3.SchemaObject = {
 			description: "Фамилия пользователя",
 			default: "Иванов",
 		},
+		avatar: { type: "string", default: "", description: "Аватар пользователя" },
 		userId: {
 			type: "string",
 			description: "id пользователя пользователя",
@@ -76,6 +77,7 @@ export type ViewRegister = {
 	email: string;
 	firstName: string;
 	secondName: string;
+	avatar: string;
 	userId: string;
 	token: string;
 };
@@ -116,6 +118,7 @@ export const ViewLoginSwaggerDoc: OpenAPIV3.SchemaObject = {
 			default: "Иванов",
 			description: "Фамилия",
 		},
+		avatar: { type: "string", default: "", description: "Аватар пользователя" },
 		isAppointExam: {
 			type: "boolean",
 			default: "false",
@@ -140,5 +143,37 @@ export type ViewLogin = {
 	avatar: string;
 	userId: string;
 	isAppointExam: boolean;
+};
+//===========================================//
+
+export const BodySetAvatarSwaggerDoc: OpenAPIV3.SchemaObject = {
+	type: "object",
+	properties: {
+		avatar: {
+			type: "string",
+			format: "binary",
+			description: "Аватар пользователя (отправьте null для удаления)",
+		},
+	},
+};
+export type BodySetAvatar = {
+	avatar: ArrayBuffer | null;
+};
+
+//===========================================//
+
+//===========================================//
+
+export const ViewSetAvatarSwaggerDoc: OpenAPIV3.SchemaObject = {
+	type: "object",
+	properties: {
+		avatar: {
+			type: "string",
+			description: "Аватар пользователя",
+		},
+	},
+};
+export type ViewSetAvatar = {
+	avatar: string;
 };
 //===========================================//

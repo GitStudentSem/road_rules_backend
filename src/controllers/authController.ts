@@ -7,8 +7,10 @@ import { authService } from "../services/authService";
 import type {
 	BodyLogin,
 	BodyRegister,
+	BodySetAvatar,
 	ViewLogin,
 	ViewRegister,
+	ViewSetAvatar,
 } from "../types/controllers/authController";
 
 export const authController = {
@@ -76,8 +78,8 @@ export const authController = {
 	},
 
 	async setAvatar(
-		req: RequestWithBody<{ avatar: ArrayBuffer | null }>,
-		res: Response<{ avatar: string } | ErrorType>,
+		req: RequestWithBody<BodySetAvatar>,
+		res: Response<ViewSetAvatar | ErrorType>,
 	) {
 		try {
 			const avatar = req.file?.buffer || null;
