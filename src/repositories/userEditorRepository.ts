@@ -124,6 +124,7 @@ export const userEditorRepository = {
 			);
 		}
 		await userCollection.deleteOne({ email });
+		return userForDelete.userId;
 	},
 
 	async getExamResult(data: GetExamResult) {

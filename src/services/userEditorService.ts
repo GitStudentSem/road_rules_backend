@@ -12,6 +12,19 @@ import type {
 	Result,
 	IsBannedForChat,
 } from "../types/services/userEditorService";
+import { s3 } from "../app";
+
+const deleteAvatar = async (userId: string) => {
+	const bucketName = process.env.BUCKET_NAME_FOR_S3 || "";
+	const key = `avatars/${userId}.jpg`;
+
+	const params = {
+		Bucket: bucketName,
+		Key: key,
+	};
+
+	await s3.deleteObject(params).promise();
+};
 
 const removeUnusedInfoFromQuestion = (
 	question: CreateQuestionDBModel,
@@ -106,8 +119,11 @@ export const userEditorService = {
 
 	async deleteUser(data: DeleteUser) {
 		const { userId, email } = data;
-
-		await userEditorRepository.deleteUser({ userId, email });
+		const deletedUserId = await userEditorRepository.deleteUser({
+			userId,
+			email,
+		});
+		deleteAvatar(deletedUserId);
 	},
 
 	async getExamResult(data: GetExamResult) {
