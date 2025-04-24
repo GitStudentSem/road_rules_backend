@@ -58,5 +58,6 @@ export type CommentsDBModel = {
 	time: string;
 	likes: { firstName: string; secondName: string; userId: string }[];
 	dislikes: { firstName: string; secondName: string; userId: string }[];
-	replies: string[];
+	rootMessageId?: string;
+	replyToMessageId?: string;
 };

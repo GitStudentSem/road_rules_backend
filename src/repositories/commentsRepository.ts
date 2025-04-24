@@ -63,7 +63,6 @@ export const commentsRepository = {
 			userId,
 			firstName: user.firstName,
 			secondName: user.secondName,
-			replies: [],
 		});
 
 		if (!insertedId) {
@@ -94,34 +93,45 @@ export const commentsRepository = {
 			);
 		}
 
-		await findQuestion(data.ticketId, data.questionId);
-
-		const likes = [];
-		const dislikes = [];
-
-		const { insertedId } = await commentsCollection.insertOne({
-			...data,
-			likes,
-			dislikes,
-			userId,
-			firstName: user.firstName,
-			secondName: user.secondName,
-			replies: [],
+		// Проверяем существование корневого сообщения
+		const rootMessage = await commentsCollection.findOne({
+			_id: new ObjectId(data.rootMessageId),
 		});
-
-		if (!insertedId) {
+		if (!rootMessage) {
 			throw new DBError(
-				"Комментарий не был добавлен",
+				"Корневое сообщение не найдено",
 				HTTP_STATUSES.NOT_FOUND_404,
 			);
 		}
 
-		await commentsCollection.updateOne(
-			{
-				_id: new ObjectId(data.rootMessageId),
-			},
-			{ $push: { replies: insertedId.toHexString() } },
-		);
+		// Проверяем существование сообщения, на которое отвечаем
+		const replyToMessage = await commentsCollection.findOne({
+			_id: new ObjectId(data.replyToMessageId),
+		});
+		if (!replyToMessage) {
+			throw new DBError(
+				"Сообщение, на которое вы отвечаете, не найдено",
+				HTTP_STATUSES.NOT_FOUND_404,
+			);
+		}
+
+		// Создаем новый ответ
+		const likes = [];
+		const dislikes = [];
+		const { insertedId } = await commentsCollection.insertOne({
+			...data,
+			userId,
+			firstName: user.firstName,
+			secondName: user.secondName,
+			likes,
+			dislikes,
+			rootMessageId: data.rootMessageId,
+			replyToMessageId: data.replyToMessageId,
+		});
+
+		if (!insertedId) {
+			throw new DBError("Ответ не был добавлен", HTTP_STATUSES.NOT_FOUND_404);
+		}
 
 		return {
 			commentId: insertedId,
@@ -133,8 +143,6 @@ export const commentsRepository = {
 			...data,
 		};
 	},
-
-	async addReply(userId: string, data: SendReplyToComment) {},
 
 	async getAllComments(userId: string, questionInfo: GetAllComments) {
 		const user = await isUserExist(userId);
