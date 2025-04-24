@@ -210,8 +210,8 @@ export const commentsRepository = {
 
 		const user = await isUserExist(userId);
 
-		const alreadyHasLike = foundedComment.likes.find((like) => {
-			return like.userId === userId;
+		const alreadyHasLike = foundedComment.dislikes.find((dislike) => {
+			return dislike.userId === userId;
 		});
 
 		if (alreadyHasLike) {
