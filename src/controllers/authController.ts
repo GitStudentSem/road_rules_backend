@@ -74,4 +74,22 @@ export const authController = {
 			sendError({ message: "Не удалось войти в систему", error, res, req });
 		}
 	},
+
+	async setAvatar(
+		req: RequestWithBody<{ avatar: ArrayBuffer | null }>,
+		res: Response<{ avatar: string } | ErrorType>,
+	) {
+		try {
+			const avatar = req.file?.buffer || null;
+
+			const savedAvatar = await authService.setAvatar(req.userId || "", avatar);
+			res.status(HTTP_STATUSES.OK_200).json({ avatar: savedAvatar });
+		} catch (error) {
+			if (error instanceof DBError) {
+				res.status(error.status).json({ message: error.message });
+				return;
+			}
+			sendError({ message: "Не удалось добавить аватар", error, res, req });
+		}
+	},
 };

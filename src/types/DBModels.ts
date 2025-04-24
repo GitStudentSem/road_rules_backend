@@ -9,6 +9,7 @@ export type UserLoginDBModel = {
 	email: string;
 	firstName: string;
 	secondName: string;
+	avatar: string;
 	passwordHash: string;
 	userId: string;
 	isAppointExam: boolean;

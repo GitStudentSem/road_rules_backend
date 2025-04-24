@@ -3,7 +3,7 @@ import { ticketEditorController } from "../controllers/ticketEditorController";
 import { addQuestionValidation } from "../validations";
 import { checkAuth, handleValidationErrors } from "../midlewares";
 import { getErrorSwaggerDoc } from "../assets/getErrorSwaggerDoc";
-import multer from "multer";
+
 import {
 	BodyGetQuestionsInTicketSwaggerDoc,
 	BodyCreateQuestionSwaggerDoc,
@@ -14,7 +14,7 @@ import {
 	ViewGetQuestionsInTicketSwaggerDoc,
 	ViewCreateTicketSwaggerDoc,
 } from "../types/controllers/ticketEditorController";
-const upload = multer({ storage: multer.memoryStorage() });
+import { upload } from "../app";
 
 export const ticketEditorSwaggerDoc = {
 	"/api/ticketEditor/tickets": {

@@ -137,6 +137,7 @@ export type ViewLogin = {
 	token: string;
 	firstName: string;
 	secondName: string;
+	avatar: string;
 	userId: string;
 	isAppointExam: boolean;
 };

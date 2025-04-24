@@ -1,6 +1,6 @@
 import express from "express";
 import { loginValidation, registerValidation } from "../validations";
-import { handleValidationErrors } from "../midlewares";
+import { checkAuth, handleValidationErrors } from "../midlewares";
 import { authController } from "../controllers/authController";
 import { getErrorSwaggerDoc } from "../assets/getErrorSwaggerDoc";
 
@@ -10,6 +10,7 @@ import {
 	ViewLoginSwaggerDoc,
 	ViewRegisterSwaggerDoc,
 } from "../types/controllers/authController";
+import { upload } from "../app";
 
 export const registerSwaggerDoc = {
 	"/api/auth/register": {
@@ -107,6 +108,13 @@ export const getAuthRouter = () => {
 		loginValidation,
 		handleValidationErrors,
 		authController.adminLogin,
+	);
+	router.post(
+		"/avatar",
+		checkAuth,
+		upload.single("avatar"),
+		handleValidationErrors,
+		authController.setAvatar,
 	);
 
 	return router;

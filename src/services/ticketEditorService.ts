@@ -2,7 +2,7 @@ import sharp from "sharp";
 import { ticketEditorRepository } from "../repositories/ticketEditorRepository";
 import { colors, resetStyle, styles } from "../assets/logStyles";
 import { crc32 } from "crc";
-import AWS from "aws-sdk";
+
 import { DBError } from "../controllers/DBError";
 import { HTTP_STATUSES } from "../utils";
 import type {
@@ -14,20 +14,13 @@ import type {
 	UploadFile,
 } from "../types/services/ticketEditorService";
 import { commentsRepository } from "../repositories/commentsRepository";
+import { s3 } from "../app";
 
 const calculateSizeInKB = (arrayBuffer: ArrayBuffer) => {
 	const bytes = arrayBuffer.byteLength;
 	const kilobytes = Math.round(bytes / 1024);
 	return kilobytes;
 };
-
-const s3 = new AWS.S3({
-	endpoint: process.env.ENTRY_POINT_FOR_S3 || "",
-	accessKeyId: process.env.ACCESS_KEY_ID_FOR_S3 || "",
-	secretAccessKey: process.env.SECRET_ACCESS_KEY_FOR_S3 || "",
-	// s3ForcePathStyle: true, // Включи это, если требуется
-	signatureVersion: "v4",
-});
 
 // Функция для загрузки файла
 const uploadFile = async (data: UploadFile) => {
@@ -114,7 +107,7 @@ const saveImage = async ({
 	}
 
 	const imageSizeBefore = calculateSizeInKB(img);
-	//
+
 	const processedImage = await sharp(img).jpeg().toBuffer();
 
 	const imageOriginalHash = crc32(img).toString(16);

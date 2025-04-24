@@ -31,6 +31,7 @@ export const authRepository = {
 			email,
 			firstName,
 			secondName,
+			avatar: "",
 			passwordHash,
 			userId,
 			isAppointExam: false,
@@ -83,5 +84,17 @@ export const authRepository = {
 		}
 
 		return user;
+	},
+
+	async setAvatar(userId: string, avatar: string) {
+		const user = await userCollection.findOne({ userId });
+
+		if (!user) {
+			throw new DBError("Пользователь не найден", HTTP_STATUSES.NOT_FOUND_404);
+		}
+
+		await userCollection.updateOne({ userId }, { $set: { avatar } });
+
+		return avatar;
 	},
 };
