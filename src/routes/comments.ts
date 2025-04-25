@@ -123,7 +123,7 @@ export const commentsSwaggerDoc = {
 	[`socket.on("${Events.send_comment}")`]: {
 		get: {
 			tags: ["Комментарии"],
-			summary: "Получение отправленного комментария",
+			summary: "Получение нового комментария",
 			security: [{ bearerAuth: [] }],
 
 			responses: {
@@ -256,7 +256,7 @@ export const commentsSwaggerDoc = {
 	[`socket.on("${Events.like_comment}")`]: {
 		get: {
 			tags: ["Комментарии"],
-			summary: "Лайкнуть комментарий",
+			summary: "Получить все лайки комментария",
 			security: [{ bearerAuth: [] }],
 			requestBody: {
 				content: {
@@ -300,7 +300,7 @@ export const commentsSwaggerDoc = {
 	[`socket.on("${Events.dislike_comment}")`]: {
 		get: {
 			tags: ["Комментарии"],
-			summary: "Дизлайкнуть комментарий",
+			summary: "Получить все дизлайки комментария",
 			security: [{ bearerAuth: [] }],
 			requestBody: {
 				content: {
@@ -345,7 +345,7 @@ export const commentsSwaggerDoc = {
 	[`socket.on("${Events.send_reply_for_comment}")`]: {
 		get: {
 			tags: ["Комментарии"],
-			summary: "Отправить ответ на комментарий",
+			summary: "Получить ответ на комментарий",
 			security: [{ bearerAuth: [] }],
 			requestBody: {
 				content: {
@@ -382,7 +382,7 @@ export const commentsSwaggerDoc = {
 			},
 			responses: {
 				200: {
-					description: "Количесво комментариев успешно получено",
+					description: "Количество комментариев успешно получено",
 					content: {
 						"application/json": {
 							schema: ViewCommentsCountSwaggerDoc,
