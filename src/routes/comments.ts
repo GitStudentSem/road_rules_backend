@@ -85,12 +85,11 @@ export const commentsConnectSwaggerDoc = {
 };
 
 export const commentsSwaggerDoc = {
-	[`/api/comments/${Events.join_room} (socket)`]: {
+	[`socket.emit("${Events.join_room}")`]: {
 		post: {
 			tags: ["Комментарии"],
 			summary: "Подключится к комнате для комментариев",
 			security: [{ bearerAuth: [] }],
-			description: `Клиент подключатся к комнате через событие emit('${Events.join_room}')`,
 			requestBody: {
 				content: {
 					"application/json": {
@@ -101,12 +100,11 @@ export const commentsSwaggerDoc = {
 		},
 	},
 
-	[`/api/comments/${Events.send_comment} (socket)`]: {
+	[`socket.emit("${Events.send_comment}")`]: {
 		post: {
 			tags: ["Комментарии"],
 			summary: "Отправка комментария",
 			security: [{ bearerAuth: [] }],
-			description: `Клиент отправляет комментарий через событие emit('${Events.send_comment}')`,
 			requestBody: {
 				content: {
 					"application/json": {
@@ -115,14 +113,6 @@ export const commentsSwaggerDoc = {
 				},
 			},
 			responses: {
-				200: {
-					description: `Клиент получает комментарий через событие on('${Events.send_comment}')`,
-					content: {
-						"application/json": {
-							schema: ViewSendCommentSwaggerDoc,
-						},
-					},
-				},
 				error: getErrorSwaggerDoc(
 					`Ошибка отправки комментария через on('${Events.error}')`,
 				),
@@ -130,12 +120,50 @@ export const commentsSwaggerDoc = {
 		},
 	},
 
-	[`/api/comments/${Events.get_all_comments} (socket)`]: {
+	[`socket.on("${Events.send_comment}")`]: {
+		get: {
+			tags: ["Комментарии"],
+			summary: "Получение отправленного комментария",
+			security: [{ bearerAuth: [] }],
+
+			responses: {
+				200: {
+					description: "Полученный комментарий",
+					content: {
+						"application/json": {
+							schema: ViewSendCommentSwaggerDoc,
+						},
+					},
+				},
+			},
+		},
+	},
+
+	[`socket.emit("${Events.get_all_comments}")`]: {
 		post: {
+			tags: ["Комментарии"],
+			summary: "Запрос на получение всех комментариев к вопросу",
+			security: [{ bearerAuth: [] }],
+			requestBody: {
+				content: {
+					"application/json": {
+						schema: BodySendAllCommentsSwaggerDoc,
+					},
+				},
+			},
+			responses: {
+				error: getErrorSwaggerDoc(
+					`Ошибка отправки всех комментариев через on('${Events.error}')`,
+				),
+			},
+		},
+	},
+
+	[`socket.on("${Events.get_all_comments}")`]: {
+		get: {
 			tags: ["Комментарии"],
 			summary: "Получить все комментарии",
 			security: [{ bearerAuth: [] }],
-			description: `Клиент отправляет комментарий через событие emit('${Events.get_all_comments}')`,
 			requestBody: {
 				content: {
 					"application/json": {
@@ -145,7 +173,7 @@ export const commentsSwaggerDoc = {
 			},
 			responses: {
 				200: {
-					description: `Клиент получает комментарий через событие on('${Events.get_all_comments}')`,
+					description: "Массив всех комментариев к данному вопросу",
 					content: {
 						"application/json": {
 							schema: {
@@ -156,18 +184,35 @@ export const commentsSwaggerDoc = {
 						},
 					},
 				},
-				error: getErrorSwaggerDoc(
-					`Ошибка отправки всех комментариев через on('${Events.error}')`,
-				),
 			},
 		},
 	},
-	[`/api/comments/${Events.delete_comment} (socket)`]: {
+
+	[`socket.emit("${Events.delete_comment}")`]: {
 		post: {
 			tags: ["Комментарии"],
 			summary: "Удалить комментарий",
 			security: [{ bearerAuth: [] }],
-			description: `Клиент отправляет комментарий через событие emit('${Events.delete_comment}')`,
+			requestBody: {
+				content: {
+					"application/json": {
+						schema: BodyDeleteCommentSwaggerDoc,
+					},
+				},
+			},
+			responses: {
+				error: getErrorSwaggerDoc(
+					`Ошибка удаления комментария через on('${Events.error}')`,
+				),
+			},
+		},
+	},
+
+	[`socket.on("${Events.delete_comment}")`]: {
+		get: {
+			tags: ["Комментарии"],
+			summary: "Получить удаленный комментарий",
+			security: [{ bearerAuth: [] }],
 			requestBody: {
 				content: {
 					"application/json": {
@@ -177,25 +222,42 @@ export const commentsSwaggerDoc = {
 			},
 			responses: {
 				200: {
-					description: `Клиент получает удаленный комментарий через событие on('${Events.delete_comment}')`,
+					description: "Удаленный комментарий",
 					content: {
 						"application/json": {
 							schema: ViewDeleteCommentSwaggerDoc,
 						},
 					},
 				},
-				error: getErrorSwaggerDoc(
-					`Ошибка удаления комментария через on('${Events.error}')`,
-				),
 			},
 		},
 	},
-	[`/api/comments/${Events.like_comment} (socket)`]: {
+
+	[`socket.emit("${Events.like_comment}")`]: {
 		post: {
 			tags: ["Комментарии"],
 			summary: "Лайкнуть комментарий",
 			security: [{ bearerAuth: [] }],
-			description: `Клиент отправляет лайк через событие emit('${Events.like_comment}')`,
+			requestBody: {
+				content: {
+					"application/json": {
+						schema: BodyLikeCommentSwaggerDoc,
+					},
+				},
+			},
+			responses: {
+				error: getErrorSwaggerDoc(
+					`Ошибка лайка комментария через on('${Events.error}')`,
+				),
+			},
+		},
+	},
+
+	[`socket.on("${Events.like_comment}")`]: {
+		get: {
+			tags: ["Комментарии"],
+			summary: "Лайкнуть комментарий",
+			security: [{ bearerAuth: [] }],
 			requestBody: {
 				content: {
 					"application/json": {
@@ -205,26 +267,41 @@ export const commentsSwaggerDoc = {
 			},
 			responses: {
 				200: {
-					description: `Клиент получает лайки через событие on('${Events.like_comment}')`,
+					description: "Новый массив лайков для данного комментария",
 					content: {
 						"application/json": {
 							schema: ViewLikeCommentSwaggerDoc,
 						},
 					},
 				},
-				error: getErrorSwaggerDoc(
-					`Ошибка лайка комментария через on('${Events.error}')`,
-				),
 			},
 		},
 	},
 
-	[`/api/comments/${Events.dislike_comment} (socket)`]: {
+	[`socket.emit("${Events.dislike_comment}")`]: {
 		post: {
 			tags: ["Комментарии"],
 			summary: "Дизлайкнуть комментарий",
 			security: [{ bearerAuth: [] }],
-			description: `Клиент отправляет дизлайк через событие emit('${Events.dislike_comment}')`,
+			requestBody: {
+				content: {
+					"application/json": {
+						schema: BodyDislikeCommentSwaggerDoc,
+					},
+				},
+			},
+			responses: {
+				error: getErrorSwaggerDoc(
+					`Ошибка дизлайка комментария через on('${Events.error}')`,
+				),
+			},
+		},
+	},
+	[`socket.on("${Events.dislike_comment}")`]: {
+		get: {
+			tags: ["Комментарии"],
+			summary: "Дизлайкнуть комментарий",
+			security: [{ bearerAuth: [] }],
 			requestBody: {
 				content: {
 					"application/json": {
@@ -234,26 +311,42 @@ export const commentsSwaggerDoc = {
 			},
 			responses: {
 				200: {
-					description: `Клиент получает дизлайки через событие on('${Events.dislike_comment}')`,
+					description: "Новый массив дизлайков для данного комментария",
 					content: {
 						"application/json": {
 							schema: ViewDislikeCommentSwaggerDoc,
 						},
 					},
 				},
+			},
+		},
+	},
+
+	[`socket.emit("${Events.send_reply_for_comment}")`]: {
+		post: {
+			tags: ["Комментарии"],
+			summary: "Отправить ответ на комментарий",
+			security: [{ bearerAuth: [] }],
+			requestBody: {
+				content: {
+					"application/json": {
+						schema: BodySendReplyToCommentSwaggerDoc,
+					},
+				},
+			},
+			responses: {
 				error: getErrorSwaggerDoc(
-					`Ошибка дизлайка комментария через on('${Events.error}')`,
+					`Ошибка отправки ответа на комментарий через on('${Events.error}')`,
 				),
 			},
 		},
 	},
 
-	[`/api/comments/${Events.send_reply_for_comment} (socket)`]: {
-		post: {
+	[`socket.on("${Events.send_reply_for_comment}")`]: {
+		get: {
 			tags: ["Комментарии"],
 			summary: "Отправить ответ на комментарий",
 			security: [{ bearerAuth: [] }],
-			description: `Клиент отправляет ответ через событие emit('${Events.send_reply_for_comment}')`,
 			requestBody: {
 				content: {
 					"application/json": {
@@ -263,16 +356,14 @@ export const commentsSwaggerDoc = {
 			},
 			responses: {
 				200: {
-					description: `Клиент получает отвеет через событие on('${Events.send_reply_for_comment}')`,
+					description:
+						"Информация по отвеченному комментарию и информация по самому комментарию который был написан",
 					content: {
 						"application/json": {
 							schema: ViewSendReplyToCommentSwaggerDoc,
 						},
 					},
 				},
-				error: getErrorSwaggerDoc(
-					`Ошибка отправки ответа на комментарий через on('${Events.error}')`,
-				),
 			},
 		},
 	},
@@ -281,7 +372,7 @@ export const commentsSwaggerDoc = {
 		post: {
 			tags: ["Комментарии"],
 			security: [{ bearerAuth: [] }],
-			description: "Получить количество комментариев",
+			summary: "Получить количество комментариев",
 			requestBody: {
 				content: {
 					"application/json": {
