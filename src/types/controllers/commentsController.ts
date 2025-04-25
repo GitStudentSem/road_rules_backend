@@ -207,11 +207,7 @@ export const ViewSendCommentSwaggerDoc: OpenAPIV3.SchemaObject = {
 		dislikes: {
 			type: "array",
 			description: "Массив userId которые дизлайкнули комментарий",
-			items: {
-				type: "string",
-				default: "1717440741304",
-				description: "userId пользователя который дизлайкнул комментарий",
-			},
+			items: LikeSwaggerDoc,
 		},
 	},
 };
@@ -302,14 +298,80 @@ export const ViewSendAllCommentsSwaggerDoc: OpenAPIV3.SchemaObject = {
 		dislikes: {
 			type: "array",
 			description: "Массив userId которые дизлайкнули комментарий",
+			items: LikeSwaggerDoc,
+		},
+		replies: {
+			type: "array",
+			description: "Тред ответов на это сообщение",
 			items: {
-				type: "string",
-				default: "1717440741304",
-				description: "userId пользователя который дизлайкнул комментарий",
+				type: "object",
+				properties: {
+					ticketId: {
+						type: "string",
+						default: defaultSwaggerValues.ticketId,
+						description: "ID билета",
+					},
+					questionId: {
+						type: "string",
+						default: defaultSwaggerValues.questionId,
+						description: "ID вопроса",
+					},
+					commentId: {
+						type: "string",
+						default: "67dfedd2805cdebd10d86ff7",
+						description: "ID сообщения",
+					},
+					text: {
+						type: "string",
+						default: "Текст комментария",
+						description: "Текст комментария",
+					},
+					firstName: {
+						type: "string",
+						default: "Иван",
+						description: "Имя пользователя",
+					},
+					secondName: {
+						type: "string",
+						default: "Иванов",
+						description: "Фамилия пользователя",
+					},
+					time: {
+						type: "string",
+						default: "2025-04-19T12:17:16.683Z",
+						description: "Время отправки комментария в ISO формате",
+					},
+					userId: {
+						type: "string",
+						description: "id пользователя пользователя",
+						default: "1717440741304",
+					},
+					likes: {
+						type: "array",
+						description: "Список пользователей который лайкнули комментарий",
+						items: LikeSwaggerDoc,
+					},
+					dislikes: {
+						type: "array",
+						description: "Массив userId которые дизлайкнули комментарий",
+						items: LikeSwaggerDoc,
+					},
+					replyToMessageId: {
+						type: "string",
+						description: "ID сообщения на которое был дан ответ",
+						default: "67dfedd2805cdebd10d86ff7",
+					},
+					replyToUserId: {
+						type: "string",
+						description: "ID пользователя, комы был дан ответ",
+						default: "1717440741304",
+					},
+				},
 			},
 		},
 	},
 };
+
 export type ViewSendAllComments = {
 	ticketId: string;
 	questionId: string;
@@ -321,6 +383,12 @@ export type ViewSendAllComments = {
 	userId: string;
 	likes: CommentReaction[];
 	dislikes: CommentReaction[];
+	replies: Array<
+		ViewSendAllComments & {
+			replyToMessageId?: string;
+			replyToUserId?: string;
+		}
+	>;
 };
 
 //===========================================//
@@ -399,11 +467,7 @@ export const ViewDeleteCommentSwaggerDoc: OpenAPIV3.SchemaObject = {
 		dislikes: {
 			type: "array",
 			description: "Массив userId которые дизлайкнули комментарий",
-			items: {
-				type: "string",
-				default: "1717440741304",
-				description: "userId пользователя который дизлайкнул комментарий",
-			},
+			items: LikeSwaggerDoc,
 		},
 	},
 };

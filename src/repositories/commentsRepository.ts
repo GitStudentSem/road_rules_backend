@@ -1,4 +1,5 @@
 import { DBError } from "../controllers/DBError";
+import type { ViewSendAllComments } from "../types/controllers/commentsController";
 import type {
 	DeleteComment,
 	DisikeComment,
@@ -127,6 +128,7 @@ export const commentsRepository = {
 			dislikes,
 			rootMessageId: data.rootMessageId,
 			replyToMessageId: data.replyToMessageId,
+			replyToUserId: replyToMessage._id.toString(),
 		});
 
 		if (!insertedId) {
@@ -153,24 +155,67 @@ export const commentsRepository = {
 	},
 
 	async getAllComments(userId: string, questionInfo: GetAllComments) {
-		const user = await isUserExist(userId);
+		// Проверяем существование пользователя
+		await isUserExist(userId);
 
+		// Проверяем существование вопроса
 		await findQuestion(questionInfo.ticketId, questionInfo.questionId);
 
-		const comments = await commentsCollection.find(questionInfo).toArray();
+		// Получаем все комментарии для данного вопроса
+		const allComments = await commentsCollection.find(questionInfo).toArray();
 
-		const formattedComments = comments.map((comment) => {
-			const { _id, ...rest } = comment;
+		const rootComments = await commentsCollection
+			.find({ ...questionInfo, rootMessageId: undefined })
+			.toArray();
 
-			return {
-				commentId: _id,
-				...rest,
-			};
-		});
+		const result: ViewSendAllComments[] = [];
 
-		return formattedComments;
+		for (const rootComment of rootComments) {
+			const rootForView: ViewSendAllComments[] = [];
+
+			const repliesForRoot = await commentsCollection
+				.find({
+					rootMessageId: rootComment._id.toString(),
+				})
+				.toArray();
+
+			rootForView.push({
+				ticketId: rootComment.ticketId,
+				questionId: rootComment.questionId,
+				commentId: rootComment._id,
+				text: rootComment.text,
+				firstName: rootComment.firstName,
+				secondName: rootComment.secondName,
+				time: rootComment.time,
+				userId: rootComment.userId,
+				likes: rootComment.likes,
+				dislikes: rootComment.dislikes,
+				replies: [
+					...repliesForRoot.map((replyForRoot) => {
+						return {
+							ticketId: replyForRoot.ticketId,
+							questionId: replyForRoot.questionId,
+							commentId: replyForRoot._id,
+							text: replyForRoot.text,
+							firstName: replyForRoot.firstName,
+							secondName: replyForRoot.secondName,
+							time: replyForRoot.time,
+							userId: replyForRoot.userId,
+							likes: replyForRoot.likes,
+							dislikes: replyForRoot.dislikes,
+							replies: [],
+							replyToMessageId: replyForRoot.replyToMessageId,
+							replyToUserId: replyForRoot.replyToUserId,
+						};
+					}),
+				],
+			});
+
+			result.push(...rootForView);
+		}
+
+		return result;
 	},
-
 	async deleteComment(userId: string, data: DeleteComment) {
 		const user = await isUserExist(userId);
 
