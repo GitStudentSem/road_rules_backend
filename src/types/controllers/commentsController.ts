@@ -102,8 +102,24 @@ export const BodySendReplyToCommentSwaggerDoc: OpenAPIV3.SchemaObject = {
 			default: "Текст комментария",
 			description: "Текст комментария",
 		},
+		rootMessageId: {
+			type: "string",
+			default: "67dfedd2805cdebd10d86ff7",
+			description: "ID корневого комментария под которым создается обсуждение",
+		},
+		replyToMessageId: {
+			type: "string",
+			default: "67dfedd2805cdebd10d86ff7",
+			description: "ID комментария на который дается ответ",
+		},
 	},
-	required: ["ticketId", "questionId", "text"],
+	required: [
+		"ticketId",
+		"questionId",
+		"text",
+		"rootMessageId",
+		"replyToMessageId",
+	],
 };
 export type BodySendReplyToComment = {
 	ticketId: string;
@@ -119,6 +135,41 @@ export type BodySendReplyToComment = {
 export const ViewSendReplyToCommentSwaggerDoc: OpenAPIV3.SchemaObject = {
 	type: "object",
 	properties: {
+		commentId: {
+			type: "string",
+			default: "67dfedd2805cdebd10d86ff7",
+			description: "Уникальный идентификатор комментария",
+		},
+		firstName: {
+			type: "string",
+			default: "Имя",
+			description: "Имя пользователя, написавшего комментарий",
+		},
+		secondName: {
+			type: "string",
+			default: "Фамилия",
+			description: "Фамилия пользователя, написавшего комментарий",
+		},
+		userId: {
+			type: "string",
+			default: "1717440741304",
+			description: "ID пользователя, написавшего комментарий",
+		},
+		likes: {
+			type: "array",
+			items: LikeSwaggerDoc,
+			description: "Список пользователей, которые поставили лайк",
+		},
+		dislikes: {
+			type: "array",
+			items: LikeSwaggerDoc,
+			description: "Список пользователей, которые поставили дизлайк",
+		},
+		time: {
+			type: "string",
+			format: "date-time",
+			description: "Время создания комментария",
+		},
 		ticketId: {
 			type: "string",
 			default: defaultSwaggerValues.ticketId,
@@ -134,9 +185,31 @@ export const ViewSendReplyToCommentSwaggerDoc: OpenAPIV3.SchemaObject = {
 			default: "Текст комментария",
 			description: "Текст комментария",
 		},
+		replyInfo: {
+			type: "object",
+			properties: {
+				rootMessageId: {
+					type: "string",
+					default: "67dfedd2805cdebd10d86ff7",
+					description: "ID корневого сообщения в цепочке ответов",
+				},
+				replyToMessageId: {
+					type: "string",
+					default: "67dfedd2805cdebd10d86ff7",
+					description: "ID сообщения, на которое был дан ответ",
+				},
+				replyToUserId: {
+					type: "string",
+					default: "67dfedd2805cdebd10d86ff7",
+					description: "ID пользователя, на чье сообщение был дан ответ",
+				},
+			},
+
+			description: "Информация о цепочке ответов",
+		},
 	},
-	required: ["ticketId", "questionId", "text"],
 };
+
 export type ViewSendReplyToComment = {
 	commentId: string;
 	firstName: string;

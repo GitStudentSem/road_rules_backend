@@ -9,12 +9,14 @@ import {
 	BodyLikeCommentSwaggerDoc,
 	BodySendAllCommentsSwaggerDoc,
 	BodySendCommentSwaggerDoc,
+	BodySendReplyToCommentSwaggerDoc,
 	ViewCommentsCountSwaggerDoc,
 	ViewDeleteCommentSwaggerDoc,
 	ViewDislikeCommentSwaggerDoc,
 	ViewLikeCommentSwaggerDoc,
 	ViewSendAllCommentsSwaggerDoc,
 	ViewSendCommentSwaggerDoc,
+	ViewSendReplyToCommentSwaggerDoc,
 } from "../types/controllers/commentsController";
 import type {
 	BodyDeleteComment,
@@ -241,6 +243,35 @@ export const commentsSwaggerDoc = {
 				},
 				error: getErrorSwaggerDoc(
 					`Ошибка дизлайка комментария через on('${Events.error}')`,
+				),
+			},
+		},
+	},
+
+	[`/api/comments/${Events.send_reply_for_comment} (socket)`]: {
+		post: {
+			tags: ["Комментарии"],
+			summary: "Отправить ответ на комментарий",
+			security: [{ bearerAuth: [] }],
+			description: `Клиент отправляет ответ через событие emit('${Events.send_reply_for_comment}')`,
+			requestBody: {
+				content: {
+					"application/json": {
+						schema: BodySendReplyToCommentSwaggerDoc,
+					},
+				},
+			},
+			responses: {
+				200: {
+					description: `Клиент получает отвеет через событие on('${Events.send_reply_for_comment}')`,
+					content: {
+						"application/json": {
+							schema: ViewSendReplyToCommentSwaggerDoc,
+						},
+					},
+				},
+				error: getErrorSwaggerDoc(
+					`Ошибка отправки ответа на комментарий через on('${Events.error}')`,
 				),
 			},
 		},
