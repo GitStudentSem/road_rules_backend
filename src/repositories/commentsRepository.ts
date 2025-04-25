@@ -161,9 +161,6 @@ export const commentsRepository = {
 		// Проверяем существование вопроса
 		await findQuestion(questionInfo.ticketId, questionInfo.questionId);
 
-		// Получаем все комментарии для данного вопроса
-		const allComments = await commentsCollection.find(questionInfo).toArray();
-
 		const rootComments = await commentsCollection
 			.find({ ...questionInfo, rootMessageId: undefined })
 			.toArray();
@@ -171,15 +168,13 @@ export const commentsRepository = {
 		const result: ViewSendAllComments[] = [];
 
 		for (const rootComment of rootComments) {
-			const rootForView: ViewSendAllComments[] = [];
-
 			const repliesForRoot = await commentsCollection
 				.find({
 					rootMessageId: rootComment._id.toString(),
 				})
 				.toArray();
 
-			rootForView.push({
+			result.push({
 				ticketId: rootComment.ticketId,
 				questionId: rootComment.questionId,
 				commentId: rootComment._id,
@@ -210,8 +205,6 @@ export const commentsRepository = {
 					}),
 				],
 			});
-
-			result.push(...rootForView);
 		}
 
 		return result;
