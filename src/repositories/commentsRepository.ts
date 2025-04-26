@@ -94,6 +94,8 @@ export const commentsRepository = {
 			);
 		}
 
+		await findQuestion(data.ticketId, data.questionId);
+
 		// Проверяем существование корневого сообщения
 		const rootMessage = await commentsCollection.findOne({
 			_id: new ObjectId(data.rootMessageId),
@@ -209,6 +211,7 @@ export const commentsRepository = {
 
 		return result;
 	},
+
 	async deleteComment(userId: string, data: DeleteComment) {
 		const user = await isUserExist(userId);
 
@@ -240,15 +243,34 @@ export const commentsRepository = {
 		// 	);
 		// }
 
-		const deletedComment = await commentsCollection.findOneAndDelete({
-			_id: new ObjectId(data.commentId),
+		const hasReplies = await commentsCollection.findOne({
+			rootMessageId: data.commentId,
 		});
 
-		if (!deletedComment) {
-			throw new DBError("Комментарий не найден", HTTP_STATUSES.NOT_FOUND_404);
+		if (hasReplies) {
+			const deletedComment = await commentsCollection.findOneAndDelete({
+				_id: new ObjectId(data.commentId),
+			});
+
+			if (!deletedComment) {
+				throw new DBError("Комментарий не найден", HTTP_STATUSES.NOT_FOUND_404);
+			}
+
+			const { _id, ...rest } = deletedComment;
+			return {
+				commentId: _id,
+				...rest,
+			};
 		}
 
-		const { _id, ...rest } = deletedComment;
+		await commentsCollection.updateOne(
+			{
+				_id: new ObjectId(data.commentId),
+			},
+			{ text: "" },
+		);
+
+		const { _id, ...rest } = foundedComment;
 		return {
 			commentId: _id,
 			...rest,
