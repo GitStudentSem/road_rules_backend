@@ -42,7 +42,7 @@ export const authRepository = {
 		});
 
 		const user = await userCollection.findOne({ email });
-		console.log("user", user);
+
 		if (!user) {
 			throw new DBError(
 				"Пользователь не найден",

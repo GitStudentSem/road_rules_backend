@@ -122,7 +122,10 @@ export const commentsRepository = {
 		const likes = [];
 		const dislikes = [];
 		const { insertedId } = await commentsCollection.insertOne({
-			...data,
+			ticketId: data.ticketId,
+			questionId: data.questionId,
+			text:data.text,
+			time: data.time,
 			userId,
 			firstName: user.firstName,
 			secondName: user.secondName,
