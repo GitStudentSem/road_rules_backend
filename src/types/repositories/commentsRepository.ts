@@ -7,9 +7,9 @@ export type SendComment = {
 
 export type SendReplyToComment = {
 	/** Корневое сообщение ответов, откуда строится топик */
-	rootMessageId: string;
+	rootCommentId: string;
 	/** Сообщение кому отправляется ответ */
-	replyToMessageId: string;
+	replyToCommentId: string;
 	ticketId: string;
 	questionId: string;
 	text: string;

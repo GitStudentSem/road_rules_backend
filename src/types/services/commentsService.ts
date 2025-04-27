@@ -9,9 +9,9 @@ export type SendReplyToComment = {
 	questionId: string;
 	text: string;
 	/** Корневое сообщение ответов, откуда строится топик */
-	rootMessageId: string;
+	rootCommentId: string;
 	/** Сообщение кому отправляется ответ */
-	replyToMessageId: string;
+	replyToCommentId: string;
 };
 
 export type GetAllComments = {

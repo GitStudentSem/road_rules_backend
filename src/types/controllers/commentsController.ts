@@ -77,9 +77,9 @@ export type BodySendComment = {
 	questionId: string;
 	text: string;
 	/** Корневое сообщение ответов, откуда строится топик */
-	rootMessageId: string;
+	rootCommentId: string;
 	/** Сообщение кому отправляется ответ */
-	replyToMessageId: string;
+	replyToCommentId: string;
 };
 
 //===========================================//
@@ -102,12 +102,12 @@ export const BodySendReplyToCommentSwaggerDoc: OpenAPIV3.SchemaObject = {
 			default: "Текст комментария",
 			description: "Текст комментария",
 		},
-		rootMessageId: {
+		rootCommentId: {
 			type: "string",
 			default: "67dfedd2805cdebd10d86ff7",
 			description: "ID корневого комментария под которым создается обсуждение",
 		},
-		replyToMessageId: {
+		replyToCommentId: {
 			type: "string",
 			default: "67dfedd2805cdebd10d86ff7",
 			description: "ID комментария на который дается ответ",
@@ -117,8 +117,8 @@ export const BodySendReplyToCommentSwaggerDoc: OpenAPIV3.SchemaObject = {
 		"ticketId",
 		"questionId",
 		"text",
-		"rootMessageId",
-		"replyToMessageId",
+		"rootCommentId",
+		"replyToCommentId",
 	],
 };
 export type BodySendReplyToComment = {
@@ -126,9 +126,9 @@ export type BodySendReplyToComment = {
 	questionId: string;
 	text: string;
 	/** Корневое сообщение ответов, откуда строится топик */
-	rootMessageId: string;
+	rootCommentId: string;
 	/** Сообщение кому отправляется ответ */
-	replyToMessageId: string;
+	replyToCommentId: string;
 };
 //===========================================//
 
@@ -188,12 +188,12 @@ export const ViewSendReplyToCommentSwaggerDoc: OpenAPIV3.SchemaObject = {
 		replyInfo: {
 			type: "object",
 			properties: {
-				rootMessageId: {
+				rootCommentId: {
 					type: "string",
 					default: "67dfedd2805cdebd10d86ff7",
 					description: "ID корневого сообщения в цепочке ответов",
 				},
-				replyToMessageId: {
+				replyToCommentId: {
 					type: "string",
 					default: "67dfedd2805cdebd10d86ff7",
 					description: "ID сообщения, на которое был дан ответ",
@@ -222,8 +222,8 @@ export type ViewSendReplyToComment = {
 	questionId: string;
 	text: string;
 	replyInfo: {
-		rootMessageId: string;
-		replyToMessageId: string;
+		rootCommentId: string;
+		replyToCommentId: string;
 		replyToUserId: string;
 	};
 };
@@ -429,7 +429,7 @@ export const ViewSendAllCommentsSwaggerDoc: OpenAPIV3.SchemaObject = {
 						description: "Массив userId которые дизлайкнули комментарий",
 						items: LikeSwaggerDoc,
 					},
-					replyToMessageId: {
+					replyToCommentId: {
 						type: "string",
 						description: "ID сообщения на которое был дан ответ",
 						default: "67dfedd2805cdebd10d86ff7",
@@ -458,7 +458,7 @@ export type ViewSendAllComments = {
 	dislikes: CommentReaction[];
 	replies: Array<
 		ViewSendAllComments & {
-			replyToMessageId?: string;
+			replyToCommentId?: string;
 			replyToUserId?: string;
 		}
 	>;

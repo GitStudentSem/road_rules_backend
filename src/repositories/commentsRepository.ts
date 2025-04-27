@@ -98,7 +98,7 @@ export const commentsRepository = {
 
 		// Проверяем существование корневого сообщения
 		const rootMessage = await commentsCollection.findOne({
-			_id: new ObjectId(data.rootMessageId),
+			_id: new ObjectId(data.rootCommentId),
 		});
 		if (!rootMessage) {
 			throw new DBError(
@@ -109,7 +109,7 @@ export const commentsRepository = {
 
 		// Проверяем существование сообщения, на которое отвечаем
 		const replyToMessage = await commentsCollection.findOne({
-			_id: new ObjectId(data.replyToMessageId),
+			_id: new ObjectId(data.replyToCommentId),
 		});
 		if (!replyToMessage) {
 			throw new DBError(
@@ -128,8 +128,8 @@ export const commentsRepository = {
 			secondName: user.secondName,
 			likes,
 			dislikes,
-			rootMessageId: data.rootMessageId,
-			replyToMessageId: data.replyToMessageId,
+			rootCommentId: data.rootCommentId,
+			replyToCommentId: data.replyToCommentId,
 			replyToUserId: replyToMessage._id.toString(),
 		});
 
@@ -149,8 +149,8 @@ export const commentsRepository = {
 			questionId: data.questionId,
 			text: data.text,
 			replyInfo: {
-				rootMessageId: data.rootMessageId,
-				replyToMessageId: data.replyToMessageId,
+				rootCommentId: data.rootCommentId,
+				replyToCommentId: data.replyToCommentId,
 				replyToUserId: replyToMessage.userId,
 			},
 		};
@@ -164,7 +164,7 @@ export const commentsRepository = {
 		await findQuestion(questionInfo.ticketId, questionInfo.questionId);
 
 		const rootComments = await commentsCollection
-			.find({ ...questionInfo, rootMessageId: undefined })
+			.find({ ...questionInfo, rootCommentId: undefined })
 			.toArray();
 
 		const result: ViewSendAllComments[] = [];
@@ -172,7 +172,7 @@ export const commentsRepository = {
 		for (const rootComment of rootComments) {
 			const repliesForRoot = await commentsCollection
 				.find({
-					rootMessageId: rootComment._id.toString(),
+					rootCommentId: rootComment._id.toString(),
 				})
 				.toArray();
 
@@ -201,7 +201,7 @@ export const commentsRepository = {
 							likes: replyForRoot.likes,
 							dislikes: replyForRoot.dislikes,
 							replies: [],
-							replyToMessageId: replyForRoot.replyToMessageId,
+							replyToCommentId: replyForRoot.replyToCommentId,
 							replyToUserId: replyForRoot.replyToUserId,
 						};
 					}),
@@ -244,7 +244,7 @@ export const commentsRepository = {
 		// }
 
 		const hasReplies = await commentsCollection.findOne({
-			rootMessageId: data.commentId,
+			rootCommentId: data.commentId,
 		});
 
 		if (hasReplies) {
