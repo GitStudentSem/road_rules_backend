@@ -218,6 +218,7 @@ export const commentsRepository = {
 	async deleteComment(userId: string, data: DeleteComment) {
 		const user = await isUserExist(userId);
 
+		// Проверка валидности commentId
 		if (!ObjectId.isValid(data.commentId)) {
 			throw new DBError(
 				"Неверный формат commentId",
@@ -225,6 +226,7 @@ export const commentsRepository = {
 			);
 		}
 
+		// Поиск комментария
 		const foundedComment = await commentsCollection.findOne({
 			_id: new ObjectId(data.commentId),
 		});
@@ -232,6 +234,7 @@ export const commentsRepository = {
 			throw new DBError("Комментарий не найден", HTTP_STATUSES.NOT_FOUND_404);
 		}
 
+		// Проверка прав пользователя
 		if (user.role === "user" && foundedComment.userId !== userId) {
 			throw new DBError(
 				"У вас недостаточно прав для удаления комментария",
@@ -239,11 +242,13 @@ export const commentsRepository = {
 			);
 		}
 
+		// Проверка наличия ответов
 		const hasReplies = await commentsCollection.findOne({
 			rootCommentId: data.commentId,
 		});
 
 		if (hasReplies) {
+			// Если есть ответы, зануляем текст комментария
 			await commentsCollection.updateOne(
 				{
 					_id: new ObjectId(data.commentId),
@@ -255,9 +260,11 @@ export const commentsRepository = {
 			return {
 				commentId: _id,
 				...rest,
+				allCommentDeleted: false, // Флаг, что ветка не полностью удалена
 			};
 		}
 
+		// Удаление комментария, если ответов нет
 		const deletedComment = await commentsCollection.findOneAndDelete({
 			_id: new ObjectId(data.commentId),
 		});
@@ -266,10 +273,31 @@ export const commentsRepository = {
 			throw new DBError("Комментарий не найден", HTTP_STATUSES.NOT_FOUND_404);
 		}
 
+		// Проверка, является ли удаленный комментарий корневым
+		const isRootComment = !deletedComment.rootCommentId;
+
+		// Если комментарий корневой, проверяем, остались ли другие комментарии в ветке
+		if (isRootComment) {
+			const remainingComments = await commentsCollection.findOne({
+				rootCommentId: deletedComment._id.toString(),
+			});
+
+			if (!remainingComments) {
+				// Если других комментариев нет, возвращаем флаг allCommentDeleted
+				return {
+					commentId: deletedComment._id,
+					...deletedComment,
+					allCommentDeleted: true,
+				};
+			}
+		}
+
+		// Возвращаем результат удаления
 		const { _id, ...rest } = deletedComment;
 		return {
 			commentId: _id,
 			...rest,
+			allCommentDeleted: false, // Флаг, что ветка не полностью удалена
 		};
 	},
 

@@ -554,6 +554,7 @@ export type ViewDeleteComment = {
 	userId: string;
 	likes: CommentReaction[];
 	dislikes: CommentReaction[];
+	allCommentDeleted: boolean;
 };
 
 //===========================================//

@@ -93,9 +93,20 @@ export const commentsController = {
 		try {
 			const deletedComment: ViewDeleteComment =
 				await commentsService.deletedComment(userId, data);
-			commentsNamespace
-				.to(socket.currentRoom)
-				.emit(Events.delete_comment, deletedComment);
+
+			if (deletedComment.allCommentDeleted) {
+				const allComments = await commentsService.getAllComments(userId, {
+					ticketId: data.ticketId,
+					questionId: data.questionId,
+				});
+				commentsNamespace
+					.to(socket.currentRoom)
+					.emit(Events.get_all_comments, allComments);
+			} else {
+				commentsNamespace
+					.to(socket.currentRoom)
+					.emit(Events.delete_comment, deletedComment);
+			}
 		} catch (error) {
 			catchError(socket, error);
 		}
