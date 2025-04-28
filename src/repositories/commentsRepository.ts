@@ -124,7 +124,7 @@ export const commentsRepository = {
 		const { insertedId } = await commentsCollection.insertOne({
 			ticketId: data.ticketId,
 			questionId: data.questionId,
-			text:data.text,
+			text: data.text,
 			time: data.time,
 			userId,
 			firstName: user.firstName,
@@ -239,41 +239,34 @@ export const commentsRepository = {
 			);
 		}
 
-		// if (foundedComment.userId !== userId) {
-		// 	throw new DBError(
-		// 		"Это не ваш комментарий, вы не можете его удалить",
-		// 		HTTP_STATUSES.FORRIBDEN_403,
-		// 	);
-		// }
-
 		const hasReplies = await commentsCollection.findOne({
 			rootCommentId: data.commentId,
 		});
 
 		if (hasReplies) {
-			const deletedComment = await commentsCollection.findOneAndDelete({
-				_id: new ObjectId(data.commentId),
-			});
+			await commentsCollection.updateOne(
+				{
+					_id: new ObjectId(data.commentId),
+				},
+				{ $set: { text: "" } },
+			);
 
-			if (!deletedComment) {
-				throw new DBError("Комментарий не найден", HTTP_STATUSES.NOT_FOUND_404);
-			}
-
-			const { _id, ...rest } = deletedComment;
+			const { _id, ...rest } = foundedComment;
 			return {
 				commentId: _id,
 				...rest,
 			};
 		}
 
-		await commentsCollection.updateOne(
-			{
-				_id: new ObjectId(data.commentId),
-			},
-			{ text: "" },
-		);
+		const deletedComment = await commentsCollection.findOneAndDelete({
+			_id: new ObjectId(data.commentId),
+		});
 
-		const { _id, ...rest } = foundedComment;
+		if (!deletedComment) {
+			throw new DBError("Комментарий не найден", HTTP_STATUSES.NOT_FOUND_404);
+		}
+
+		const { _id, ...rest } = deletedComment;
 		return {
 			commentId: _id,
 			...rest,
