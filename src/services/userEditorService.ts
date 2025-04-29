@@ -50,7 +50,7 @@ export const userEditorService = {
 				secondName: user.secondName,
 				role: user.role,
 				isAppointExam: user.isAppointExam,
-				department: user.department,
+				autoSchoolName: user.autoSchoolName,
 			};
 		});
 		return filterdUsersData;
@@ -65,7 +65,7 @@ export const userEditorService = {
 				secondName: user.secondName,
 				role: user.role,
 				isAppointExam: user.isAppointExam,
-				department: user.department,
+				autoSchoolName: user.autoSchoolName,
 			};
 		});
 		return filterdUsersData;
@@ -89,7 +89,7 @@ export const userEditorService = {
 				secondName: user.secondName,
 				role: user.role,
 				isAppointExam: user.isAppointExam,
-				department: user.department,
+				autoSchoolName: user.autoSchoolName,
 				passAt: user.results.exam?.passAt || 0,
 			};
 		});

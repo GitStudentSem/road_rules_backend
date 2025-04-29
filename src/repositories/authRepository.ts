@@ -14,7 +14,7 @@ export const isUserExist = async (userId: string) => {
 
 export const authRepository = {
 	async register(data: Register) {
-		const { email, firstName, secondName, passwordHash, department } = data;
+		const { email, firstName, secondName, passwordHash, autoSchoolName } = data;
 
 		const isAlreadyExistUser = await userCollection.findOne({ email });
 
@@ -36,7 +36,7 @@ export const authRepository = {
 			userId,
 			isAppointExam: false,
 			role: "user",
-			department,
+			autoSchoolName,
 			results: {},
 			isBannedForChat: false,
 		});

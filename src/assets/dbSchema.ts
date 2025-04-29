@@ -13,7 +13,7 @@ interface IuserInfo {
 	userId: string;
 	isAppointExam: boolean;
 	role: string;
-	department: string;
+	autoSchoolName: string;
 	results: {
 		ticket_1729520262142: {
 			passAt: number;

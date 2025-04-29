@@ -3,7 +3,7 @@ export type Register = {
 	firstName: string;
 	secondName: string;
 	passwordHash: string;
-	department: string;
+	autoSchoolName: string;
 };
 
 export type Login = { email: string };

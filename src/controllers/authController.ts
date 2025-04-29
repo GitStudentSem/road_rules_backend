@@ -19,14 +19,15 @@ export const authController = {
 		res: Response<ViewRegister | ErrorType>,
 	) {
 		try {
-			const { email, firstName, secondName, password, department } = req.body;
+			const { email, firstName, secondName, password, autoSchoolName } =
+				req.body;
 
 			const registerdUser = await authService.register({
 				email,
 				firstName,
 				secondName,
 				password,
-				department,
+				autoSchoolName,
 			});
 
 			res.status(HTTP_STATUSES.OK_200).json(registerdUser);

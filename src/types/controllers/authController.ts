@@ -25,20 +25,20 @@ export const BodyRegisterSwaggerDoc: OpenAPIV3.SchemaObject = {
 			description: "Фамилия пользователя",
 			default: "Иванов",
 		},
-		department: {
+		autoSchoolName: {
 			type: "string",
 			description: "Цех в котором работает пользователь",
 			default: "1",
 		},
 	},
-	required: ["email", "password", "firstName", "secondName", "department"],
+	required: ["email", "password", "firstName", "secondName", "autoSchoolName"],
 };
 export type BodyRegister = {
 	email: string;
 	firstName: string;
 	secondName: string;
 	password: string;
-	department: string;
+	autoSchoolName: string;
 };
 //===========================================//
 

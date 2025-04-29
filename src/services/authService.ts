@@ -68,7 +68,7 @@ const saveAvatar = async ({
 
 export const authService = {
 	async register(data: Register) {
-		const { email, firstName, secondName, password, department } = data;
+		const { email, firstName, secondName, password, autoSchoolName } = data;
 		const salt = await bcrypt.genSalt(10);
 		const passwordHash = await bcrypt.hash(password, salt);
 
@@ -77,7 +77,7 @@ export const authService = {
 			firstName,
 			secondName,
 			passwordHash,
-			department,
+			autoSchoolName,
 		});
 
 		const token: string = jwt.sign(

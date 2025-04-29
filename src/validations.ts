@@ -61,9 +61,11 @@ export const registerValidation = [
 		.isLength({
 			min: 2,
 		}),
-	body("department", "Имя автошколы не должено быть пустым").trim().isLength({
-		min: 1,
-	}),
+	body("autoSchoolName", "Имя автошколы не должено быть пустым")
+		.trim()
+		.isLength({
+			min: 1,
+		}),
 ];
 
 export const answerValidation = [

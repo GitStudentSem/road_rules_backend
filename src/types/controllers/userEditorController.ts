@@ -99,10 +99,10 @@ export const ViewUserInfoSwaggerDoc = {
 			default: "false",
 			description: "Назначен ли экзамен для пользователя",
 		},
-		department: {
+		autoSchoolName: {
 			type: "string",
 			default: "1",
-			description: "Цех в котором работает пользователь",
+			description: "Название автошколы",
 		},
 	},
 };
@@ -112,7 +112,7 @@ export type ViewUserInfo = {
 	secondName: string;
 	isAppointExam: boolean;
 	role: "superadmin" | "admin" | "user";
-	department: string;
+	autoSchoolName: string;
 };
 //===========================================//
 
@@ -144,7 +144,7 @@ export const ViewUserInfoResultExamSwaggerDoc = {
 			default: "false",
 			description: "Назначен ли экзамен для пользователя",
 		},
-		department: {
+		autoSchoolName: {
 			type: "string",
 			default: "1",
 			description: "Цех в котором работает пользователь",
@@ -162,7 +162,7 @@ export type ViewUserInfoResultExam = {
 	secondName: string;
 	isAppointExam: boolean;
 	role: "superadmin" | "admin" | "user";
-	department: string;
+	autoSchoolName: string;
 	passAt: number;
 };
 //===========================================//
